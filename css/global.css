@@ -81,14 +81,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* PAPER TEXTURE (subtle) */
+/* PAPER TEXTURE (subtle) — sits BEHIND content via z-index:-1 so it never blocks taps */
+body {
+  isolation: isolate;
+  position: relative;
+}
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
   pointer-events: none;
-  z-index: 9999;
+  z-index: -1;
 }
 
 /* SCROLLBAR */
@@ -758,4 +762,80 @@ body::before {
   .cc-visual { width: 260px; height: 165px; padding: 18px; }
   .pos-terminal { width: 160px; }
   .flow-node-circle { width: 48px; height: 48px; font-size: 20px; }
+}
+
+/* ============================================================
+   CUSTOM CURSOR — desktop only, hidden on touch / small screens
+   A small electric dot tracks the actual cursor exactly,
+   and a larger ring chases it smoothly. On interactive hover,
+   the ring expands and shifts.
+   ============================================================ */
+.cursor-dot,
+.cursor-trail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 10000;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--electric);
+  mix-blend-mode: normal;
+}
+
+.cursor-trail {
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid var(--electric);
+  background: transparent;
+  transition: opacity 0.3s ease, width 0.25s var(--ease-spring), height 0.25s var(--ease-spring), border-color 0.25s ease, background 0.25s ease;
+}
+
+body.cursor-active .cursor-dot,
+body.cursor-active .cursor-trail {
+  opacity: 1;
+}
+
+/* On interactive elements, ring expands and goes warm */
+body.cursor-hover .cursor-trail {
+  width: 56px;
+  height: 56px;
+  border-color: var(--warm);
+  background: rgba(234, 88, 12, 0.08);
+}
+
+body.cursor-hover .cursor-dot {
+  background: var(--warm);
+}
+
+/* On click, ring squishes */
+body.cursor-down .cursor-trail {
+  width: 28px;
+  height: 28px;
+  border-width: 2px;
+}
+
+/* Hide on touch devices and mobile */
+@media (hover: none), (pointer: coarse), (max-width: 768px) {
+  .cursor-dot, .cursor-trail { display: none !important; }
+  body { cursor: auto !important; }
+}
+
+/* On desktop, hide the system cursor */
+@media (hover: hover) and (pointer: fine) {
+  body.cursor-active { cursor: none; }
+  body.cursor-active a,
+  body.cursor-active button,
+  body.cursor-active [onclick],
+  body.cursor-active input,
+  body.cursor-active select,
+  body.cursor-active textarea,
+  body.cursor-active [role="button"] { cursor: none; }
 }

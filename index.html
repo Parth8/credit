@@ -73,11 +73,12 @@
     .hero-title-annotation {
       font-family: var(--font-hand);
       color: var(--warm);
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 500;
-      transform: rotate(-3deg);
+      transform: rotate(-2deg);
       display: inline-block;
-      margin-left: 8px;
+      margin: -8px 0 28px 4px;
+      animation: fade-up 0.9s var(--ease-out) 0.5s both;
     }
 
     .hero-sub {
@@ -380,7 +381,10 @@
 
     .chapter-item:hover {
       background: var(--cream);
-      padding-left: 44px;
+    }
+    
+    .chapter-item:hover .chapter-content {
+      transform: translateX(8px);
     }
 
     .chapter-item:hover::before {
@@ -404,6 +408,7 @@
       display: flex;
       flex-direction: column;
       gap: 4px;
+      transition: transform 0.3s var(--ease-out);
     }
 
     .chapter-name {
@@ -512,6 +517,55 @@
       letter-spacing: 0.04em;
     }
 
+    .footer-signature {
+      padding-top: 24px;
+      border-top: 1px dashed var(--border);
+      max-width: 480px;
+      margin: 24px auto 0;
+    }
+
+    .footer-by {
+      font-family: var(--font-hand);
+      font-size: 22px;
+      color: var(--ink-muted);
+      margin-bottom: 8px;
+      transform: rotate(-1deg);
+      display: inline-block;
+    }
+
+    .footer-name {
+      color: var(--electric);
+      text-decoration: none;
+      font-weight: 700;
+      transition: color 0.2s ease;
+    }
+
+    .footer-name:hover {
+      color: var(--warm);
+    }
+
+    .footer-links {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      color: var(--ink-faint);
+    }
+
+    .footer-links a {
+      color: var(--ink-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--electric);
+    }
+
+    .footer-link-sep {
+      margin: 0 12px;
+      color: var(--ink-ghost);
+    }
+
     @media (max-width: 768px) {
       .hero { padding: 100px 0 60px; }
       .hero-grid { grid-template-columns: 1fr; gap: 48px; }
@@ -552,8 +606,8 @@
           <h1 class="hero-title">
             Credit cards,<br>
             <em>finally</em> explained.
-            <span class="hero-title-annotation">by playing with one →</span>
           </h1>
+          <div class="hero-title-annotation">by playing with one →</div>
           <p class="hero-sub">
             Most credit card guides are written for people who already understand them. This one is built for everyone else. <strong>You'll learn by tapping cards, swiping terminals, watching money move</strong> — not by reading paragraphs.
           </p>
@@ -962,7 +1016,19 @@
   <footer class="site-footer">
     <div class="footer-brand">Decoding<em>·</em>Credit Cards <span style="color: var(--electric);">✦</span></div>
     <p class="footer-tagline">Built for the curious. Free for everyone.</p>
-    <div class="footer-meta">No tracking · No ads · No card recommendations · MIT licensed</div>
+    <div class="footer-meta" style="margin-bottom: 24px;">No tracking · No ads · No card recommendations</div>
+    
+    <div class="footer-signature">
+      <div class="footer-by">
+        Built with love (and coffee and Claude) by
+        <a href="https://parth8.github.io/portfolio/" target="_blank" rel="noopener" class="footer-name">Parth</a>
+      </div>
+      <div class="footer-links">
+        <a href="https://linkedin.com/in/aggarwalparth" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <span class="footer-link-sep">·</span>
+        <a href="https://parth8.github.io/portfolio/" target="_blank" rel="noopener">Portfolio ↗</a>
+      </div>
+    </div>
   </footer>
 
   <script src="js/global.js"></script>

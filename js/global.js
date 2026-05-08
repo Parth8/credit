@@ -157,3 +157,82 @@ function playSuccess() {
 
 // Make available globally
 window.DCC = { burstConfetti, showCompletion, playClick, playSuccess, animateNumber };
+
+// ============================================================
+// CUSTOM CURSOR
+// Small dot tracks pointer exactly. Larger ring chases smoothly.
+// On interactive elements, ring expands.
+// Skip entirely on touch / mobile.
+// Whole block wrapped in try so cursor failures never break the page.
+// ============================================================
+try {
+  // Skip on touch devices entirely
+  const mm = (q) => (typeof window.matchMedia === 'function') && window.matchMedia(q).matches;
+  const isTouch = mm('(hover: none)') || mm('(pointer: coarse)');
+  if (!isTouch) {
+    // Inject cursor elements if not already present
+    let dot = document.getElementById('cursor-dot');
+    let trail = document.getElementById('cursor-trail');
+    if (!dot) {
+      dot = document.createElement('div');
+      dot.id = 'cursor-dot';
+      dot.className = 'cursor-dot';
+      dot.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(dot);
+    }
+    if (!trail) {
+      trail = document.createElement('div');
+      trail.id = 'cursor-trail';
+      trail.className = 'cursor-trail';
+      trail.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(trail);
+    }
+
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let trailX = mouseX, trailY = mouseY;
+    let active = false;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (!active) {
+        active = true;
+        document.body.classList.add('cursor-active');
+        trailX = mouseX;
+        trailY = mouseY;
+      }
+      // Dot follows exactly
+      dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
+    });
+
+    document.addEventListener('mouseleave', () => {
+      document.body.classList.remove('cursor-active');
+      active = false;
+    });
+
+    document.addEventListener('mousedown', () => document.body.classList.add('cursor-down'));
+    document.addEventListener('mouseup', () => document.body.classList.remove('cursor-down'));
+
+    // Hover detection — interactive elements expand the ring
+    const hoverSelector = 'a, button, [onclick], input[type="range"], input[type="checkbox"], input[type="radio"], select, textarea, [role="button"], .chapter-item, label';
+    document.addEventListener('mouseover', (e) => {
+      if (e.target.closest && e.target.closest(hoverSelector)) document.body.classList.add('cursor-hover');
+    });
+    document.addEventListener('mouseout', (e) => {
+      if (e.target.closest && e.target.closest(hoverSelector) && (!e.relatedTarget || !e.relatedTarget.closest || !e.relatedTarget.closest(hoverSelector))) {
+        document.body.classList.remove('cursor-hover');
+      }
+    });
+
+    // Smoothly chase the dot
+    function animateCursor() {
+      trailX += (mouseX - trailX) * 0.18;
+      trailY += (mouseY - trailY) * 0.18;
+      trail.style.transform = `translate(${trailX}px, ${trailY}px) translate(-50%, -50%)`;
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+  }
+} catch (e) {
+  console.warn('Custom cursor disabled:', e.message);
+}

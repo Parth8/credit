@@ -212,6 +212,7 @@ function renderQ() {
 }
 
 function answerQ(idx) {
+  if (qi >= QS.length) return;
   const q = QS[qi];
   const opt = q.opts[idx];
   if (opt.ok) { score++; DCC.playSuccess(); } else { DCC.playClick(); }

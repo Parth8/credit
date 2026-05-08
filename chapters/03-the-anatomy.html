@@ -42,10 +42,15 @@
       position: absolute;
       inset: 0;
       backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
       padding: 32px;
       color: white;
       border-radius: 20px;
     }
+
+    /* Disable pointer events on the hidden side — backface-visibility: hidden hides visuals but NOT clicks */
+    .anatomy-card:not(.flipped) .anatomy-face.back { pointer-events: none; }
+    .anatomy-card.flipped .anatomy-face:not(.back) { pointer-events: none; }
 
     .anatomy-face::before {
       content: '';

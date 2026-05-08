@@ -306,19 +306,19 @@
             <div class="form-field">
               <label>Employment Type</label>
               <div class="form-toggle" id="emp-toggle">
-                <button class="active" onclick="setEmp('salaried')">Salaried</button>
-                <button onclick="setEmp('self')">Self-employed</button>
-                <button onclick="setEmp('student')">Student</button>
+                <button class="active" onclick="setEmp('salaried', this)">Salaried</button>
+                <button onclick="setEmp('self', this)">Self-employed</button>
+                <button onclick="setEmp('student', this)">Student</button>
               </div>
             </div>
 
             <div class="form-field">
               <label>Existing Cards</label>
               <div class="form-toggle" id="cards-toggle">
-                <button class="active" onclick="setCards(0)">None</button>
-                <button onclick="setCards(1)">1</button>
-                <button onclick="setCards(2)">2</button>
-                <button onclick="setCards(3)">3+</button>
+                <button class="active" onclick="setCards(0, this)">None</button>
+                <button onclick="setCards(1, this)">1</button>
+                <button onclick="setCards(2, this)">2</button>
+                <button onclick="setCards(3, this)">3+</button>
               </div>
             </div>
 
@@ -401,8 +401,8 @@
     let emp = 'salaried';
     let cards = 0;
 
-    function setEmp(v) { emp = v; document.querySelectorAll('#emp-toggle button').forEach(b => b.classList.remove('active')); event.target.classList.add('active'); updateApp(); }
-    function setCards(v) { cards = v; document.querySelectorAll('#cards-toggle button').forEach(b => b.classList.remove('active')); event.target.classList.add('active'); updateApp(); }
+    function setEmp(v, btn) { emp = v; document.querySelectorAll('#emp-toggle button').forEach(b => b.classList.remove('active')); btn.classList.add('active'); updateApp(); }
+    function setCards(v, btn) { cards = v; document.querySelectorAll('#cards-toggle button').forEach(b => b.classList.remove('active')); btn.classList.add('active'); updateApp(); }
 
     function fmt(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
 

@@ -87,15 +87,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:22px;widt
 <div class="config-block">
 <div class="config-label">Your card type</div>
 <div class="toggle-grp" id="card-toggle">
-<button class="active" onclick="setCardType('regular')">Regular (3.5% forex)</button>
-<button onclick="setCardType('zero')">Zero-forex card</button>
+<button class="active" onclick="setCardType('regular', this)">Regular (3.5% forex)</button>
+<button onclick="setCardType('zero', this)">Zero-forex card</button>
 </div>
 </div>
 <div class="config-block">
 <div class="config-label">DCC choice at terminal</div>
 <div class="toggle-grp" id="dcc-toggle">
-<button class="active" onclick="setDcc('local')">Pay in local (smart)</button>
-<button onclick="setDcc('inr')">Pay in INR (DCC trap)</button>
+<button class="active" onclick="setDcc('local', this)">Pay in local (smart)</button>
+<button onclick="setDcc('inr', this)">Pay in INR (DCC trap)</button>
 </div>
 </div>
 </div>
@@ -181,17 +181,17 @@ function setDest(id) {
   updateTrip();
 }
 
-function setCardType(v) {
+function setCardType(v, btn) {
   cardType = v;
   document.querySelectorAll('#card-toggle button').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  btn.classList.add('active');
   updateTrip();
 }
 
-function setDcc(v) {
+function setDcc(v, btn) {
   dccChoice = v;
   document.querySelectorAll('#dcc-toggle button').forEach(b => b.classList.remove('active'));
-  event.target.classList.add('active');
+  btn.classList.add('active');
   updateTrip();
 }
 

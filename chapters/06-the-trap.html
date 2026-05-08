@@ -735,7 +735,7 @@
       if (payMode === 'min') {
         payment = Math.max(balance * 0.05, 500);
       } else if (payMode === 'full') {
-        payment = balance + balance * monthlyRate;
+        payment = balance;  // pay exact balance, no interest
       } else {
         payment = parseInt(document.getElementById('slider-payment').value);
       }
@@ -744,13 +744,34 @@
       document.getElementById('display-apr').textContent = apr + '%';
       document.getElementById('display-payment').textContent = fmt(payment);
 
+      // FULL PAYMENT — short-circuit. No interest is ever charged when you pay
+      // the full statement balance before the due date. This is the entire point
+      // of the credit card grace period.
+      if (payMode === 'full') {
+        document.getElementById('result-headline').className = 'result-headline success';
+        document.getElementById('result-headline').innerHTML = `Cleared in <em>1 month</em> ✓`;
+        document.getElementById('stat-interest').textContent = '₹0';
+        document.getElementById('stat-total').textContent = fmt(balance);
+        document.getElementById('stat-monthly').textContent = fmt(balance);
+        document.getElementById('stat-extra').textContent = '0%';
+
+        document.getElementById('bar-principal').style.width = '100%';
+        document.getElementById('bar-interest').style.width = '0%';
+        document.getElementById('bar-principal').textContent = '100% principal';
+        document.getElementById('bar-interest').textContent = '';
+
+        document.getElementById('insight-box').className = 'insight-box success';
+        document.getElementById('insight-text').innerHTML = `<strong>This is the way.</strong> Pay the full statement balance before the due date and the bank charges <em>zero interest</em>. You keep all your rewards. The bank earns nothing from you. <em>You win.</em>`;
+        return;
+      }
+
       // Simulate
       let remaining = balance;
       let totalInterest = 0;
       let months = 0;
       const maxMonths = 1200;
 
-      if (payment <= remaining * monthlyRate && payMode !== 'full') {
+      if (payment <= remaining * monthlyRate) {
         // Infinite case
         document.getElementById('result-headline').className = 'result-headline danger';
         document.getElementById('result-headline').innerHTML = 'You\'ll <em>never</em> pay this off';
@@ -792,11 +813,11 @@
       const insightBox = document.getElementById('insight-box');
       const insightText = document.getElementById('insight-text');
 
-      if (payMode === 'full' || months <= 1) {
+      if (months <= 1) {
         headline.className = 'result-headline success';
         headline.innerHTML = `Cleared in <em>1 month</em> ✓`;
         insightBox.className = 'insight-box success';
-        insightText.innerHTML = `<strong>This is the way.</strong> Pay the full balance every month. ${fmt(totalInterest)} interest. Card benefits and rewards stay yours. Bank earns nothing from you. <em>You win.</em>`;
+        insightText.innerHTML = `<strong>You\'re paying enough to clear the balance immediately.</strong> Total interest: ${fmt(totalInterest)}. <em>If you can do this, do this.</em>`;
       } else if (years < 2) {
         headline.className = 'result-headline warning';
         headline.innerHTML = `Done in <em>${timeStr}</em>`;
