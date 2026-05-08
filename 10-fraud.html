@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>X. Spot the Fraud — Decoding Credit Cards</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <style>
+    .chapter-shell { min-height: 100vh; padding-top: 80px; }
+    .chapter-header { padding: 32px 0; border-bottom: 1px dashed var(--border-strong); margin-bottom: 32px; }
+    .chapter-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .chapter-roman { font-family: var(--font-display); font-size: 14px; font-style: italic; color: var(--electric); letter-spacing: 0.04em; }
+    .chapter-progress-text { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .chapter-h1 { font-family: var(--font-display); font-size: clamp(48px, 6vw, 80px); font-weight: 800; line-height: 1; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .chapter-h1 em { font-style: italic; font-weight: 300; color: var(--danger); }
+    .chapter-intro { font-size: 18px; color: var(--ink-muted); max-width: 600px; line-height: 1.6; }
+
+    /* SCORE TRACKER */
+    .score-bar {
+      padding: 20px 28px;
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .score-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+    }
+
+    .score-counter {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .score-counter span { color: var(--success); }
+
+    .scenario-pips {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .scenario-pip {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--parchment);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink-faint);
+      transition: all 0.3s ease;
+    }
+
+    .scenario-pip.current {
+      background: var(--electric);
+      color: white;
+      transform: scale(1.15);
+    }
+
+    .scenario-pip.correct {
+      background: var(--success);
+      color: white;
+    }
+
+    .scenario-pip.wrong {
+      background: var(--danger);
+      color: white;
+    }
+
+    /* SCENARIO STAGE */
+    .scenario-stage {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.04);
+      margin-bottom: 64px;
+    }
+
+    .scenario-meta {
+      padding: 20px 32px;
+      background: var(--paper);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .scenario-icon {
+      font-size: 28px;
+    }
+
+    .scenario-title-block {
+      flex: 1;
+    }
+
+    .scenario-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      margin-bottom: 2px;
+    }
+
+    .scenario-name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+    }
+
+    /* THE STORY */
+    .scenario-story {
+      padding: 40px 48px;
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .story-setting {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+
+    .story-text {
+      font-family: var(--font-display);
+      font-size: 19px;
+      line-height: 1.55;
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .story-text em {
+      font-style: italic;
+      color: var(--electric);
+    }
+
+    /* VISUAL MOCKUP — Phone/SMS/email */
+    .mockup-wrap {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .mockup-phone {
+      width: 320px;
+      background: #1a1a18;
+      border-radius: 28px;
+      padding: 40px 16px 16px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2), 0 2px 8px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .mockup-phone::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 6px;
+      background: #000;
+      border-radius: 3px;
+    }
+
+    .mockup-screen {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      min-height: 280px;
+      font-family: var(--font-body);
+    }
+
+    .mockup-bubble {
+      background: var(--paper);
+      border-radius: 16px 16px 16px 4px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      max-width: 85%;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--ink);
+      position: relative;
+    }
+
+    .mockup-bubble strong {
+      font-weight: 700;
+    }
+
+    .mockup-sender {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+
+    .mockup-link {
+      color: var(--electric);
+      text-decoration: underline;
+      word-break: break-all;
+    }
+
+    .mockup-email {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      font-family: var(--font-body);
+      font-size: 13px;
+    }
+
+    .mockup-email-header {
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+
+    .mockup-email-from {
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .mockup-email-to {
+      font-size: 11px;
+      color: var(--ink-faint);
+      font-family: var(--font-mono);
+    }
+
+    .mockup-email-subject {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .mockup-email-body {
+      font-size: 12px;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+
+    /* ATM/Terminal scene */
+    .scene-card {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      max-width: 420px;
+      margin: 0 auto;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .scene-icon {
+      font-size: 56px;
+      margin-bottom: 16px;
+    }
+
+    .scene-card h4 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .scene-card p {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+
+    .clue-list {
+      margin-top: 20px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 16px;
+      background: var(--paper);
+      border-radius: 8px;
+    }
+
+    .clue-list li {
+      list-style: none;
+      font-size: 13px;
+      color: var(--ink-soft);
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .clue-list li::before {
+      content: '•';
+      position: absolute;
+      left: 6px;
+      color: var(--ink-faint);
+    }
+
+    /* THE QUESTION */
+    .scenario-question {
+      padding: 32px 48px;
+      background: white;
+    }
+
+    .question-prompt {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+      line-height: 1.3;
+    }
+
+    .question-prompt em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--electric);
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-btn {
+      padding: 18px 24px;
+      background: white;
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      font-family: var(--font-body);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.25s var(--ease-out);
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      line-height: 1.4;
+    }
+
+    .option-btn:hover:not(.disabled) {
+      border-color: var(--electric);
+      transform: translateX(4px);
+      box-shadow: 0 4px 16px rgba(37,99,235,0.06);
+    }
+
+    .option-letter {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--paper);
+      color: var(--ink-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: all 0.25s ease;
+    }
+
+    .option-btn:hover .option-letter {
+      background: var(--electric);
+      color: white;
+    }
+
+    .option-btn.correct {
+      border-color: var(--success);
+      background: var(--success-soft);
+      color: var(--ink);
+    }
+
+    .option-btn.correct .option-letter {
+      background: var(--success);
+      color: white;
+    }
+
+    .option-btn.wrong {
+      border-color: var(--danger);
+      background: var(--danger-soft);
+      color: var(--ink);
+    }
+
+    .option-btn.wrong .option-letter {
+      background: var(--danger);
+      color: white;
+    }
+
+    .option-btn.disabled {
+      cursor: default;
+      opacity: 0.6;
+    }
+
+    /* REVEAL */
+    .reveal-panel {
+      padding: 36px 48px;
+      background: var(--paper);
+      border-top: 1px solid var(--border);
+      display: none;
+    }
+
+    .reveal-panel.visible {
+      display: block;
+      animation: reveal-slide 0.5s var(--ease-out);
+    }
+
+    @keyframes reveal-slide {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .reveal-badge {
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .reveal-badge.correct {
+      background: var(--success);
+      color: white;
+    }
+
+    .reveal-badge.wrong {
+      background: var(--danger);
+      color: white;
+    }
+
+    .reveal-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .reveal-explanation {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+      margin-bottom: 16px;
+    }
+
+    .reveal-explanation strong { color: var(--ink); }
+
+    .red-flags {
+      margin-top: 20px;
+    }
+
+    .red-flags h5 {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--danger);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .red-flag-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .red-flag-item {
+      padding: 12px 16px;
+      background: var(--danger-soft);
+      border-left: 3px solid var(--danger);
+      border-radius: 0 8px 8px 0;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+
+    .red-flag-item strong { color: var(--danger); }
+
+    .reveal-cta {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 24px;
+    }
+
+    /* FINAL RESULT */
+    .final-result {
+      padding: 80px 0;
+      text-align: center;
+      display: none;
+    }
+
+    .final-result.visible {
+      display: block;
+    }
+
+    .result-grade {
+      font-family: var(--font-display);
+      font-size: clamp(80px, 12vw, 160px);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.05em;
+      margin-bottom: 16px;
+    }
+
+    .result-grade.A { color: var(--success); }
+    .result-grade.B { color: var(--gold); }
+    .result-grade.C { color: var(--warm); }
+    .result-grade.D { color: var(--danger); }
+
+    .result-summary {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .result-summary em { font-style: italic; color: var(--electric); }
+
+    .result-context {
+      font-size: 16px;
+      color: var(--ink-muted);
+      max-width: 540px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+
+    .result-cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* CHAPTER NAV */
+    .chapter-nav-bottom { padding: 40px 0 80px; display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-strong); }
+    .chapter-nav-link { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: inherit; transition: transform 0.3s ease; }
+    .chapter-nav-link:hover { transform: translateX(-4px); }
+    .chapter-nav-link.next { align-items: flex-end; }
+    .chapter-nav-link.next:hover { transform: translateX(4px); }
+    .chapter-nav-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .chapter-nav-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+
+    @media (max-width: 768px) {
+      .scenario-story { padding: 28px 24px; }
+      .scenario-question { padding: 24px; }
+      .reveal-panel { padding: 24px; }
+      .score-bar { flex-wrap: wrap; gap: 12px; padding: 16px 20px; }
+      .mockup-phone { width: 280px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html#chapters">All Chapters</a></li>
+      <li><a href="11-fraud-defense.html">Next →</a></li>
+    </ul>
+  </nav>
+
+  <div class="chapter-shell">
+    <div class="container">
+
+      <div class="chapter-header">
+        <div class="chapter-header-row">
+          <div class="chapter-roman">Chapter X</div>
+          <div class="chapter-progress-text">10 of 22 · ~8 min</div>
+        </div>
+        <h1 class="chapter-h1">Spot the <em>Fraud</em></h1>
+        <p class="chapter-intro">
+          Six scenarios. Each one looks normal at first. Some are. Some aren't. Train your eye to see the trap before it sees you.
+        </p>
+      </div>
+
+      <!-- SCORE TRACKER -->
+      <div class="score-bar">
+        <div>
+          <div class="score-label">Your score</div>
+          <div class="score-counter"><span id="correct-count">0</span> / 6</div>
+        </div>
+        <div class="scenario-pips" id="scenario-pips">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+      <!-- SCENARIO STAGE -->
+      <div class="scenario-stage" id="scenario-stage">
+        <!-- populated by JS -->
+      </div>
+
+      <!-- FINAL RESULT -->
+      <section class="final-result" id="final-result">
+        <div id="result-grade" class="result-grade">A</div>
+        <h2 class="result-summary" id="result-summary">You spotted <em>all six</em>.</h2>
+        <p class="result-context" id="result-context">Your fraud radar is sharp. You're harder to scam than 95% of cardholders. Up next: the systems your bank uses to back you up.</p>
+        <div class="result-cta">
+          <button class="btn btn--ghost" onclick="resetGame()">↻ Play again</button>
+          <a href="11-fraud-defense.html" class="btn btn--primary btn--lg">Chapter XI: Your Defense System →</a>
+        </div>
+      </section>
+
+      <div class="chapter-nav-bottom">
+        <a href="09-rewards.html" class="chapter-nav-link">
+          <span class="chapter-nav-meta">← Previous</span>
+          <span class="chapter-nav-name">The Rewards Game</span>
+        </a>
+        <a href="11-fraud-defense.html" class="chapter-nav-link next">
+          <span class="chapter-nav-meta">Next →</span>
+          <span class="chapter-nav-name">Your Defense System</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/global.js"></script>
+  <script>
+    const SCENARIOS = [
+      {
+        icon: '📱',
+        name: 'The "HDFC" SMS',
+        type: 'phishing',
+        setting: 'Friday afternoon · A text message arrives',
+        story: `Your phone buzzes. The sender shows up as <em>HDFCBK</em>, just like every other bank message you've gotten. The message looks urgent.`,
+        mockup: `
+          <div class="mockup-wrap">
+            <div class="mockup-phone">
+              <div class="mockup-screen">
+                <div class="mockup-sender">HDFCBK · 2 min ago</div>
+                <div class="mockup-bubble">
+                  Dear Customer, your HDFC card ending <strong>7821</strong> has been temporarily blocked due to suspicious activity. To re-activate immediately, verify your identity here:
+                  <br><br>
+                  <span class="mockup-link">https://hdfc-secure-verify.in/unlock</span>
+                  <br><br>
+                  - HDFC Bank Security
+                </div>
+              </div>
+            </div>
+          </div>`,
+        question: `What do you do?`,
+        options: [
+          { letter: 'A', text: 'Click the link and verify quickly — better safe than sorry', correct: false },
+          { letter: 'B', text: 'Call HDFC using the number on the back of your physical card', correct: true },
+          { letter: 'C', text: 'Reply STOP to opt out', correct: false },
+          { letter: 'D', text: 'Forward the message to a friend to confirm if it\'s real', correct: false }
+        ],
+        revealTitle: 'Classic phishing SMS.',
+        explanation: `Banks <strong>never</strong> send SMS links asking you to verify identity. They'll either lock the card and ask you to call, or just decline the suspicious transaction. The right move is always: <strong>call the number on the back of your card.</strong> Never the number in the message. Never the link.`,
+        redFlags: [
+          { flag: 'Suspicious URL', text: '<strong>hdfc-secure-verify.in</strong> — real HDFC links are on hdfcbank.com. Scammers register lookalike domains.' },
+          { flag: 'Urgency', text: 'Words like "immediately" and "temporarily blocked" create panic. Panic makes you skip thinking.' },
+          { flag: 'Generic greeting', text: '"Dear Customer" — banks know your name. Real messages start with "Dear [Your Name]".' },
+          { flag: 'Asking you to verify via link', text: 'No legitimate bank does this. Ever.' }
+        ]
+      },
+      {
+        icon: '🏧',
+        name: 'The Modified ATM',
+        type: 'skimming',
+        setting: 'Saturday night · ATM in a quiet area',
+        story: `You stop at an ATM near a metro station. It's late. Something feels slightly off about the machine, but you can't quite place it.`,
+        mockup: `
+          <div class="mockup-wrap">
+            <div class="scene-card">
+              <div class="scene-icon">🏧</div>
+              <h4>Things you noticed:</h4>
+              <ul class="clue-list">
+                <li>The card slot looks slightly raised / bulkier than other ATMs you've used</li>
+                <li>There's a small plastic strip near the keypad that doesn't quite match the metal finish</li>
+                <li>Above the keypad, a tiny pinhole — could just be a screw, or maybe a camera</li>
+                <li>The bank's logo sticker is peeling at the corners</li>
+                <li>The ATM is in a poorly-lit area, no security guard visible</li>
+              </ul>
+            </div>
+          </div>`,
+        question: `What's your move?`,
+        options: [
+          { letter: 'A', text: 'Wiggle the card slot before inserting — if it moves, leave', correct: false },
+          { letter: 'B', text: 'Cover the keypad with your hand while typing PIN — should be safe', correct: false },
+          { letter: 'C', text: 'Walk away. Use a different ATM. Report this one to the bank.', correct: true },
+          { letter: 'D', text: 'Go ahead but use the smallest withdrawal amount possible', correct: false }
+        ],
+        revealTitle: 'Skimmer suspected. Walk away.',
+        explanation: `When something feels off about an ATM — <strong>trust the feeling</strong>. Skimmers are physical devices placed over the card slot to clone your card data. Combined with a hidden camera filming your PIN, they get everything they need. Even covering the keypad doesn't protect you if the device captures your card. The cost of using the wrong ATM is your entire account drained. The cost of using a different ATM is 5 minutes.`,
+        redFlags: [
+          { flag: 'Bulky card slot', text: 'Skimmers attach over the original slot. Real card readers are flush with the machine.' },
+          { flag: 'Misaligned plastic strip', text: 'Often a camera or PIN-capture device. Real ATMs have factory-clean finishes.' },
+          { flag: 'Pinhole near keypad', text: 'A tiny hidden camera, positioned to film your PIN entry from above.' },
+          { flag: 'Isolated location', text: 'Skimmers are placed where there\'s no foot traffic, no guard, no camera. By design.' }
+        ]
+      },
+      {
+        icon: '☎️',
+        name: 'The Call from "Bank"',
+        type: 'vishing',
+        setting: 'Monday morning · Your phone rings',
+        story: `An unknown number calls. The caller knows your name and the last 4 digits of your card. They sound official.`,
+        mockup: `
+          <div class="mockup-wrap">
+            <div class="scene-card" style="text-align: left; max-width: 460px;">
+              <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                <div style="font-size: 36px;">📞</div>
+                <div>
+                  <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em;">INCOMING CALL · 9:17 AM</div>
+                  <div style="font-family: var(--font-display); font-size: 18px; font-weight: 700;">+91 11 4567 8920</div>
+                </div>
+              </div>
+              <div style="background: var(--paper); padding: 16px; border-radius: 8px; font-size: 13px; line-height: 1.6; color: var(--ink-soft);">
+                <strong>Caller:</strong> "Hello, am I speaking with Ravi? This is Anjali from HDFC Bank fraud team. We've detected an attempted ₹45,000 transaction on your card ending 7821 from Mumbai. Did you authorize this?"
+                <br><br>
+                <strong>You:</strong> "No, I didn't!"
+                <br><br>
+                <strong>Caller:</strong> "I understand. Don't worry, we can block it. To verify it's really you, I just need to send you an OTP. Can you read it back to me when you receive it?"
+              </div>
+            </div>
+          </div>`,
+        question: `What do you do next?`,
+        options: [
+          { letter: 'A', text: 'Read the OTP back — it\'s the bank confirming your identity', correct: false },
+          { letter: 'B', text: 'Hang up. Call the bank using the number on your card.', correct: true },
+          { letter: 'C', text: 'Ask them to call back from a verified number', correct: false },
+          { letter: 'D', text: 'Give them the last 4 digits to confirm you\'re the real you', correct: false }
+        ],
+        revealTitle: 'Vishing in action.',
+        explanation: `<strong>No bank will ever ask you for an OTP.</strong> Ever. The OTP isn't a verification code <em>for the bank</em> — it's a verification code <em>for you</em>. Reading it out loud to a "fraud agent" is literally giving them permission to complete a transaction they're trying to make. The fact that they knew your name and last 4 digits proves nothing — that data is widely leaked from various breaches.`,
+        redFlags: [
+          { flag: 'They called you', text: 'Banks rarely call about fraud. They block the card and let YOU call them.' },
+          { flag: 'Asking for OTP', text: 'Hard rule: bank employees never need your OTP. If they ask, they\'re not bank employees.' },
+          { flag: 'Manufactured urgency', text: '"₹45,000 attempted transaction" creates panic. They want you reacting, not thinking.' },
+          { flag: 'Knowing partial info isn\'t proof', text: 'Last 4 digits and your name are leaked everywhere. They prove nothing about who\'s calling.' }
+        ]
+      },
+      {
+        icon: '🛒',
+        name: 'The "Too Good" Deal',
+        type: 'fake-website',
+        setting: 'Sunday browsing · A great deal pops up',
+        story: `An Instagram ad shows a brand-name laptop you've been wanting. Same model that retails for ₹85,000 — listed at ₹39,990. Limited time offer, only 7 left. You click.`,
+        mockup: `
+          <div class="mockup-wrap">
+            <div class="scene-card" style="text-align: left; max-width: 460px;">
+              <div style="font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); margin-bottom: 8px; letter-spacing: 0.04em;">https://amaaz0n-deals-india.shop/macbook-pro</div>
+              <div style="background: white; border: 1px solid var(--border); border-radius: 8px; padding: 16px;">
+                <div style="background: var(--ink); color: white; padding: 8px 12px; border-radius: 4px; font-size: 11px; margin-bottom: 12px; display: inline-block; font-family: var(--font-mono);">⚡ FLASH SALE — 53% OFF</div>
+                <div style="font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-bottom: 4px;">MacBook Pro 14" M3</div>
+                <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px;">
+                  <div style="font-family: var(--font-display); font-size: 24px; font-weight: 800; color: var(--danger);">₹39,990</div>
+                  <div style="text-decoration: line-through; color: var(--ink-faint); font-size: 14px;">₹84,990</div>
+                </div>
+                <div style="font-size: 11px; color: var(--danger); margin-bottom: 12px;">⏰ Only 7 left! Sale ends in 04:23:18</div>
+                <div style="font-size: 11px; color: var(--ink-muted); line-height: 1.5;">Free Shipping. COD not available. Card payment only. <strong style="color: var(--ink);">Click "Buy Now" to enter card details.</strong></div>
+              </div>
+              <div style="margin-top: 12px; font-size: 11px; color: var(--ink-faint);">
+                ⭐⭐⭐⭐⭐ "Got mine in 3 days! Real product!" — Anonymous
+              </div>
+            </div>
+          </div>`,
+        question: `What do you do?`,
+        options: [
+          { letter: 'A', text: 'Buy it — even if fake, your card has fraud protection', correct: false },
+          { letter: 'B', text: 'Order it via cash on delivery to be safe', correct: false },
+          { letter: 'C', text: 'Close the page. Find the same product on the official Apple/Amazon site.', correct: true },
+          { letter: 'D', text: 'Use a virtual card with low limit just in case', correct: false }
+        ],
+        revealTitle: 'Fake e-commerce site.',
+        explanation: `Sites like this exist purely to <strong>capture card details</strong>. The "product" never ships. Even if your card has fraud protection, you've now given the scammer your card number, expiry, CVV, and possibly OTP — which they'll use for many transactions before you notice. Fraud protection helps, but disputing 15 transactions across multiple platforms is a multi-week ordeal. <strong>Better outcome: don't engage.</strong>`,
+        redFlags: [
+          { flag: 'Misspelled domain', text: '<strong>amaaz0n-deals-india.shop</strong> — extra "a", "0" instead of "o", and ".shop" TLD. Real Amazon is amazon.in.' },
+          { flag: 'Discount too steep', text: 'No legitimate retailer sells current-gen Apple products at 53% off. Period.' },
+          { flag: 'COD blocked', text: 'Scammers force card payment because COD doesn\'t give them card data.' },
+          { flag: 'Fake urgency', text: 'Countdown timers and "only 7 left" are pressure tactics to bypass your judgment.' }
+        ]
+      },
+      {
+        icon: '🌐',
+        name: 'The Dynamic Currency Trap',
+        type: 'dcc',
+        setting: 'Bali vacation · Paying for dinner',
+        story: `You're paying ₹4,000 worth in IDR at a restaurant. The waiter brings the card machine. The screen offers: <em>"Pay in INR ₹4,165 (your home currency, locked rate) OR pay in IDR 760,000 (local currency)?"</em>`,
+        mockup: `
+          <div class="mockup-wrap">
+            <div class="scene-card" style="text-align: left; max-width: 420px;">
+              <div style="background: #0a2e14; color: #4ade80; padding: 20px; border-radius: 8px; font-family: var(--font-mono); font-size: 13px; line-height: 1.6;">
+                <div style="opacity: 0.6; font-size: 10px; margin-bottom: 8px;">─── CHOOSE PAYMENT ───</div>
+                <div style="margin-bottom: 12px;">
+                  <div style="background: rgba(74,222,128,0.2); padding: 12px; border-radius: 4px; border: 1px solid #4ade80;">
+                    <div style="font-size: 11px; opacity: 0.8;">Pay in your home currency</div>
+                    <div style="font-size: 20px; font-weight: 700;">INR ₹4,165</div>
+                    <div style="font-size: 10px; opacity: 0.7; margin-top: 4px;">Rate locked · No surprises</div>
+                  </div>
+                </div>
+                <div>
+                  <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);">
+                    <div style="font-size: 11px; opacity: 0.6;">Pay in local currency</div>
+                    <div style="font-size: 20px; font-weight: 700;">IDR 760,000</div>
+                    <div style="font-size: 10px; opacity: 0.5; margin-top: 4px;">Rate determined by your bank</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>`,
+        question: `Which option do you pick?`,
+        options: [
+          { letter: 'A', text: 'INR — locked rate, no surprises, sounds safe', correct: false },
+          { letter: 'B', text: 'IDR — let my bank do the conversion', correct: true },
+          { letter: 'C', text: 'Doesn\'t matter, both end up the same', correct: false },
+          { letter: 'D', text: 'Whichever is highlighted in green', correct: false }
+        ],
+        revealTitle: 'Dynamic Currency Conversion (DCC).',
+        explanation: `This is the most common rip-off in international travel — and it's <em>technically not even fraud</em>, just a legal scam. When the merchant offers to convert to your home currency, they apply a <strong>terrible exchange rate (typically 5-7% worse than your bank's rate)</strong>, plus often a fixed conversion fee. The "rate locked" framing makes it sound safer, but you're paying for that "safety." <strong>Always pay in local currency.</strong> Your bank will convert at their rate, plus the standard forex markup of 1-3.5% — almost always cheaper than DCC.`,
+        redFlags: [
+          { flag: 'Highlighted "home currency" option', text: 'The trap is dressed up as the obvious safe choice — that\'s how it makes its money.' },
+          { flag: '"Rate locked" framing', text: 'Sounds reassuring. Means the merchant\'s rate is fixed at <em>their</em> markup, not the market rate.' },
+          { flag: 'Default selection', text: 'Often the home-currency option is pre-selected. They\'re hoping you tap "OK" without thinking.' },
+          { flag: 'Higher net cost', text: 'You\'ll see ₹4,165 today, but compare it to your card\'s normal forex rate — typically ₹4,140. The ₹25 is their cut.' }
+        ]
+      },
+      {
+        icon: '🎁',
+        name: 'The "Welcome Gift" Email',
+        type: 'phishing-email',
+        setting: 'Tuesday inbox · A reward-looking email',
+        story: `An email lands in your inbox claiming to be from the "Reserve Bank of India - Reward Distribution Unit". You scroll through it.`,
+        mockup: `
+          <div class="mockup-wrap" style="max-width: 480px; margin-left: auto; margin-right: auto;">
+            <div class="mockup-email">
+              <div class="mockup-email-header">
+                <div class="mockup-email-from">RBI Rewards <em style="font-style: normal; color: var(--ink-faint); font-weight: normal; font-size: 11px;">&lt;rewards@rbi-india-online.org&gt;</em></div>
+                <div class="mockup-email-to">to: you@email.com · 8:42 AM</div>
+              </div>
+              <div class="mockup-email-subject">🎉 Congratulations! You've been selected for ₹15,000 RBI Festive Reward</div>
+              <div class="mockup-email-body">
+                Dear Valued Customer,<br><br>
+                Reserve Bank of India is pleased to inform you that you have been randomly selected from active credit card holders for our annual Festive Reward of <strong>₹15,000</strong>, deposited directly to your card.<br><br>
+                To claim, please confirm your card details (number, expiry, CVV) and submit a one-time processing fee of ₹499 via the link below within 24 hours:<br><br>
+                <a href="#" class="mockup-link">https://rbi-rewards-claim.org/festive2026</a><br><br>
+                <em>This offer expires in 24 hours. Reward will be forfeited if not claimed.</em><br><br>
+                Regards,<br>
+                RBI Reward Distribution Unit
+              </div>
+            </div>
+          </div>`,
+        question: `What do you do?`,
+        options: [
+          { letter: 'A', text: 'Pay the ₹499 fee — ₹15,000 minus ₹499 is still a great deal', correct: false },
+          { letter: 'B', text: 'Click the link to verify the offer first', correct: false },
+          { letter: 'C', text: 'Delete the email. Mark as spam. Move on.', correct: true },
+          { letter: 'D', text: 'Forward to friends in case they got selected too', correct: false }
+        ],
+        revealTitle: 'Advance fee fraud.',
+        explanation: `The <strong>RBI does not give reward money to citizens</strong>. It's a regulator — not a benefits department. This is a classic "advance fee" scam: the scammer asks for a small payment (₹499) to release a much larger fictitious payout (₹15,000). Once they have your card details + ₹499, they'll quickly run unauthorized transactions before you cancel. The math is rigged: pay ₹499, get charged ₹50,000 in fraud. <strong>Government bodies in India never email citizens about reward payouts.</strong>`,
+        redFlags: [
+          { flag: 'Domain mismatch', text: '<strong>rbi-india-online.org</strong> — actual RBI is at rbi.org.in. Scammers register lookalike domains.' },
+          { flag: 'Asking for card details', text: 'No legitimate organization asks for full card number + CVV via email.' },
+          { flag: 'Fee to claim a "free" reward', text: 'The classic advance-fee tell. Real prizes never require an upfront payment.' },
+          { flag: 'Artificial deadline', text: '24-hour expiry creates panic. Real benefits don\'t evaporate this fast.' },
+          { flag: 'RBI doesn\'t do this', text: 'India\'s central bank doesn\'t directly distribute money to consumers. Period.' }
+        ]
+      }
+    ];
+
+    let currentScenario = 0;
+    let correctCount = 0;
+    let answers = []; // 'correct', 'wrong', or null
+    let answered = false;
+
+    function renderPips() {
+      const pips = document.getElementById('scenario-pips');
+      pips.innerHTML = SCENARIOS.map((_, i) => {
+        let cls = '';
+        if (i === currentScenario && !answers[i]) cls = 'current';
+        else if (answers[i] === 'correct') cls = 'correct';
+        else if (answers[i] === 'wrong') cls = 'wrong';
+        return `<div class="scenario-pip ${cls}">${i + 1}</div>`;
+      }).join('');
+    }
+
+    function renderScenario() {
+      if (currentScenario >= SCENARIOS.length) {
+        showFinalResult();
+        return;
+      }
+
+      answered = false;
+      const s = SCENARIOS[currentScenario];
+      const stage = document.getElementById('scenario-stage');
+
+      stage.innerHTML = `
+        <div class="scenario-meta">
+          <div class="scenario-icon">${s.icon}</div>
+          <div class="scenario-title-block">
+            <div class="scenario-num">Scenario ${currentScenario + 1} of ${SCENARIOS.length}</div>
+            <div class="scenario-name">${s.name}</div>
+          </div>
+        </div>
+
+        <div class="scenario-story">
+          <div class="story-setting">${s.setting}</div>
+          <div class="story-text">${s.story}</div>
+          ${s.mockup}
+        </div>
+
+        <div class="scenario-question">
+          <div class="question-prompt">${s.question}</div>
+          <div class="options" id="options-${currentScenario}">
+            ${s.options.map((opt, i) => `
+              <button class="option-btn" onclick="answer(${i})" data-idx="${i}">
+                <div class="option-letter">${opt.letter}</div>
+                <div>${opt.text}</div>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="reveal-panel" id="reveal-panel">
+          <!-- populated on answer -->
+        </div>
+      `;
+      renderPips();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function answer(idx) {
+      if (answered) return;
+      answered = true;
+
+      const s = SCENARIOS[currentScenario];
+      const isCorrect = s.options[idx].correct;
+      const correctIdx = s.options.findIndex(o => o.correct);
+
+      // Mark buttons
+      document.querySelectorAll(`#options-${currentScenario} .option-btn`).forEach((b, i) => {
+        b.classList.add('disabled');
+        if (i === correctIdx) b.classList.add('correct');
+        if (i === idx && !isCorrect) b.classList.add('wrong');
+      });
+
+      if (isCorrect) {
+        correctCount++;
+        answers[currentScenario] = 'correct';
+        DCC.playSuccess();
+      } else {
+        answers[currentScenario] = 'wrong';
+        DCC.playClick();
+      }
+
+      document.getElementById('correct-count').textContent = correctCount;
+      renderPips();
+
+      // Show reveal panel
+      const panel = document.getElementById('reveal-panel');
+      panel.innerHTML = `
+        <div class="reveal-header">
+          <div class="reveal-badge ${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? '✓ Correct' : '✗ Got you'}</div>
+          <div class="reveal-title">${s.revealTitle}</div>
+        </div>
+        <div class="reveal-explanation">${s.explanation}</div>
+        <div class="red-flags">
+          <h5>🚩 Red flags you should now spot</h5>
+          <div class="red-flag-list">
+            ${s.redFlags.map(rf => `
+              <div class="red-flag-item">
+                <strong>${rf.flag}:</strong> ${rf.text}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div class="reveal-cta">
+          <button class="btn btn--primary" onclick="nextScenario()">${currentScenario < SCENARIOS.length - 1 ? 'Next scenario →' : 'See your final score →'}</button>
+        </div>
+      `;
+      panel.classList.add('visible');
+
+      setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+    }
+
+    function nextScenario() {
+      currentScenario++;
+      renderScenario();
+    }
+
+    function showFinalResult() {
+      document.getElementById('scenario-stage').style.display = 'none';
+      document.querySelector('.score-bar').style.display = 'none';
+
+      const result = document.getElementById('final-result');
+      const grade = document.getElementById('result-grade');
+      const summary = document.getElementById('result-summary');
+      const context = document.getElementById('result-context');
+
+      let gradeChar, gradeClass, summaryText, contextText;
+      if (correctCount === 6) {
+        gradeChar = 'A+'; gradeClass = 'A';
+        summaryText = 'You spotted <em>all six</em>.';
+        contextText = `Your fraud radar is sharp. You're harder to scam than 95% of cardholders. Up next: the systems your bank uses to back you up.`;
+      } else if (correctCount === 5) {
+        gradeChar = 'A'; gradeClass = 'A';
+        summaryText = '<em>Five out of six.</em> Strong.';
+        contextText = `Solid instincts. One scenario got you — go back and review the red flags from that one. The patterns repeat in real life.`;
+      } else if (correctCount >= 3) {
+        gradeChar = 'B'; gradeClass = 'B';
+        summaryText = '<em>Above average.</em> Sharper than most.';
+        contextText = `You caught the obvious traps. Re-read the missed scenarios — those are the techniques scammers count on people not noticing.`;
+      } else if (correctCount >= 2) {
+        gradeChar = 'C'; gradeClass = 'C';
+        summaryText = '<em>Worth practicing.</em>';
+        contextText = `Most fraud relies on small signals you can train your eye to catch. Replay this and pay attention to the red flag breakdowns. Worth the time.`;
+      } else {
+        gradeChar = 'D'; gradeClass = 'D';
+        summaryText = '<em>Replay this one.</em>';
+        contextText = `Don't worry — most adults would fail this on a first try. The patterns are designed to bypass your judgment. Run it again, this time studying each red flag.`;
+      }
+
+      grade.textContent = gradeChar;
+      grade.className = 'result-grade ' + gradeClass;
+      summary.innerHTML = 'You scored ' + correctCount + ' / 6.';
+      // Use innerHTML for em
+      summary.innerHTML = summaryText;
+      context.textContent = contextText;
+      result.classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetGame() {
+      currentScenario = 0;
+      correctCount = 0;
+      answers = [];
+      document.getElementById('correct-count').textContent = 0;
+      document.getElementById('final-result').classList.remove('visible');
+      document.getElementById('scenario-stage').style.display = 'block';
+      document.querySelector('.score-bar').style.display = 'flex';
+      renderScenario();
+    }
+
+    renderScenario();
+  </script>
+</body>
+</html>

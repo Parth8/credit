@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IV. Types of Cards — Decoding Credit Cards</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <style>
+    .chapter-shell { min-height: 100vh; padding-top: 80px; }
+    .chapter-header { padding: 32px 0; border-bottom: 1px dashed var(--border-strong); margin-bottom: 32px; }
+    .chapter-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .chapter-roman { font-family: var(--font-display); font-size: 14px; font-style: italic; color: var(--electric); letter-spacing: 0.04em; }
+    .chapter-progress-text { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .chapter-h1 { font-family: var(--font-display); font-size: clamp(48px, 6vw, 80px); font-weight: 800; line-height: 1; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .chapter-h1 em { font-style: italic; font-weight: 300; color: var(--electric); }
+    .chapter-intro { font-size: 18px; color: var(--ink-muted); max-width: 600px; line-height: 1.6; }
+
+    .game-section { padding: 48px 0; }
+
+    .game-stage {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.04);
+    }
+
+    .game-prompt {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .game-prompt h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .game-prompt h3 em { font-style: italic; font-weight: 300; color: var(--electric); }
+
+    .game-score {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink-muted);
+      padding: 8px 14px;
+      background: var(--paper);
+      border-radius: 999px;
+    }
+
+    /* CURRENT CARD TO SORT */
+    .current-card-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 32px;
+      min-height: 200px;
+      align-items: center;
+    }
+
+    .current-card {
+      background: white;
+      border: 2px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 28px 32px;
+      max-width: 480px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      transition: all 0.4s var(--ease-out);
+    }
+
+    .current-card.fading {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+
+    .current-card-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    .current-card-name {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .current-card-desc {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+
+    /* DROP ZONES */
+    .drop-zones {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .drop-zone {
+      border: 2px dashed var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 24px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: var(--paper);
+    }
+
+    .drop-zone:hover {
+      border-color: var(--electric);
+      background: var(--electric-soft);
+      transform: translateY(-3px);
+    }
+
+    .drop-zone-icon { font-size: 32px; margin-bottom: 8px; }
+    .drop-zone-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 4px; }
+    .drop-zone-blurb { font-size: 11px; color: var(--ink-muted); line-height: 1.4; }
+
+    /* RESULT FLASH */
+    .feedback {
+      padding: 24px 28px;
+      border-radius: var(--radius-md);
+      margin-top: 24px;
+      transition: all 0.4s ease;
+      opacity: 0;
+      transform: translateY(8px);
+    }
+
+    .feedback.visible { opacity: 1; transform: translateY(0); }
+    .feedback.correct { background: var(--success-soft); border-left: 4px solid var(--success); }
+    .feedback.wrong { background: var(--danger-soft); border-left: 4px solid var(--danger); }
+
+    .feedback-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .feedback-icon { font-size: 24px; }
+    .feedback-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; }
+    .feedback-text { font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+    .feedback-text strong { color: var(--ink); }
+
+    /* TYPES SUMMARY */
+    .types-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 48px;
+    }
+
+    .type-card {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .type-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+
+    .type-icon { font-size: 28px; margin-bottom: 12px; }
+    .type-name { font-family: var(--font-display); font-size: 18px; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 6px; }
+    .type-name em { font-style: italic; font-weight: 300; color: var(--electric); }
+    .type-desc { font-size: 13px; color: var(--ink-muted); line-height: 1.5; margin-bottom: 12px; }
+
+    .type-stats { display: flex; gap: 12px; font-family: var(--font-mono); font-size: 11px; }
+    .type-stat { padding: 4px 10px; background: var(--paper); border-radius: 999px; color: var(--ink-muted); }
+
+    /* COMPLETE STATE */
+    .complete-state { padding: 48px 32px; text-align: center; }
+    .complete-state.hidden { display: none; }
+    .complete-grade { font-family: var(--font-display); font-size: 80px; font-weight: 900; line-height: 1; letter-spacing: -0.04em; }
+    .complete-grade.A { color: var(--success); }
+    .complete-grade.B { color: var(--gold); }
+    .complete-grade.C { color: var(--warm); }
+
+    /* CHECKPOINT */
+    .checkpoint { padding: 80px 0; text-align: center; }
+    .checkpoint-card { background: white; border: 2px dashed var(--electric); border-radius: var(--radius-lg); padding: 48px 32px; max-width: 640px; margin: 0 auto; }
+    .checkpoint-title { font-family: var(--font-display); font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+    .checkpoint-title em { font-style: italic; font-weight: 300; color: var(--electric); }
+    .checkpoint-body { font-size: 15px; color: var(--ink-muted); line-height: 1.6; margin-bottom: 28px; }
+    .checkpoint-cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    .chapter-nav-bottom { padding: 40px 0 80px; display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-strong); }
+    .chapter-nav-link { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: inherit; transition: transform 0.3s ease; }
+    .chapter-nav-link:hover { transform: translateX(-4px); }
+    .chapter-nav-link.next { align-items: flex-end; }
+    .chapter-nav-link.next:hover { transform: translateX(4px); }
+    .chapter-nav-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .chapter-nav-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+
+    @media (max-width: 768px) {
+      .drop-zones { grid-template-columns: 1fr 1fr; }
+      .types-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html#chapters">All Chapters</a></li>
+      <li><a href="05-the-billing-cycle.html">Next →</a></li>
+    </ul>
+  </nav>
+
+  <div class="chapter-shell">
+    <div class="container">
+      <div class="chapter-header">
+        <div class="chapter-header-row">
+          <div class="chapter-roman">Chapter IV</div>
+          <div class="chapter-progress-text">4 of 22 · ~6 min</div>
+        </div>
+        <h1 class="chapter-h1"><em>Types</em> of Cards</h1>
+        <p class="chapter-intro">A scenario appears. Click which type of card best fits. Get it wrong — see why. Get it right — see why that's the obvious choice.</p>
+      </div>
+
+      <section class="game-section">
+        <div class="game-stage" id="game-stage">
+          <div class="game-prompt">
+            <h3>Match the <em>scenario</em> to the right card type</h3>
+            <div class="game-score">Round <span id="round-num">1</span> of <span id="total-rounds">6</span> · <span id="game-correct">0</span> right</div>
+          </div>
+
+          <div class="current-card-wrap">
+            <div class="current-card" id="scenario-card">
+              <div class="current-card-eyebrow" id="scenario-label">Scenario</div>
+              <div class="current-card-name" id="scenario-name">—</div>
+              <div class="current-card-desc" id="scenario-desc">Loading...</div>
+            </div>
+          </div>
+
+          <div class="drop-zones" id="drop-zones"></div>
+          <div class="feedback" id="feedback"></div>
+        </div>
+
+        <div class="complete-state hidden" id="complete-state">
+          <div class="complete-grade" id="complete-grade">A</div>
+          <h3 style="font-family: var(--font-display); font-size: 28px; font-weight: 800; margin: 12px 0;" id="complete-summary">You sorted them all.</h3>
+          <p style="font-size: 15px; color: var(--ink-muted); margin-bottom: 24px;">You now know the six main types of credit cards. Below — a reference table you can come back to anytime.</p>
+          <button class="btn btn--ghost" onclick="resetGame()">↻ Play again</button>
+        </div>
+      </section>
+
+      <section style="padding: 48px 0;">
+        <h2 style="font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 36px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px;">All <em style="font-style: italic; font-weight: 300; color: var(--electric);">six types</em>, side by side</h2>
+        <div class="types-grid">
+          <div class="type-card">
+            <div class="type-icon">🔓</div>
+            <div class="type-name"><em>Unsecured</em> credit card</div>
+            <div class="type-desc">The standard credit card. No deposit required — bank extends credit based purely on your creditworthiness. Most cards in your wallet are this type.</div>
+            <div class="type-stats"><span class="type-stat">No deposit</span><span class="type-stat">Score 700+</span></div>
+          </div>
+          <div class="type-card">
+            <div class="type-icon">🔒</div>
+            <div class="type-name"><em>Secured</em> card</div>
+            <div class="type-desc">Backed by a fixed deposit (FD) you keep with the bank. Limit usually 80-100% of the FD. Designed for first-timers or those rebuilding after defaults.</div>
+            <div class="type-stats"><span class="type-stat">FD-backed</span><span class="type-stat">Any score</span></div>
+          </div>
+          <div class="type-card">
+            <div class="type-icon">⚡</div>
+            <div class="type-name"><em>Charge</em> card</div>
+            <div class="type-desc">Looks like a credit card, but you must pay the full balance every month. No interest, no minimum-payment trap — but no flexibility either. Typically high-end (AmEx).</div>
+            <div class="type-stats"><span class="type-stat">100% due monthly</span><span class="type-stat">No revolving</span></div>
+          </div>
+          <div class="type-card">
+            <div class="type-icon">💰</div>
+            <div class="type-name"><em>Prepaid</em> card</div>
+            <div class="type-desc">Not actually credit — you load money onto it first, then spend it. Useful for travel, gifting, kids. <strong>Doesn't build credit history</strong> because there's no borrowing.</div>
+            <div class="type-stats"><span class="type-stat">Load-then-spend</span><span class="type-stat">No credit</span></div>
+          </div>
+          <div class="type-card">
+            <div class="type-icon">🤝</div>
+            <div class="type-name"><em>Co-branded</em> card</div>
+            <div class="type-desc">A card jointly issued by a bank and a brand (Amazon Pay ICICI, Flipkart Axis, IndianOil HDFC). Higher rewards on the brand's products, normal rewards elsewhere.</div>
+            <div class="type-stats"><span class="type-stat">Brand-loyal</span><span class="type-stat">Boost rewards</span></div>
+          </div>
+          <div class="type-card">
+            <div class="type-icon">🏢</div>
+            <div class="type-name"><em>Business</em> card</div>
+            <div class="type-desc">Issued to companies for business expenses. Higher limits, expense management tools, but the company is liable — not you personally (usually).</div>
+            <div class="type-stats"><span class="type-stat">For companies</span><span class="type-stat">Expense tools</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="checkpoint">
+        <div class="checkpoint-card">
+          <div style="font-size: 56px; margin-bottom: 12px;">✦</div>
+          <h3 class="checkpoint-title">You can <em>spot the type</em> at a glance now.</h3>
+          <p class="checkpoint-body">Up next: the calendar interaction that taught me more about credit cards than any book — the billing cycle.</p>
+          <div class="checkpoint-cta-row">
+            <a href="../index.html" class="btn btn--ghost">← all chapters</a>
+            <a href="05-the-billing-cycle.html" class="btn btn--primary btn--lg">Chapter V: The Billing Cycle →</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="chapter-nav-bottom">
+        <a href="03-the-anatomy.html" class="chapter-nav-link">
+          <span class="chapter-nav-meta">← Previous</span>
+          <span class="chapter-nav-name">The Anatomy</span>
+        </a>
+        <a href="05-the-billing-cycle.html" class="chapter-nav-link next">
+          <span class="chapter-nav-meta">Next →</span>
+          <span class="chapter-nav-name">The Billing Cycle</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/global.js"></script>
+  <script>
+    const TYPES = {
+      unsecured: { icon: '🔓', name: 'Unsecured', blurb: 'Standard credit, no deposit' },
+      secured:   { icon: '🔒', name: 'Secured', blurb: 'Backed by an FD' },
+      charge:    { icon: '⚡', name: 'Charge', blurb: 'Pay in full monthly' },
+      prepaid:   { icon: '💰', name: 'Prepaid', blurb: 'Load money first' },
+      cobrand:   { icon: '🤝', name: 'Co-branded', blurb: 'Joint with a brand' },
+      business:  { icon: '🏢', name: 'Business', blurb: 'For company expenses' }
+    };
+
+    const SCENARIOS = [
+      {
+        label: 'Scenario · Your friend',
+        name: 'Just landed first job, never had credit before',
+        desc: 'Wants to start building a credit history. Salary is ₹35K/month, no existing credit cards. Banks have rejected unsecured applications — they want to see history first.',
+        answer: 'secured',
+        explain: `<strong>Secured</strong> is the right starting point. Friend deposits ₹25,000 as an FD; bank issues a card with ₹25K limit. <strong>This builds genuine credit history</strong> reportable to CIBIL. After 6-12 months of clean payments, friend converts to unsecured and gets the FD back.`
+      },
+      {
+        label: 'Scenario · A small business owner',
+        name: 'Wants to track team expenses separately',
+        desc: 'Runs a 12-person startup. Wants employees to use cards for marketing/travel, but expenses must be auditable and not tied to personal credit.',
+        answer: 'business',
+        explain: `<strong>Business</strong> card is purpose-built for this. Issued to the company (not to individuals personally), comes with expense management dashboards, and credit reporting goes to the company's commercial credit file — not personal. Most banks offer corporate cards for teams of 10+.`
+      },
+      {
+        label: 'Scenario · You shop on Amazon weekly',
+        name: 'Spend ₹15,000+/month on Amazon',
+        desc: 'Most of your spending is on a single platform. You want maximum cashback specifically on this platform without sacrificing other rewards.',
+        answer: 'cobrand',
+        explain: `A <strong>co-branded</strong> Amazon Pay ICICI card gives 5% cashback on Amazon (3% for non-Prime), 1% elsewhere. <strong>If 60%+ of your spending is on one brand</strong>, the brand-card math beats general rewards cards every time. Same logic for Flipkart Axis, MakeMyTrip ICICI, etc.`
+      },
+      {
+        label: 'Scenario · Parent giving teenager an allowance',
+        name: 'Wants kid to learn money, but with strict limits',
+        desc: 'Teen is 15, going on a school trip. Parent wants to give them ₹5,000 spending money but doesn\'t want cash risk and doesn\'t want them to use parent\'s credit card.',
+        answer: 'prepaid',
+        explain: `<strong>Prepaid</strong> card is the answer. Load ₹5,000 — that's the absolute spending limit, no overdraft possible. Teen can\'t accidentally spend more, can\'t damage the parent's credit, and the parent can monitor every transaction. Doesn't build credit history (because there's no borrowing) — but for a 15-year-old, that's not the goal.`
+      },
+      {
+        label: 'Scenario · A high-spending professional',
+        name: 'Doesn\'t want to carry balance, wants premium perks',
+        desc: 'Earns ₹3L+/month. Spends about ₹1.5L on the card monthly but always pays in full. Wants airport lounge access, concierge service, premium travel benefits. Doesn\'t need revolving credit.',
+        answer: 'charge',
+        explain: `An AmEx <strong>Charge</strong> card (Platinum/Gold) is the obvious fit. Charge cards have <strong>no preset spending limit</strong> (within reason), top-tier benefits, and <em>force</em> full payment monthly — which they already do. The "no revolving credit" feature is an advantage, not a limitation, for someone who pays in full anyway.`
+      },
+      {
+        label: 'Scenario · A salaried 28-year-old',
+        name: 'Stable job, decent CIBIL (~720), wants a regular card',
+        desc: 'Earns ₹65K/month, no credit history disasters, just hasn\'t had a credit card before. Wants a normal, no-frills card with regular cashback.',
+        answer: 'unsecured',
+        explain: `Standard <strong>unsecured</strong> credit card territory. With a 720+ CIBIL and stable salary, this person qualifies for entry-level cards from any major issuer (HDFC Millennia, ICICI Amazon Pay, Axis Ace). No deposit, no special requirements — just a straightforward credit card.`
+      }
+    ];
+
+    let round = 0;
+    let correct = 0;
+
+    function fmt() {
+      document.getElementById('total-rounds').textContent = SCENARIOS.length;
+    }
+
+    function renderRound() {
+      if (round >= SCENARIOS.length) {
+        showComplete();
+        return;
+      }
+      const s = SCENARIOS[round];
+      document.getElementById('round-num').textContent = round + 1;
+      document.getElementById('scenario-label').textContent = s.label;
+      document.getElementById('scenario-name').textContent = s.name;
+      document.getElementById('scenario-desc').textContent = s.desc;
+      document.getElementById('feedback').classList.remove('visible', 'correct', 'wrong');
+      document.getElementById('feedback').innerHTML = '';
+
+      const dz = document.getElementById('drop-zones');
+      dz.innerHTML = Object.entries(TYPES).map(([key, t]) => `
+        <div class="drop-zone" onclick="pickType('${key}')">
+          <div class="drop-zone-icon">${t.icon}</div>
+          <div class="drop-zone-title">${t.name}</div>
+          <div class="drop-zone-blurb">${t.blurb}</div>
+        </div>
+      `).join('');
+    }
+
+    function pickType(key) {
+      const s = SCENARIOS[round];
+      const isCorrect = key === s.answer;
+      const fb = document.getElementById('feedback');
+
+      // Disable all dropzones
+      document.querySelectorAll('.drop-zone').forEach(d => d.style.pointerEvents = 'none');
+
+      if (isCorrect) {
+        correct++;
+        document.getElementById('game-correct').textContent = correct;
+        fb.className = 'feedback correct visible';
+        fb.innerHTML = `
+          <div class="feedback-header">
+            <div class="feedback-icon">✓</div>
+            <div class="feedback-title">Right answer.</div>
+          </div>
+          <div class="feedback-text">${s.explain}</div>
+          <div style="margin-top: 16px; display: flex; justify-content: flex-end;"><button class="btn btn--primary" onclick="nextRound()">${round < SCENARIOS.length - 1 ? 'Next scenario →' : 'See results →'}</button></div>
+        `;
+        DCC.playSuccess();
+      } else {
+        fb.className = 'feedback wrong visible';
+        fb.innerHTML = `
+          <div class="feedback-header">
+            <div class="feedback-icon">✗</div>
+            <div class="feedback-title">Not quite. The right answer is <em style="color: var(--success);">${TYPES[s.answer].name}</em>.</div>
+          </div>
+          <div class="feedback-text">${s.explain}</div>
+          <div style="margin-top: 16px; display: flex; justify-content: flex-end;"><button class="btn btn--primary" onclick="nextRound()">${round < SCENARIOS.length - 1 ? 'Next scenario →' : 'See results →'}</button></div>
+        `;
+        DCC.playClick();
+      }
+    }
+
+    function nextRound() {
+      round++;
+      renderRound();
+    }
+
+    function showComplete() {
+      document.getElementById('game-stage').style.display = 'none';
+      const cs = document.getElementById('complete-state');
+      cs.classList.remove('hidden');
+      const grade = document.getElementById('complete-grade');
+      const summary = document.getElementById('complete-summary');
+
+      if (correct === 6) { grade.textContent = 'A+'; grade.className = 'complete-grade A'; summary.innerHTML = 'You sorted <em style="color: var(--electric);">all six</em>.'; }
+      else if (correct >= 4) { grade.textContent = 'B'; grade.className = 'complete-grade B'; summary.innerHTML = `You got <em style="color: var(--electric);">${correct} of 6</em>.`; }
+      else { grade.textContent = 'C'; grade.className = 'complete-grade C'; summary.innerHTML = `Worth <em style="color: var(--electric);">replaying</em>.`; }
+    }
+
+    function resetGame() {
+      round = 0; correct = 0;
+      document.getElementById('game-correct').textContent = 0;
+      document.getElementById('complete-state').classList.add('hidden');
+      document.getElementById('game-stage').style.display = 'block';
+      renderRound();
+    }
+
+    fmt();
+    renderRound();
+  </script>
+</body>
+</html>

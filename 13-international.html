@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XIII. Going International — Decoding Credit Cards</title>
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.chapter-shell{min-height:100vh;padding-top:80px}
+.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
+.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
+.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
+.chapter-h1 em{font-style:italic;font-weight:300;color:var(--electric)}
+.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
+.trip-stage{padding:48px 0}
+.trip-card{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-lg);padding:40px;box-shadow:0 1px 3px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.04);margin-bottom:32px}
+.dest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+.dest-btn{padding:18px 14px;background:white;border:1.5px solid var(--border-strong);border-radius:var(--radius-md);cursor:pointer;transition:all .2s ease;text-align:center;font-family:var(--font-body)}
+.dest-btn:hover{border-color:var(--electric);transform:translateY(-2px)}
+.dest-btn.active{border-color:var(--electric);background:var(--electric-soft)}
+.dest-flag{font-size:32px;margin-bottom:6px}
+.dest-name{font-family:var(--font-display);font-size:14px;font-weight:700}
+.dest-curr{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);letter-spacing:.04em}
+.config-row{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:24px}
+.config-block{flex:1;min-width:200px}
+.config-label{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.toggle-grp{display:flex;gap:4px;background:var(--paper);border-radius:999px;padding:3px}
+.toggle-grp button{flex:1;padding:8px 12px;border:none;background:transparent;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--ink-muted);border-radius:999px;cursor:pointer;transition:all .2s}
+.toggle-grp button.active{background:var(--ink);color:white}
+.spend-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px}
+.spend-val{font-family:var(--font-display);font-size:24px;font-weight:700;letter-spacing:-.01em}
+.results-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:24px}
+.result-card{padding:24px;border-radius:var(--radius-md);border:1px solid}
+.result-card.good{background:var(--success-soft);border-color:var(--success)}
+.result-card.bad{background:var(--danger-soft);border-color:var(--danger)}
+.result-card-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;font-weight:700}
+.result-card.good .result-card-label{color:var(--success)}
+.result-card.bad .result-card-label{color:var(--danger)}
+.result-card h4{font-family:var(--font-display);font-size:18px;font-weight:700;margin-bottom:12px}
+.result-amount{font-family:var(--font-display);font-size:32px;font-weight:900;letter-spacing:-.02em;margin-bottom:4px}
+.result-card.good .result-amount{color:var(--success)}
+.result-card.bad .result-amount{color:var(--danger)}
+.result-detail{font-size:12px;color:var(--ink-muted);line-height:1.5}
+.savings-bar{background:var(--ink);color:white;padding:24px 28px;border-radius:var(--radius-md);text-align:center;margin-top:24px}
+.savings-bar .save-num{font-family:var(--font-display);font-size:36px;font-weight:900;color:#F7B87A;letter-spacing:-.02em;margin-bottom:4px}
+.savings-bar .save-label{font-family:var(--font-mono);font-size:11px;color:rgba(247,243,237,.7);letter-spacing:.06em;text-transform:uppercase}
+input[type=range]{width:100%;-webkit-appearance:none;appearance:none;background:transparent;cursor:pointer;outline:none;padding:8px 0}
+input[type=range]::-webkit-slider-runnable-track{width:100%;height:4px;background:var(--parchment);border-radius:2px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:22px;width:22px;border-radius:50%;background:var(--electric);border:3px solid white;box-shadow:0 2px 8px rgba(37,99,235,.3);margin-top:-9px;cursor:pointer}
+.checkpoint{padding:80px 0;text-align:center}
+.checkpoint-card{background:white;border:2px dashed var(--electric);border-radius:var(--radius-lg);padding:48px 32px;max-width:640px;margin:0 auto}
+.checkpoint-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
+.checkpoint-title em{font-style:italic;font-weight:300;color:var(--electric)}
+.checkpoint-body{font-size:15px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px}
+.checkpoint-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
+.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
+.chapter-nav-link:hover{transform:translateX(-4px)}
+.chapter-nav-link.next{align-items:flex-end}
+.chapter-nav-link.next:hover{transform:translateX(4px)}
+.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
+@media(max-width:768px){.dest-grid{grid-template-columns:repeat(2,1fr)}.results-grid{grid-template-columns:1fr}.trip-card{padding:24px}}
+</style></head><body>
+<nav class="site-nav">
+<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="14-management.html">Next →</a></li></ul>
+</nav>
+
+<div class="chapter-shell"><div class="container">
+<div class="chapter-header">
+<div class="chapter-header-row"><div class="chapter-roman">Chapter XIII</div><div class="chapter-progress-text">13 of 22 · ~7 min</div></div>
+<h1 class="chapter-h1">Going <em>International</em></h1>
+<p class="chapter-intro">Plan a real trip. Pick a destination. Choose your card and currency. See the actual cost difference between smart choices and the default ones.</p>
+</div>
+
+<section class="trip-stage">
+<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;">The trip simulator</div>
+<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;">Plan your <em style="font-style:italic;font-weight:300;color:var(--electric);">trip</em>.</h2>
+
+<div class="trip-card" style="margin-top:32px;">
+<div class="config-label">Destination</div>
+<div class="dest-grid" id="dest-grid"></div>
+
+<div class="config-row">
+<div class="config-block">
+<div class="config-label">Your card type</div>
+<div class="toggle-grp" id="card-toggle">
+<button class="active" onclick="setCardType('regular')">Regular (3.5% forex)</button>
+<button onclick="setCardType('zero')">Zero-forex card</button>
+</div>
+</div>
+<div class="config-block">
+<div class="config-label">DCC choice at terminal</div>
+<div class="toggle-grp" id="dcc-toggle">
+<button class="active" onclick="setDcc('local')">Pay in local (smart)</button>
+<button onclick="setDcc('inr')">Pay in INR (DCC trap)</button>
+</div>
+</div>
+</div>
+
+<div style="margin-top:32px;">
+<div class="spend-row">
+<div class="config-label">Total trip spending (in destination currency)</div>
+<div class="spend-val" id="spend-val">2,000</div>
+</div>
+<input type="range" id="spend" min="500" max="10000" step="100" value="2000" oninput="updateTrip()">
+<div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);">
+<span>500</span><span>10,000</span>
+</div>
+</div>
+
+<div class="results-grid">
+<div class="result-card good">
+<div class="result-card-label">YOUR APPROACH</div>
+<h4 id="your-label">Smart play</h4>
+<div class="result-amount" id="your-amount">₹0</div>
+<div class="result-detail" id="your-detail"></div>
+</div>
+<div class="result-card bad">
+<div class="result-card-label">DEFAULT APPROACH</div>
+<h4>Most travelers do this</h4>
+<div class="result-amount" id="bad-amount">₹0</div>
+<div class="result-detail" id="bad-detail">Regular card + DCC at terminal. The default that everyone takes.</div>
+</div>
+</div>
+
+<div class="savings-bar">
+<div class="save-num" id="save-num">₹0</div>
+<div class="save-label">saved on this single trip</div>
+</div>
+</div>
+
+<div style="padding:24px 28px;background:var(--paper);border-radius:var(--radius-md);border-left:3px solid var(--electric);">
+<div style="font-family:var(--font-mono);font-size:11px;color:var(--electric);letter-spacing:.06em;margin-bottom:8px;">RULE OF THUMB</div>
+<p style="font-size:14px;line-height:1.6;color:var(--ink-soft);margin:0;"><strong>Always pay in the local currency.</strong> Banks convert at near-market rates with a small markup. <strong>DCC ("pay in INR")</strong> applies a 5-7% terrible rate locked at the merchant — that\'s their business model. The "rate locked, no surprises" framing exists precisely to make this look like the safe choice. It\'s the opposite.</p>
+</div>
+</section>
+
+<section class="checkpoint">
+<div class="checkpoint-card">
+<div style="font-size:56px;margin-bottom:12px;">✈️</div>
+<h3 class="checkpoint-title">You\'ll <em>save thousands</em> on every trip now.</h3>
+<p class="checkpoint-body">Up next: pulling everything together — a monthly simulation where you manage your card like a pro.</p>
+<div class="checkpoint-cta-row">
+<a href="../index.html" class="btn btn--ghost">← all chapters</a>
+<a href="14-management.html" class="btn btn--primary btn--lg">Chapter XIV: Managing Like a Pro →</a>
+</div></div></section>
+
+<div class="chapter-nav-bottom">
+<a href="12-disputes.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">Disputes</span></a>
+<a href="14-management.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Next →</span><span class="chapter-nav-name">Managing Like a Pro</span></a>
+</div>
+</div></div>
+
+<script src="../js/global.js"></script>
+<script>
+const DESTS = [
+  { id: 'us', flag: '🇺🇸', name: 'USA', curr: 'USD', symbol: '$', rate: 83 },
+  { id: 'uk', flag: '🇬🇧', name: 'UK', curr: 'GBP', symbol: '£', rate: 105 },
+  { id: 'jp', flag: '🇯🇵', name: 'Japan', curr: 'JPY', symbol: '¥', rate: 0.55 },
+  { id: 'sg', flag: '🇸🇬', name: 'Singapore', curr: 'SGD', symbol: 'S$', rate: 62 },
+  { id: 'ae', flag: '🇦🇪', name: 'UAE', curr: 'AED', symbol: 'AED ', rate: 22.5 },
+  { id: 'th', flag: '🇹🇭', name: 'Thailand', curr: 'THB', symbol: '฿', rate: 2.4 }
+];
+let activeDest = 'us', cardType = 'regular', dccChoice = 'local';
+
+const grid = document.getElementById('dest-grid');
+grid.innerHTML = DESTS.map(d => `
+  <button class="dest-btn ${d.id === activeDest ? 'active' : ''}" onclick="setDest('${d.id}')" data-id="${d.id}">
+    <div class="dest-flag">${d.flag}</div>
+    <div class="dest-name">${d.name}</div>
+    <div class="dest-curr">${d.curr} · ₹${d.rate.toFixed(2)}</div>
+  </button>
+`).join('');
+
+function setDest(id) {
+  activeDest = id;
+  document.querySelectorAll('.dest-btn').forEach(b => b.classList.toggle('active', b.dataset.id === id));
+  updateTrip();
+}
+
+function setCardType(v) {
+  cardType = v;
+  document.querySelectorAll('#card-toggle button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  updateTrip();
+}
+
+function setDcc(v) {
+  dccChoice = v;
+  document.querySelectorAll('#dcc-toggle button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  updateTrip();
+}
+
+function fmt(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+
+function updateTrip() {
+  const dest = DESTS.find(d => d.id === activeDest);
+  const spend = parseInt(document.getElementById('spend').value);
+  document.getElementById('spend-val').textContent = dest.symbol + spend.toLocaleString();
+
+  const baseInr = spend * dest.rate;
+  const forexPct = cardType === 'zero' ? 0 : 0.035;
+  const dccPct = dccChoice === 'inr' ? 0.06 : 0;
+
+  const yourTotal = baseInr * (1 + forexPct) * 1.18 / 1.18 + (baseInr * forexPct * 0.18); // simplified - markup with GST
+  const yourAdj = baseInr + (baseInr * forexPct * 1.18);
+
+  // Bad path: regular card + DCC
+  const badAdj = baseInr + (baseInr * 0.035 * 1.18) + (baseInr * 0.06);
+
+  const yourFinal = baseInr * (1 + forexPct + dccPct) * (forexPct ? (1 + 0.18 * forexPct/(1+forexPct+dccPct)) : 1);
+  // Simpler model:
+  const yourCost = baseInr + (baseInr * forexPct * 1.18) + (baseInr * dccPct);
+  const badCost = baseInr + (baseInr * 0.035 * 1.18) + (baseInr * 0.06);
+
+  document.getElementById('your-amount').textContent = fmt(yourCost);
+  document.getElementById('bad-amount').textContent = fmt(badCost);
+
+  let yourLabelText = '';
+  let yourDetail = '';
+  if (cardType === 'zero' && dccChoice === 'local') {
+    yourLabelText = 'Smart play';
+    yourDetail = `Zero-forex card + paid in ${dest.curr}. <strong>Best possible outcome.</strong> Just the actual exchange rate, no extras.`;
+    document.querySelector('.result-card.good').className = 'result-card good';
+  } else if (cardType === 'regular' && dccChoice === 'local') {
+    yourLabelText = 'Decent';
+    yourDetail = `Regular card + paid in ${dest.curr}. You\'re paying the 3.5% markup but avoided DCC.`;
+    document.querySelector('.result-card.good').className = 'result-card good';
+  } else if (cardType === 'zero' && dccChoice === 'inr') {
+    yourLabelText = 'Self-sabotage';
+    yourDetail = `Zero-forex card wasted on DCC. <strong>Got the worst rate of both choices.</strong> Always tap "local currency."`;
+    document.querySelector('.result-card.good').className = 'result-card bad';
+  } else {
+    yourLabelText = 'Default approach';
+    yourDetail = `Regular card + DCC. <strong>This is what most travelers do</strong> — and they don\'t even know it.`;
+    document.querySelector('.result-card.good').className = 'result-card bad';
+  }
+  document.getElementById('your-label').textContent = yourLabelText;
+  document.getElementById('your-detail').innerHTML = yourDetail;
+
+  document.getElementById('bad-detail').innerHTML = `Regular card + paid in INR (DCC). 3.5% forex + 18% GST + 6% DCC markup. The "safer-feeling" option.`;
+
+  const saved = badCost - yourCost;
+  document.getElementById('save-num').textContent = saved > 0 ? fmt(saved) : '₹0';
+}
+
+updateTrip();
+</script>
+</body></html>

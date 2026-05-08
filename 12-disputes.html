@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XII. Disputes & Chargebacks — Decoding Credit Cards</title>
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.chapter-shell{min-height:100vh;padding-top:80px}
+.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
+.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
+.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
+.chapter-h1 em{font-style:italic;font-weight:300;color:var(--electric)}
+.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
+.scenario-pick{padding:48px 0}
+.scenario-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:32px}
+.scenario-card{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:24px;cursor:pointer;transition:all .3s var(--ease-out);text-align:left}
+.scenario-card:hover{transform:translateY(-3px);border-color:var(--electric);box-shadow:0 8px 24px rgba(37,99,235,.08)}
+.scenario-icon{font-size:36px;margin-bottom:12px}
+.scenario-card h4{font-family:var(--font-display);font-size:18px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
+.scenario-card p{font-size:13px;color:var(--ink-muted);line-height:1.5}
+.flow-stage{padding:48px 0;display:none}
+.flow-stage.active{display:block}
+.flow-bar{display:flex;gap:8px;margin-bottom:32px;align-items:center}
+.flow-step{flex:1;height:6px;background:var(--parchment);border-radius:3px;overflow:hidden;position:relative}
+.flow-step-fill{position:absolute;inset:0;background:var(--electric);transform:scaleX(0);transform-origin:left;transition:transform .5s}
+.flow-step.done .flow-step-fill{transform:scaleX(1)}
+.flow-step.active .flow-step-fill{transform:scaleX(.5);background:linear-gradient(90deg,var(--electric) 0%,var(--electric) 50%,var(--parchment) 50%)}
+.flow-card{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-lg);padding:48px;box-shadow:0 1px 3px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.04)}
+.flow-step-label{font-family:var(--font-mono);font-size:11px;color:var(--electric);letter-spacing:.06em;margin-bottom:8px}
+.flow-step-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1;margin-bottom:16px}
+.flow-step-title em{font-style:italic;font-weight:300;color:var(--electric)}
+.flow-step-body{font-size:15px;color:var(--ink-muted);line-height:1.7;margin-bottom:24px}
+.flow-step-body strong{color:var(--ink)}
+.flow-step-body em{font-style:italic;color:var(--electric)}
+.flow-action-row{display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:24px;border-top:1px dashed var(--border)}
+.flow-step-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint)}
+.checkpoint{padding:80px 0;text-align:center}
+.checkpoint-card{background:white;border:2px dashed var(--electric);border-radius:var(--radius-lg);padding:48px 32px;max-width:640px;margin:0 auto}
+.checkpoint-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
+.checkpoint-title em{font-style:italic;font-weight:300;color:var(--electric)}
+.checkpoint-body{font-size:15px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px}
+.checkpoint-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
+.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
+.chapter-nav-link:hover{transform:translateX(-4px)}
+.chapter-nav-link.next{align-items:flex-end}
+.chapter-nav-link.next:hover{transform:translateX(4px)}
+.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
+@media(max-width:768px){.scenario-grid{grid-template-columns:1fr}.flow-card{padding:28px}.flow-step-title{font-size:24px}}
+</style></head><body>
+<nav class="site-nav">
+<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="13-international.html">Next →</a></li></ul>
+</nav>
+
+<div class="chapter-shell"><div class="container">
+<div class="chapter-header">
+<div class="chapter-header-row"><div class="chapter-roman">Chapter XII</div><div class="chapter-progress-text">12 of 22 · ~6 min</div></div>
+<h1 class="chapter-h1">Disputes & <em>Chargebacks</em></h1>
+<p class="chapter-intro">When something goes wrong with a transaction, you have a powerful tool — the chargeback. Pick a scenario. Walk through the exact steps to file one.</p>
+</div>
+
+<section class="scenario-pick" id="scenario-pick">
+<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;">Pick a real scenario</div>
+<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;">Which one <em style="font-style:italic;font-weight:300;color:var(--electric);">happened to you</em>?</h2>
+
+<div class="scenario-grid">
+<button class="scenario-card" onclick="startFlow(0)">
+<div class="scenario-icon">🚫</div>
+<h4>Unauthorized transaction</h4>
+<p>You see a charge on your statement that you didn\'t make. Could be card-not-present (someone else has your details) or card-present (cloned/skimmed).</p>
+</button>
+<button class="scenario-card" onclick="startFlow(1)">
+<div class="scenario-icon">📦</div>
+<h4>Goods never delivered</h4>
+<p>You ordered something online. Paid in full. Never arrived. The merchant has stopped responding to emails.</p>
+</button>
+<button class="scenario-card" onclick="startFlow(2)">
+<div class="scenario-icon">⚠️</div>
+<h4>Defective or wrong item</h4>
+<p>You received the product, but it\'s broken, fake, or completely different from what was advertised. The seller refuses to refund or exchange.</p>
+</button>
+<button class="scenario-card" onclick="startFlow(3)">
+<div class="scenario-icon">🔁</div>
+<h4>Subscription you can\'t cancel</h4>
+<p>You signed up for a free trial; the renewal hit your card despite multiple cancel attempts. The company\'s "cancel" page is intentionally broken.</p>
+</button>
+</div>
+</section>
+
+<section class="flow-stage" id="flow-stage">
+<div class="flow-bar" id="flow-bar"></div>
+<div class="flow-card" id="flow-card"></div>
+</section>
+
+<section class="checkpoint">
+<div class="checkpoint-card">
+<div style="font-size:56px;margin-bottom:12px;">⚖️</div>
+<h3 class="checkpoint-title">You can <em>fight back</em> now.</h3>
+<p class="checkpoint-body">A chargeback is your nuclear option, and merchants know it. Often, just mentioning you\'ll dispute the charge gets a faster refund than a month of emails.</p>
+<div class="checkpoint-cta-row">
+<a href="../index.html" class="btn btn--ghost">← all chapters</a>
+<a href="13-international.html" class="btn btn--primary btn--lg">Chapter XIII: International →</a>
+</div></div></section>
+
+<div class="chapter-nav-bottom">
+<a href="11-fraud-defense.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">Defense System</span></a>
+<a href="13-international.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Next →</span><span class="chapter-nav-name">Going International</span></a>
+</div>
+</div></div>
+
+<script src="../js/global.js"></script>
+<script>
+const FLOWS = [
+  // Unauthorized
+  [
+    { label: 'STEP 1 · Block the card immediately', title: 'First — <em>block the card</em>.', body: 'Open your bank app. Hit "Block Card" or "Lock Card." This stops any future transactions while you investigate. <strong>Do this before anything else</strong>, even before checking how it happened. You can always replace the card later — the priority is stopping further damage.', meta: 'Time: < 2 minutes', wait: '' },
+    { label: 'STEP 2 · Call your bank', title: 'Call the number on <em>the back of your card</em>.', body: 'Tell them: "I want to report an unauthorized transaction." They\'ll ask for transaction details (date, amount, merchant). They\'ll initiate a fraud investigation and issue a temporary credit while it\'s reviewed. <strong>RBI requires banks to credit the disputed amount within 10 working days</strong> if the customer reports within 3 days of the transaction.', meta: 'Time: 15-20 mins', wait: '' },
+    { label: 'STEP 3 · File the form', title: 'Fill out the <em>dispute form</em>.', body: 'Bank emails you a dispute form. Fill it out — describe what happened, when you noticed, and confirm you didn\'t authorize it. <strong>Keep all transaction screenshots and any other evidence.</strong> You\'ll get a reference number — note it down. Every follow-up needs this number.', meta: 'Time: 1 day', wait: '' },
+    { label: 'STEP 4 · Investigation', title: 'The bank <em>investigates</em>.', body: 'Behind the scenes: your bank submits a chargeback to the merchant\'s acquirer through the network (Visa/Mastercard). The merchant has 30-45 days to respond with proof the charge was legitimate. <strong>If they can\'t prove it</strong> (e.g., no signed receipt, no IP match, no delivery proof) — the charge is reversed permanently.', meta: 'Time: 30-90 days', wait: '' },
+    { label: 'OUTCOME', title: 'Money <em>returned</em>.', body: 'In ~85% of unauthorized transaction disputes, banks rule in the customer\'s favor when the customer reported promptly and provided basic information. <strong>The temporary credit becomes permanent.</strong> Your bank may also offer to issue a new card with a different number to prevent further fraud. <em>Zero liability is the standard for unauthorized transactions reported within 3 days.</em>', meta: 'Money back: typically full', wait: '' }
+  ],
+  // Goods not delivered
+  [
+    { label: 'STEP 1 · Try the merchant first', title: 'Contact the <em>merchant</em>.', body: 'Email or WhatsApp the seller. Politely ask for: (a) tracking info, (b) a refund if delivery is impossible. <strong>Keep all the messages.</strong> They\'ll be evidence later. Give them 7-10 days to respond before escalating. <em>Banks will ask if you tried the merchant first</em> — and they expect documentation.', meta: 'Time: 7-10 days', wait: '' },
+    { label: 'STEP 2 · File a chargeback', title: 'File a <em>"non-delivery" dispute</em>.', body: 'Once the merchant has either ignored you or refused, contact your bank. The dispute reason is "Goods or Services Not Received" — a Visa/Mastercard chargeback code. <strong>You\'ll need:</strong> order confirmation, the date you expected delivery, and your communication trail with the merchant.', meta: 'Time: 30 mins', wait: '' },
+    { label: 'STEP 3 · Bank pulls the charge', title: 'Bank <em>provisionally credits</em> you.', body: 'Most banks credit the disputed amount back to your account within 7-10 working days, pending investigation. <strong>It\'s temporary</strong> — if the merchant proves they delivered, the credit gets reversed. So don\'t spend the refund yet.', meta: 'Provisional credit: 7-10 days', wait: '' },
+    { label: 'STEP 4 · Merchant responds', title: 'The merchant <em>has to prove</em> delivery.', body: 'Through the network (Visa/Mastercard), the merchant must show proof of delivery — usually a signed waybill or carrier tracking that matches your shipping address. <strong>If they can\'t produce this evidence</strong> — and many fly-by-night sellers can\'t — you win automatically.', meta: 'Time: 30-45 days', wait: '' },
+    { label: 'OUTCOME', title: 'Refund made <em>permanent</em>.', body: 'The provisional credit becomes final. <strong>You don\'t need to pay anything back.</strong> If the merchant disputes your dispute (called "representment"), it goes to network arbitration. <em>Customers win the majority of non-delivery disputes</em> because proof of delivery is on the merchant.', meta: 'Final refund: typical', wait: '' }
+  ],
+  // Defective
+  [
+    { label: 'STEP 1 · Document everything', title: 'Take <em>photos and videos</em>.', body: 'Before contacting anyone, document the defective product: photos from multiple angles, video showing the defect, screenshots of the original product listing for comparison. <strong>Banks need this evidence</strong> to win the dispute. Without proof, "Defective Goods" disputes often fail.', meta: 'Time: 30 mins', wait: '' },
+    { label: 'STEP 2 · Try the seller', title: 'Ask for <em>refund or exchange</em>.', body: 'Email the seller with photos. Politely request a refund or replacement. <strong>Save every message.</strong> If they refuse or stop responding within 7 days, you have grounds for a chargeback. Many will fold here just to avoid the dispute fee they\'ll be hit with later.', meta: 'Time: 7 days', wait: '' },
+    { label: 'STEP 3 · File "Not As Described"', title: 'Dispute under <em>"Not As Described"</em>.', body: 'Contact your bank. Use chargeback reason "Goods Not As Described / Defective." <strong>Submit:</strong> photos/videos of the defect, the original listing, your communication with the seller, and a brief description of the problem. The bank submits this to Visa/Mastercard.', meta: 'Time: 30 mins', wait: '' },
+    { label: 'STEP 4 · Arbitration', title: 'The merchant <em>contests, or doesn\'t</em>.', body: 'The merchant has 30-45 days to dispute. They\'ll likely claim the product was fine. <strong>Your evidence is what wins this</strong>: clear photos, the listing comparison, and your civilised tone in messages all help. Many merchants don\'t bother contesting because the chargeback fees they\'d pay are higher than the refund.', meta: 'Time: 30-90 days', wait: '' },
+    { label: 'OUTCOME', title: 'Chargeback <em>upheld</em>.', body: '<strong>You typically keep the refund AND the product</strong> in defective-goods cases (banks rarely require you to ship the item back, especially internationally). Some banks may ask you to dispose of or return the item; most don\'t.', meta: 'Outcome: refund + retain item', wait: '' }
+  ],
+  // Subscription
+  [
+    { label: 'STEP 1 · Document the cancel attempts', title: 'Screenshot <em>everything</em>.', body: 'Capture: the cancel page (or its absence), error messages, support ticket emails, dates of all attempts. <strong>"Dark pattern" subscription traps are recognized by Visa/Mastercard</strong> as a chargeback-worthy reason — but only if you can prove you tried to cancel.', meta: 'Time: 30 mins', wait: '' },
+    { label: 'STEP 2 · Contact the merchant one more time', title: 'Send a <em>final request</em>.', body: 'Email customer support: "Please cancel my subscription effective immediately and refund [date] charge. I have made [N] previous attempts. If not refunded within 7 days, I will dispute with my card issuer." <strong>Keep this email</strong> — it shows you gave them a chance.', meta: 'Time: 5 mins', wait: '' },
+    { label: 'STEP 3 · File chargeback', title: 'Dispute as <em>"Cancelled Recurring"</em>.', body: 'Visa code "Cancelled Recurring Transaction" / Mastercard "Cancelled Merchandise/Services." <strong>Submit:</strong> screenshots, your final email to the merchant, the original signup terms (especially the cancel policy). Bank credits provisionally and contacts merchant.', meta: 'Time: 30 mins', wait: '' },
+    { label: 'STEP 4 · Block future charges', title: 'Tell your bank to <em>block this merchant</em>.', body: 'Crucial step: while the dispute is pending, ask your bank to block any future authorizations from this merchant. <strong>Otherwise next month\'s recurring charge will hit again</strong>, and you\'ll have to dispute it separately. Some banks call this a "merchant block" or "stop payment authorization."', meta: 'Time: 5 mins', wait: '' },
+    { label: 'OUTCOME', title: 'Refund <em>+ block</em>.', body: 'You typically get the disputed charge refunded. <strong>The merchant block prevents recurrence.</strong> Some networks (especially Visa) have specifically tightened rules around dark-pattern subscriptions in recent years — these disputes are favoring customers more than ever.', meta: 'Refund + future protection', wait: '' }
+  ]
+];
+
+let activeFlow = -1, flowStep = 0;
+
+function startFlow(idx) {
+  activeFlow = idx;
+  flowStep = 0;
+  document.getElementById('scenario-pick').style.display = 'none';
+  document.getElementById('flow-stage').classList.add('active');
+  renderFlow();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderFlow() {
+  const flow = FLOWS[activeFlow];
+  const step = flow[flowStep];
+  const total = flow.length;
+
+  // Progress bar
+  const bar = document.getElementById('flow-bar');
+  bar.innerHTML = flow.map((_, i) => {
+    let cls = '';
+    if (i < flowStep) cls = 'done';
+    else if (i === flowStep) cls = 'active';
+    return `<div class="flow-step ${cls}"><div class="flow-step-fill"></div></div>`;
+  }).join('');
+
+  const card = document.getElementById('flow-card');
+  card.innerHTML = `
+    <div class="flow-step-label">${step.label}</div>
+    <div class="flow-step-title">${step.title}</div>
+    <div class="flow-step-body">${step.body}</div>
+    <div class="flow-action-row">
+      <div class="flow-step-meta">${step.meta}</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn--ghost" onclick="resetFlow()">↺ choose different</button>
+        ${flowStep > 0 ? `<button class="btn btn--outline" onclick="prevFlowStep()">← back</button>` : ''}
+        <button class="btn btn--primary" onclick="nextFlowStep()">${flowStep < total - 1 ? 'next →' : 'done ✓'}</button>
+      </div>
+    </div>
+  `;
+  DCC.playClick();
+}
+
+function nextFlowStep() {
+  const flow = FLOWS[activeFlow];
+  if (flowStep < flow.length - 1) { flowStep++; renderFlow(); }
+  else { resetFlow(); document.getElementById('flow-stage').scrollIntoView({behavior:'smooth'}); }
+}
+
+function prevFlowStep() {
+  if (flowStep > 0) { flowStep--; renderFlow(); }
+}
+
+function resetFlow() {
+  activeFlow = -1;
+  flowStep = 0;
+  document.getElementById('scenario-pick').style.display = 'block';
+  document.getElementById('flow-stage').classList.remove('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body></html>

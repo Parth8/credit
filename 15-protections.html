@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XV. Hidden Protections — Decoding Credit Cards</title>
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.chapter-shell{min-height:100vh;padding-top:80px}
+.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
+.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
+.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
+.chapter-h1 em{font-style:italic;font-weight:300;color:var(--success)}
+.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
+.protect-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin:32px 0}
+.protect-card{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:28px;cursor:pointer;transition:all .3s var(--ease-out);position:relative;overflow:hidden}
+.protect-card:hover{transform:translateY(-3px);border-color:var(--success);box-shadow:0 8px 24px rgba(22,163,74,.08)}
+.protect-card.expanded{border-color:var(--success);background:var(--success-soft)}
+.protect-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--success);transform:scaleX(0);transition:transform .3s ease}
+.protect-card:hover::before,.protect-card.expanded::before{transform:scaleX(1)}
+.protect-icon{font-size:36px;margin-bottom:14px}
+.protect-name{font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
+.protect-name em{font-style:italic;font-weight:300;color:var(--success)}
+.protect-blurb{font-size:13px;color:var(--ink-muted);line-height:1.5;margin-bottom:12px}
+.protect-detail{display:none;padding-top:16px;margin-top:16px;border-top:1px dashed var(--border)}
+.protect-card.expanded .protect-detail{display:block}
+.protect-detail h5{font-family:var(--font-mono);font-size:10px;color:var(--success);letter-spacing:.06em;text-transform:uppercase;margin:12px 0 6px}
+.protect-detail p{font-size:13px;color:var(--ink-soft);line-height:1.5}
+.protect-detail strong{color:var(--ink)}
+.protect-tip{margin-top:14px;padding:12px 16px;background:white;border-left:3px solid var(--success);border-radius:0 6px 6px 0;font-size:12px;line-height:1.5}
+.protect-tip strong{color:var(--success);font-family:var(--font-mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase}
+.checkpoint{padding:80px 0;text-align:center}
+.checkpoint-card{background:white;border:2px dashed var(--electric);border-radius:var(--radius-lg);padding:48px 32px;max-width:640px;margin:0 auto}
+.checkpoint-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
+.checkpoint-title em{font-style:italic;font-weight:300;color:var(--electric)}
+.checkpoint-body{font-size:15px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px}
+.checkpoint-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
+.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
+.chapter-nav-link:hover{transform:translateX(-4px)}
+.chapter-nav-link.next{align-items:flex-end}
+.chapter-nav-link.next:hover{transform:translateX(4px)}
+.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
+@media(max-width:768px){.protect-grid{grid-template-columns:1fr}}
+</style></head><body>
+<nav class="site-nav">
+<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="16-customer-service.html">Next →</a></li></ul>
+</nav>
+
+<div class="chapter-shell"><div class="container">
+<div class="chapter-header">
+<div class="chapter-header-row"><div class="chapter-roman">Chapter XV</div><div class="chapter-progress-text">15 of 22 · ~5 min</div></div>
+<h1 class="chapter-h1">Hidden <em>Protections</em></h1>
+<p class="chapter-intro">Most cardholders never use these — even though they\'re paying for them via the annual fee. Tap each protection to learn how to claim it.</p>
+</div>
+
+<section style="padding:32px 0;">
+<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;">Six benefits you didn\'t know you had</div>
+<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;">Tap each one — <em style="font-style:italic;font-weight:300;color:var(--success);">most are unclaimed</em>.</h2>
+
+<div class="protect-grid" id="protect-grid"></div>
+</section>
+
+<section class="checkpoint">
+<div class="checkpoint-card">
+<div style="font-size:56px;margin-bottom:12px;">🛡</div>
+<h3 class="checkpoint-title">You now know <em>what to claim</em>.</h3>
+<p class="checkpoint-body">Up next: practicing real conversations with bank customer service so you don\'t freeze when you need to call.</p>
+<div class="checkpoint-cta-row">
+<a href="../index.html" class="btn btn--ghost">← all chapters</a>
+<a href="16-customer-service.html" class="btn btn--primary btn--lg">Chapter XVI: Talking to Your Bank →</a>
+</div></div></section>
+
+<div class="chapter-nav-bottom">
+<a href="14-management.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">Managing Like a Pro</span></a>
+<a href="16-customer-service.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Next →</span><span class="chapter-nav-name">Talking to Your Bank</span></a>
+</div>
+</div></div>
+
+<script src="../js/global.js"></script>
+<script>
+const PROTECTIONS = [
+  { icon: '🛒', name: 'Purchase <em>Protection</em>', blurb: 'Items you buy on the card are insured against theft or accidental damage for 60-90 days after purchase.',
+    when: 'Phone stolen 30 days after buying, laptop drop-cracked, new TV damaged in transit.',
+    how: 'Call your bank within 30-60 days of incident. Provide: card statement showing purchase, FIR (for theft), repair estimates or photos. <strong>Most cards cover up to ₹50K-₹2L per item.</strong>',
+    tip: 'Premium cards (HDFC Infinia, Diners Club Black) include this automatically. Most mid-tier cards have it too — but few cardholders know to claim.' },
+  { icon: '⏳', name: 'Extended <em>Warranty</em>', blurb: 'Doubles the manufacturer\'s warranty on electronics — up to one extra year.',
+    when: 'Your microwave dies in month 13 of a 12-month warranty. Manufacturer says no. Your card says yes.',
+    how: 'Within 30 days of failure: register the claim with your bank, share invoice + warranty card + manufacturer\'s denial. <strong>Bank reimburses repair or replacement cost.</strong>',
+    tip: 'Save every electronics receipt and warranty card if you bought it on a premium card. Coverage usually applies to items under 1 year warranty originally.' },
+  { icon: '✈️', name: 'Travel <em>Insurance</em>', blurb: 'Flight booked on the card = automatic insurance for delays, cancellations, lost baggage, medical emergencies abroad.',
+    when: 'Flight delayed 6+ hours; baggage lost; sudden medical bill in Bali; trip cancellation due to family emergency.',
+    how: 'Most premium cards trigger this <strong>automatically when you pay for the ticket</strong>. Claims: documentation of issue + boarding pass + medical bills (if applicable). Coverage often ₹50L+.',
+    tip: 'Always pay for international tickets on your highest-tier card. Buying separate travel insurance is often redundant if you have HDFC Regalia or Axis Magnus or similar.' },
+  { icon: '🏨', name: 'Hotel & <em>Rental Coverage</em>', blurb: 'Damage waivers on rental cars; protection against unauthorized hotel charges.',
+    when: 'Rental car scratch fee that the agency tries to charge ₹15K for; mysterious "minibar charges" on hotel bill.',
+    how: 'Don\'t pay disputed charges immediately. <strong>File a chargeback with your bank citing rental car protection or hotel inaccuracy.</strong> Many cards cover collision damage on rental cars at no extra cost.',
+    tip: 'Decline the rental agency\'s ₹500/day "collision damage waiver" if your card already includes it (common on premium Visa/Mastercard cards).' },
+  { icon: '🛅', name: 'Lost <em>Card Liability</em>', blurb: 'Zero liability for fraud after you report. Even before reporting, capped liability under RBI rules.',
+    when: 'Card stolen at a metro station. Reported within 3 hours. ₹15K spent before you blocked.',
+    how: '<strong>Reported within 3 days = zero liability under RBI Master Directions.</strong> The bank reverses all unauthorized charges. Even if reported late, liability is capped (₹10K-₹25K depending on card type).',
+    tip: 'Block the card immediately via bank app — that\'s your "report time." Then call to formalize. The clock starts ticking from when you should have reasonably noticed.' },
+  { icon: '🎫', name: 'Lounge <em>Access</em>', blurb: 'Domestic and international airport lounges, often unlimited or 4-8 visits per quarter.',
+    when: 'Long layover or delayed flight. Free food, comfortable seating, showers, WiFi — vs ₹1,500-3,000 to pay at the door.',
+    how: 'Show your eligible credit card at lounge entry. <strong>Some cards require swiping the card</strong> (₹2 token charge that gets refunded). Many cards include lounge passes for guests too.',
+    tip: 'Even mid-tier cards (Axis Magnus, HDFC Diners Privilege) include 8-12 international lounge visits per year. Worth ₹40K+ in benefits annually.' }
+];
+
+const grid = document.getElementById('protect-grid');
+grid.innerHTML = PROTECTIONS.map((p, i) => `
+  <div class="protect-card" onclick="togglePart(${i}, this)">
+    <div class="protect-icon">${p.icon}</div>
+    <div class="protect-name">${p.name}</div>
+    <div class="protect-blurb">${p.blurb}</div>
+    <div class="protect-detail">
+      <h5>WHEN IT HELPS</h5>
+      <p>${p.when}</p>
+      <h5>HOW TO CLAIM</h5>
+      <p>${p.how}</p>
+      <div class="protect-tip"><strong>Pro tip:</strong> ${p.tip}</div>
+    </div>
+  </div>`).join('');
+
+function togglePart(i, el) {
+  el.classList.toggle('expanded');
+  DCC.playClick();
+}
+</script>
+</body></html>

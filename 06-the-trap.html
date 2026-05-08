@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VI. The Trap — Decoding Credit Cards</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <style>
+    .chapter-shell { min-height: 100vh; padding-top: 80px; }
+    .chapter-header { padding: 32px 0; border-bottom: 1px dashed var(--border-strong); margin-bottom: 32px; }
+    .chapter-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .chapter-roman { font-family: var(--font-display); font-size: 14px; font-style: italic; color: var(--electric); letter-spacing: 0.04em; }
+    .chapter-progress-text { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .chapter-h1 { font-family: var(--font-display); font-size: clamp(48px, 6vw, 80px); font-weight: 800; line-height: 1; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .chapter-h1 em { font-style: italic; font-weight: 300; color: var(--danger); }
+    .chapter-intro { font-size: 18px; color: var(--ink-muted); max-width: 600px; line-height: 1.6; }
+
+    /* HORROR INTRO STATS */
+    .horror-stats {
+      padding: 64px 0;
+      border-bottom: 1px dashed var(--border-strong);
+    }
+
+    .horror-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 32px;
+    }
+
+    .horror-stat {
+      padding: 32px 24px;
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      border-left: 4px solid var(--danger);
+    }
+
+    .horror-num {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 900;
+      color: var(--danger);
+      line-height: 1;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .horror-label {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+
+    .horror-context {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    /* CALCULATOR STAGE */
+    .calc-section {
+      padding: 64px 0;
+    }
+
+    .calc-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 16px;
+    }
+
+    .calc-section h2 em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--danger);
+    }
+
+    .calc-stage {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.04);
+      overflow: hidden;
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+    }
+
+    .calc-controls {
+      padding: 40px;
+      background: var(--paper);
+      border-right: 1px solid var(--border);
+    }
+
+    .calc-results {
+      padding: 40px;
+      background: white;
+    }
+
+    /* SLIDER GROUP */
+    .slider-group {
+      margin-bottom: 36px;
+    }
+
+    .slider-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .slider-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .slider-value {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+    }
+
+    .slider-value.danger {
+      color: var(--danger);
+    }
+
+    .slider-track {
+      width: 100%;
+      height: 4px;
+      background: var(--parchment);
+      border-radius: 2px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      background: transparent;
+      cursor: pointer;
+      outline: none;
+      padding: 12px 0;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 4px;
+      background: var(--parchment);
+      border-radius: 2px;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      background: var(--electric);
+      border: 3px solid white;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+      cursor: pointer;
+      margin-top: -10px;
+      transition: transform 0.2s ease;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+
+    input[type="range"].danger::-webkit-slider-thumb {
+      background: var(--danger);
+      box-shadow: 0 2px 8px rgba(220,38,38,0.3);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+      background: var(--electric);
+      border: 3px solid white;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+      cursor: pointer;
+    }
+
+    input[type="range"]::-moz-range-track {
+      height: 4px;
+      background: var(--parchment);
+      border-radius: 2px;
+    }
+
+    .slider-meta {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-ghost);
+      margin-top: 4px;
+    }
+
+    /* PAYMENT MODE TOGGLE */
+    .toggle-group {
+      display: flex;
+      gap: 4px;
+      background: white;
+      border-radius: 999px;
+      padding: 4px;
+      border: 1px solid var(--border-strong);
+      margin-top: 8px;
+    }
+
+    .toggle-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-btn.active {
+      background: var(--ink);
+      color: white;
+    }
+
+    /* RESULT HEADLINE */
+    .result-hero {
+      margin-bottom: 32px;
+    }
+
+    .result-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .result-headline {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      transition: color 0.4s ease;
+    }
+
+    .result-headline.danger { color: var(--danger); }
+    .result-headline.warning { color: var(--warm); }
+    .result-headline.success { color: var(--success); }
+
+    .result-headline em {
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    /* RESULT STATS */
+    .result-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .result-stat {
+      padding: 20px;
+      background: var(--paper);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+    }
+
+    .result-stat-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .result-stat-value {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .result-stat-value.danger { color: var(--danger); }
+    .result-stat-value.success { color: var(--success); }
+
+    /* PAYMENT BREAKDOWN BAR */
+    .breakdown-section {
+      margin-top: 24px;
+    }
+
+    .breakdown-section h4 {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .breakdown-bar {
+      height: 40px;
+      background: var(--parchment);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      position: relative;
+    }
+
+    .breakdown-segment {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: white;
+      font-weight: 700;
+      transition: width 0.6s var(--ease-out);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .breakdown-segment.principal {
+      background: var(--success);
+    }
+
+    .breakdown-segment.interest {
+      background: var(--danger);
+    }
+
+    .breakdown-legend {
+      display: flex;
+      gap: 24px;
+      margin-top: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-muted);
+    }
+
+    .legend-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    /* INSIGHT BOX */
+    .insight-box {
+      padding: 20px 24px;
+      background: var(--danger-soft);
+      border-left: 3px solid var(--danger);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin-top: 24px;
+      transition: all 0.4s ease;
+    }
+
+    .insight-box.success {
+      background: var(--success-soft);
+      border-left-color: var(--success);
+    }
+
+    .insight-box.warning {
+      background: var(--warm-soft);
+      border-left-color: var(--warm);
+    }
+
+    .insight-text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink-soft);
+    }
+
+    .insight-text strong { color: var(--ink); }
+
+    /* THE COMPARISON SECTION */
+    .compare-section {
+      padding: 80px 0;
+      border-top: 1px dashed var(--border-strong);
+      border-bottom: 1px dashed var(--border-strong);
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 32px;
+    }
+
+    .compare-side {
+      padding: 32px;
+      border-radius: var(--radius-lg);
+      border: 1px solid;
+    }
+
+    .compare-side.bad {
+      background: var(--danger-soft);
+      border-color: var(--danger);
+    }
+
+    .compare-side.good {
+      background: var(--success-soft);
+      border-color: var(--success);
+    }
+
+    .compare-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .compare-side.bad .compare-eyebrow { color: var(--danger); }
+    .compare-side.good .compare-eyebrow { color: var(--success); }
+
+    .compare-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .compare-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .compare-list li {
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.5;
+      padding-left: 24px;
+      position: relative;
+    }
+
+    .compare-list li::before {
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-weight: 700;
+    }
+
+    .compare-side.bad .compare-list li::before {
+      content: '✗';
+      color: var(--danger);
+    }
+
+    .compare-side.good .compare-list li::before {
+      content: '✓';
+      color: var(--success);
+    }
+
+    /* CHECKPOINT */
+    .checkpoint { padding: 80px 0; text-align: center; }
+    .checkpoint-card { background: white; border: 2px dashed var(--electric); border-radius: var(--radius-lg); padding: 48px 32px; max-width: 640px; margin: 0 auto; }
+    .checkpoint-title { font-family: var(--font-display); font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+    .checkpoint-title em { font-style: italic; font-weight: 300; color: var(--electric); }
+    .checkpoint-body { font-size: 15px; color: var(--ink-muted); line-height: 1.6; margin-bottom: 28px; }
+    .checkpoint-cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* CHAPTER NAV */
+    .chapter-nav-bottom { padding: 40px 0 80px; display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-strong); }
+    .chapter-nav-link { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: inherit; transition: transform 0.3s ease; }
+    .chapter-nav-link:hover { transform: translateX(-4px); }
+    .chapter-nav-link.next { align-items: flex-end; }
+    .chapter-nav-link.next:hover { transform: translateX(4px); }
+    .chapter-nav-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .chapter-nav-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+
+    @media (max-width: 768px) {
+      .horror-grid { grid-template-columns: 1fr; }
+      .calc-stage { grid-template-columns: 1fr; }
+      .calc-controls { border-right: none; border-bottom: 1px solid var(--border); }
+      .compare-grid { grid-template-columns: 1fr; }
+      .result-stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html#chapters">All Chapters</a></li>
+      <li><a href="07-fees.html">Next →</a></li>
+    </ul>
+  </nav>
+
+  <div class="chapter-shell">
+    <div class="container">
+
+      <div class="chapter-header">
+        <div class="chapter-header-row">
+          <div class="chapter-roman">Chapter VI</div>
+          <div class="chapter-progress-text">6 of 22 · ~6 min</div>
+        </div>
+        <h1 class="chapter-h1">The <em>Minimum Payment Trap</em></h1>
+        <p class="chapter-intro">
+          Banks didn't invent the minimum payment to be helpful. They invented it to be profitable. Drag the sliders. Watch the math destroy you in real time.
+        </p>
+      </div>
+
+      <!-- HORROR STATS -->
+      <section class="horror-stats">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em; margin-bottom: 8px;">Real numbers · ₹50,000 balance @ 36% APR · paying minimum only</div>
+        <h2 style="font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 44px); font-weight: 700; letter-spacing: -0.02em;">Pay only the minimum on a typical Indian credit card and this is what happens.</h2>
+
+        <div class="horror-grid">
+          <div class="horror-stat reveal">
+            <div class="horror-num"><span data-target="11.2" data-decimals="1" data-suffix=" yrs">0</span></div>
+            <div class="horror-label">to pay it off</div>
+          </div>
+          <div class="horror-stat reveal" data-delay="100">
+            <div class="horror-num">₹<span data-target="87420" data-suffix="">0</span></div>
+            <div class="horror-label">in interest paid<br><strong style="color: var(--ink);">on top of the ₹50,000 you owed</strong></div>
+          </div>
+          <div class="horror-stat reveal" data-delay="200">
+            <div class="horror-num"><span data-target="2.75" data-decimals="2" data-suffix="x">0</span></div>
+            <div class="horror-label">the original amount</div>
+          </div>
+        </div>
+
+        <div class="horror-context">
+          For comparison · paying ₹5,000/month would clear it in 12 months and cost ~₹9,000 in interest. <em>Same debt. Same APR. Five times less pain.</em>
+        </div>
+      </section>
+
+      <!-- CALCULATOR -->
+      <section class="calc-section">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em; margin-bottom: 8px;">The calculator</div>
+        <h2>Plug in your <em>own numbers.</em></h2>
+        <p style="font-size: 16px; color: var(--ink-muted); max-width: 540px;">Move the sliders. The graph and numbers update live. There's no "calculate" button — just touch the controls and see what happens.</p>
+
+        <div class="calc-stage">
+          <div class="calc-controls">
+
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <div class="slider-label">Outstanding balance</div>
+                <div class="slider-value" id="display-balance">₹50,000</div>
+              </div>
+              <input type="range" id="slider-balance" min="5000" max="500000" step="1000" value="50000" oninput="updateCalc()">
+              <div class="slider-meta">
+                <span>₹5,000</span><span>₹5,00,000</span>
+              </div>
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <div class="slider-label">APR (annual interest rate)</div>
+                <div class="slider-value danger" id="display-apr">36%</div>
+              </div>
+              <input type="range" id="slider-apr" min="12" max="48" step="1" value="36" oninput="updateCalc()" class="danger">
+              <div class="slider-meta">
+                <span>12% (rare)</span><span>48% (cash advance)</span>
+              </div>
+              <div style="font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); margin-top: 6px;">Most Indian cards: 36-42% APR</div>
+            </div>
+
+            <div class="slider-group">
+              <div class="slider-label-row">
+                <div class="slider-label">How will you pay?</div>
+                <div class="slider-value" id="display-payment">₹2,500</div>
+              </div>
+              <div class="toggle-group">
+                <button class="toggle-btn active" id="mode-min" onclick="setPayMode('min')">Minimum (5%)</button>
+                <button class="toggle-btn" id="mode-fixed" onclick="setPayMode('fixed')">Fixed amount</button>
+                <button class="toggle-btn" id="mode-full" onclick="setPayMode('full')">Pay in full</button>
+              </div>
+              <div id="custom-slider-wrap" style="display: none; margin-top: 16px;">
+                <input type="range" id="slider-payment" min="500" max="100000" step="500" value="5000" oninput="updateCalc()">
+                <div class="slider-meta">
+                  <span>₹500</span><span>₹1,00,000</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="calc-results">
+            <div class="result-hero">
+              <div class="result-eyebrow">If you keep doing this</div>
+              <div class="result-headline danger" id="result-headline">It takes <em>11.2 years</em></div>
+            </div>
+
+            <div class="result-stats">
+              <div class="result-stat">
+                <div class="result-stat-label">Total interest paid</div>
+                <div class="result-stat-value danger" id="stat-interest">₹87,420</div>
+              </div>
+              <div class="result-stat">
+                <div class="result-stat-label">Total paid back</div>
+                <div class="result-stat-value" id="stat-total">₹1,37,420</div>
+              </div>
+              <div class="result-stat">
+                <div class="result-stat-label">Monthly payment</div>
+                <div class="result-stat-value" id="stat-monthly">₹2,500</div>
+              </div>
+              <div class="result-stat">
+                <div class="result-stat-label">Cost above original</div>
+                <div class="result-stat-value danger" id="stat-extra">+175%</div>
+              </div>
+            </div>
+
+            <div class="breakdown-section">
+              <h4>Where your money goes</h4>
+              <div class="breakdown-bar">
+                <div class="breakdown-segment principal" id="bar-principal">Principal</div>
+                <div class="breakdown-segment interest" id="bar-interest">Interest</div>
+              </div>
+              <div class="breakdown-legend">
+                <span><span class="legend-dot" style="background: var(--success);"></span>Original debt</span>
+                <span><span class="legend-dot" style="background: var(--danger);"></span>Interest you pay extra</span>
+              </div>
+            </div>
+
+            <div class="insight-box" id="insight-box">
+              <div class="insight-text" id="insight-text">
+                <strong>The trap:</strong> A ₹2,500 minimum on a ₹50,000 balance means about ₹1,500 goes to interest and only ₹1,000 actually reduces your debt. You're essentially renting the bank's money — and the rent is ridiculous.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMPARISON -->
+      <section class="compare-section">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em; margin-bottom: 8px;">Two perspectives</div>
+        <h2 style="font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 44px); font-weight: 700; letter-spacing: -0.02em;">Why does the minimum payment exist?</h2>
+
+        <div class="compare-grid">
+          <div class="compare-side bad">
+            <div class="compare-eyebrow">The bank's plan</div>
+            <h3 class="compare-title">Keep you barely able to pay</h3>
+            <ul class="compare-list">
+              <li>Minimum is set at 2-5% of balance — just enough to keep your account "in good standing"</li>
+              <li>~60% of your minimum payment goes to interest, not principal</li>
+              <li>Interest income is the largest revenue stream for credit card divisions</li>
+              <li>The longer you carry a balance, the more they earn — without doing anything</li>
+              <li>"Convenience" features like EMI conversions are just other ways to keep you paying interest</li>
+            </ul>
+          </div>
+          <div class="compare-side good">
+            <div class="compare-eyebrow">Your move</div>
+            <h3 class="compare-title">Pay it in full. Always.</h3>
+            <ul class="compare-list">
+              <li>Pay full statement balance before due date — zero interest, ever</li>
+              <li>Set up auto-pay for full balance — remove human decision from the loop</li>
+              <li>Treat your card as a 30-day float, not a loan source</li>
+              <li>If you can't pay the full balance, pay as much as possible — every extra ₹100 saves ~₹3 in interest each month</li>
+              <li>Never use credit cards for things you can't pay off this month</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHECKPOINT -->
+      <section class="checkpoint">
+        <div class="checkpoint-card">
+          <div style="font-size: 56px; margin-bottom: 12px;">⚠</div>
+          <h3 class="checkpoint-title">You now know the <em>most expensive lesson</em> most people learn the hard way.</h3>
+          <p class="checkpoint-body">
+            Up next — every other fee a card can charge you. Eight different scenarios. One concept per fee. All animated.
+          </p>
+          <div class="checkpoint-cta-row">
+            <a href="../index.html" class="btn btn--ghost">← all chapters</a>
+            <a href="07-fees.html" class="btn btn--primary btn--lg">Chapter VII: Every Fee →</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="chapter-nav-bottom">
+        <a href="05-the-billing-cycle.html" class="chapter-nav-link">
+          <span class="chapter-nav-meta">← Previous</span>
+          <span class="chapter-nav-name">The Billing Cycle</span>
+        </a>
+        <a href="07-fees.html" class="chapter-nav-link next">
+          <span class="chapter-nav-meta">Next →</span>
+          <span class="chapter-nav-name">Every Fee Explained</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/global.js"></script>
+  <script>
+    let payMode = 'min';
+
+    function setPayMode(mode) {
+      payMode = mode;
+      ['min', 'fixed', 'full'].forEach(m => {
+        document.getElementById('mode-' + m).classList.toggle('active', m === mode);
+      });
+      document.getElementById('custom-slider-wrap').style.display = mode === 'fixed' ? 'block' : 'none';
+      updateCalc();
+    }
+
+    function fmt(n) {
+      return '₹' + Math.round(n).toLocaleString('en-IN');
+    }
+
+    function updateCalc() {
+      const balance = parseInt(document.getElementById('slider-balance').value);
+      const apr = parseInt(document.getElementById('slider-apr').value);
+      const monthlyRate = apr / 100 / 12;
+
+      let payment;
+      if (payMode === 'min') {
+        payment = Math.max(balance * 0.05, 500);
+      } else if (payMode === 'full') {
+        payment = balance + balance * monthlyRate;
+      } else {
+        payment = parseInt(document.getElementById('slider-payment').value);
+      }
+
+      document.getElementById('display-balance').textContent = fmt(balance);
+      document.getElementById('display-apr').textContent = apr + '%';
+      document.getElementById('display-payment').textContent = fmt(payment);
+
+      // Simulate
+      let remaining = balance;
+      let totalInterest = 0;
+      let months = 0;
+      const maxMonths = 1200;
+
+      if (payment <= remaining * monthlyRate && payMode !== 'full') {
+        // Infinite case
+        document.getElementById('result-headline').className = 'result-headline danger';
+        document.getElementById('result-headline').innerHTML = 'You\'ll <em>never</em> pay this off';
+        document.getElementById('stat-interest').textContent = '∞';
+        document.getElementById('stat-total').textContent = '∞';
+        document.getElementById('stat-monthly').textContent = fmt(payment);
+        document.getElementById('stat-extra').textContent = '∞%';
+
+        document.getElementById('bar-principal').style.width = '0%';
+        document.getElementById('bar-interest').style.width = '100%';
+        document.getElementById('bar-principal').textContent = '';
+        document.getElementById('bar-interest').textContent = '100% interest';
+
+        document.getElementById('insight-box').className = 'insight-box';
+        document.getElementById('insight-text').innerHTML = `<strong style="color: var(--danger);">Critical:</strong> Your monthly payment of ${fmt(payment)} is less than the monthly interest charge of ${fmt(remaining * monthlyRate)}. <strong>Your debt grows every month, not shrinks.</strong> This is the debt spiral.`;
+        return;
+      }
+
+      while (remaining > 0.01 && months < maxMonths) {
+        const interestThisMonth = remaining * monthlyRate;
+        const principalThisMonth = Math.min(payment - interestThisMonth, remaining);
+        totalInterest += interestThisMonth;
+        remaining -= principalThisMonth;
+        months++;
+      }
+
+      const years = months / 12;
+      const totalPaid = balance + totalInterest;
+      const extraPct = Math.round((totalInterest / balance) * 100);
+
+      // Format output
+      let timeStr;
+      if (months <= 1) timeStr = '1 month';
+      else if (months < 12) timeStr = `${months} months`;
+      else if (years < 2) timeStr = `${years.toFixed(1)} years`;
+      else timeStr = `${years.toFixed(1)} years`;
+
+      const headline = document.getElementById('result-headline');
+      const insightBox = document.getElementById('insight-box');
+      const insightText = document.getElementById('insight-text');
+
+      if (payMode === 'full' || months <= 1) {
+        headline.className = 'result-headline success';
+        headline.innerHTML = `Cleared in <em>1 month</em> ✓`;
+        insightBox.className = 'insight-box success';
+        insightText.innerHTML = `<strong>This is the way.</strong> Pay the full balance every month. ${fmt(totalInterest)} interest. Card benefits and rewards stay yours. Bank earns nothing from you. <em>You win.</em>`;
+      } else if (years < 2) {
+        headline.className = 'result-headline warning';
+        headline.innerHTML = `Done in <em>${timeStr}</em>`;
+        insightBox.className = 'insight-box warning';
+        insightText.innerHTML = `Paying ${fmt(payment)}/month gets you out in ${timeStr} with ${fmt(totalInterest)} in interest. Not bad — but full payment would be better. <strong>Each extra ₹500/month roughly halves the time.</strong>`;
+      } else {
+        headline.className = 'result-headline danger';
+        headline.innerHTML = `It takes <em>${timeStr}</em>`;
+        insightBox.className = 'insight-box';
+        insightText.innerHTML = `<strong>The trap:</strong> Paying ${fmt(payment)}/month, you'll be in debt for ${timeStr} and pay ${fmt(totalInterest)} in interest. That's <strong>${extraPct}% extra</strong> on top of what you originally owed.`;
+      }
+
+      document.getElementById('stat-interest').textContent = fmt(totalInterest);
+      document.getElementById('stat-total').textContent = fmt(totalPaid);
+      document.getElementById('stat-monthly').textContent = fmt(payment);
+      document.getElementById('stat-extra').textContent = (extraPct === 0 ? '0%' : '+' + extraPct + '%');
+
+      // Breakdown bar
+      const principalPct = (balance / totalPaid) * 100;
+      const interestPct = 100 - principalPct;
+      document.getElementById('bar-principal').style.width = principalPct + '%';
+      document.getElementById('bar-interest').style.width = interestPct + '%';
+      document.getElementById('bar-principal').textContent = principalPct > 15 ? `Principal ${Math.round(principalPct)}%` : '';
+      document.getElementById('bar-interest').textContent = interestPct > 15 ? `Interest ${Math.round(interestPct)}%` : '';
+    }
+
+    updateCalc();
+  </script>
+</body>
+</html>

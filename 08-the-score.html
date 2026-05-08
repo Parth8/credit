@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIII. Your Credit Score — Decoding Credit Cards</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <style>
+    .chapter-shell { min-height: 100vh; padding-top: 80px; }
+    .chapter-header { padding: 32px 0; border-bottom: 1px dashed var(--border-strong); margin-bottom: 32px; }
+    .chapter-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .chapter-roman { font-family: var(--font-display); font-size: 14px; font-style: italic; color: var(--electric); letter-spacing: 0.04em; }
+    .chapter-progress-text { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .chapter-h1 { font-family: var(--font-display); font-size: clamp(48px, 6vw, 80px); font-weight: 800; line-height: 1; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .chapter-h1 em { font-style: italic; font-weight: 300; color: var(--electric); }
+    .chapter-intro { font-size: 18px; color: var(--ink-muted); max-width: 600px; line-height: 1.6; }
+
+    /* SCORE LAB */
+    .lab-section {
+      padding: 64px 0;
+    }
+
+    .lab-section h2 {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 16px;
+    }
+
+    .lab-section h2 em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--electric);
+    }
+
+    .lab-stage {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.04);
+      overflow: hidden;
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+    }
+
+    /* SCORE GAUGE */
+    .score-display {
+      padding: 48px 40px;
+      background: var(--paper);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+
+    .score-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .gauge-wrap {
+      position: relative;
+      width: 280px;
+      height: 280px;
+    }
+
+    .gauge-svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .gauge-track {
+      fill: none;
+      stroke: var(--parchment);
+      stroke-width: 16;
+    }
+
+    .gauge-fill {
+      fill: none;
+      stroke-width: 16;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s var(--ease-out), stroke 0.6s ease;
+    }
+
+    .gauge-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .gauge-score {
+      font-family: var(--font-display);
+      font-size: 72px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--ink);
+      transition: color 0.4s ease;
+    }
+
+    .gauge-score.poor { color: var(--danger); }
+    .gauge-score.fair { color: var(--warm); }
+    .gauge-score.good { color: var(--gold); }
+    .gauge-score.excellent { color: var(--success); }
+
+    .gauge-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+    }
+
+    .gauge-grade {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      font-style: italic;
+      margin-top: 6px;
+      transition: color 0.4s ease;
+    }
+
+    .gauge-grade.poor { color: var(--danger); }
+    .gauge-grade.fair { color: var(--warm); }
+    .gauge-grade.good { color: var(--gold); }
+    .gauge-grade.excellent { color: var(--success); }
+
+    /* SCORE BANDS LEGEND */
+    .score-bands {
+      margin-top: 32px;
+      width: 100%;
+      max-width: 280px;
+    }
+
+    .band-row {
+      display: grid;
+      grid-template-columns: 12px 70px 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 6px 0;
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+
+    .band-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .band-dot.poor { background: var(--danger); }
+    .band-dot.fair { background: var(--warm); }
+    .band-dot.good { background: var(--gold); }
+    .band-dot.excellent { background: var(--success); }
+
+    .band-range {
+      color: var(--ink-muted);
+      font-weight: 700;
+    }
+
+    .band-label {
+      color: var(--ink-faint);
+    }
+
+    /* DELTA INDICATOR */
+    .delta-flash {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%) translateY(0);
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 800;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.6s var(--ease-out);
+    }
+
+    .delta-flash.up {
+      color: var(--success);
+    }
+
+    .delta-flash.down {
+      color: var(--danger);
+    }
+
+    .delta-flash.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-30px);
+    }
+
+    /* CONTROLS */
+    .lab-controls {
+      padding: 32px;
+      overflow-y: auto;
+      max-height: 700px;
+    }
+
+    .factor-group {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .factor-group:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .factor-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .factor-name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .factor-weight {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--electric);
+      background: var(--electric-soft);
+      padding: 2px 8px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+    }
+
+    .factor-desc {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    /* OPTION BUTTONS */
+    .factor-options {
+      display: grid;
+      gap: 6px;
+    }
+
+    .factor-options.multi {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .factor-options.full {
+      grid-template-columns: 1fr;
+    }
+
+    .factor-options.three {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .option-btn {
+      padding: 10px 14px;
+      background: white;
+      border: 1.5px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      cursor: pointer;
+      transition: all 0.2s var(--ease-out);
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .option-btn:hover {
+      border-color: var(--ink-soft);
+      color: var(--ink);
+    }
+
+    .option-btn.selected {
+      border-color: var(--electric);
+      background: var(--electric-soft);
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .option-impact {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      opacity: 0.8;
+    }
+
+    .option-btn.selected .option-impact {
+      color: var(--electric);
+      font-weight: 700;
+    }
+
+    /* UTILIZATION SLIDER */
+    .util-display {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .util-display-value {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      transition: color 0.3s ease;
+    }
+
+    .util-display-value.poor { color: var(--danger); }
+    .util-display-value.fair { color: var(--warm); }
+    .util-display-value.good { color: var(--success); }
+
+    .util-display-meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      text-align: right;
+      max-width: 180px;
+      line-height: 1.4;
+    }
+
+    /* BREAKDOWN */
+    .breakdown-section {
+      padding: 32px 40px;
+      background: var(--ink);
+      color: var(--cream);
+      border-top: 1px solid var(--border);
+    }
+
+    .breakdown-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(247,243,237,0.5);
+      margin-bottom: 16px;
+    }
+
+    .breakdown-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(247,243,237,0.1);
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .breakdown-row:last-child {
+      border-bottom: none;
+      padding-top: 14px;
+      margin-top: 4px;
+      border-top: 2px solid rgba(247,243,237,0.2);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .breakdown-key {
+      flex: 0 0 200px;
+      color: rgba(247,243,237,0.7);
+    }
+
+    .breakdown-bar {
+      flex: 1;
+      height: 6px;
+      background: rgba(247,243,237,0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .breakdown-bar-fill {
+      height: 100%;
+      background: var(--electric);
+      border-radius: 3px;
+      transition: width 0.6s var(--ease-out);
+    }
+
+    .breakdown-bar-fill.danger { background: var(--danger); }
+    .breakdown-bar-fill.warn { background: var(--warm); }
+    .breakdown-bar-fill.good { background: var(--success); }
+
+    .breakdown-val {
+      flex: 0 0 60px;
+      text-align: right;
+      font-weight: 700;
+    }
+
+    /* PERSONAS */
+    .personas-section {
+      padding: 80px 0;
+      border-top: 1px dashed var(--border-strong);
+      border-bottom: 1px dashed var(--border-strong);
+    }
+
+    .personas-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .persona-card {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out);
+    }
+
+    .persona-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--electric);
+      box-shadow: 0 8px 24px rgba(37,99,235,0.08);
+    }
+
+    .persona-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .persona-name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+
+    .persona-desc {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .persona-score {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--ink);
+      padding: 6px 12px;
+      background: var(--paper);
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    /* CHECKPOINT */
+    .checkpoint { padding: 80px 0; text-align: center; }
+    .checkpoint-card { background: white; border: 2px dashed var(--electric); border-radius: var(--radius-lg); padding: 48px 32px; max-width: 640px; margin: 0 auto; }
+    .checkpoint-title { font-family: var(--font-display); font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+    .checkpoint-title em { font-style: italic; font-weight: 300; color: var(--electric); }
+    .checkpoint-body { font-size: 15px; color: var(--ink-muted); line-height: 1.6; margin-bottom: 28px; }
+    .checkpoint-cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    .chapter-nav-bottom { padding: 40px 0 80px; display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-strong); }
+    .chapter-nav-link { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: inherit; transition: transform 0.3s ease; }
+    .chapter-nav-link:hover { transform: translateX(-4px); }
+    .chapter-nav-link.next { align-items: flex-end; }
+    .chapter-nav-link.next:hover { transform: translateX(4px); }
+    .chapter-nav-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .chapter-nav-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+
+    @media (max-width: 768px) {
+      .lab-stage { grid-template-columns: 1fr; }
+      .score-display { border-right: none; border-bottom: 1px solid var(--border); padding: 32px 20px; }
+      .gauge-wrap { width: 220px; height: 220px; }
+      .gauge-score { font-size: 56px; }
+      .factor-options.three { grid-template-columns: 1fr; }
+      .personas-grid { grid-template-columns: 1fr; }
+      .breakdown-key { flex: 0 0 120px; font-size: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html#chapters">All Chapters</a></li>
+      <li><a href="09-rewards.html">Next →</a></li>
+    </ul>
+  </nav>
+
+  <div class="chapter-shell">
+    <div class="container">
+
+      <div class="chapter-header">
+        <div class="chapter-header-row">
+          <div class="chapter-roman">Chapter VIII</div>
+          <div class="chapter-progress-text">8 of 22 · ~7 min</div>
+        </div>
+        <h1 class="chapter-h1">Your <em>Credit Score</em></h1>
+        <p class="chapter-intro">
+          A three-digit number that decides whether you can buy a house, rent an apartment, or get a loan. It's calculated from five things — and you control most of them. Move the controls. Watch the score react.
+        </p>
+      </div>
+
+      <!-- SCORE LAB -->
+      <section class="lab-section">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em; margin-bottom: 8px;">The interactive lab</div>
+        <h2>Build your <em>credit profile.</em></h2>
+        <p style="font-size: 16px; color: var(--ink-muted); max-width: 540px;">Adjust each factor on the right. The CIBIL score on the left updates in real time. Hover the percentage tags to see how much each factor weighs.</p>
+
+        <div class="lab-stage">
+          <!-- LEFT: GAUGE -->
+          <div class="score-display">
+            <div class="score-eyebrow">Your CIBIL Score</div>
+
+            <div class="gauge-wrap">
+              <svg class="gauge-svg" viewBox="0 0 200 200">
+                <circle class="gauge-track" cx="100" cy="100" r="88"/>
+                <circle class="gauge-fill" cx="100" cy="100" r="88"
+                        id="gauge-fill"
+                        stroke="#16A34A"
+                        stroke-dasharray="552.92"
+                        stroke-dashoffset="138.23"/>
+              </svg>
+              <div class="gauge-center">
+                <div class="gauge-score excellent" id="score-num">750</div>
+                <div class="gauge-label">out of 900</div>
+                <div class="gauge-grade excellent" id="score-grade">Good</div>
+              </div>
+              <div class="delta-flash" id="delta-flash"></div>
+            </div>
+
+            <div class="score-bands">
+              <div class="band-row">
+                <div class="band-dot poor"></div>
+                <div class="band-range">300-579</div>
+                <div class="band-label">Poor — most loans rejected</div>
+              </div>
+              <div class="band-row">
+                <div class="band-dot fair"></div>
+                <div class="band-range">580-669</div>
+                <div class="band-label">Fair — high interest rates</div>
+              </div>
+              <div class="band-row">
+                <div class="band-dot good"></div>
+                <div class="band-range">670-739</div>
+                <div class="band-label">Good — most loans approved</div>
+              </div>
+              <div class="band-row">
+                <div class="band-dot excellent"></div>
+                <div class="band-range">740-900</div>
+                <div class="band-label">Excellent — best rates</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: CONTROLS -->
+          <div class="lab-controls">
+
+            <!-- PAYMENT HISTORY -->
+            <div class="factor-group">
+              <div class="factor-header">
+                <div class="factor-name">Payment history</div>
+                <div class="factor-weight">35% weight</div>
+              </div>
+              <div class="factor-desc">The single biggest factor. Whether you pay on time, every time. One missed payment can tank your score for months.</div>
+              <div class="factor-options three">
+                <button class="option-btn" data-factor="payment" data-value="poor" data-impact="-180" onclick="setOption('payment','poor')">
+                  <span>Often late</span>
+                  <span class="option-impact">-180</span>
+                </button>
+                <button class="option-btn" data-factor="payment" data-value="ok" data-impact="-30" onclick="setOption('payment','ok')">
+                  <span>1 miss/year</span>
+                  <span class="option-impact">-30</span>
+                </button>
+                <button class="option-btn selected" data-factor="payment" data-value="perfect" data-impact="0" onclick="setOption('payment','perfect')">
+                  <span>Always on time</span>
+                  <span class="option-impact">+0</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- CREDIT UTILIZATION -->
+            <div class="factor-group">
+              <div class="factor-header">
+                <div class="factor-name">Credit utilization</div>
+                <div class="factor-weight">30% weight</div>
+              </div>
+              <div class="factor-desc">How much of your available credit you're using. Lower is better — under 30% is the sweet spot. The slider sets your average usage.</div>
+              <div class="util-display">
+                <div class="util-display-value good" id="util-display">15%</div>
+                <div class="util-display-meta">Of your total credit limit · drag to change</div>
+              </div>
+              <input type="range" id="util-slider" min="0" max="100" step="5" value="15" oninput="setUtil(this.value)">
+              <div style="font-family: var(--font-mono); font-size: 10px; color: var(--ink-ghost); display: flex; justify-content: space-between; margin-top: 4px;">
+                <span>0%</span><span style="color: var(--success);">30% (sweet spot)</span><span>100%</span>
+              </div>
+            </div>
+
+            <!-- CREDIT HISTORY LENGTH -->
+            <div class="factor-group">
+              <div class="factor-header">
+                <div class="factor-name">How long you've had credit</div>
+                <div class="factor-weight">15% weight</div>
+              </div>
+              <div class="factor-desc">The longer your oldest credit account has been open, the more trustworthy you look. This is why people advise against closing your oldest card.</div>
+              <div class="factor-options multi">
+                <button class="option-btn" data-factor="history" data-value="new" data-impact="-40" onclick="setOption('history','new')">
+                  <span>< 1 year</span>
+                  <span class="option-impact">-40</span>
+                </button>
+                <button class="option-btn" data-factor="history" data-value="short" data-impact="-15" onclick="setOption('history','short')">
+                  <span>1-3 years</span>
+                  <span class="option-impact">-15</span>
+                </button>
+                <button class="option-btn selected" data-factor="history" data-value="medium" data-impact="0" onclick="setOption('history','medium')">
+                  <span>3-7 years</span>
+                  <span class="option-impact">+0</span>
+                </button>
+                <button class="option-btn" data-factor="history" data-value="long" data-impact="+25" onclick="setOption('history','long')">
+                  <span>7+ years</span>
+                  <span class="option-impact">+25</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- CREDIT MIX -->
+            <div class="factor-group">
+              <div class="factor-header">
+                <div class="factor-name">Credit mix</div>
+                <div class="factor-weight">10% weight</div>
+              </div>
+              <div class="factor-desc">Lenders like seeing you handle different kinds of credit responsibly — not just credit cards, but also a car loan, education loan, or home loan.</div>
+              <div class="factor-options three">
+                <button class="option-btn" data-factor="mix" data-value="card-only" data-impact="-15" onclick="setOption('mix','card-only')">
+                  <span>Cards only</span>
+                  <span class="option-impact">-15</span>
+                </button>
+                <button class="option-btn selected" data-factor="mix" data-value="some" data-impact="0" onclick="setOption('mix','some')">
+                  <span>Cards + 1 loan</span>
+                  <span class="option-impact">+0</span>
+                </button>
+                <button class="option-btn" data-factor="mix" data-value="diverse" data-impact="+15" onclick="setOption('mix','diverse')">
+                  <span>Multiple types</span>
+                  <span class="option-impact">+15</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- NEW CREDIT INQUIRIES -->
+            <div class="factor-group">
+              <div class="factor-header">
+                <div class="factor-name">Recent applications</div>
+                <div class="factor-weight">10% weight</div>
+              </div>
+              <div class="factor-desc">Every credit card or loan application creates a "hard inquiry" on your report. Many in a short window looks desperate to lenders.</div>
+              <div class="factor-options three">
+                <button class="option-btn selected" data-factor="inquiries" data-value="zero" data-impact="0" onclick="setOption('inquiries','zero')">
+                  <span>0 in 6 months</span>
+                  <span class="option-impact">+0</span>
+                </button>
+                <button class="option-btn" data-factor="inquiries" data-value="few" data-impact="-10" onclick="setOption('inquiries','few')">
+                  <span>2-3 inquiries</span>
+                  <span class="option-impact">-10</span>
+                </button>
+                <button class="option-btn" data-factor="inquiries" data-value="many" data-impact="-30" onclick="setOption('inquiries','many')">
+                  <span>5+ inquiries</span>
+                  <span class="option-impact">-30</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- BREAKDOWN -->
+        <div class="lab-stage" style="grid-template-columns: 1fr; margin-top: 16px;">
+          <div class="breakdown-section">
+            <div class="breakdown-title">Score Breakdown · How each factor contributes</div>
+
+            <div class="breakdown-row">
+              <div class="breakdown-key">Payment history (35%)</div>
+              <div class="breakdown-bar"><div class="breakdown-bar-fill good" id="bar-payment" style="width: 100%"></div></div>
+              <div class="breakdown-val" id="val-payment">+0</div>
+            </div>
+            <div class="breakdown-row">
+              <div class="breakdown-key">Utilization (30%)</div>
+              <div class="breakdown-bar"><div class="breakdown-bar-fill good" id="bar-util" style="width: 95%"></div></div>
+              <div class="breakdown-val" id="val-util">+0</div>
+            </div>
+            <div class="breakdown-row">
+              <div class="breakdown-key">Credit history (15%)</div>
+              <div class="breakdown-bar"><div class="breakdown-bar-fill good" id="bar-history" style="width: 80%"></div></div>
+              <div class="breakdown-val" id="val-history">+0</div>
+            </div>
+            <div class="breakdown-row">
+              <div class="breakdown-key">Credit mix (10%)</div>
+              <div class="breakdown-bar"><div class="breakdown-bar-fill good" id="bar-mix" style="width: 75%"></div></div>
+              <div class="breakdown-val" id="val-mix">+0</div>
+            </div>
+            <div class="breakdown-row">
+              <div class="breakdown-key">Recent inquiries (10%)</div>
+              <div class="breakdown-bar"><div class="breakdown-bar-fill good" id="bar-inquiries" style="width: 100%"></div></div>
+              <div class="breakdown-val" id="val-inquiries">+0</div>
+            </div>
+            <div class="breakdown-row">
+              <div class="breakdown-key">Final score</div>
+              <div class="breakdown-bar"></div>
+              <div class="breakdown-val" id="val-final">750</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PERSONAS -->
+      <section class="personas-section">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em; margin-bottom: 8px;">Try these scenarios</div>
+        <h2 style="font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 44px); font-weight: 700; letter-spacing: -0.02em;">Three real <em style="font-style: italic; font-weight: 300; color: var(--electric);">people.</em></h2>
+        <p style="font-size: 16px; color: var(--ink-muted); margin-top: 8px;">Click any persona to see what their score profile looks like in the lab above.</p>
+
+        <div class="personas-grid">
+          <div class="persona-card" onclick="loadPersona('rohan')">
+            <div class="persona-icon">🎓</div>
+            <div class="persona-name">Rohan, 22</div>
+            <div class="persona-desc">Just got his first credit card during college. Sometimes pays late. Maxes it out before each due date.</div>
+            <div class="persona-score">Score: ~580 · Fair</div>
+          </div>
+          <div class="persona-card" onclick="loadPersona('priya')">
+            <div class="persona-icon">💼</div>
+            <div class="persona-name">Priya, 28</div>
+            <div class="persona-desc">2 cards, 1 personal loan. Pays on time. Uses ~25% of her credit limit on average.</div>
+            <div class="persona-score">Score: ~770 · Good</div>
+          </div>
+          <div class="persona-card" onclick="loadPersona('arjun')">
+            <div class="persona-icon">👑</div>
+            <div class="persona-name">Arjun, 35</div>
+            <div class="persona-desc">10-year credit history. Multiple cards + home loan. Auto-pay everything. Uses ~10% of available credit.</div>
+            <div class="persona-score">Score: ~830 · Excellent</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHECKPOINT -->
+      <section class="checkpoint">
+        <div class="checkpoint-card">
+          <div style="font-size: 56px; margin-bottom: 12px;">✦</div>
+          <h3 class="checkpoint-title">You now know what <em>actually moves</em> the number.</h3>
+          <p class="checkpoint-body">
+            Your CIBIL score isn't magic — it's just five inputs, weighted differently. Pay on time. Keep utilization low. Don't apply for cards you don't need. Everything else takes care of itself.
+          </p>
+          <div class="checkpoint-cta-row">
+            <a href="../index.html" class="btn btn--ghost">← all chapters</a>
+            <a href="09-rewards.html" class="btn btn--primary btn--lg">Chapter IX: Rewards →</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="chapter-nav-bottom">
+        <a href="07-fees.html" class="chapter-nav-link">
+          <span class="chapter-nav-meta">← Previous</span>
+          <span class="chapter-nav-name">Every Fee</span>
+        </a>
+        <a href="09-rewards.html" class="chapter-nav-link next">
+          <span class="chapter-nav-meta">Next →</span>
+          <span class="chapter-nav-name">The Rewards Game</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/global.js"></script>
+  <script>
+    // CHAPTER 8 — CREDIT SCORE LAB
+
+    const BASE_SCORE = 750;
+    let state = {
+      payment: { value: 'perfect', impact: 0 },
+      util: 15,
+      history: { value: 'medium', impact: 0 },
+      mix: { value: 'some', impact: 0 },
+      inquiries: { value: 'zero', impact: 0 }
+    };
+
+    let prevScore = BASE_SCORE;
+
+    function utilImpact(util) {
+      // 0-30% sweet spot, 30-50% mild, 50-75% bad, 75+ very bad
+      if (util <= 10) return +20;
+      if (util <= 30) return 0;
+      if (util <= 50) return -25;
+      if (util <= 75) return -65;
+      return -110;
+    }
+
+    function setOption(factor, value) {
+      const btn = document.querySelector(`.option-btn[data-factor="${factor}"][data-value="${value}"]`);
+      const impact = parseInt(btn.dataset.impact);
+      state[factor] = { value, impact };
+
+      // Update UI
+      document.querySelectorAll(`.option-btn[data-factor="${factor}"]`).forEach(b => {
+        b.classList.toggle('selected', b.dataset.value === value);
+      });
+
+      DCC.playClick();
+      recalc();
+    }
+
+    function setUtil(val) {
+      state.util = parseInt(val);
+      const display = document.getElementById('util-display');
+      display.textContent = state.util + '%';
+      display.className = 'util-display-value';
+      if (state.util <= 30) display.classList.add('good');
+      else if (state.util <= 50) display.classList.add('fair');
+      else display.classList.add('poor');
+
+      recalc();
+    }
+
+    function recalc() {
+      const utilImp = utilImpact(state.util);
+      const total = state.payment.impact + utilImp + state.history.impact + state.mix.impact + state.inquiries.impact;
+      const newScore = Math.max(300, Math.min(900, BASE_SCORE + total));
+
+      const delta = newScore - prevScore;
+
+      // Update gauge
+      const scoreEl = document.getElementById('score-num');
+      const gradeEl = document.getElementById('score-grade');
+      const fillEl = document.getElementById('gauge-fill');
+
+      // Animate score number
+      animateScoreTo(prevScore, newScore);
+
+      // Update gauge fill
+      const pct = (newScore - 300) / 600; // 300-900 range
+      const circumference = 552.92;
+      const offset = circumference * (1 - pct);
+      fillEl.style.strokeDashoffset = offset;
+
+      // Color based on band
+      let band = 'poor', label = 'Poor', color = '#DC2626';
+      if (newScore >= 740) { band = 'excellent'; label = 'Excellent'; color = '#16A34A'; }
+      else if (newScore >= 670) { band = 'good'; label = 'Good'; color = '#B45309'; }
+      else if (newScore >= 580) { band = 'fair'; label = 'Fair'; color = '#EA580C'; }
+
+      scoreEl.className = 'gauge-score ' + band;
+      gradeEl.className = 'gauge-grade ' + band;
+      gradeEl.textContent = label;
+      fillEl.style.stroke = color;
+
+      // Delta flash
+      if (Math.abs(delta) >= 5) {
+        const flash = document.getElementById('delta-flash');
+        flash.textContent = delta > 0 ? '+' + delta : delta;
+        flash.className = 'delta-flash show ' + (delta > 0 ? 'up' : 'down');
+        setTimeout(() => flash.classList.remove('show'), 800);
+      }
+
+      // Update breakdown
+      updateBreakdown(utilImp);
+
+      prevScore = newScore;
+    }
+
+    function animateScoreTo(from, to) {
+      const el = document.getElementById('score-num');
+      const start = performance.now();
+      const dur = 600;
+      function tick(now) {
+        const t = Math.min((now - start) / dur, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const val = Math.round(from + (to - from) * eased);
+        el.textContent = val;
+        if (t < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    function updateBreakdown(utilImp) {
+      function fmtImpact(n) {
+        if (n === 0) return '0';
+        return n > 0 ? '+' + n : n.toString();
+      }
+      function barWidth(impact, max) {
+        // Display impact as "health bar" - perfect is 100%, worst is 0%
+        const pct = Math.max(0, Math.min(100, ((impact + max) / max) * 100));
+        return pct;
+      }
+      function barClass(impact) {
+        if (impact >= 0) return 'good';
+        if (impact >= -20) return 'warn';
+        return 'danger';
+      }
+
+      const setBar = (id, impact, max) => {
+        const bar = document.getElementById('bar-' + id);
+        const val = document.getElementById('val-' + id);
+        bar.style.width = barWidth(impact, max) + '%';
+        bar.className = 'breakdown-bar-fill ' + barClass(impact);
+        val.textContent = fmtImpact(impact);
+      };
+
+      setBar('payment', state.payment.impact, 200);
+      setBar('util', utilImp, 130);
+      setBar('history', state.history.impact, 50);
+      setBar('mix', state.mix.impact, 30);
+      setBar('inquiries', state.inquiries.impact, 40);
+
+      const total = state.payment.impact + utilImp + state.history.impact + state.mix.impact + state.inquiries.impact;
+      document.getElementById('val-final').textContent = Math.max(300, Math.min(900, BASE_SCORE + total));
+    }
+
+    function loadPersona(name) {
+      const personas = {
+        rohan: { payment: 'poor', util: 85, history: 'new', mix: 'card-only', inquiries: 'few' },
+        priya: { payment: 'perfect', util: 25, history: 'medium', mix: 'some', inquiries: 'zero' },
+        arjun: { payment: 'perfect', util: 10, history: 'long', mix: 'diverse', inquiries: 'zero' }
+      };
+      const p = personas[name];
+      if (!p) return;
+
+      setOption('payment', p.payment);
+      setOption('history', p.history);
+      setOption('mix', p.mix);
+      setOption('inquiries', p.inquiries);
+
+      document.getElementById('util-slider').value = p.util;
+      setUtil(p.util);
+
+      // Scroll to lab
+      document.querySelector('.lab-stage').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      DCC.playSuccess();
+    }
+
+    // Init
+    recalc();
+  </script>
+</body>
+</html>

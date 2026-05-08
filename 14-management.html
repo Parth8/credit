@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XIV. Managing Like a Pro — Decoding Credit Cards</title>
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.chapter-shell{min-height:100vh;padding-top:80px}
+.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
+.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
+.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
+.chapter-h1 em{font-style:italic;font-weight:300;color:var(--electric)}
+.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
+.sim-stage{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-lg);padding:40px;box-shadow:0 1px 3px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.04);margin:32px 0}
+.month-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-bottom:20px;border-bottom:1px dashed var(--border-strong)}
+.month-num{font-family:var(--font-display);font-size:36px;font-weight:800;letter-spacing:-.02em}
+.month-num em{font-style:italic;font-weight:300;color:var(--electric)}
+.month-stats{display:flex;gap:20px;align-items:center;font-family:var(--font-mono);font-size:11px}
+.month-stat{padding:8px 14px;background:var(--paper);border-radius:999px}
+.month-stat strong{color:var(--ink);font-family:var(--font-display);font-size:14px;margin-left:4px}
+.event-list{display:flex;flex-direction:column;gap:12px}
+.event-card{padding:16px 20px;background:var(--paper);border-radius:var(--radius-md);border-left:3px solid var(--electric);display:flex;align-items:center;gap:16px}
+.event-icon{font-size:24px}
+.event-title{font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:2px}
+.event-desc{font-size:12px;color:var(--ink-muted);line-height:1.5}
+.event-amount{margin-left:auto;font-family:var(--font-display);font-size:18px;font-weight:700}
+.event-amount.bad{color:var(--danger)}
+.event-amount.good{color:var(--success)}
+.action-row{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+.action-btn{flex:1;min-width:200px;padding:18px;background:white;border:1.5px solid var(--border-strong);border-radius:var(--radius-md);cursor:pointer;transition:all .2s;text-align:left;font-family:var(--font-body)}
+.action-btn:hover{border-color:var(--electric);transform:translateY(-2px)}
+.action-btn-title{font-family:var(--font-display);font-size:15px;font-weight:700;margin-bottom:4px}
+.action-btn-desc{font-size:12px;color:var(--ink-muted);line-height:1.4}
+.scoreboard{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px;padding:20px;background:var(--ink);color:white;border-radius:var(--radius-md)}
+.scoreboard-stat{text-align:center}
+.scoreboard-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;opacity:.6;margin-bottom:4px}
+.scoreboard-val{font-family:var(--font-display);font-size:24px;font-weight:800;letter-spacing:-.02em}
+.feedback-box{padding:20px 24px;border-radius:var(--radius-md);margin-top:16px;border-left:4px solid}
+.feedback-box.good{background:var(--success-soft);border-color:var(--success)}
+.feedback-box.bad{background:var(--danger-soft);border-color:var(--danger)}
+.feedback-title{font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:6px}
+.feedback-text{font-size:13px;line-height:1.6;color:var(--ink-soft)}
+.checkpoint{padding:80px 0;text-align:center}
+.checkpoint-card{background:white;border:2px dashed var(--electric);border-radius:var(--radius-lg);padding:48px 32px;max-width:640px;margin:0 auto}
+.checkpoint-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
+.checkpoint-title em{font-style:italic;font-weight:300;color:var(--electric)}
+.checkpoint-body{font-size:15px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px}
+.checkpoint-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
+.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
+.chapter-nav-link:hover{transform:translateX(-4px)}
+.chapter-nav-link.next{align-items:flex-end}
+.chapter-nav-link.next:hover{transform:translateX(4px)}
+.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
+@media(max-width:768px){.scoreboard{grid-template-columns:1fr;gap:16px}.month-header{flex-direction:column;gap:16px;align-items:flex-start}.sim-stage{padding:24px}}
+</style></head><body>
+<nav class="site-nav">
+<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="15-protections.html">Next →</a></li></ul>
+</nav>
+
+<div class="chapter-shell"><div class="container">
+<div class="chapter-header">
+<div class="chapter-header-row"><div class="chapter-roman">Chapter XIV</div><div class="chapter-progress-text">14 of 22 · ~8 min</div></div>
+<h1 class="chapter-h1">Managing <em>Like a Pro</em></h1>
+<p class="chapter-intro">A 6-month simulation. Each month, life happens — you decide how to respond. Watch your credit score and savings react to every choice.</p>
+</div>
+
+<section style="padding:32px 0;">
+<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;">The 6-month simulator</div>
+<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;">Six months of <em style="font-style:italic;font-weight:300;color:var(--electric);">real life</em>.</h2>
+
+<div class="sim-stage" id="sim-stage"></div>
+</section>
+
+<section class="checkpoint">
+<div class="checkpoint-card">
+<div style="font-size:56px;margin-bottom:12px;">✦</div>
+<h3 class="checkpoint-title">You can <em>steer the ship</em>.</h3>
+<p class="checkpoint-body">Up next: hidden card protections most cardholders never use, even though they\'re paying for them.</p>
+<div class="checkpoint-cta-row">
+<a href="../index.html" class="btn btn--ghost">← all chapters</a>
+<a href="15-protections.html" class="btn btn--primary btn--lg">Chapter XV: Hidden Protections →</a>
+</div></div></section>
+
+<div class="chapter-nav-bottom">
+<a href="13-international.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">International</span></a>
+<a href="15-protections.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Next →</span><span class="chapter-nav-name">Hidden Protections</span></a>
+</div>
+</div></div>
+
+<script src="../js/global.js"></script>
+<script>
+const MONTHS = [
+  {
+    title: 'Month 1', subtitle: 'Settling in',
+    events: [
+      { icon: '🏠', t: 'Rent + groceries', d: 'Standard living costs', amt: 35000, type: 'spend' },
+      { icon: '📱', t: 'Phone EMI', d: 'Auto-debit on the 5th', amt: 4500, type: 'spend' },
+      { icon: '🍽️', t: 'Dining out (5x)', d: 'Weekend plans', amt: 6500, type: 'spend' }
+    ],
+    statementTotal: 46000,
+    actions: [
+      { id: 'full', t: 'Pay in full', d: '₹46,000 — interest-free', impact: { score: 5, savings: 0 }, fb: 'Right move. <strong>Score: +5 points</strong>. Zero interest, full grace period preserved.', good: true },
+      { id: 'min', t: 'Pay minimum', d: '₹2,300 only', impact: { score: -3, savings: -1500 }, fb: 'You\'ve voluntarily started paying interest. <strong>Lost the grace period. Owe ₹1,500 in interest next month.</strong>', good: false },
+      { id: 'half', t: 'Pay half', d: '₹23,000 (whatever I can)', impact: { score: -2, savings: -750 }, fb: 'Better than minimum, but interest still kicks in on the unpaid portion. Always pay <strong>full or 0%</strong>.', good: false }
+    ]
+  },
+  {
+    title: 'Month 2', subtitle: 'Limit warning',
+    events: [
+      { icon: '🛒', t: 'Big shopping spree', d: 'Festival sales', amt: 28000, type: 'spend' },
+      { icon: '⚠️', t: 'Limit warning', d: 'You\'re at ₹42K of ₹50K limit', amt: 0, type: 'warn' }
+    ],
+    statementTotal: 42000,
+    actions: [
+      { id: 'pause', t: 'Pause spending this month', d: 'Use UPI/debit till statement closes', impact: { score: 8, savings: 0 }, fb: 'Smart. <strong>Utilization stays at 84% on this card</strong> — high but not over. By next month it\'ll be back under 30% and your score recovers.', good: true },
+      { id: 'spend', t: 'Keep spending', d: 'YOLO mode', impact: { score: -15, savings: -500 }, fb: 'Bad. You went over limit. <strong>Over-limit fee + score drop ~15 points.</strong> Lenders see high utilization as desperation.', good: false },
+      { id: 'limit', t: 'Request limit increase', d: 'Lower the utilization ratio', impact: { score: 3, savings: 0 }, fb: 'Solid move IF you get approved. Higher limit + same spending = lower utilization = better score. <strong>+3 points.</strong>', good: true }
+    ]
+  },
+  {
+    title: 'Month 3', subtitle: 'Travel month',
+    events: [
+      { icon: '✈️', t: 'Singapore trip', d: 'Spending in SGD', amt: 65000, type: 'spend' },
+      { icon: '🏨', t: 'DCC offered at hotel', d: 'Pay in INR ₹67,250 OR SGD 1,050?', amt: 0, type: 'warn' }
+    ],
+    statementTotal: 65000,
+    actions: [
+      { id: 'sgd', t: 'Pay in local currency (SGD)', d: 'Bank converts at near-market rate', impact: { score: 0, savings: 2250 }, fb: 'Right call. <strong>Saved ~₹2,250</strong> by avoiding DCC. Just the standard 3.5% forex markup.', good: true },
+      { id: 'inr', t: 'Pay in INR (DCC)', d: 'Locked rate, "no surprises"', impact: { score: 0, savings: -2250 }, fb: 'Lost ₹2,250 to DCC markup. The "rate locked" framing is the trap. <em>Always pay in local currency abroad.</em>', good: false }
+    ]
+  },
+  {
+    title: 'Month 4', subtitle: 'Fraud alert',
+    events: [
+      { icon: '🚨', t: 'Suspicious charge: ₹4,800', d: 'Unrecognized merchant in Bangkok', amt: 4800, type: 'spend' },
+      { icon: '💳', t: 'Card-present txn somewhere you\'ve never been', d: 'Could be cloned/skimmed', amt: 0, type: 'warn' }
+    ],
+    statementTotal: 38000,
+    actions: [
+      { id: 'block', t: 'Block card + dispute', d: 'Call bank immediately', impact: { score: 0, savings: 4800 }, fb: 'Correct. Reported within 3 days = <strong>zero liability under RBI rules</strong>. ₹4,800 disputed and refunded.', good: true },
+      { id: 'wait', t: 'Wait & watch', d: 'See if more charges come', impact: { score: -10, savings: -4800 }, fb: 'Bad delay. By the time you act, more transactions follow. <strong>Lost ₹4,800 + had to spend hours disputing.</strong> Always block immediately.', good: false }
+    ]
+  },
+  {
+    title: 'Month 5', subtitle: 'Job change',
+    events: [
+      { icon: '💼', t: 'New job, ₹20K salary bump', d: 'Could request limit increase', amt: 0, type: 'warn' },
+      { icon: '🎯', t: 'Banks offering pre-approved cards', d: 'Premium options popping up in app', amt: 0, type: 'warn' }
+    ],
+    statementTotal: 32000,
+    actions: [
+      { id: 'increase', t: 'Request limit increase only', d: 'Same card, higher ceiling', impact: { score: 5, savings: 0 }, fb: 'Best move. <strong>Lower utilization automatically</strong>, no new hard inquiry. +5 points.', good: true },
+      { id: 'newcard', t: 'Apply for a premium card', d: 'Hard inquiry; new account', impact: { score: -8, savings: 1500 }, fb: 'New cards mean a hard pull on your credit. <strong>-8 points temporarily.</strong> Better rewards but you\'ll need 6 months to recover the score.', good: false },
+      { id: 'both', t: 'Apply for premium AND increase old', d: 'Two pulls', impact: { score: -15, savings: 1500 }, fb: 'Too aggressive. Two hard pulls in one month signals desperation to credit bureaus. <strong>-15 points.</strong>', good: false }
+    ]
+  },
+  {
+    title: 'Month 6', subtitle: 'The reckoning',
+    events: [
+      { icon: '🎁', t: 'Bonus + reward points piling up', d: '~12,000 points sitting unused', amt: 0, type: 'warn' },
+      { icon: '📊', t: 'Year-end statement check', d: 'Look at the full picture', amt: 0, type: 'warn' }
+    ],
+    statementTotal: 28000,
+    actions: [
+      { id: 'redeem', t: 'Redeem points for vouchers', d: 'Cash them in', impact: { score: 0, savings: 3000 }, fb: 'Free ₹3,000. Points expire if you don\'t use them. <strong>Always redeem before they vanish.</strong>', good: true },
+      { id: 'hoard', t: 'Save them for "later"', d: 'Bigger redemption someday', impact: { score: 0, savings: 0 }, fb: 'Most reward points <strong>devalue over time</strong> as banks change conversion rates. The best time to redeem is when you have enough for something useful.', good: false }
+    ]
+  }
+];
+
+let monthIdx = 0, score = 720, savings = 0, picksMade = 0;
+
+function renderMonth() {
+  if (monthIdx >= MONTHS.length) {
+    document.getElementById('sim-stage').innerHTML = `
+      <div style="text-align:center;padding:32px;">
+        <div style="font-family:var(--font-display);font-size:64px;font-weight:900;color:${score >= 720 ? 'var(--success)' : 'var(--warm)'};letter-spacing:-.04em;">${score}</div>
+        <div style="font-family:var(--font-display);font-size:24px;font-weight:700;margin:12px 0;">Final score after 6 months.</div>
+        <div style="font-family:var(--font-display);font-size:36px;font-weight:800;color:${savings >= 0 ? 'var(--success)' : 'var(--danger)'};margin-bottom:24px;">${savings >= 0 ? '+' : ''}₹${savings.toLocaleString('en-IN')}</div>
+        <p style="font-size:14px;color:var(--ink-muted);max-width:480px;margin:0 auto 24px;">Your moves over 6 months added up to <strong>${savings >= 0 ? `₹${savings.toLocaleString('en-IN')} in your pocket` : `₹${Math.abs(savings).toLocaleString('en-IN')} out of it`}</strong>. The score change reflects how the bureau saw your behavior.</p>
+        <button class="btn btn--ghost" onclick="resetSim()">↻ Replay</button>
+      </div>`;
+    return;
+  }
+  const m = MONTHS[monthIdx];
+  document.getElementById('sim-stage').innerHTML = `
+    <div class="month-header">
+      <div>
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:4px;">${m.subtitle.toUpperCase()}</div>
+        <div class="month-num"><em>${m.title}</em></div>
+      </div>
+      <div class="month-stats">
+        <div class="month-stat">CIBIL <strong>${score}</strong></div>
+        <div class="month-stat">Saved <strong>${savings >= 0 ? '+' : '-'}₹${Math.abs(savings).toLocaleString('en-IN')}</strong></div>
+      </div>
+    </div>
+    <div class="event-list">
+      ${m.events.map(e => `
+        <div class="event-card">
+          <div class="event-icon">${e.icon}</div>
+          <div>
+            <div class="event-title">${e.t}</div>
+            <div class="event-desc">${e.d}</div>
+          </div>
+          ${e.amt > 0 ? `<div class="event-amount${e.type === 'spend' ? ' bad' : ''}">${e.type === 'spend' ? '-' : '+'}₹${e.amt.toLocaleString('en-IN')}</div>` : ''}
+        </div>`).join('')}
+    </div>
+    <div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-top:32px;margin-bottom:12px;">YOUR MOVE</div>
+    <div class="action-row" id="action-row">
+      ${m.actions.map(a => `
+        <button class="action-btn" onclick="pickAction('${a.id}')" data-id="${a.id}">
+          <div class="action-btn-title">${a.t}</div>
+          <div class="action-btn-desc">${a.d}</div>
+        </button>`).join('')}
+    </div>
+    <div id="month-feedback"></div>`;
+}
+
+function pickAction(id) {
+  const m = MONTHS[monthIdx];
+  const a = m.actions.find(x => x.id === id);
+  score += a.impact.score;
+  savings += a.impact.savings;
+  picksMade++;
+  document.querySelectorAll('.action-btn').forEach(b => b.style.pointerEvents = 'none');
+
+  document.getElementById('month-feedback').innerHTML = `
+    <div class="feedback-box ${a.good ? 'good' : 'bad'}">
+      <div class="feedback-title">${a.good ? '✓ Good move' : 'Costly call'}</div>
+      <div class="feedback-text">${a.fb}</div>
+      <div style="margin-top:12px;display:flex;justify-content:flex-end;">
+        <button class="btn btn--primary" onclick="monthIdx++;renderMonth();">${monthIdx < MONTHS.length - 1 ? `Month ${monthIdx + 2} →` : 'Final scoreboard →'}</button>
+      </div>
+    </div>`;
+  if (a.good) DCC.playSuccess(); else DCC.playClick();
+}
+
+function resetSim() {
+  monthIdx = 0; score = 720; savings = 0; picksMade = 0;
+  renderMonth();
+}
+
+renderMonth();
+</script>
+</body></html>

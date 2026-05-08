@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XIX. Your First Card, Right — Decoding Credit Cards</title>
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.chapter-shell{min-height:100vh;padding-top:80px}
+.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
+.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
+.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
+.chapter-h1 em{font-style:italic;font-weight:300;color:var(--electric)}
+.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
+.path-stage{padding:48px 0}
+.path-step{display:grid;grid-template-columns:80px 1fr;gap:24px;padding:32px 0;border-bottom:1px dashed var(--border);align-items:flex-start}
+.path-step:last-child{border-bottom:none}
+.step-num{font-family:var(--font-display);font-size:64px;font-weight:900;letter-spacing:-.04em;color:var(--electric);line-height:.8;font-style:italic}
+.step-content h3{font-family:var(--font-display);font-size:28px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.step-content h3 em{font-style:italic;font-weight:300;color:var(--electric)}
+.step-content p{font-size:15px;color:var(--ink-muted);line-height:1.7;margin-bottom:16px}
+.step-content p strong{color:var(--ink)}
+.step-content p em{font-style:italic;color:var(--electric)}
+.step-do-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.step-do{padding:16px 20px;border-radius:var(--radius-md);background:white}
+.step-do.do{border-left:3px solid var(--success)}
+.step-do.dont{border-left:3px solid var(--danger)}
+.step-do strong{font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:6px}
+.step-do.do strong{color:var(--success)}
+.step-do.dont strong{color:var(--danger)}
+.step-do p{font-size:13px;line-height:1.5;color:var(--ink-soft);margin:0}
+.commitment-box{margin-top:48px;padding:32px;background:var(--ink);color:white;border-radius:var(--radius-lg)}
+.commitment-box h3{font-family:var(--font-display);font-size:24px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px;color:white}
+.commitment-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.commitment-item{display:flex;align-items:flex-start;gap:12px;cursor:pointer;font-size:14px;line-height:1.5;color:rgba(247,243,237,.8);transition:color .2s;padding:8px 0}
+.commitment-item:hover{color:white}
+.commit-check{width:22px;height:22px;border:2px solid rgba(247,243,237,.4);border-radius:6px;flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.commitment-item.checked .commit-check{background:#F7B87A;border-color:#F7B87A;color:var(--ink)}
+.commitment-item.checked{color:white;text-decoration:line-through;text-decoration-color:rgba(247,184,122,.5)}
+.checkpoint{padding:80px 0;text-align:center}
+.checkpoint-card{background:white;border:2px dashed var(--electric);border-radius:var(--radius-lg);padding:48px 32px;max-width:640px;margin:0 auto}
+.checkpoint-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
+.checkpoint-title em{font-style:italic;font-weight:300;color:var(--electric)}
+.checkpoint-body{font-size:15px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px}
+.checkpoint-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
+.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
+.chapter-nav-link:hover{transform:translateX(-4px)}
+.chapter-nav-link.next{align-items:flex-end}
+.chapter-nav-link.next:hover{transform:translateX(4px)}
+.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
+@media(max-width:768px){.path-step{grid-template-columns:1fr;gap:8px}.step-num{font-size:48px}.step-do-row{grid-template-columns:1fr}}
+</style></head><body>
+<nav class="site-nav">
+<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="20-relationship.html">Next →</a></li></ul>
+</nav>
+
+<div class="chapter-shell"><div class="container">
+<div class="chapter-header">
+<div class="chapter-header-row"><div class="chapter-roman">Chapter XIX</div><div class="chapter-progress-text">19 of 22 · ~7 min</div></div>
+<h1 class="chapter-h1">Your First Card, <em>Right</em></h1>
+<p class="chapter-intro">If you\'re 18-22 and getting your first card — this is the playbook. The traps that catch beginners, the habits that compound for decades, and the rules to start with.</p>
+</div>
+
+<section class="path-stage">
+<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;">A 5-step roadmap</div>
+<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;margin-bottom:16px;">Start <em style="font-style:italic;font-weight:300;color:var(--electric);">right</em>, never recover later.</h2>
+
+<div class="path-step">
+<div class="step-num">01</div>
+<div class="step-content">
+<h3>Pick the <em>simplest</em> card</h3>
+<p>Your first card should not be premium, fancy, or impressive. <strong>It should be the simplest card you can get</strong> from a bank you already have an account with — usually a basic cashback or no-frills card with a low limit (₹25K-₹50K). The flashy reward cards are for people who already know what they\'re doing. <em>You\'re building a foundation, not a portfolio.</em></p>
+<div class="step-do-row">
+<div class="step-do do"><strong>Do</strong><p>Start with a basic SBI/HDFC/ICICI cashback card from your salary or savings bank. Lower the stakes while you learn.</p></div>
+<div class="step-do dont"><strong>Don\'t</strong><p>Apply for 3 cards "to compare," chase a premium card with travel perks before you\'ve managed one card cleanly, or take a card from someone offering "guaranteed approval" on a banner ad.</p></div>
+</div>
+</div>
+</div>
+
+<div class="path-step">
+<div class="step-num">02</div>
+<div class="step-content">
+<h3>Set up <em>auto-pay</em> on day one</h3>
+<p>Before you make a single purchase, log into the app and set auto-pay to "<strong>full balance, due date</strong>." Not minimum. Not fixed amount. Full balance. <strong>This single step prevents 90% of beginner credit card disasters</strong> — the snowballing interest, the forgotten payment, the score crash. If you ever can\'t afford the full balance, that\'s a signal you\'re overspending — not a reason to switch to minimum payment.</p>
+<div class="step-do-row">
+<div class="step-do do"><strong>Do</strong><p>Set "auto-pay full" the same day you activate the card. Make it impossible to forget.</p></div>
+<div class="step-do dont"><strong>Don\'t</strong><p>Set it to "minimum due" — that\'s the trap setting. Don\'t leave it manual either; one missed reminder costs ₹600 + interest + a credit score hit.</p></div>
+</div>
+</div>
+</div>
+
+<div class="path-step">
+<div class="step-num">03</div>
+<div class="step-content">
+<h3>The <em>30% rule</em></h3>
+<p>Never spend more than <strong>30% of your credit limit</strong> in any month. If your limit is ₹50K, that\'s ₹15K max. This isn\'t about being able to afford the bill — it\'s about how the credit bureau sees you. <em>High utilization screams "desperate borrower"</em>; low utilization signals "doesn\'t need credit, gets credit." The latter is who lenders want.</p>
+<div class="step-do-row">
+<div class="step-do do"><strong>Do</strong><p>Treat your credit limit as 3x your actual spending budget. Limit ₹50K = spend up to ₹15K. Use UPI/debit for the rest.</p></div>
+<div class="step-do dont"><strong>Don\'t</strong><p>Treat your limit as your wallet. "I have a ₹50K limit, so ₹40K spending is fine because I can afford the bill" — wrong. The bureau still sees 80% utilization.</p></div>
+</div>
+</div>
+</div>
+
+<div class="path-step">
+<div class="step-num">04</div>
+<div class="step-content">
+<h3>Use it for <em>predictable</em> spends only</h3>
+<p>The single fastest way to build credit history: <strong>put 1-2 recurring bills</strong> (your phone bill, Netflix, gym membership) on the card. Auto-pay handles the rest. <em>You build 6 months of perfect payment history without thinking about it</em>. Then layer in actual purchases gradually as you build comfort. <strong>Your card should be boring for the first year.</strong></p>
+<div class="step-do-row">
+<div class="step-do do"><strong>Do</strong><p>Phone bill + Netflix + maybe one shopping habit (groceries on the card, rest on UPI). Predictable, low-stakes.</p></div>
+<div class="step-do dont"><strong>Don\'t</strong><p>Use it for "I\'ll figure out how to pay later" purchases. The card isn\'t for emergencies — it\'s for converting your existing planned spending into rewards.</p></div>
+</div>
+</div>
+</div>
+
+<div class="path-step">
+<div class="step-num">05</div>
+<div class="step-content">
+<h3>Check <em>once</em> a month</h3>
+<p>Spend 5 minutes once a month going through the statement. <strong>Look for:</strong> charges you don\'t recognize, slow-creeping subscriptions, fees that snuck in. <em>This single habit catches fraud early, identifies bad spending patterns before they become habits, and gives you control of your money.</em> Most beginner card disasters happen because nobody looked at the statement until it was a crisis.</p>
+<div class="step-do-row">
+<div class="step-do do"><strong>Do</strong><p>Set a monthly recurring 5-minute calendar event titled "Card statement check" — non-negotiable.</p></div>
+<div class="step-do dont"><strong>Don\'t</strong><p>Wait until something feels wrong. By the time it feels wrong, you\'re probably 3 months deep into a problem.</p></div>
+</div>
+</div>
+</div>
+</section>
+
+<section style="padding:0 0 48px;">
+<div class="commitment-box">
+<h3>Your First-Card Commitments</h3>
+<p style="color:rgba(247,243,237,.7);font-size:14px;line-height:1.6;">Tap each commitment as you make it to yourself. These five rules — followed for one year — set you up for a decade of clean credit.</p>
+<div class="commitment-list">
+<div class="commitment-item" onclick="this.classList.toggle('checked');DCC.playClick();"><div class="commit-check">✓</div><div>I will start with one simple card from a bank I already have an account with.</div></div>
+<div class="commitment-item" onclick="this.classList.toggle('checked');DCC.playClick();"><div class="commit-check">✓</div><div>I will set auto-pay to "full balance" on day one — never minimum.</div></div>
+<div class="commitment-item" onclick="this.classList.toggle('checked');DCC.playClick();"><div class="commit-check">✓</div><div>I will keep utilization under 30% of my credit limit, every month.</div></div>
+<div class="commitment-item" onclick="this.classList.toggle('checked');DCC.playClick();"><div class="commit-check">✓</div><div>I will only put predictable recurring bills on the card for the first 3 months.</div></div>
+<div class="commitment-item" onclick="this.classList.toggle('checked');DCC.playClick();"><div class="commit-check">✓</div><div>I will check my statement for 5 minutes every month.</div></div>
+</div>
+</div>
+</section>
+
+<section class="checkpoint">
+<div class="checkpoint-card">
+<div style="font-size:56px;margin-bottom:12px;">🌱</div>
+<h3 class="checkpoint-title">You have a <em>real plan</em>.</h3>
+<p class="checkpoint-body">Up next: stepping back from the mechanics — what credit cards do to your relationship with money, and how to keep them as a tool rather than a master.</p>
+<div class="checkpoint-cta-row">
+<a href="../index.html" class="btn btn--ghost">← all chapters</a>
+<a href="20-relationship.html" class="btn btn--primary btn--lg">Chapter XX: Relationship with Money →</a>
+</div></div></section>
+
+<div class="chapter-nav-bottom">
+<a href="18-taxes.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">Taxes & TCS</span></a>
+<a href="20-relationship.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Next →</span><span class="chapter-nav-name">Relationship with Money</span></a>
+</div>
+</div></div>
+
+<script src="../js/global.js"></script>
+</body></html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IX. The Rewards Game — Decoding Credit Cards</title>
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.chapter-shell{min-height:100vh;padding-top:80px}
+.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
+.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
+.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
+.chapter-h1 em{font-style:italic;font-weight:300;color:var(--electric)}
+.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
+.stage{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-lg);padding:40px;box-shadow:0 1px 3px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.04);margin:32px 0}
+.card-pick{text-align:left;background:white;border:1.5px solid var(--border-strong);border-radius:var(--radius-md);padding:16px 20px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px;font-family:var(--font-body)}
+.card-pick:hover{border-color:var(--electric);transform:translateY(-2px)}
+.checkpoint{padding:80px 0;text-align:center}
+.checkpoint-card{background:white;border:2px dashed var(--electric);border-radius:var(--radius-lg);padding:48px 32px;max-width:640px;margin:0 auto}
+.checkpoint-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
+.checkpoint-title em{font-style:italic;font-weight:300;color:var(--electric)}
+.checkpoint-body{font-size:15px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px}
+.checkpoint-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
+.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
+.chapter-nav-link:hover{transform:translateX(-4px)}
+.chapter-nav-link.next{align-items:flex-end}
+.chapter-nav-link.next:hover{transform:translateX(4px)}
+.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
+@media(max-width:768px){#rew-cards{grid-template-columns:1fr !important}.stage{padding:24px}}
+</style></head><body>
+<nav class="site-nav">
+<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="10-fraud.html">Next →</a></li></ul>
+</nav>
+
+<div class="chapter-shell"><div class="container">
+<div class="chapter-header">
+<div class="chapter-header-row"><div class="chapter-roman">Chapter IX</div><div class="chapter-progress-text">9 of 22 · ~8 min</div></div>
+<h1 class="chapter-h1">The <em>Rewards Game</em></h1>
+<p class="chapter-intro">Six purchases. Six different cards. Pick the one that maximizes rewards. Wrong choices show you exactly what you left on the table.</p>
+</div>
+
+<section style="padding:32px 0;">
+<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;">Match the <em style="font-style:italic;font-weight:300;color:var(--electric);">purchase</em> to the best card.</h2>
+<p style="font-size:16px;color:var(--ink-muted);max-width:540px;">Each round shows a real purchase. Pick which of the six cards earns you the most rewards on it.</p>
+
+<div class="stage" id="rew-stage">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+<div style="font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);">Round <span id="rew-round">1</span> of 6</div>
+<div style="font-family:var(--font-mono);font-size:12px;padding:6px 14px;background:var(--paper);border-radius:999px;">Saved: ₹<span id="rew-saved">0</span></div>
+</div>
+
+<div id="rew-purchase" style="background:var(--paper);padding:24px 28px;border-radius:var(--radius-md);margin-bottom:24px;">
+<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:4px;">PURCHASE</div>
+<div style="font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:4px;" id="rew-name">—</div>
+<div style="font-size:14px;color:var(--ink-muted);" id="rew-amount">—</div>
+</div>
+
+<div id="rew-cards" style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;"></div>
+<div id="rew-feedback"></div>
+</div>
+</section>
+
+<section class="checkpoint">
+<div class="checkpoint-card">
+<div style="font-size:56px;margin-bottom:12px;">✦</div>
+<h3 class="checkpoint-title">Card-pairing is now a <em>skill</em> you have.</h3>
+<p class="checkpoint-body">Up next: spotting fraud — six scenarios where you have to identify the trap.</p>
+<div class="checkpoint-cta-row">
+<a href="../index.html" class="btn btn--ghost">← all chapters</a>
+<a href="10-fraud.html" class="btn btn--primary btn--lg">Chapter X: Spot the Fraud →</a>
+</div></div></section>
+
+<div class="chapter-nav-bottom">
+<a href="08-the-score.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">Your Score</span></a>
+<a href="10-fraud.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Next →</span><span class="chapter-nav-name">Spot the Fraud</span></a>
+</div>
+</div></div>
+
+<script src="../js/global.js"></script>
+<script>
+const CARDS = {
+  cashback: { name: 'Generic 1% Cashback', desc: '1% on everything', icon: '💵' },
+  amazon:   { name: 'Amazon Pay ICICI', desc: '5% on Amazon, 1% else', icon: '📦' },
+  flipkart: { name: 'Flipkart Axis', desc: '5% Flipkart, 4% Swiggy/Uber, 1.5% else', icon: '🛍️' },
+  travel:   { name: 'HDFC Regalia', desc: 'Boosted on travel & dining', icon: '✈️' },
+  fuel:     { name: 'IndianOil HDFC', desc: '5% IndianOil, 1% else', icon: '⛽' },
+  dining:   { name: 'SBI Elite', desc: '5x dining/movies, 2x else', icon: '🍽️' }
+};
+
+const PURCHASES = [
+  { name: 'Amazon order: laptop', amount: '₹65,000', best: 'amazon', bestVal: 3250, badVal: 650, why: 'Amazon Pay ICICI gives 5% — that\'s ₹3,250 back. A generic 1% card gives ₹650. <strong>That\'s ₹2,600 left on the table</strong> for picking the wrong card on a single purchase.' },
+  { name: 'Petrol fill-up at IndianOil', amount: '₹3,000', best: 'fuel', bestVal: 150, badVal: 30, why: 'Fuel co-brand cards win at the pump (5% vs 1%). They also waive the 1% fuel surcharge that regular cards include — which on its own saves ₹30 per fill-up.' },
+  { name: 'Dinner at a fancy restaurant', amount: '₹4,500', best: 'dining', bestVal: 225, badVal: 45, why: 'Dining-rewards cards (SBI Elite, Axis Magnus) give 5x reward points = ~5% effective return. The mistake most people make: using a generic card for a category another card boosts 5x.' },
+  { name: 'Flight to Bali (international)', amount: '₹38,000', best: 'travel', bestVal: 1900, badVal: 380, why: 'Travel cards earn boosted points on flights, plus give airport lounges, travel insurance, and zero forex markup. <strong>The perks alone are arguably worth more than the points.</strong>' },
+  { name: 'Swiggy order, weekend lunch', amount: '₹800', best: 'flipkart', bestVal: 32, badVal: 8, why: 'Flipkart Axis is unusual — it gives 4% on Swiggy and Uber (not just Flipkart). For the food-delivery generation, this card quietly outperforms most others in everyday spending.' },
+  { name: 'Buying medicines at a pharmacy', amount: '₹1,200', best: 'cashback', bestVal: 12, badVal: 0, why: 'No category-bonus card covers pharmacies. The generic 1% cashback wins by simply not having a worse "off-category" rate. <strong>Key insight:</strong> a flat-cashback card is your "everything else" card. You always need one.' }
+];
+
+let round = 0, saved = 0;
+
+function renderRew() {
+  if (round >= PURCHASES.length) {
+    document.getElementById('rew-stage').innerHTML = `
+      <div style="text-align:center;padding:32px;">
+        <div style="font-family:var(--font-display);font-size:64px;font-weight:900;color:var(--success);letter-spacing:-.04em;">₹${saved.toLocaleString('en-IN')}</div>
+        <div style="font-family:var(--font-display);font-size:24px;font-weight:700;margin:12px 0;">Total saved by picking right.</div>
+        <p style="font-size:14px;color:var(--ink-muted);max-width:480px;margin:0 auto 24px;">In a year of these choices, the difference between the right card and a generic card adds up to <strong>₹15,000–30,000</strong> for an average spender. Not life-changing — but it's yours.</p>
+        <button class="btn btn--ghost" onclick="resetRew()">↻ Play again</button>
+      </div>`;
+    return;
+  }
+  const p = PURCHASES[round];
+  document.getElementById('rew-round').textContent = round + 1;
+  document.getElementById('rew-name').textContent = p.name;
+  document.getElementById('rew-amount').textContent = p.amount;
+  document.getElementById('rew-feedback').innerHTML = '';
+  const cards = document.getElementById('rew-cards');
+  cards.innerHTML = Object.entries(CARDS).map(([key, c]) => `
+    <button class="card-pick" onclick="pickCard('${key}')">
+      <div style="font-size:28px;">${c.icon}</div>
+      <div>
+        <div style="font-family:var(--font-display);font-size:14px;font-weight:700;margin-bottom:2px;">${c.name}</div>
+        <div style="font-size:11px;color:var(--ink-muted);line-height:1.4;">${c.desc}</div>
+      </div>
+    </button>`).join('');
+}
+
+function pickCard(key) {
+  const p = PURCHASES[round];
+  const isBest = key === p.best;
+  document.querySelectorAll('.card-pick').forEach(b => b.style.pointerEvents = 'none');
+  if (isBest) {
+    saved += (p.bestVal - p.badVal);
+    document.getElementById('rew-saved').textContent = saved.toLocaleString('en-IN');
+    DCC.playSuccess();
+  } else {
+    DCC.playClick();
+  }
+  document.getElementById('rew-feedback').innerHTML = `
+    <div style="margin-top:24px;padding:24px;border-radius:var(--radius-md);${isBest ? 'background:var(--success-soft);border-left:4px solid var(--success);' : 'background:var(--danger-soft);border-left:4px solid var(--danger);'}">
+      <div style="font-family:var(--font-display);font-size:18px;font-weight:700;margin-bottom:8px;">${isBest ? '✓ Best card chosen.' : `Not optimal. The best card was ${CARDS[p.best].name}.`}</div>
+      <p style="font-size:14px;line-height:1.6;color:var(--ink-soft);">${p.why}</p>
+      <div style="margin-top:16px;display:flex;justify-content:flex-end;"><button class="btn btn--primary" onclick="round++;renderRew();">${round < PURCHASES.length - 1 ? 'Next →' : 'See total →'}</button></div>
+    </div>`;
+}
+
+function resetRew() {
+  round = 0; saved = 0;
+  document.getElementById('rew-saved').textContent = 0;
+  renderRew();
+}
+
+renderRew();
+</script>
+</body></html>

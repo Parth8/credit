@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XVI. Talking to Your Bank — Decoding Credit Cards</title>
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.chapter-shell{min-height:100vh;padding-top:80px}
+.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
+.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
+.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
+.chapter-h1 em{font-style:italic;font-weight:300;color:var(--electric)}
+.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
+.scenario-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:32px}
+.scen-btn{padding:24px;background:white;border:1px solid var(--border-strong);border-radius:var(--radius-md);cursor:pointer;transition:all .3s;text-align:left}
+.scen-btn:hover{transform:translateY(-3px);border-color:var(--electric);box-shadow:0 8px 24px rgba(37,99,235,.06)}
+.scen-icon{font-size:36px;margin-bottom:10px}
+.scen-btn h4{font-family:var(--font-display);font-size:18px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
+.scen-btn p{font-size:13px;color:var(--ink-muted);line-height:1.5}
+.dialogue-stage{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-lg);padding:32px;box-shadow:0 1px 3px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.04);margin:32px 0;display:none}
+.dialogue-stage.active{display:block}
+.call-header{display:flex;align-items:center;gap:16px;padding-bottom:20px;border-bottom:1px dashed var(--border);margin-bottom:24px}
+.call-icon{width:48px;height:48px;border-radius:50%;background:var(--success);display:flex;align-items:center;justify-content:center;font-size:24px;animation:call-pulse 2s ease infinite}
+@keyframes call-pulse{0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,.4)}50%{box-shadow:0 0 0 8px rgba(22,163,74,0)}}
+.call-info h4{font-family:var(--font-display);font-size:18px;font-weight:700;margin-bottom:2px}
+.call-info p{font-size:12px;color:var(--ink-muted);font-family:var(--font-mono)}
+.dialogue-thread{display:flex;flex-direction:column;gap:16px}
+.bubble{max-width:75%;padding:14px 18px;border-radius:18px;font-size:14px;line-height:1.5}
+.bubble.agent{background:var(--paper);color:var(--ink);border-radius:18px 18px 18px 4px;align-self:flex-start}
+.bubble.you{background:var(--electric);color:white;border-radius:18px 18px 4px 18px;align-self:flex-end}
+.bubble.you-correct{background:var(--success)}
+.bubble.you-wrong{background:var(--danger)}
+.bubble-from{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);letter-spacing:.04em;margin-bottom:4px}
+.bubble.you .bubble-from,.bubble.you-correct .bubble-from,.bubble.you-wrong .bubble-from{color:rgba(255,255,255,.7)}
+.choice-row{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.choice-btn{padding:14px 18px;background:white;border:1.5px solid var(--border-strong);border-radius:14px;cursor:pointer;font-size:14px;line-height:1.4;text-align:left;transition:all .2s;font-family:var(--font-body);color:var(--ink)}
+.choice-btn:hover{border-color:var(--electric);background:var(--electric-soft);transform:translateX(4px)}
+.coach-note{margin-top:16px;padding:14px 18px;background:var(--electric-soft);border-left:3px solid var(--electric);border-radius:0 8px 8px 0;font-size:13px;line-height:1.5;color:var(--ink-soft)}
+.coach-note strong{color:var(--electric);font-family:var(--font-mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase}
+.checkpoint{padding:80px 0;text-align:center}
+.checkpoint-card{background:white;border:2px dashed var(--electric);border-radius:var(--radius-lg);padding:48px 32px;max-width:640px;margin:0 auto}
+.checkpoint-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
+.checkpoint-title em{font-style:italic;font-weight:300;color:var(--electric)}
+.checkpoint-body{font-size:15px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px}
+.checkpoint-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
+.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
+.chapter-nav-link:hover{transform:translateX(-4px)}
+.chapter-nav-link.next{align-items:flex-end}
+.chapter-nav-link.next:hover{transform:translateX(4px)}
+.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
+@media(max-width:768px){.scenario-grid{grid-template-columns:1fr}.dialogue-stage{padding:20px}.bubble{max-width:90%}}
+</style></head><body>
+<nav class="site-nav">
+<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="17-alternatives.html">Next →</a></li></ul>
+</nav>
+
+<div class="chapter-shell"><div class="container">
+<div class="chapter-header">
+<div class="chapter-header-row"><div class="chapter-roman">Chapter XVI</div><div class="chapter-progress-text">16 of 22 · ~5 min</div></div>
+<h1 class="chapter-h1">Talking to <em>Your Bank</em></h1>
+<p class="chapter-intro">When you actually need to call. Pick a scenario. Practice the conversation. Learn the exact words that get results faster than vague complaints.</p>
+</div>
+
+<section style="padding:32px 0;" id="scen-section">
+<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;">Pick what you\'d be calling about</div>
+<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;">Four <em style="font-style:italic;font-weight:300;color:var(--electric);">real conversations</em>.</h2>
+
+<div class="scenario-grid">
+<button class="scen-btn" onclick="startScen(0)">
+<div class="scen-icon">💳</div><h4>Lost or stolen card</h4>
+<p>You realize your card is missing. Block it, get a replacement, ensure no charges go through.</p>
+</button>
+<button class="scen-btn" onclick="startScen(1)">
+<div class="scen-icon">📋</div><h4>Dispute a charge</h4>
+<p>A merchant double-billed you, or a refund never came through. You want it reversed.</p>
+</button>
+<button class="scen-btn" onclick="startScen(2)">
+<div class="scen-icon">📈</div><h4>Request limit increase</h4>
+<p>You\'ve had the card a while, salary went up. Time to ask for a higher limit.</p>
+</button>
+<button class="scen-btn" onclick="startScen(3)">
+<div class="scen-icon">💰</div><h4>Reverse a fee</h4>
+<p>You got hit with a late fee or annual fee. Many can be waived if you ask correctly.</p>
+</button>
+</div>
+</section>
+
+<section class="dialogue-stage" id="dialogue-stage">
+<div class="call-header">
+<div class="call-icon" id="call-icon">📞</div>
+<div class="call-info">
+<h4 id="call-title">HDFC Customer Service</h4>
+<p id="call-meta">Connected · 0:00</p>
+</div>
+<button class="btn btn--ghost" style="margin-left:auto;" onclick="resetScen()">↺ End call</button>
+</div>
+<div class="dialogue-thread" id="dialogue-thread"></div>
+<div id="dialogue-coach"></div>
+</section>
+
+<section class="checkpoint">
+<div class="checkpoint-card">
+<div style="font-size:56px;margin-bottom:12px;">📞</div>
+<h3 class="checkpoint-title">You\'ll <em>handle the call</em>.</h3>
+<p class="checkpoint-body">Up next: how UPI, debit cards, BNPL, and digital wallets stack up against credit cards — when to use which.</p>
+<div class="checkpoint-cta-row">
+<a href="../index.html" class="btn btn--ghost">← all chapters</a>
+<a href="17-alternatives.html" class="btn btn--primary btn--lg">Chapter XVII: UPI, Wallets & The Rest →</a>
+</div></div></section>
+
+<div class="chapter-nav-bottom">
+<a href="15-protections.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">Hidden Protections</span></a>
+<a href="17-alternatives.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Next →</span><span class="chapter-nav-name">UPI, Wallets & The Rest</span></a>
+</div>
+</div></div>
+
+<script src="../js/global.js"></script>
+<script>
+const SCENARIOS = [
+  // Lost card
+  [
+    { from: 'agent', text: 'Hello, this is HDFC customer support. How may I help you?' },
+    { from: 'you', choices: [
+      { t: 'I lost my card.', good: false, why: 'Too vague — they\'ll spend 5 minutes verifying and asking which card. Lead with action.' },
+      { t: 'I need to block my credit card immediately.', good: true, why: 'Direct, urgent, action-oriented. Agent skips small talk and goes to lookup.' },
+      { t: 'Hi, I\'m a customer of yours, sorry to bother you, but...', good: false, why: 'Don\'t apologize for needing service. They\'re paid to help. Lead with the issue.' }
+    ]},
+    { from: 'agent', text: 'I\'ve initiated the block. Your card is now inactive. Have you noticed any unauthorized transactions?' },
+    { from: 'you', choices: [
+      { t: 'No, I just lost it. I don\'t think anyone got hold of it.', good: false, why: 'Don\'t guess. Banks treat "no fraud" answers more lightly than "I want a fraud check."' },
+      { t: 'Please run a fraud check on the last 7 days and reverse anything I didn\'t authorize.', good: true, why: 'Even if you don\'t see fraud, RBI requires the bank to investigate if you ask. Always ask.' },
+      { t: 'I\'ll check my statement and call back.', good: false, why: 'You\'re already on the call. Use this time. They\'ll do the check faster than you\'ll get back to it.' }
+    ]},
+    { from: 'agent', text: 'Done. I\'ll dispatch a replacement card to your registered address — ETA 5-7 working days. Anything else?' },
+    { from: 'you', choices: [
+      { t: 'Can you also flag any auto-pay merchants so I know what\'ll break?', good: true, why: 'Smart. Replacement = new card number = subscriptions break. Get the list now to update them proactively.' },
+      { t: 'No, that\'s all, thanks!', good: false, why: 'Missed the auto-pay angle. You\'ll discover broken subscriptions one by one over the next few weeks.' }
+    ]}
+  ],
+  // Dispute
+  [
+    { from: 'agent', text: 'HDFC support, how can I help?' },
+    { from: 'you', choices: [
+      { t: 'I want to dispute a charge of ₹4,200 from Swiggy on the 15th — they double-billed me.', good: true, why: 'Specific: amount, merchant, date, reason. Agent can pull up the transaction in 30 seconds.' },
+      { t: 'Some weird charge on my statement, can you check?', good: false, why: 'Vague. They\'ll spend the call asking which one. Always lead with: amount, merchant, date.' }
+    ]},
+    { from: 'agent', text: 'Got it. Have you tried contacting Swiggy first? Standard procedure asks customers to attempt with the merchant before disputing.' },
+    { from: 'you', choices: [
+      { t: 'I emailed support 3 times over 8 days. They acknowledged once, then went silent. Here\'s the email thread.', good: true, why: 'Documented attempt + specifics. This converts the dispute from "you didn\'t try" to "merchant unresponsive" — much easier to win.' },
+      { t: 'No, but the merchant\'s clearly wrong, can\'t the bank just sort it out?', good: false, why: 'Bank will tell you to try the merchant first and call back. You\'ll lose 2 weeks.' }
+    ]},
+    { from: 'agent', text: 'Understood. I\'ll initiate a chargeback under "Duplicate Processing" — provisional credit in 7 days. Reference number is DSP-1102456.' },
+    { from: 'you', choices: [
+      { t: 'Could you also email me confirmation of this conversation and the reference number?', good: true, why: 'Always get written confirmation. If the agent forgets to file or someone "loses" the case, you have proof.' },
+      { t: 'Great, thanks!', good: false, why: 'Without written confirmation, your dispute lives in their internal system only. Some get lost.' }
+    ]}
+  ],
+  // Limit increase
+  [
+    { from: 'agent', text: 'HDFC, how may I help?' },
+    { from: 'you', choices: [
+      { t: 'I\'d like a credit limit increase. I\'ve had this card 18 months, salary increased from ₹60K to ₹85K, current utilization is around 25%.', good: true, why: 'You\'ve made the case for them. Tenure + income + good utilization = approval likely.' },
+      { t: 'I want a higher limit because I keep hitting it.', good: false, why: 'Sounds like you\'re overspending — the opposite of what gets approval. Frame as needing room, not chasing it.' }
+    ]},
+    { from: 'agent', text: 'Sure. Just to confirm — would you accept this as a soft pull (instant decision based on existing data) or a hard pull (slightly higher chance, but credit-bureau inquiry)?' },
+    { from: 'you', choices: [
+      { t: 'Soft pull, please. I want to avoid the score hit if possible.', good: true, why: 'Soft pull = no impact on credit score. Take it whenever offered.' },
+      { t: 'Hard pull is fine, I\'m confident I\'ll qualify.', good: false, why: 'You took an unnecessary 5-10 point hit. Soft pull would have done the same job.' }
+    ]},
+    { from: 'agent', text: 'Approved. Limit increased from ₹2L to ₹3.5L, effective immediately. Anything else?' },
+    { from: 'you', choices: [
+      { t: 'Yes — could you waive the next annual fee since I\'m a long-term customer?', good: true, why: 'Always ask. Banks waive fees for retention reasons. Cost: 30 seconds. Potential savings: ₹1,500-3,000.' },
+      { t: 'No, thanks!', good: false, why: 'Left ₹1,500-3,000 on the table. The "always ask" rule with banks pays off remarkably often.' }
+    ]}
+  ],
+  // Reverse fee
+  [
+    { from: 'agent', text: 'How can I help?' },
+    { from: 'you', choices: [
+      { t: 'I see a ₹950 late fee on this month\'s statement. I\'ve been a customer for 3 years with a perfect payment record. Could you waive this as a one-time courtesy?', good: true, why: 'Polite + factual + asks for "one-time courtesy." This wording is bank-internal language for fee reversal — works ~70% of the time for first offenses.' },
+      { t: 'Why are you charging me a late fee? Reverse it.', good: false, why: 'Aggressive tone makes the agent defensive and prevents them from going to bat for you. They\'ll cite policy and refuse.' },
+      { t: 'I want to talk to your manager about removing this fee.', good: false, why: 'Skipping the agent removes their ability to help you. Almost always the agent themselves has authority to reverse one-off fees.' }
+    ]},
+    { from: 'agent', text: 'Let me check your account. Yes, perfect record for 36 months. I can offer a one-time waiver. The fee will be reversed in 2-3 working days.' },
+    { from: 'you', choices: [
+      { t: 'Thank you — could you also remove the GST charged on the fee, since the underlying fee is being reversed?', good: true, why: 'Detail-oriented. The GST on the reversed fee is also reversible — agents sometimes forget unless asked. ₹171 saved.' },
+      { t: 'Great, thanks!', good: false, why: 'Missed the GST. ₹171 stays charged because the agent didn\'t auto-reverse it. Always check both line items.' }
+    ]}
+  ]
+];
+
+let activeScen = -1, scenStep = 0, msgs = [];
+
+function startScen(idx) {
+  activeScen = idx;
+  scenStep = 0;
+  msgs = [];
+  document.getElementById('scen-section').style.display = 'none';
+  document.getElementById('dialogue-stage').classList.add('active');
+  renderDialog();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderDialog() {
+  const scen = SCENARIOS[activeScen];
+  const thread = document.getElementById('dialogue-thread');
+  thread.innerHTML = '';
+
+  // Render all messages so far
+  msgs.forEach(m => {
+    const div = document.createElement('div');
+    div.className = 'bubble ' + (m.cls || m.from);
+    div.innerHTML = `<div class="bubble-from">${m.from === 'agent' ? 'Agent' : 'You'}</div>${m.text}`;
+    thread.appendChild(div);
+  });
+
+  if (scenStep >= scen.length) {
+    document.getElementById('dialogue-coach').innerHTML = `<div style="margin-top:24px;padding:24px;background:var(--success-soft);border-radius:var(--radius-md);border-left:4px solid var(--success);"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;margin-bottom:8px;">Call complete ✓</div><p style="font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:12px;">Notice the pattern: <strong>specific facts, polite tone, written confirmation, asking the right follow-ups</strong>. These conversations get resolved 5x faster when you front-load the right info.</p><button class="btn btn--ghost" onclick="resetScen()">↺ Try another</button></div>`;
+    return;
+  }
+
+  const step = scen[scenStep];
+  if (step.from === 'agent') {
+    msgs.push({ from: 'agent', text: step.text });
+    scenStep++;
+    setTimeout(renderDialog, 600);
+  } else {
+    // Show choices
+    document.getElementById('dialogue-coach').innerHTML = `
+      <div class="choice-row">
+        ${step.choices.map((c, i) => `<button class="choice-btn" onclick="pickChoice(${i})">${c.t}</button>`).join('')}
+      </div>`;
+  }
+}
+
+function pickChoice(idx) {
+  const scen = SCENARIOS[activeScen];
+  const step = scen[scenStep];
+  const choice = step.choices[idx];
+  msgs.push({ from: 'you', text: choice.t, cls: choice.good ? 'you-correct' : 'you-wrong' });
+  scenStep++;
+  document.getElementById('dialogue-coach').innerHTML = `
+    <div class="coach-note"><strong>${choice.good ? '✓ Smart move' : '✗ Costly phrasing'}:</strong> ${choice.why}</div>
+    <div style="margin-top:12px;display:flex;justify-content:flex-end;"><button class="btn btn--primary" onclick="continueDialog()">Continue →</button></div>`;
+  if (choice.good) DCC.playSuccess(); else DCC.playClick();
+}
+
+function continueDialog() {
+  document.getElementById('dialogue-coach').innerHTML = '';
+  renderDialog();
+}
+
+function resetScen() {
+  activeScen = -1; scenStep = 0; msgs = [];
+  document.getElementById('scen-section').style.display = 'block';
+  document.getElementById('dialogue-stage').classList.remove('active');
+  document.getElementById('dialogue-coach').innerHTML = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body></html>

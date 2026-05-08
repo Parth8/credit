@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I. The Handshake — Decoding Credit Cards</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <style>
+    /* CHAPTER LAYOUT */
+    .chapter-shell {
+      min-height: 100vh;
+      padding-top: 80px;
+    }
+
+    .chapter-header {
+      padding: 32px 0;
+      border-bottom: 1px dashed var(--border-strong);
+      margin-bottom: 32px;
+    }
+
+    .chapter-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .chapter-roman {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-style: italic;
+      color: var(--electric);
+      letter-spacing: 0.04em;
+    }
+
+    .chapter-progress-text {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+    }
+
+    .chapter-h1 {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 6vw, 80px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .chapter-h1 em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--electric);
+    }
+
+    .chapter-intro {
+      font-size: 18px;
+      color: var(--ink-muted);
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    /* SCENE 1 — TAP TO BEGIN */
+    .scene {
+      padding: 64px 0;
+      border-bottom: 1px dashed var(--border-strong);
+    }
+
+    .scene-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+
+    .scene-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .scene-title em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--electric);
+    }
+
+    .scene-prompt {
+      font-size: 16px;
+      color: var(--ink-muted);
+      margin-bottom: 32px;
+      max-width: 520px;
+    }
+
+    /* THE INTERACTIVE TAP STAGE */
+    .tap-stage {
+      background: white;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-strong);
+      padding: 60px 40px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.04);
+      position: relative;
+      overflow: hidden;
+      min-height: 520px;
+    }
+
+    .tap-stage-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(37,99,235,0.04) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(234,88,12,0.03) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .tap-arena {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 60px;
+      position: relative;
+      z-index: 2;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .tap-card-wrap {
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.4s var(--ease-out);
+    }
+
+    .tap-card-wrap.swiping {
+      animation: card-swipe 1s var(--ease-out) forwards;
+    }
+
+    @keyframes card-swipe {
+      0% { transform: translateX(0) rotate(0); }
+      40% { transform: translateX(60px) translateY(20px) rotate(-3deg) scale(0.95); }
+      70% { transform: translateX(80px) translateY(40px) rotate(-5deg) scale(0.9); }
+      100% { transform: translateX(0) translateY(0) rotate(0) scale(1); }
+    }
+
+    .tap-card-wrap:hover:not(.swiping):not(.disabled) {
+      transform: translateY(-6px) rotate(-1deg);
+    }
+
+    .tap-card-wrap.disabled {
+      cursor: default;
+    }
+
+    .tap-hint {
+      position: absolute;
+      bottom: -50px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-3deg);
+      white-space: nowrap;
+      animation: hint-bounce 2s ease-in-out infinite;
+    }
+
+    @keyframes hint-bounce {
+      0%, 100% { transform: translateX(-50%) rotate(-3deg) translateY(0); }
+      50% { transform: translateX(-50%) rotate(-3deg) translateY(-4px); }
+    }
+
+    .tap-hint .annotation {
+      font-size: 22px;
+      color: var(--electric);
+    }
+
+    .tap-arrow-doodle {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(50%);
+    }
+
+    .pos-wrap {
+      position: relative;
+    }
+
+    .pos-terminal {
+      width: 240px;
+      background: linear-gradient(180deg, #2D2D28 0%, #1a1a18 100%);
+      border-radius: 16px 16px 12px 12px;
+      padding: 16px;
+      color: white;
+      font-family: var(--font-mono);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .pos-screen {
+      background: #0a2e14;
+      border-radius: 8px;
+      padding: 20px 16px;
+      margin-bottom: 12px;
+      font-size: 11px;
+      line-height: 1.5;
+      color: #4ade80;
+      min-height: 100px;
+      border: 1px solid #052e16;
+      transition: all 0.3s ease;
+    }
+
+    .pos-screen.thinking {
+      animation: screen-flicker 0.5s ease infinite alternate;
+    }
+
+    @keyframes screen-flicker {
+      from { background: #0a2e14; }
+      to { background: #0d3a1a; }
+    }
+
+    .pos-screen.success {
+      background: #052e16;
+      color: #86efac;
+    }
+
+    .pos-screen.failure {
+      background: #2e0a14;
+      color: #fca5a5;
+    }
+
+    .pos-amount {
+      font-size: 32px;
+      font-weight: 700;
+      font-family: var(--font-display);
+      color: #f0fdf4;
+      margin-bottom: 4px;
+    }
+
+    .pos-label {
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    .pos-status {
+      font-size: 12px;
+      margin-top: 8px;
+      opacity: 0.9;
+    }
+
+    .pos-keys {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+
+    .pos-key {
+      background: #1a1a18;
+      padding: 8px 0;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 10px;
+      color: #6b6b60;
+    }
+
+    /* PARTICIPANTS PANEL */
+    .participants-panel {
+      margin-top: 60px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .participants-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .participant {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    .participant:hover {
+      transform: translateY(-2px);
+    }
+
+    .participant-circle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      transition: all 0.4s var(--ease-out);
+      position: relative;
+    }
+
+    .participant.lit .participant-circle {
+      border-color: var(--electric);
+      background: var(--electric-soft);
+      transform: scale(1.1);
+      box-shadow: 0 0 0 6px rgba(37,99,235,0.1);
+    }
+
+    .participant.lit .participant-circle::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 2px solid var(--electric);
+      opacity: 0;
+      animation: ring-pulse 1.5s ease infinite;
+    }
+
+    @keyframes ring-pulse {
+      0% { opacity: 1; transform: scale(0.8); }
+      100% { opacity: 0; transform: scale(1.3); }
+    }
+
+    .participant.done .participant-circle {
+      border-color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .participant-name {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink);
+      text-align: center;
+    }
+
+    .participant-role {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .participant-line {
+      position: absolute;
+      top: 28px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--parchment);
+      z-index: 1;
+      margin: 0 28px;
+      border-radius: 1px;
+    }
+
+    .participant-line-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0;
+      background: var(--electric);
+      border-radius: 1px;
+      transition: width 1s var(--ease-out);
+    }
+
+    .money-traveler {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      background: var(--electric);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: white;
+      box-shadow: 0 4px 12px var(--electric-glow);
+      opacity: 0;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .money-traveler.return {
+      background: var(--success);
+      box-shadow: 0 4px 12px rgba(22,163,74,0.4);
+    }
+
+    /* INFO PANEL */
+    .info-panel {
+      background: var(--paper);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      margin-top: 24px;
+      min-height: 80px;
+      transition: all 0.4s var(--ease-out);
+      border: 1px solid var(--border);
+    }
+
+    .info-panel-empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-faint);
+      font-size: 14px;
+      font-style: italic;
+    }
+
+    .info-panel-step {
+      animation: info-fade 0.4s var(--ease-out);
+    }
+
+    @keyframes info-fade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .info-step-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .info-step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--electric);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .info-step-name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .info-step-time {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-faint);
+      margin-left: auto;
+      letter-spacing: 0.04em;
+    }
+
+    .info-step-body {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink-muted);
+    }
+
+    .info-step-body strong {
+      color: var(--ink);
+    }
+
+    /* CONTROLS */
+    .stage-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px dashed var(--border);
+    }
+
+    .step-counter {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink-faint);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .step-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--parchment);
+      transition: all 0.3s ease;
+    }
+
+    .step-dot.active {
+      background: var(--electric);
+      transform: scale(1.3);
+    }
+
+    .step-dot.done {
+      background: var(--electric);
+      opacity: 0.4;
+    }
+
+    /* SCENE 2 — MEET THE PLAYERS */
+    .meet-section {
+      padding: 80px 0;
+      border-bottom: 1px dashed var(--border-strong);
+    }
+
+    .meet-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 40px;
+    }
+
+    .meet-card {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 24px 20px;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .meet-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--electric);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s var(--ease-out);
+    }
+
+    .meet-card:hover, .meet-card.selected {
+      border-color: var(--electric);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(37,99,235,0.08);
+    }
+
+    .meet-card:hover::before, .meet-card.selected::before {
+      transform: scaleX(1);
+    }
+
+    .meet-icon {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+
+    .meet-name {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .meet-role {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* DETAIL DRAWER */
+    .detail-drawer {
+      margin-top: 32px;
+      background: white;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-strong);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.5s var(--ease-out);
+    }
+
+    .detail-drawer.open {
+      max-height: 800px;
+    }
+
+    .detail-content {
+      padding: 36px 40px;
+      display: grid;
+      grid-template-columns: 80px 1fr 1fr;
+      gap: 32px;
+    }
+
+    .detail-icon-big {
+      font-size: 56px;
+      align-self: flex-start;
+    }
+
+    .detail-main h3 {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .detail-main h3 em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--electric);
+    }
+
+    .detail-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--electric);
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+    }
+
+    .detail-desc {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--ink-muted);
+    }
+
+    .detail-desc strong { color: var(--ink); }
+
+    .detail-side h4 {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .detail-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .detail-list li {
+      font-size: 14px;
+      color: var(--ink-muted);
+      padding-left: 20px;
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .detail-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--electric);
+      font-family: var(--font-mono);
+    }
+
+    .detail-profit {
+      margin-top: 20px;
+      padding: 16px;
+      background: var(--warm-soft);
+      border-left: 3px solid var(--warm);
+      border-radius: 0 8px 8px 0;
+      font-size: 13px;
+      color: var(--ink-soft);
+      line-height: 1.5;
+    }
+
+    .detail-profit strong {
+      color: var(--warm);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* CHECKPOINT */
+    .checkpoint {
+      padding: 80px 0;
+      text-align: center;
+    }
+
+    .checkpoint-card {
+      background: white;
+      border: 2px dashed var(--electric);
+      border-radius: var(--radius-lg);
+      padding: 48px 32px;
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .checkpoint-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .checkpoint-title {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .checkpoint-title em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--electric);
+    }
+
+    .checkpoint-body {
+      font-size: 15px;
+      color: var(--ink-muted);
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+
+    .checkpoint-cta-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* CHAPTER NAV */
+    .chapter-nav-bottom {
+      padding: 40px 0 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px dashed var(--border-strong);
+    }
+
+    .chapter-nav-link {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.3s ease;
+    }
+
+    .chapter-nav-link:hover {
+      transform: translateX(-4px);
+    }
+
+    .chapter-nav-link.next {
+      align-items: flex-end;
+    }
+
+    .chapter-nav-link.next:hover {
+      transform: translateX(4px);
+    }
+
+    .chapter-nav-meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+    }
+
+    .chapter-nav-name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      transition: color 0.2s ease;
+    }
+
+    .chapter-nav-link:hover .chapter-nav-name {
+      color: var(--electric);
+    }
+
+    @media (max-width: 768px) {
+      .chapter-shell { padding-top: 60px; }
+      .tap-stage { padding: 32px 20px; }
+      .tap-arena { gap: 24px; flex-direction: column; }
+      .pos-terminal { width: 200px; }
+      .meet-grid { grid-template-columns: repeat(2, 1fr); }
+      .detail-content { grid-template-columns: 1fr; gap: 20px; }
+      .detail-icon-big { font-size: 36px; }
+      .participant-name { font-size: 9px; }
+      .participant-role { display: none; }
+      .participant-circle { width: 40px; height: 40px; font-size: 18px; }
+      .participant-line { top: 20px; margin: 0 20px; }
+      .stage-controls { flex-direction: column; gap: 16px; align-items: stretch; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html#chapters">All Chapters</a></li>
+      <li><a href="02-getting-a-card.html">Next →</a></li>
+    </ul>
+  </nav>
+
+  <div class="chapter-shell">
+    <div class="container">
+
+      <!-- CHAPTER HEADER -->
+      <div class="chapter-header">
+        <div class="chapter-header-row">
+          <div class="chapter-roman">Chapter I</div>
+          <div class="chapter-progress-text">1 of 22 · ~5 min</div>
+        </div>
+        <h1 class="chapter-h1">The <em>Handshake</em></h1>
+        <p class="chapter-intro">
+          Every credit card transaction is a five-way handshake that happens in under two seconds. Tap the card. Watch it unfold. Meet everyone in the room.
+        </p>
+      </div>
+
+      <!-- SCENE 1 — TAP TO BEGIN -->
+      <section class="scene">
+        <div class="scene-label">Scene 1 · The Tap</div>
+        <h2 class="scene-title">First — <em>tap your card</em> on the terminal.</h2>
+        <p class="scene-prompt">No reading required. Just touch the card to start the transaction. Everything else will happen on its own. (You can replay any time.)</p>
+
+        <div class="tap-stage">
+          <div class="tap-stage-bg"></div>
+
+          <div class="tap-arena">
+            <!-- THE CARD -->
+            <div class="tap-card-wrap" id="tap-card" onclick="initiateSwipe()">
+              <div class="cc-visual">
+                <div class="cc-chip"></div>
+                <svg class="cc-contactless" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 13a10 10 0 0114 0M8 16a6 6 0 018 0M11 19a2 2 0 012 0"/>
+                </svg>
+                <div class="cc-number">4539 1234 5678 7821</div>
+                <div class="cc-bottom">
+                  <div class="cc-name">Your Name</div>
+                  <div class="cc-network">VISA</div>
+                </div>
+              </div>
+              <div class="tap-hint" id="tap-hint">
+                <span class="annotation">tap me 👆</span>
+              </div>
+            </div>
+
+            <!-- THE POS TERMINAL -->
+            <div class="pos-wrap">
+              <div class="pos-terminal">
+                <div class="pos-screen" id="pos-screen">
+                  <div class="pos-label">Total amount</div>
+                  <div class="pos-amount">₹4,200</div>
+                  <div class="pos-status" id="pos-status">Waiting for card...</div>
+                </div>
+                <div class="pos-keys">
+                  <div class="pos-key">1</div><div class="pos-key">2</div><div class="pos-key">3</div>
+                  <div class="pos-key">4</div><div class="pos-key">5</div><div class="pos-key">6</div>
+                  <div class="pos-key">7</div><div class="pos-key">8</div><div class="pos-key">9</div>
+                </div>
+              </div>
+              <div style="font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); text-align: center; margin-top: 12px; letter-spacing: 0.04em;">SWIGGY POS · ₹4,200</div>
+            </div>
+          </div>
+
+          <!-- THE PARTICIPANTS ROW -->
+          <div class="participants-panel">
+            <div class="participants-row" id="participants-row">
+              <div class="participant-line">
+                <div class="participant-line-fill" id="line-fill-1" style="left: 0; width: 0;"></div>
+              </div>
+              <div class="money-traveler" id="traveler-1"></div>
+
+              <div class="participant" data-step="0">
+                <div class="participant-circle">💳</div>
+                <div class="participant-name">You</div>
+                <div class="participant-role">Cardholder</div>
+              </div>
+
+              <div class="participant" data-step="1">
+                <div class="participant-circle">🏪</div>
+                <div class="participant-name">Swiggy</div>
+                <div class="participant-role">Merchant</div>
+              </div>
+
+              <div class="participant" data-step="2">
+                <div class="participant-circle">⚙️</div>
+                <div class="participant-name">Razorpay</div>
+                <div class="participant-role">Acquirer</div>
+              </div>
+
+              <div class="participant" data-step="3">
+                <div class="participant-circle">🌐</div>
+                <div class="participant-name">VISA</div>
+                <div class="participant-role">Network</div>
+              </div>
+
+              <div class="participant" data-step="4">
+                <div class="participant-circle">🏛️</div>
+                <div class="participant-name">HDFC</div>
+                <div class="participant-role">Issuer</div>
+              </div>
+            </div>
+
+            <!-- INFO PANEL -->
+            <div class="info-panel" id="info-panel">
+              <div class="info-panel-empty">tap the card to begin →</div>
+            </div>
+
+            <!-- CONTROLS -->
+            <div class="stage-controls">
+              <div class="step-counter">
+                <span id="step-text">Ready</span>
+                <div class="step-dots">
+                  <div class="step-dot" id="dot-0"></div>
+                  <div class="step-dot" id="dot-1"></div>
+                  <div class="step-dot" id="dot-2"></div>
+                  <div class="step-dot" id="dot-3"></div>
+                  <div class="step-dot" id="dot-4"></div>
+                  <div class="step-dot" id="dot-5"></div>
+                </div>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn--ghost" id="prev-btn" onclick="prevStep()" disabled>← back</button>
+                <button class="btn btn--outline" id="reset-btn" onclick="resetSwipe()" style="display: none;">↻ replay</button>
+                <button class="btn btn--primary" id="next-btn" onclick="nextStep()" style="display: none;">next step →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCENE 2 — MEET THE PLAYERS -->
+      <section class="meet-section">
+        <div class="scene-label">Scene 2 · The Cast</div>
+        <h2 class="scene-title">Click each player to learn <em>who they are</em> and <em>how they profit</em>.</h2>
+        <p class="scene-prompt">All five of these players were just involved in your transaction. They each have a job. They each get paid.</p>
+
+        <div class="meet-grid">
+          <div class="meet-card" onclick="selectPlayer(0)" id="meet-0">
+            <div class="meet-icon">💳</div>
+            <div class="meet-name">You</div>
+            <div class="meet-role">Cardholder</div>
+          </div>
+          <div class="meet-card" onclick="selectPlayer(1)" id="meet-1">
+            <div class="meet-icon">🏪</div>
+            <div class="meet-name">Merchant</div>
+            <div class="meet-role">The Seller</div>
+          </div>
+          <div class="meet-card" onclick="selectPlayer(2)" id="meet-2">
+            <div class="meet-icon">⚙️</div>
+            <div class="meet-name">Acquirer</div>
+            <div class="meet-role">Their Bank</div>
+          </div>
+          <div class="meet-card" onclick="selectPlayer(3)" id="meet-3">
+            <div class="meet-icon">🌐</div>
+            <div class="meet-name">Network</div>
+            <div class="meet-role">The Rails</div>
+          </div>
+          <div class="meet-card" onclick="selectPlayer(4)" id="meet-4">
+            <div class="meet-icon">🏛️</div>
+            <div class="meet-name">Issuer</div>
+            <div class="meet-role">Your Bank</div>
+          </div>
+        </div>
+
+        <div class="detail-drawer" id="detail-drawer">
+          <div class="detail-content" id="detail-content"></div>
+        </div>
+      </section>
+
+      <!-- CHECKPOINT -->
+      <section class="checkpoint">
+        <div class="checkpoint-card reveal">
+          <div class="checkpoint-icon">✦</div>
+          <h3 class="checkpoint-title">You just completed your <em>first transaction</em>.</h3>
+          <p class="checkpoint-body">
+            That entire dance happens every time you swipe — and you now understand more about it than 95% of cardholders. In the next chapter, we'll get you a card.
+          </p>
+          <div class="checkpoint-cta-row">
+            <a href="../index.html" class="btn btn--ghost">← all chapters</a>
+            <a href="02-getting-a-card.html" class="btn btn--primary btn--lg">Chapter II: Getting a Card →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- BOTTOM NAV -->
+      <div class="chapter-nav-bottom">
+        <a href="../index.html" class="chapter-nav-link">
+          <span class="chapter-nav-meta">← Back</span>
+          <span class="chapter-nav-name">Home</span>
+        </a>
+        <a href="02-getting-a-card.html" class="chapter-nav-link next">
+          <span class="chapter-nav-meta">Next chapter →</span>
+          <span class="chapter-nav-name">Getting a Card</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../js/global.js"></script>
+  <script>
+    // ====================================================
+    // CHAPTER 1 — THE HANDSHAKE
+    // ====================================================
+
+    const PLAYERS = [
+      {
+        icon: '💳',
+        name: 'You',
+        role: 'Cardholder',
+        emTitle: 'You',
+        tag: 'The Borrower',
+        desc: `You hold the card. You make the purchase. You owe the money. The cardholder is the only player who doesn't get paid in this dance — instead, you pay (sometimes interest, sometimes fees) for the privilege of using credit. <strong>What you do get</strong>: the convenience of buying now, paying later, plus rewards if you play it right.`,
+        responsibilities: [
+          'Spend within your credit limit',
+          'Pay at least the minimum due, on time',
+          'Watch your credit utilization (under 30%)',
+          'Report unauthorized transactions immediately',
+          'Read the fine print — APR, fees, penalties'
+        ],
+        profit: `You don't earn from the transaction itself — your "earnings" come from rewards, cashback, and building a credit history that unlocks loans and bigger limits later.`
+      },
+      {
+        icon: '🏪',
+        name: 'Merchant',
+        role: 'The Seller',
+        emTitle: 'Merchant',
+        tag: 'Where you spend',
+        desc: `The shop, restaurant, app, or website where you spend. Merchants accept cards because the alternative — losing the sale — is worse, even though they pay 1.5–3% per transaction in fees (called the Merchant Discount Rate). This is why some small shops have a "₹500 minimum" for card payments.`,
+        responsibilities: [
+          'Accept card payments via certified terminals',
+          'Pay the Merchant Discount Rate per transaction',
+          'Honor valid chargeback claims',
+          'Never store your CVV (it\'s actually illegal)',
+          'Display accepted card networks visibly'
+        ],
+        profit: `Merchants <em>lose</em> 1.5–3% on every card transaction — but they accept this because cards drive 30–40% more spending than cash. Examples: Swiggy, Amazon, Reliance Retail.`
+      },
+      {
+        icon: '⚙️',
+        name: 'Acquirer',
+        role: 'Their Bank',
+        emTitle: 'Acquirer',
+        tag: 'The merchant\'s payment processor',
+        desc: `The acquirer is the financial institution that lets the merchant accept cards. When you pay at Swiggy, their acquirer (could be Razorpay, PayU, or CCAvenue) receives the transaction, routes it through the network, and eventually deposits the money in Swiggy's bank account. They're the merchant's invisible partner.`,
+        responsibilities: [
+          'Process transactions for thousands of merchants',
+          'Route auth requests to the card network',
+          'Collect settled funds from issuers',
+          'Deposit net amounts to merchant accounts',
+          'Handle chargeback disputes on the merchant\'s behalf'
+        ],
+        profit: `Acquirers earn ~0.3–0.5% per transaction as their slice of the Merchant Discount Rate. On millions of daily transactions, this is a quiet but enormous business.`
+      },
+      {
+        icon: '🌐',
+        name: 'Network',
+        role: 'The Rails',
+        emTitle: 'Card Network',
+        tag: 'The infrastructure',
+        desc: `Visa, Mastercard, RuPay. These companies don't issue cards or hold money — they're the secure pipes connecting acquirers to issuers. They route every transaction, set the rules, fight fraud, and handle the daily settlement between banks. Their logo is on your card because they own the rails.`,
+        responsibilities: [
+          'Route auth requests between banks',
+          'Set interchange fees and transaction rules',
+          'Provide global fraud detection systems',
+          'Handle daily clearing and settlement',
+          'License their brand to issuing banks'
+        ],
+        profit: `Networks earn small fees — typically 0.1–0.3% per transaction — but at scale (Visa processes ~700 million transactions <em>per day</em>), it's one of the most profitable businesses on earth.`
+      },
+      {
+        icon: '🏛️',
+        name: 'Issuer',
+        role: 'Your Bank',
+        emTitle: 'Issuer',
+        tag: 'The bank that gave you the card',
+        desc: `Your issuer is the bank that approved your application, set your credit limit, sends you the statement, and decides whether to approve each transaction. When you call about your card, you're calling them. HDFC, ICICI, SBI, Axis, AmEx — these are issuers. They're the ones with the most to gain (and lose) from how you use your card.`,
+        responsibilities: [
+          'Evaluate creditworthiness, approve applications',
+          'Set credit limits and interest rates',
+          'Send statements and process payments',
+          'Approve or decline each transaction',
+          'Investigate fraud and disputes',
+          'Report your behavior to credit bureaus'
+        ],
+        profit: `Issuers make money five ways: (1) interchange fees on every purchase, (2) interest on revolving balances, (3) annual fees, (4) late fees, (5) cash advance fees. They want you to use the card a lot — and pay a little late.`
+      }
+    ];
+
+    // ====================================================
+    // SCENE 1 — TRANSACTION ANIMATION
+    // ====================================================
+
+    const STEPS = [
+      {
+        num: 1,
+        name: 'Card tapped',
+        time: 'T+0ms',
+        body: `You tap your card on the POS terminal. The chip transmits encrypted data — your card number, a one-time cryptogram — to the merchant's machine. <strong>Nothing has been charged yet.</strong> This is just the opening signal.`,
+        litNodes: [0, 1],
+        lineFill: 0,
+        traveler: { from: 0, to: 1, type: 'out' },
+        screen: { status: 'Reading card...', class: 'thinking' }
+      },
+      {
+        num: 2,
+        name: 'Merchant asks for permission',
+        time: 'T+200ms',
+        body: `The merchant's terminal packages your card data into an authorization request and sends it to their acquirer (in our case, Razorpay). The acquirer's job is to route this to whoever issued the card.`,
+        litNodes: [1, 2],
+        lineFill: 1,
+        traveler: { from: 1, to: 2, type: 'out' },
+        screen: { status: 'Sending request...', class: 'thinking' }
+      },
+      {
+        num: 3,
+        name: 'Network finds your bank',
+        time: 'T+400ms',
+        body: `Razorpay forwards the request to the card network — VISA. The network looks at the first 6 digits of your card number (the BIN) to figure out which bank issued it. It's basically a phone book for banks.`,
+        litNodes: [2, 3],
+        lineFill: 2,
+        traveler: { from: 2, to: 3, type: 'out' },
+        screen: { status: 'Routing through network...', class: 'thinking' }
+      },
+      {
+        num: 4,
+        name: 'Your bank decides',
+        time: 'T+800ms',
+        body: `HDFC receives the request. In milliseconds, it checks: Do you have ₹4,200 of available credit? Is this transaction suspicious? Is the cryptogram valid? Is the card reported stolen? <strong>If everything checks out, it approves.</strong>`,
+        litNodes: [3, 4],
+        lineFill: 3,
+        traveler: { from: 3, to: 4, type: 'out' },
+        screen: { status: 'Verifying with bank...', class: 'thinking' }
+      },
+      {
+        num: 5,
+        name: 'Approval flies back',
+        time: 'T+1.4s',
+        body: `The "yes" travels all the way back: HDFC → VISA → Razorpay → terminal. The whole round trip took about 1.4 seconds. The terminal beeps. The merchant sees APPROVED. <strong>But — and this matters — no money has actually moved yet.</strong> Your available credit just dropped. Real settlement happens days later.`,
+        litNodes: [0, 1, 2, 3, 4],
+        lineFill: -1, // all lit
+        traveler: { from: 4, to: 0, type: 'in' },
+        screen: { status: '✓ APPROVED', class: 'success', amount: '₹4,200' }
+      }
+    ];
+
+    let currentStep = -1; // -1 = not started
+    let isAnimating = false;
+
+    function initiateSwipe() {
+      if (isAnimating || currentStep >= 0) return;
+      const card = document.getElementById('tap-card');
+      const hint = document.getElementById('tap-hint');
+      hint.style.display = 'none';
+      card.classList.add('swiping');
+      DCC.playClick();
+
+      setTimeout(() => {
+        card.classList.remove('swiping');
+        card.classList.add('disabled');
+        currentStep = 0;
+        applyStep(0);
+        document.getElementById('next-btn').style.display = 'inline-flex';
+        document.getElementById('reset-btn').style.display = 'inline-flex';
+      }, 800);
+    }
+
+    function applyStep(idx) {
+      if (idx < 0 || idx >= STEPS.length) return;
+      currentStep = idx;
+      const step = STEPS[idx];
+      isAnimating = true;
+
+      // Update participants
+      document.querySelectorAll('.participant').forEach((p, i) => {
+        p.classList.remove('lit', 'done');
+        if (idx > 0) {
+          // mark previous steps as done
+          STEPS.slice(0, idx).forEach(prev => {
+            (prev.litNodes || []).forEach(li => {
+              if (li === i) p.classList.add('done');
+            });
+          });
+        }
+        if (step.litNodes.includes(i)) {
+          p.classList.remove('done');
+          p.classList.add('lit');
+        }
+      });
+
+      // Animate connector lines
+      const lineFillEl = document.getElementById('line-fill-1');
+      if (step.lineFill === -1) {
+        lineFillEl.style.width = '100%';
+      } else if (step.lineFill === 0) {
+        lineFillEl.style.width = '20%';
+      } else {
+        lineFillEl.style.width = `${(step.lineFill + 1) * 20}%`;
+      }
+
+      // Animate money packet
+      animateTraveler(step.traveler);
+
+      // Update info panel
+      const panel = document.getElementById('info-panel');
+      panel.innerHTML = `
+        <div class="info-panel-step">
+          <div class="info-step-label">
+            <div class="info-step-num">${step.num}</div>
+            <div class="info-step-name">${step.name}</div>
+            <div class="info-step-time">${step.time}</div>
+          </div>
+          <div class="info-step-body">${step.body}</div>
+        </div>
+      `;
+
+      // Update POS screen
+      const screen = document.getElementById('pos-screen');
+      const status = document.getElementById('pos-status');
+      screen.classList.remove('thinking', 'success', 'failure');
+      if (step.screen.class) screen.classList.add(step.screen.class);
+      status.textContent = step.screen.status;
+
+      // Update step dots
+      document.querySelectorAll('.step-dot').forEach((d, i) => {
+        d.classList.remove('active', 'done');
+        if (i < idx) d.classList.add('done');
+        if (i === idx) d.classList.add('active');
+      });
+
+      document.getElementById('step-text').textContent = `Step ${idx + 1} of ${STEPS.length}`;
+      document.getElementById('prev-btn').disabled = idx === 0;
+      document.getElementById('next-btn').textContent = idx === STEPS.length - 1 ? 'Finish ✓' : 'next step →';
+
+      DCC.playClick();
+      isAnimating = false;
+
+      // If final step
+      if (idx === STEPS.length - 1) {
+        setTimeout(() => {
+          DCC.playSuccess();
+          document.getElementById('next-btn').style.display = 'none';
+          // Mark last dot done
+          document.getElementById('dot-5').classList.add('done');
+          // Trigger participants done state
+          document.querySelectorAll('.participant').forEach(p => {
+            p.classList.remove('lit');
+            p.classList.add('done');
+          });
+        }, 1000);
+      }
+    }
+
+    function animateTraveler(t) {
+      const traveler = document.getElementById('traveler-1');
+      const participants = document.querySelectorAll('.participant');
+      if (!t || t.from === undefined) return;
+
+      const fromEl = participants[t.from];
+      const toEl = participants[t.to];
+      const fromRect = fromEl.getBoundingClientRect();
+      const toRect = toEl.getBoundingClientRect();
+      const containerRect = document.getElementById('participants-row').getBoundingClientRect();
+
+      const startX = fromRect.left + fromRect.width / 2 - containerRect.left - 12;
+      const endX = toRect.left + toRect.width / 2 - containerRect.left - 12;
+
+      traveler.classList.remove('return');
+      if (t.type === 'in') traveler.classList.add('return');
+
+      traveler.style.left = startX + 'px';
+      traveler.style.opacity = '1';
+      traveler.textContent = t.type === 'in' ? '✓' : '₹';
+
+      requestAnimationFrame(() => {
+        traveler.style.transition = 'left 0.8s cubic-bezier(0.4,0,0.2,1)';
+        traveler.style.left = endX + 'px';
+      });
+
+      setTimeout(() => {
+        traveler.style.transition = 'opacity 0.3s';
+        traveler.style.opacity = '0';
+      }, 900);
+    }
+
+    function nextStep() {
+      if (currentStep < STEPS.length - 1) {
+        applyStep(currentStep + 1);
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 0) {
+        applyStep(currentStep - 1);
+      }
+    }
+
+    function resetSwipe() {
+      currentStep = -1;
+      const card = document.getElementById('tap-card');
+      card.classList.remove('disabled');
+      document.getElementById('tap-hint').style.display = 'block';
+
+      document.querySelectorAll('.participant').forEach(p => p.classList.remove('lit', 'done'));
+      document.getElementById('line-fill-1').style.width = '0';
+      document.querySelectorAll('.step-dot').forEach(d => d.classList.remove('active', 'done'));
+      document.getElementById('info-panel').innerHTML = '<div class="info-panel-empty">tap the card to begin →</div>';
+      document.getElementById('step-text').textContent = 'Ready';
+      document.getElementById('next-btn').style.display = 'none';
+      document.getElementById('reset-btn').style.display = 'none';
+
+      const screen = document.getElementById('pos-screen');
+      screen.classList.remove('thinking', 'success', 'failure');
+      document.getElementById('pos-status').textContent = 'Waiting for card...';
+    }
+
+    // ====================================================
+    // SCENE 2 — MEET THE PLAYERS
+    // ====================================================
+
+    let selectedPlayer = -1;
+
+    function selectPlayer(idx) {
+      const drawer = document.getElementById('detail-drawer');
+      const content = document.getElementById('detail-content');
+
+      document.querySelectorAll('.meet-card').forEach((c, i) => {
+        c.classList.toggle('selected', i === idx);
+      });
+
+      // If clicking same one again, close
+      if (selectedPlayer === idx) {
+        drawer.classList.remove('open');
+        document.querySelectorAll('.meet-card').forEach(c => c.classList.remove('selected'));
+        selectedPlayer = -1;
+        return;
+      }
+
+      const p = PLAYERS[idx];
+      content.innerHTML = `
+        <div class="detail-icon-big">${p.icon}</div>
+        <div class="detail-main">
+          <h3>${p.name === 'You' ? 'You' : 'The <em>' + p.emTitle + '</em>'}</h3>
+          <div class="detail-tag">${p.tag}</div>
+          <p class="detail-desc">${p.desc}</p>
+          <div class="detail-profit">
+            <strong>How they profit ·</strong> ${p.profit}
+          </div>
+        </div>
+        <div class="detail-side">
+          <h4>Their Job</h4>
+          <ul class="detail-list">
+            ${p.responsibilities.map(r => `<li>${r}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+      drawer.classList.add('open');
+      selectedPlayer = idx;
+      DCC.playClick();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XI. Your Defense System — Decoding Credit Cards</title>
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.chapter-shell{min-height:100vh;padding-top:80px}
+.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
+.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
+.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
+.chapter-h1 em{font-style:italic;font-weight:300;color:var(--success)}
+.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
+.layers-stage{padding:48px 0}
+.layers-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:32px}
+.layer-tile{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:24px 16px;cursor:pointer;transition:all .3s var(--ease-out);text-align:center;position:relative;overflow:hidden}
+.layer-tile:hover,.layer-tile.active{transform:translateY(-3px);border-color:var(--success);box-shadow:0 8px 24px rgba(22,163,74,.1)}
+.layer-tile.active{background:var(--success-soft)}
+.layer-tile::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--success);transform:scaleX(0);transition:transform .3s ease}
+.layer-tile:hover::before,.layer-tile.active::before{transform:scaleX(1)}
+.layer-icon{font-size:36px;margin-bottom:12px}
+.layer-name{font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+.layer-tag{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;text-transform:uppercase}
+.layer-detail{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-lg);padding:36px 40px;box-shadow:0 1px 3px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.04);min-height:200px}
+.layer-detail.empty{text-align:center;color:var(--ink-faint);font-style:italic;font-family:var(--font-display);font-size:18px;padding:48px}
+.layer-detail-title{font-family:var(--font-display);font-size:32px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
+.layer-detail-title em{font-style:italic;font-weight:300;color:var(--success)}
+.layer-detail-tag{font-family:var(--font-mono);font-size:11px;color:var(--success);letter-spacing:.06em;margin-bottom:16px}
+.layer-detail-body{font-size:15px;line-height:1.7;color:var(--ink-soft);margin-bottom:20px}
+.layer-detail-body strong{color:var(--ink)}
+.layer-detail-body em{font-style:italic;color:var(--success)}
+.layer-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.layer-stat{padding:16px;background:var(--paper);border-radius:8px}
+.layer-stat-label{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.layer-stat-val{font-family:var(--font-display);font-size:18px;font-weight:700;letter-spacing:-.01em}
+.checkpoint{padding:80px 0;text-align:center}
+.checkpoint-card{background:white;border:2px dashed var(--electric);border-radius:var(--radius-lg);padding:48px 32px;max-width:640px;margin:0 auto}
+.checkpoint-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
+.checkpoint-title em{font-style:italic;font-weight:300;color:var(--electric)}
+.checkpoint-body{font-size:15px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px}
+.checkpoint-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
+.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
+.chapter-nav-link:hover{transform:translateX(-4px)}
+.chapter-nav-link.next{align-items:flex-end}
+.chapter-nav-link.next:hover{transform:translateX(4px)}
+.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
+@media(max-width:768px){.layers-grid{grid-template-columns:repeat(2,1fr)}.layer-detail{padding:24px}}
+</style></head><body>
+<nav class="site-nav">
+<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="12-disputes.html">Next →</a></li></ul>
+</nav>
+
+<div class="chapter-shell"><div class="container">
+<div class="chapter-header">
+<div class="chapter-header-row"><div class="chapter-roman">Chapter XI</div><div class="chapter-progress-text">11 of 22 · ~6 min</div></div>
+<h1 class="chapter-h1">Your <em>Defense System</em></h1>
+<p class="chapter-intro">Behind every transaction sits an invisible stack of security layers — most people don't even know they exist. Tap each one. Learn what it does for you.</p>
+</div>
+
+<section class="layers-stage">
+<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;">Five layers, all working in real time</div>
+<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;margin-bottom:32px;">The <em style="font-style:italic;font-weight:300;color:var(--success);">invisible armor</em>.</h2>
+
+<div class="layers-grid" id="layers-grid"></div>
+<div class="layer-detail empty" id="layer-detail">Tap any layer above to see what it does →</div>
+</section>
+
+<section class="checkpoint">
+<div class="checkpoint-card">
+<div style="font-size:56px;margin-bottom:12px;">🛡</div>
+<h3 class="checkpoint-title">You now know <em>what's protecting you</em>.</h3>
+<p class="checkpoint-body">Up next: when these defenses fail, you have one nuclear option — the chargeback. Walk through filing one.</p>
+<div class="checkpoint-cta-row">
+<a href="../index.html" class="btn btn--ghost">← all chapters</a>
+<a href="12-disputes.html" class="btn btn--primary btn--lg">Chapter XII: Disputes →</a>
+</div></div></section>
+
+<div class="chapter-nav-bottom">
+<a href="10-fraud.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">Spot the Fraud</span></a>
+<a href="12-disputes.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Next →</span><span class="chapter-nav-name">Disputes & Chargebacks</span></a>
+</div>
+</div></div>
+
+<script src="../js/global.js"></script>
+<script>
+const LAYERS = [
+  { icon: '🔒', name: 'EMV Chip', tag: 'Hardware-level', title: 'EMV <em>chip authentication</em>',
+    desc: `That gold square on your card is a cryptographic computer. <strong>Every transaction generates a unique one-time code</strong> that\'s mathematically impossible to reuse. Even if a thief copies the data from one transaction, the next one needs a brand-new code that only the chip can generate.`,
+    stats: [{ l: 'Adopted globally', v: '~2014–2018' }, { l: 'Fraud reduction', v: '~76%' }],
+    em: `Why it works: <em>each transaction is a fresh handshake</em>, not a static password.` },
+  { icon: '🎭', name: 'Tokenization', tag: 'Data-layer', title: '<em>Tokenization</em>',
+    desc: `When you save your card on Amazon or use Google Pay, your real card number is never actually stored or transmitted. Instead, a <strong>random "token"</strong> — a meaningless string — is generated and used in its place. <strong>Even if Amazon gets hacked, the leaked tokens are useless</strong> outside that one merchant.`,
+    stats: [{ l: 'Token validity', v: 'Per merchant' }, { l: 'Reusable elsewhere', v: 'Never' }],
+    em: `Why it works: <em>the secret never travels through systems that can leak it</em>.` },
+  { icon: '🏛', name: 'PCI DSS', tag: 'Industry-wide', title: '<em>PCI DSS</em>',
+    desc: `Payment Card Industry Data Security Standard. A massive <strong>set of rules every merchant who accepts cards must follow</strong> — covering encryption, network security, access controls, and audits. <strong>Storing your CVV — even briefly — is illegal under PCI DSS.</strong> Violating merchants face crushing fines, including being banned from accepting cards.`,
+    stats: [{ l: 'Levels', v: '4 (size-based)' }, { l: 'Audited', v: 'Annually' }],
+    em: `Why it works: <em>compliance is enforced by the networks themselves</em>, not voluntary.` },
+  { icon: '🔑', name: '2-Factor Auth', tag: 'Per-transaction', title: '<em>2-Factor Authentication</em>',
+    desc: `In India, RBI mandates 2FA on most online card transactions — typically OTP via SMS or in-app. <strong>The card number alone isn\'t enough to charge you</strong>; the second factor is a real-time code only you can receive. India is among the strictest countries on this — many countries don\'t require 2FA at all, which is why our card fraud rates are dramatically lower.`,
+    stats: [{ l: 'India OTP threshold', v: '₹0+' }, { l: 'Fraud reduction', v: 'Up to 80%' }],
+    em: `Why it works: <em>even a stolen card needs your phone</em>.` },
+  { icon: '🌐', name: 'AVS & Monitoring', tag: 'Real-time AI', title: '<em>AVS + Real-time monitoring</em>',
+    desc: `Address Verification System cross-checks the billing address you enter with what the bank has on file. Beyond that, <strong>your bank runs ML models on your spending patterns 24/7</strong> — flagging transactions that deviate from your usual location, amount, merchant type, or time. <strong>This is why your card sometimes gets blocked when you travel</strong> — the system is doing its job.`,
+    stats: [{ l: 'Decision time', v: '<200ms' }, { l: 'False positives', v: '~5–10%' }],
+    em: `Why it works: <em>the system learns YOU</em>, then catches anything that\'s not you.` }
+];
+
+const grid = document.getElementById('layers-grid');
+grid.innerHTML = LAYERS.map((l, i) => `
+  <button class="layer-tile" onclick="pickLayer(${i})" data-idx="${i}">
+    <div class="layer-icon">${l.icon}</div>
+    <div class="layer-name">${l.name}</div>
+    <div class="layer-tag">${l.tag}</div>
+  </button>`).join('');
+
+function pickLayer(idx) {
+  document.querySelectorAll('.layer-tile').forEach((t, i) => t.classList.toggle('active', i === idx));
+  const l = LAYERS[idx];
+  const detail = document.getElementById('layer-detail');
+  detail.classList.remove('empty');
+  detail.innerHTML = `
+    <div class="layer-detail-tag">LAYER ${idx + 1} OF 5 · ${l.tag.toUpperCase()}</div>
+    <div class="layer-detail-title">${l.title}</div>
+    <div class="layer-detail-body">${l.desc}</div>
+    <div style="padding:14px 18px;background:var(--success-soft);border-left:3px solid var(--success);border-radius:0 8px 8px 0;font-size:14px;color:var(--ink);line-height:1.5;">${l.em}</div>
+    <div class="layer-stat-row">
+      ${l.stats.map(s => `<div class="layer-stat"><div class="layer-stat-label">${s.l}</div><div class="layer-stat-val">${s.v}</div></div>`).join('')}
+    </div>`;
+  DCC.playClick();
+}
+</script>
+</body></html>

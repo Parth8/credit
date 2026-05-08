@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XVII. UPI, Wallets & The Rest — Decoding Credit Cards</title>
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.chapter-shell{min-height:100vh;padding-top:80px}
+.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
+.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
+.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
+.chapter-h1 em{font-style:italic;font-weight:300;color:var(--electric)}
+.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
+.compare-table{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.04);margin:32px 0}
+.tab-row{display:grid;grid-template-columns:repeat(5,1fr);background:var(--paper);border-bottom:1px solid var(--border)}
+.tab-btn{padding:18px 12px;border:none;background:transparent;cursor:pointer;text-align:center;transition:all .2s;border-bottom:3px solid transparent;font-family:var(--font-body)}
+.tab-btn.active{background:white;border-bottom-color:var(--electric)}
+.tab-icon{font-size:28px;margin-bottom:6px;display:block}
+.tab-label{font-family:var(--font-display);font-size:13px;font-weight:700;letter-spacing:-.01em}
+.tab-content{padding:36px 40px}
+.tab-headline{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
+.tab-headline em{font-style:italic;font-weight:300;color:var(--electric)}
+.tab-tagline{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);letter-spacing:.04em;margin-bottom:24px}
+.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:24px}
+.feature-block h5{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+.feature-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.feature-list li{font-size:14px;color:var(--ink-soft);line-height:1.5;padding-left:24px;position:relative}
+.feature-list li::before{position:absolute;left:0;top:0;font-family:var(--font-mono);font-weight:700}
+.feature-list.pros li::before{content:'+';color:var(--success)}
+.feature-list.cons li::before{content:'−';color:var(--danger)}
+.use-case{margin-top:24px;padding:20px 24px;background:var(--electric-soft);border-radius:var(--radius-md);border-left:3px solid var(--electric)}
+.use-case strong{color:var(--electric);font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:6px}
+.use-case p{font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0}
+.checkpoint{padding:80px 0;text-align:center}
+.checkpoint-card{background:white;border:2px dashed var(--electric);border-radius:var(--radius-lg);padding:48px 32px;max-width:640px;margin:0 auto}
+.checkpoint-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
+.checkpoint-title em{font-style:italic;font-weight:300;color:var(--electric)}
+.checkpoint-body{font-size:15px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px}
+.checkpoint-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
+.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
+.chapter-nav-link:hover{transform:translateX(-4px)}
+.chapter-nav-link.next{align-items:flex-end}
+.chapter-nav-link.next:hover{transform:translateX(4px)}
+.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
+.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
+@media(max-width:768px){.tab-row{grid-template-columns:repeat(3,1fr)}.feature-grid{grid-template-columns:1fr}.tab-content{padding:24px}}
+</style></head><body>
+<nav class="site-nav">
+<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="18-taxes.html">Next →</a></li></ul>
+</nav>
+
+<div class="chapter-shell"><div class="container">
+<div class="chapter-header">
+<div class="chapter-header-row"><div class="chapter-roman">Chapter XVII</div><div class="chapter-progress-text">17 of 22 · ~6 min</div></div>
+<h1 class="chapter-h1">UPI, Wallets & <em>The Rest</em></h1>
+<p class="chapter-intro">Credit cards aren\'t the only way to pay anymore. Tap each option. Learn when each one is the right tool — and when it\'s the wrong one.</p>
+</div>
+
+<section style="padding:32px 0;">
+<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;">The full toolkit</div>
+<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;">Which one <em style="font-style:italic;font-weight:300;color:var(--electric);">when</em>?</h2>
+
+<div class="compare-table" id="compare-table">
+<div class="tab-row" id="tab-row"></div>
+<div class="tab-content" id="tab-content"></div>
+</div>
+</section>
+
+<section class="checkpoint">
+<div class="checkpoint-card">
+<div style="font-size:56px;margin-bottom:12px;">✦</div>
+<h3 class="checkpoint-title">You can <em>pick the right tool</em>.</h3>
+<p class="checkpoint-body">Up next: how taxes interact with credit card spending — including the 7-lakh international threshold most people don\'t know about.</p>
+<div class="checkpoint-cta-row">
+<a href="../index.html" class="btn btn--ghost">← all chapters</a>
+<a href="18-taxes.html" class="btn btn--primary btn--lg">Chapter XVIII: Taxes & TCS →</a>
+</div></div></section>
+
+<div class="chapter-nav-bottom">
+<a href="16-customer-service.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">Talking to Your Bank</span></a>
+<a href="18-taxes.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Next →</span><span class="chapter-nav-name">Taxes & TCS</span></a>
+</div>
+</div></div>
+
+<script src="../js/global.js"></script>
+<script>
+const TABS = [
+  { id: 'cc', icon: '💳', label: 'Credit Card',
+    headline: 'The <em>flexibility</em> tool', tagline: 'Borrow now, pay later (within 30-50 days)',
+    pros: ['Up to 50 days interest-free credit', 'Rewards & cashback on every transaction', 'Strong fraud protection (zero-liability with prompt reporting)', 'Builds credit history & CIBIL score', 'Insurance, lounge access, purchase protection on premium cards'],
+    cons: ['36-48% APR if you carry balance', 'Annual fees on most cards', 'Requires creditworthiness to qualify', 'Easy to overspend without realizing'],
+    when: 'Big purchases (so you have grace period + protection), online shopping (chargeback rights), travel (insurance + rewards), recurring monthly bills (build rewards on autopilot).' },
+  { id: 'upi', icon: '🟣', label: 'UPI',
+    headline: 'The <em>everyday</em> tool', tagline: 'Instant bank-to-bank payments via your phone',
+    pros: ['Free for both sender and receiver', 'Instant — money moves in seconds', 'Works with just a phone number/UPI ID', 'No card needed, no number to leak', 'Works across all banks via NPCI'],
+    cons: ['Spends from your bank account directly (no float)', 'No rewards on most transactions (some apps offer cashback)', 'No fraud chargeback rights (once sent, near-impossible to reverse)', 'Limited fraud protection compared to cards'],
+    when: 'Splitting a restaurant bill, paying small merchants, sending money to friends, daily groceries, anything where you\'d use cash before 2018.' },
+  { id: 'debit', icon: '💵', label: 'Debit Card',
+    headline: 'The <em>controlled</em> tool', tagline: 'Card with direct deduction from your bank account',
+    pros: ['Spend only what you have — no debt risk', 'Widely accepted internationally', 'No annual fees on most cards', 'No interest, no minimum payment traps'],
+    cons: ['Money leaves your account immediately (no float)', 'No rewards on most cards', 'Disputes are harder — you\'re trying to claw back YOUR money, not stop a bank from paying', 'No credit history built from usage', 'Less fraud protection than credit cards'],
+    when: 'ATM withdrawals abroad, places that don\'t accept credit cards, building spending discipline if cards tempt you, kids/teens learning money management.' },
+  { id: 'bnpl', icon: '⏳', label: 'BNPL',
+    headline: 'The <em>installment</em> tool', tagline: 'Buy Now Pay Later — split into 3-4 EMIs',
+    pros: ['Simple to qualify (often just KYC)', 'No interest if paid on time', 'Quick approval, no credit pull (mostly)', 'Useful for one-time large purchases'],
+    cons: ['Late fees can be brutal (often higher than credit cards)', 'Easy to take multiple BNPL loans simultaneously and lose track', 'Many BNPL services now report to credit bureaus — defaults can hurt CIBIL', 'No rewards', 'Encourages buying things you can\'t afford'],
+    when: 'A specific large purchase (laptop, appliance) where you genuinely have the money but want to spread it. Avoid for daily/discretionary spending.' },
+  { id: 'wallet', icon: '👛', label: 'Wallets',
+    headline: 'The <em>convenience</em> tool', tagline: 'Pre-loaded balance for fast micro-payments',
+    pros: ['Faster than entering card details', 'Often offers cashback for loading from credit card', 'Some merchants give wallet-only discounts', 'Low-stakes if compromised (limited balance)'],
+    cons: ['Money sits in the wallet earning nothing', 'Wallets can shut down (Paytm Payments Bank lessons)', 'Refunds often go back to wallet, not your bank — locked', 'Limited fraud recourse compared to credit cards'],
+    when: 'Specific use cases — Paytm for movie tickets/coupons, Amazon Pay for Amazon discounts, Mobikwik for niche merchants. Don\'t use as your primary daily payment method.' }
+];
+
+let activeTab = 'cc';
+
+function renderTabs() {
+  const tr = document.getElementById('tab-row');
+  tr.innerHTML = TABS.map(t => `
+    <button class="tab-btn ${t.id === activeTab ? 'active' : ''}" onclick="setTab('${t.id}')" data-id="${t.id}">
+      <span class="tab-icon">${t.icon}</span>
+      <span class="tab-label">${t.label}</span>
+    </button>`).join('');
+
+  const t = TABS.find(x => x.id === activeTab);
+  document.getElementById('tab-content').innerHTML = `
+    <div class="tab-headline">${t.headline}</div>
+    <div class="tab-tagline">${t.tagline}</div>
+    <div class="feature-grid">
+      <div class="feature-block">
+        <h5>WHAT IT DOES WELL</h5>
+        <ul class="feature-list pros">${t.pros.map(p => `<li>${p}</li>`).join('')}</ul>
+      </div>
+      <div class="feature-block">
+        <h5>WHERE IT FAILS</h5>
+        <ul class="feature-list cons">${t.cons.map(p => `<li>${p}</li>`).join('')}</ul>
+      </div>
+    </div>
+    <div class="use-case">
+      <strong>Use it for:</strong>
+      <p>${t.when}</p>
+    </div>`;
+}
+
+function setTab(id) { activeTab = id; renderTabs(); DCC.playClick(); }
+renderTabs();
+</script>
+</body></html>

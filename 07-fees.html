@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VII. Every Fee Explained — Decoding Credit Cards</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <style>
+    .chapter-shell { min-height: 100vh; padding-top: 80px; }
+
+    .chapter-header { padding: 32px 0; border-bottom: 1px dashed var(--border-strong); margin-bottom: 32px; }
+    .chapter-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .chapter-roman { font-family: var(--font-display); font-size: 14px; font-style: italic; color: var(--electric); letter-spacing: 0.04em; }
+    .chapter-progress-text { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .chapter-h1 { font-family: var(--font-display); font-size: clamp(48px, 6vw, 80px); font-weight: 800; line-height: 1; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .chapter-h1 em { font-style: italic; font-weight: 300; color: var(--electric); }
+    .chapter-intro { font-size: 18px; color: var(--ink-muted); max-width: 600px; line-height: 1.6; }
+
+    /* FEE PICKER GRID */
+    .fee-picker {
+      padding: 64px 0;
+      border-bottom: 1px dashed var(--border-strong);
+    }
+
+    .fee-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .fee-tile {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-out);
+      position: relative;
+      overflow: hidden;
+      text-align: left;
+    }
+
+    .fee-tile:hover {
+      transform: translateY(-3px);
+      border-color: var(--ink-soft);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .fee-tile.active {
+      border-color: var(--electric);
+      background: var(--electric-soft);
+      box-shadow: 0 8px 24px rgba(37,99,235,0.12);
+    }
+
+    .fee-tile.active::after {
+      content: '✓';
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 24px;
+      height: 24px;
+      background: var(--electric);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .fee-tile.played::before {
+      content: 'seen';
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--success);
+      background: var(--success-soft);
+      padding: 2px 8px;
+      border-radius: 999px;
+      letter-spacing: 0.04em;
+    }
+
+    .fee-tile.active.played::before {
+      display: none;
+    }
+
+    .fee-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .fee-name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+
+    .fee-tagline {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.5;
+    }
+
+    .fee-tile.active .fee-tagline {
+      color: var(--ink-soft);
+    }
+
+    /* MAIN STAGE */
+    .fee-stage-section {
+      padding: 64px 0;
+    }
+
+    .fee-stage {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.04);
+    }
+
+    .fee-stage-header {
+      padding: 28px 32px;
+      border-bottom: 1px solid var(--border);
+      background: var(--paper);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .fee-stage-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .fee-stage-icon {
+      font-size: 28px;
+    }
+
+    .fee-stage-name {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .fee-stage-amount {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--danger);
+    }
+
+    .fee-stage-amount.gold { color: var(--gold); }
+    .fee-stage-amount.warm { color: var(--warm); }
+
+    /* SCENARIO PANEL */
+    .scenario-panel {
+      padding: 32px;
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .scenario-narrative {
+      font-family: var(--font-display);
+      font-size: 18px;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+
+    .scenario-timeline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .scenario-timeline-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background: white;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-muted);
+      border: 1px solid var(--border);
+    }
+
+    .scenario-timeline-item.danger {
+      background: var(--danger-soft);
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .scenario-timeline-arrow {
+      color: var(--ink-faint);
+    }
+
+    /* ANIMATED TRANSACTION */
+    .anim-stage {
+      padding: 40px 32px;
+      min-height: 360px;
+      position: relative;
+    }
+
+    .anim-actors {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: relative;
+      margin-bottom: 32px;
+      min-height: 140px;
+    }
+
+    .anim-actor {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      max-width: 100px;
+    }
+
+    .actor-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: var(--paper);
+      border: 2px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      transition: all 0.4s var(--ease-out);
+      position: relative;
+    }
+
+    .anim-actor.lit .actor-icon {
+      background: var(--electric-soft);
+      border-color: var(--electric);
+      transform: scale(1.05) translateY(-3px);
+      box-shadow: 0 8px 20px rgba(37,99,235,0.15);
+    }
+
+    .anim-actor.lit .actor-icon::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 20px;
+      border: 2px solid var(--electric);
+      opacity: 0;
+      animation: actor-pulse 1.5s ease infinite;
+    }
+
+    @keyframes actor-pulse {
+      0% { opacity: 1; transform: scale(0.8); }
+      100% { opacity: 0; transform: scale(1.15); }
+    }
+
+    .anim-actor.danger .actor-icon {
+      background: var(--danger-soft);
+      border-color: var(--danger);
+      transform: scale(1.05);
+    }
+
+    .actor-label {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .actor-sub {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .anim-flow-line {
+      flex: 1;
+      height: 2px;
+      background: var(--parchment);
+      position: relative;
+      margin: 0 -8px;
+      margin-top: -32px;
+      max-width: 80px;
+    }
+
+    .anim-flow-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0;
+      background: var(--electric);
+      transition: width 0.8s var(--ease-out);
+    }
+
+    .anim-flow-fill.danger {
+      background: var(--danger);
+    }
+
+    /* FEE PACKET */
+    .fee-packet {
+      position: absolute;
+      width: 60px;
+      height: 28px;
+      background: var(--danger);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+      box-shadow: 0 4px 12px rgba(220,38,38,0.3);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 5;
+      transition: all 0.8s var(--ease-out);
+    }
+
+    .fee-packet.gold {
+      background: var(--gold);
+      box-shadow: 0 4px 12px rgba(180,83,9,0.3);
+    }
+
+    /* STEP NARRATION */
+    .step-narration {
+      background: var(--paper);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      border-left: 3px solid var(--electric);
+      margin-top: 16px;
+      transition: all 0.4s var(--ease-out);
+    }
+
+    .step-narration.danger {
+      border-left-color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .step-narration-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .step-num-badge {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--electric);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .step-num-badge.danger {
+      background: var(--danger);
+    }
+
+    .step-narration-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .step-narration-time {
+      margin-left: auto;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-faint);
+    }
+
+    .step-narration-body {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink-muted);
+    }
+
+    .step-narration-body strong { color: var(--ink); }
+
+    /* CONTROL BAR */
+    .anim-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 32px;
+      border-top: 1px solid var(--border);
+      background: var(--paper);
+    }
+
+    .anim-progress-dots {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    /* FEE BREAKDOWN */
+    .fee-breakdown {
+      padding: 32px;
+      background: var(--ink);
+      color: var(--cream);
+    }
+
+    .breakdown-header {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: rgba(247,243,237,0.5);
+      margin-bottom: 16px;
+    }
+
+    .breakdown-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(247,243,237,0.1);
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+
+    .breakdown-row:last-child {
+      border-bottom: none;
+      padding-top: 18px;
+      margin-top: 4px;
+      border-top: 2px solid rgba(247,243,237,0.2);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .breakdown-row.fee {
+      color: #fca5a5;
+    }
+
+    .breakdown-row.gst {
+      color: #fdba74;
+    }
+
+    .breakdown-key {
+      color: rgba(247,243,237,0.7);
+    }
+
+    .breakdown-row.fee .breakdown-key,
+    .breakdown-row.gst .breakdown-key {
+      color: inherit;
+    }
+
+    /* THE LESSON */
+    .fee-lesson {
+      padding: 28px 32px;
+      background: var(--electric-soft);
+      border-top: 1px solid var(--border);
+    }
+
+    .lesson-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--electric);
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    .lesson-text {
+      font-family: var(--font-display);
+      font-size: 17px;
+      line-height: 1.5;
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .lesson-text em {
+      font-style: italic;
+      color: var(--electric);
+    }
+
+    /* CHECKPOINT */
+    .checkpoint { padding: 80px 0; text-align: center; }
+    .checkpoint-card { background: white; border: 2px dashed var(--electric); border-radius: var(--radius-lg); padding: 48px 32px; max-width: 640px; margin: 0 auto; }
+    .checkpoint-title { font-family: var(--font-display); font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+    .checkpoint-title em { font-style: italic; font-weight: 300; color: var(--electric); }
+    .checkpoint-body { font-size: 15px; color: var(--ink-muted); line-height: 1.6; margin-bottom: 28px; }
+    .checkpoint-progress { display: flex; align-items: center; gap: 12px; justify-content: center; margin-bottom: 24px; }
+    .checkpoint-cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* CHAPTER NAV */
+    .chapter-nav-bottom { padding: 40px 0 80px; display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-strong); }
+    .chapter-nav-link { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: inherit; transition: transform 0.3s ease; }
+    .chapter-nav-link:hover { transform: translateX(-4px); }
+    .chapter-nav-link.next { align-items: flex-end; }
+    .chapter-nav-link.next:hover { transform: translateX(4px); }
+    .chapter-nav-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .chapter-nav-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+
+    @media (max-width: 768px) {
+      .fee-grid { grid-template-columns: 1fr; }
+      .anim-actors { flex-wrap: wrap; gap: 8px; }
+      .anim-actor { max-width: 70px; }
+      .actor-icon { width: 48px; height: 48px; font-size: 22px; }
+      .anim-flow-line { display: none; }
+      .anim-controls { flex-direction: column; gap: 12px; }
+      .scenario-timeline { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html#chapters">All Chapters</a></li>
+      <li><a href="08-the-score.html">Next →</a></li>
+    </ul>
+  </nav>
+
+  <div class="chapter-shell">
+    <div class="container">
+
+      <div class="chapter-header">
+        <div class="chapter-header-row">
+          <div class="chapter-roman">Chapter VII</div>
+          <div class="chapter-progress-text">7 of 22 · ~9 min</div>
+        </div>
+        <h1 class="chapter-h1">Every <em>Fee</em>, Explained</h1>
+        <p class="chapter-intro">
+          Eight kinds of fees. Each one triggers its own transaction. Pick a fee, watch a real-world scenario unfold — exactly when, how, and why you get charged.
+        </p>
+      </div>
+
+      <!-- FEE PICKER -->
+      <section class="fee-picker">
+        <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 8px; flex-wrap: wrap;">
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em; margin-bottom: 8px;">Pick a fee to play it</div>
+            <h2 style="font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 44px); font-weight: 700; letter-spacing: -0.02em;">Eight fees. <em style="font-style: italic; font-weight: 300; color: var(--electric);">Eight scenarios.</em></h2>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--ink-muted);" id="seen-counter">0 of 8 seen</div>
+        </div>
+
+        <div class="fee-grid" id="fee-grid">
+          <!-- populated by JS -->
+        </div>
+      </section>
+
+      <!-- FEE STAGE -->
+      <section class="fee-stage-section" id="stage-section" style="display: none;">
+        <div class="fee-stage" id="fee-stage">
+          <!-- populated by JS -->
+        </div>
+      </section>
+
+      <!-- CHECKPOINT -->
+      <section class="checkpoint" id="checkpoint" style="display: none;">
+        <div class="checkpoint-card">
+          <div style="font-size: 56px; margin-bottom: 12px;">✦</div>
+          <h3 class="checkpoint-title">You've seen <em>every fee</em>.</h3>
+          <p class="checkpoint-body">
+            Every charge a credit card can hit you with — you now know when it happens, how it's calculated, and how to avoid it. Most people learn this only after the fee has already been deducted.
+          </p>
+          <div class="checkpoint-cta-row">
+            <a href="../index.html" class="btn btn--ghost">← all chapters</a>
+            <a href="08-the-score.html" class="btn btn--primary btn--lg">Next: Your Credit Score →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- BOTTOM NAV -->
+      <div class="chapter-nav-bottom">
+        <a href="06-the-trap.html" class="chapter-nav-link">
+          <span class="chapter-nav-meta">← Previous</span>
+          <span class="chapter-nav-name">The Trap</span>
+        </a>
+        <a href="08-the-score.html" class="chapter-nav-link next">
+          <span class="chapter-nav-meta">Next →</span>
+          <span class="chapter-nav-name">Your Credit Score</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../js/global.js"></script>
+  <script>
+    // ====================================================
+    // CHAPTER 7 — EVERY FEE EXPLAINED
+    // ====================================================
+
+    const FEES = [
+      {
+        id: 'annual',
+        icon: '📅',
+        name: 'Annual Fee',
+        tagline: 'The yearly cost of holding the card',
+        narrative: `It's January 14th. You've had your card for exactly one year. You haven't done anything wrong. But this morning your statement arrived with a charge you didn't make.`,
+        amount: '₹1,500',
+        amountColor: '',
+        timeline: [
+          { label: 'Card anniversary', class: '' },
+          { label: 'Auto-charged', class: 'danger' },
+          { label: 'GST 18% added', class: 'danger' },
+          { label: 'Posted to statement', class: 'danger' }
+        ],
+        actors: [
+          { icon: '🏛️', label: 'Issuer', sub: 'HDFC' },
+          { icon: '📄', label: 'Statement', sub: 'Bill' },
+          { icon: '👤', label: 'You', sub: 'Pay' }
+        ],
+        steps: [
+          { title: 'The card hits its 1-year mark', time: 'Jan 14', body: 'Your issuer (HDFC) automatically triggers the annual fee on the anniversary of your card opening. <strong>You did nothing.</strong> The fee just appears.', litActors: [0], danger: false },
+          { title: 'The fee is added to your statement', time: 'Same day', body: 'A line item appears: "Annual Membership Fee · ₹1,500". Most people don\'t notice it for weeks. <strong>GST of 18% is added on top</strong> — that\'s ₹270 extra. Total: ₹1,770.', litActors: [0, 1], danger: true },
+          { title: 'You pay it (or don\'t)', time: 'Due date', body: 'When you pay your statement, you\'re also paying the annual fee. <strong>Many premium cards waive this if you spend above a threshold</strong> (e.g., ₹2L/year). Some cards offer fee reversals if you call and ask. Always ask.', litActors: [0, 1, 2], danger: false }
+        ],
+        breakdown: [
+          { key: 'Base annual fee', val: '₹1,500.00', class: 'fee' },
+          { key: 'GST @ 18%', val: '₹270.00', class: 'gst' },
+          { key: 'Total deducted', val: '₹1,770.00', class: '' }
+        ],
+        lesson: `Most issuers will <em>waive or reverse</em> the annual fee if you call and ask, especially if you've spent decently on the card. Cost of asking: 5 minutes. Savings: ₹1,770.`
+      },
+      {
+        id: 'late',
+        icon: '⏰',
+        name: 'Late Payment Fee',
+        tagline: 'The penalty for missing your due date',
+        narrative: `It's 11:47 PM. Your payment was due today. You've been busy. You'll do it tomorrow. <em>Tomorrow is too late.</em>`,
+        amount: '₹950',
+        amountColor: '',
+        timeline: [
+          { label: 'Bill due', class: '' },
+          { label: 'Missed deadline', class: 'danger' },
+          { label: 'Late fee added', class: 'danger' },
+          { label: 'Score reported', class: 'danger' }
+        ],
+        actors: [
+          { icon: '📅', label: 'Due date', sub: 'Today' },
+          { icon: '⏰', label: '12:00 AM', sub: 'Cutoff' },
+          { icon: '🏛️', label: 'Issuer', sub: 'Charges' },
+          { icon: '📊', label: 'CIBIL', sub: 'Notified' }
+        ],
+        steps: [
+          { title: 'You miss the payment deadline', time: '12:00 AM', body: 'The clock strikes midnight on your due date. <strong>Even being one second late counts.</strong> The system doesn\'t care that you "meant to pay tomorrow."', litActors: [0, 1], danger: true },
+          { title: 'A flat fee gets added', time: '+ next day', body: 'A late payment fee — typically <strong>₹500-₹1,300 depending on your outstanding balance</strong> — is automatically added. The fee is flat (not a percentage), but bigger balances trigger bigger fees.', litActors: [1, 2], danger: true },
+          { title: 'GST is added on top', time: 'Same day', body: 'The late fee itself attracts <strong>18% GST</strong>. So a ₹950 late fee becomes ₹1,121. The government taxes you for being late.', litActors: [2], danger: true },
+          { title: 'CIBIL gets notified', time: 'Within 30 days', body: 'A 30-day late payment is reported to credit bureaus. <strong>Your score drops 50-100 points instantly.</strong> This stays on your record for 7 years. It is the single most damaging credit move you can make.', litActors: [2, 3], danger: true }
+        ],
+        breakdown: [
+          { key: 'Late payment fee (balance ₹50K+)', val: '₹950.00', class: 'fee' },
+          { key: 'GST @ 18%', val: '₹171.00', class: 'gst' },
+          { key: 'Bonus: interest on full balance', val: '+ ₹1,500.00', class: 'fee' },
+          { key: 'Total damage', val: '₹2,621.00', class: '' }
+        ],
+        lesson: `<em>Auto-pay is free.</em> Set it up to pay the minimum (or full) balance automatically. Even one late payment is more painful than the last 5 years of "remembering to pay" combined.`
+      },
+      {
+        id: 'cash-advance',
+        icon: '💸',
+        name: 'Cash Advance Fee',
+        tagline: 'Withdrawing cash from your credit card',
+        narrative: `You're at an ATM. Out of cash. You remember your credit card has a "cash advance" feature. <em>Don't.</em> This is the most expensive thing your card can do.`,
+        amount: '₹500',
+        amountColor: 'warm',
+        timeline: [
+          { label: 'ATM withdrawal', class: '' },
+          { label: 'Flat fee', class: 'danger' },
+          { label: 'Interest from Day 1', class: 'danger' },
+          { label: 'No grace period', class: 'danger' }
+        ],
+        actors: [
+          { icon: '🏧', label: 'ATM', sub: 'Withdraw' },
+          { icon: '💳', label: 'Card', sub: 'Cash advance' },
+          { icon: '🏛️', label: 'Issuer', sub: 'Triple-charges' }
+        ],
+        steps: [
+          { title: 'You withdraw ₹10,000 from an ATM', time: 'T+0', body: 'You insert your credit card, choose "cash advance," and pull out ₹10,000. The cash comes out. So far, it feels like a normal withdrawal. <strong>It\'s not.</strong>', litActors: [0, 1], danger: false },
+          { title: 'A flat fee hits immediately', time: 'Instant', body: 'The issuer charges a <strong>cash advance fee of 2.5-3.5%</strong> of the amount, with a minimum of ₹300-500. On ₹10K, that\'s ₹350-500 right off the bat. GST is also added.', litActors: [1, 2], danger: true },
+          { title: 'Interest starts accruing immediately', time: 'Same second', body: 'Unlike regular purchases (which have a grace period until your due date), <strong>cash advances accrue interest from the moment of withdrawal.</strong> No 30-day buffer. The interest rate is also higher — usually 36-48% APR.', litActors: [2], danger: true },
+          { title: 'Even paying it back fast is expensive', time: '15 days later', body: 'Pay it back in 15 days, and you still owe: ₹500 fee + ₹150 interest + ₹117 GST = <strong>₹767 to borrow ₹10K for 15 days</strong>. That\'s an effective annualized cost of nearly 200%.', litActors: [0, 1, 2], danger: true }
+        ],
+        breakdown: [
+          { key: 'Cash advance amount', val: '₹10,000', class: '' },
+          { key: 'Cash advance fee (3.5%)', val: '₹500.00', class: 'fee' },
+          { key: 'Interest (15 days @ 42% APR)', val: '₹172.60', class: 'fee' },
+          { key: 'GST @ 18% on fees', val: '₹121.07', class: 'gst' },
+          { key: 'Total to repay', val: '₹10,793.67', class: '' }
+        ],
+        lesson: `Cash advances are designed to be the <em>most punishing</em> way to use your card. If you genuinely need cash urgently — use UPI, a personal loan, or even a payday advance app. Almost any alternative is cheaper.`
+      },
+      {
+        id: 'forex',
+        icon: '🌍',
+        name: 'Foreign Exchange Markup',
+        tagline: 'The hidden cost of international spending',
+        narrative: `You're on vacation in Bali. You're paying ₹4,000 for dinner. <em>Or so you thought.</em> Two days later, your statement shows ₹4,140. Where did that come from?`,
+        amount: '3.5%',
+        amountColor: 'warm',
+        timeline: [
+          { label: 'Spend abroad', class: '' },
+          { label: 'Network converts', class: '' },
+          { label: 'Markup added', class: 'danger' },
+          { label: 'Plus GST', class: 'danger' }
+        ],
+        actors: [
+          { icon: '🍽️', label: 'Bali resto', sub: 'IDR' },
+          { icon: '🌐', label: 'VISA', sub: 'Convert' },
+          { icon: '🏛️', label: 'Issuer', sub: 'Markup' },
+          { icon: '📄', label: 'Statement', sub: 'INR' }
+        ],
+        steps: [
+          { title: 'Restaurant charges in local currency', time: 'T+0', body: 'You eat at a restaurant in Bali. The bill is <strong>IDR 760,000</strong> (Indonesian Rupiah). At the current exchange rate, that\'s about ₹4,000.', litActors: [0], danger: false },
+          { title: 'Network converts to INR', time: 'T+1 sec', body: 'VISA receives the transaction in IDR. They convert it to INR at <strong>their wholesale rate</strong> — close to the actual mid-market rate. So far so good.', litActors: [1], danger: false },
+          { title: 'Issuer adds the markup', time: 'T+2 sec', body: 'Your bank then adds a <strong>foreign exchange markup of 1-3.5%</strong> on top. This is pure profit for them — they\'re charging you for the "service" of accepting an international transaction. The actual conversion cost to the bank is tiny.', litActors: [1, 2], danger: true },
+          { title: 'GST is added on the markup', time: 'Same day', body: 'On top of the markup, <strong>18% GST is charged on the markup amount</strong>. So a 3.5% markup actually becomes ~4.13% in real terms.', litActors: [2, 3], danger: true }
+        ],
+        breakdown: [
+          { key: 'Original amount (IDR 760,000)', val: '₹4,000.00', class: '' },
+          { key: 'Forex markup @ 3.5%', val: '₹140.00', class: 'fee' },
+          { key: 'GST @ 18% on markup', val: '₹25.20', class: 'gst' },
+          { key: 'Final charge on statement', val: '₹4,165.20', class: '' }
+        ],
+        lesson: `For international travel, <em>get a zero-forex card</em> (Niyo, HDFC Regalia, Axis Atlas). Saving 3.5% on international spending sounds small until you spend ₹2L abroad and save ₹7,000.`
+      },
+      {
+        id: 'overlimit',
+        icon: '🚫',
+        name: 'Over-Limit Fee',
+        tagline: 'When you exceed your credit limit',
+        narrative: `Your limit is ₹50,000. You've spent ₹49,200. You buy a coffee — ₹250. The transaction goes through. Then a notification arrives: <em>over-limit fee charged.</em>`,
+        amount: '2.5%',
+        amountColor: '',
+        timeline: [
+          { label: 'Limit ₹50,000', class: '' },
+          { label: 'Tiny over-spend', class: 'danger' },
+          { label: 'Fee triggered', class: 'danger' }
+        ],
+        actors: [
+          { icon: '💳', label: 'Limit', sub: '₹50K' },
+          { icon: '☕', label: 'Purchase', sub: 'Goes through' },
+          { icon: '🏛️', label: 'Issuer', sub: 'Charges fee' }
+        ],
+        steps: [
+          { title: 'You\'re close to your limit', time: 'T+0', body: 'You\'ve spent ₹49,200 of your ₹50,000 limit. You don\'t realize how close you are. <strong>Most people don\'t check before buying.</strong>', litActors: [0], danger: false },
+          { title: 'A small purchase puts you over', time: 'T+1', body: 'You buy a coffee for ₹250. Now you\'re at ₹49,450. Then a delayed restaurant bill from yesterday hits — ₹650. <strong>Total: ₹50,100. You\'re ₹100 over.</strong> The transaction still went through.', litActors: [0, 1], danger: true },
+          { title: 'The over-limit fee triggers', time: 'Same day', body: 'A fee of <strong>2.5% of your over-limit amount, or ₹500 (whichever is higher)</strong> is charged. So even being ₹100 over costs you ₹500. This fee can be charged once per statement cycle.', litActors: [1, 2], danger: true }
+        ],
+        breakdown: [
+          { key: 'Limit', val: '₹50,000', class: '' },
+          { key: 'Spent', val: '₹50,100', class: '' },
+          { key: 'Over-limit by', val: '₹100', class: 'fee' },
+          { key: 'Fee (2.5% or ₹500 — whichever higher)', val: '₹500', class: 'fee' },
+          { key: 'GST @ 18%', val: '₹90', class: 'gst' },
+          { key: 'Cost of being ₹100 over', val: '₹590', class: '' }
+        ],
+        lesson: `In your card app, <em>turn off "over-limit allowed"</em>. The transaction will be declined instead of approved-with-fee. A declined transaction is just inconvenient. An over-limit fee is real money.`
+      },
+      {
+        id: 'interest',
+        icon: '📈',
+        name: 'Interest (Finance Charges)',
+        tagline: 'The cost of carrying a balance',
+        narrative: `You paid ₹5,000 of your ₹50,000 statement. Just the minimum. <em>You assumed the rest was fine to pay later. It wasn't fine.</em>`,
+        amount: '36% APR',
+        amountColor: '',
+        timeline: [
+          { label: 'Statement: ₹50K', class: '' },
+          { label: 'Paid only minimum', class: 'danger' },
+          { label: 'Interest from purchase date', class: 'danger' },
+          { label: 'Compounds daily', class: 'danger' }
+        ],
+        actors: [
+          { icon: '📄', label: 'Statement', sub: '₹50K' },
+          { icon: '💸', label: 'Min payment', sub: '₹2,500' },
+          { icon: '⏳', label: 'Time', sub: 'Compounds' },
+          { icon: '🏛️', label: 'Issuer', sub: 'Profits' }
+        ],
+        steps: [
+          { title: 'Your statement arrives', time: 'Day 1', body: 'You owe ₹50,000. Your minimum payment due is ₹2,500 (5%). The full amount is due in 21 days.', litActors: [0], danger: false },
+          { title: 'You pay just the minimum', time: 'Day 21', body: 'You pay ₹2,500. <strong>You\'ve done what they asked.</strong> But here\'s what most people don\'t know: by paying less than the full amount, you\'ve <strong>forfeited the interest-free period entirely</strong>.', litActors: [0, 1], danger: true },
+          { title: 'Interest is charged from the original purchase date', time: 'Day 22', body: 'Not from your due date — from <strong>the day you actually swiped the card</strong>. Each purchase you made in that statement cycle gets charged interest from its original date. This is called "loss of grace period."', litActors: [1, 2], danger: true },
+          { title: 'It compounds. Daily.', time: 'Every day', body: 'At <strong>36% APR, that\'s 0.0986% per day</strong>. On a ₹47,500 carried balance, that\'s ₹47/day. Carry it for a month: ₹1,420 in interest. <strong>And next month, that interest also gets interest.</strong> This is how people end up paying ₹1L on a ₹50K original spend.', litActors: [2, 3], danger: true }
+        ],
+        breakdown: [
+          { key: 'Carried balance', val: '₹47,500', class: '' },
+          { key: 'APR', val: '36%', class: '' },
+          { key: 'Interest in 1 month', val: '₹1,425', class: 'fee' },
+          { key: 'GST @ 18% on interest', val: '₹257', class: 'gst' },
+          { key: 'Total interest cost (1 month)', val: '₹1,682', class: '' }
+        ],
+        lesson: `Pay your statement <em>in full</em> every month. Anything less, and the entire grace period is lost — interest is charged from each purchase\'s original date, not from your statement date. (Chapter 6 has the full debt simulator.)`
+      },
+      {
+        id: 'emi-conversion',
+        icon: '🔄',
+        name: 'EMI Conversion Fee',
+        tagline: 'Converting a purchase to EMIs',
+        narrative: `You bought a ₹60,000 phone. Your card app suggests "convert to EMI — only ₹5,500/month for 12 months." <em>Sounds easier. It's not free.</em>`,
+        amount: '₹399 + interest',
+        amountColor: 'warm',
+        timeline: [
+          { label: 'Big purchase', class: '' },
+          { label: 'Convert to EMI', class: '' },
+          { label: 'Processing fee', class: 'danger' },
+          { label: 'Interest spread over EMIs', class: 'danger' }
+        ],
+        actors: [
+          { icon: '📱', label: 'Phone', sub: '₹60K' },
+          { icon: '🔄', label: 'Convert', sub: 'EMI' },
+          { icon: '🏛️', label: 'Bank', sub: 'Charges' }
+        ],
+        steps: [
+          { title: 'Big purchase prompts EMI offer', time: 'T+0', body: 'You buy a ₹60,000 phone. Your bank app immediately suggests: "Convert to EMI starting at ₹5,495/month for 12 months." It looks reasonable.', litActors: [0, 1], danger: false },
+          { title: 'A processing fee is charged upfront', time: 'On conversion', body: 'A <strong>processing fee of ₹199-₹999</strong> (often 1-2% of transaction value) is charged just for the privilege of converting. GST applies on top.', litActors: [1, 2], danger: true },
+          { title: 'Interest is added to each EMI', time: 'Every month', body: 'EMIs aren\'t free credit. Banks charge <strong>13-16% interest annually</strong> on the EMI amount. On a ₹60K, 12-month EMI at 14%, you\'d pay <strong>~₹4,500 extra</strong> in interest over the year.', litActors: [2], danger: true },
+          { title: 'Pre-closure has its own fee', time: 'If you pay early', body: 'Pay off the EMI early and the bank charges a <strong>3% pre-closure fee</strong> on the remaining balance. They want their interest income — and they\'ll charge you for trying to escape it.', litActors: [2], danger: true }
+        ],
+        breakdown: [
+          { key: 'Phone price', val: '₹60,000', class: '' },
+          { key: 'EMI processing fee', val: '₹399', class: 'fee' },
+          { key: 'Interest (12 months @ 14%)', val: '₹4,667', class: 'fee' },
+          { key: 'GST on fees + interest', val: '₹912', class: 'gst' },
+          { key: 'Total cost of phone', val: '₹65,978', class: '' }
+        ],
+        lesson: `<em>"No-cost EMI"</em> on retailer sites is genuinely zero-cost (the merchant absorbs the interest). <em>"Convert to EMI"</em> from your bank app is never zero-cost. Always read which one is being offered.`
+      },
+      {
+        id: 'reward-redemption',
+        icon: '🎁',
+        name: 'Reward Redemption Fee',
+        tagline: 'The cost of using your own rewards',
+        narrative: `You've collected 25,000 reward points. You go to redeem them for a ₹6,250 gift voucher. <em>Then you see a "redemption fee."</em> A fee. To use rewards. That you already earned.`,
+        amount: '₹99 - ₹399',
+        amountColor: 'gold',
+        timeline: [
+          { label: 'You earned points', class: '' },
+          { label: 'You redeem', class: '' },
+          { label: 'Fee charged', class: 'danger' }
+        ],
+        actors: [
+          { icon: '⭐', label: 'Points', sub: '25,000' },
+          { icon: '🎁', label: 'Reward', sub: 'Voucher' },
+          { icon: '🏛️', label: 'Bank', sub: 'Fees' }
+        ],
+        steps: [
+          { title: 'You\'ve accumulated points', time: 'Over time', body: 'After spending ~₹2.5L on your card, you have <strong>25,000 reward points</strong>. The bank advertises these as worth ₹6,250 (at 25 paisa per point — sometimes lower).', litActors: [0], danger: false },
+          { title: 'You go to redeem them', time: 'Today', body: 'You select a ₹6,250 gift voucher (e.g., Amazon Pay). You confirm the redemption. <strong>Then a fee appears: "Redemption fee ₹99."</strong>', litActors: [0, 1], danger: true },
+          { title: 'GST is added to the fee', time: 'Instant', body: 'Even on this small fee, <strong>GST applies</strong>. ₹99 + 18% GST = ₹117. Plus, some redemption types (like statement credit) charge higher fees — ₹250-399.', litActors: [1, 2], danger: true }
+        ],
+        breakdown: [
+          { key: 'Points value claimed', val: '₹6,250', class: '' },
+          { key: 'Redemption fee (voucher)', val: '₹99', class: 'fee' },
+          { key: 'GST @ 18%', val: '₹17.82', class: 'gst' },
+          { key: 'Effective points value', val: '₹6,133', class: '' }
+        ],
+        lesson: `Reward fees are why <em>"point value"</em> is rarely the value advertised. Read the fine print: some redemptions are free (e.g., transfer to airline partners), others cost ₹399. Always check the fee before redeeming.`
+      }
+    ];
+
+    let activeFee = null;
+    let seenFees = new Set();
+    let currentStep = 0;
+    let isAnimating = false;
+
+    // Render fee picker grid
+    function renderFeeGrid() {
+      const grid = document.getElementById('fee-grid');
+      grid.innerHTML = FEES.map((f, i) => `
+        <div class="fee-tile ${activeFee === i ? 'active' : ''} ${seenFees.has(i) ? 'played' : ''}" onclick="selectFee(${i})">
+          <div class="fee-icon">${f.icon}</div>
+          <div class="fee-name">${f.name}</div>
+          <div class="fee-tagline">${f.tagline}</div>
+        </div>
+      `).join('');
+      document.getElementById('seen-counter').textContent = `${seenFees.size} of 8 seen`;
+
+      // Show checkpoint when all 8 seen
+      if (seenFees.size === 8) {
+        document.getElementById('checkpoint').style.display = 'block';
+      }
+    }
+
+    function selectFee(idx) {
+      activeFee = idx;
+      currentStep = 0;
+      seenFees.add(idx);
+      renderFeeGrid();
+      renderFeeStage();
+      document.getElementById('stage-section').style.display = 'block';
+      document.getElementById('stage-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      DCC.playClick();
+    }
+
+    function renderFeeStage() {
+      if (activeFee === null) return;
+      const fee = FEES[activeFee];
+      const stage = document.getElementById('fee-stage');
+
+      stage.innerHTML = `
+        <div class="fee-stage-header">
+          <div class="fee-stage-title">
+            <div class="fee-stage-icon">${fee.icon}</div>
+            <div>
+              <div class="fee-stage-name">${fee.name}</div>
+              <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; margin-top: 2px;">${fee.tagline}</div>
+            </div>
+          </div>
+          <div class="fee-stage-amount ${fee.amountColor}">${fee.amount}</div>
+        </div>
+
+        <div class="scenario-panel">
+          <div class="scenario-narrative">"${fee.narrative}"</div>
+          <div class="scenario-timeline">
+            ${fee.timeline.map((t, i) => `
+              <div class="scenario-timeline-item ${t.class}">${t.label}</div>
+              ${i < fee.timeline.length - 1 ? '<span class="scenario-timeline-arrow">→</span>' : ''}
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="anim-stage">
+          <div class="anim-actors" id="anim-actors">
+            ${fee.actors.map((a, i) => `
+              <div class="anim-actor" data-idx="${i}">
+                <div class="actor-icon">${a.icon}</div>
+                <div class="actor-label">${a.label}</div>
+                <div class="actor-sub">${a.sub}</div>
+              </div>
+              ${i < fee.actors.length - 1 ? '<div class="anim-flow-line"><div class="anim-flow-fill" data-line="' + i + '"></div></div>' : ''}
+            `).join('')}
+          </div>
+
+          <div id="step-narration-wrap"></div>
+        </div>
+
+        <div class="anim-controls">
+          <div class="anim-progress-dots" id="step-dots">
+            ${fee.steps.map((_, i) => `<div class="step-dot" data-step="${i}"></div>`).join('')}
+            <span style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); margin-left: 8px;" id="step-progress-text">Step 1 of ${fee.steps.length}</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn--ghost" id="prev-btn" onclick="prevFeeStep()">← back</button>
+            <button class="btn btn--primary" id="next-btn" onclick="nextFeeStep()">next →</button>
+          </div>
+        </div>
+
+        <div class="fee-breakdown" id="fee-breakdown" style="display: none;">
+          <div class="breakdown-header">The Damage · Final Breakdown</div>
+          <div class="breakdown-rows">
+            ${fee.breakdown.map((b, i) => `
+              <div class="breakdown-row ${b.class}">
+                <span class="breakdown-key">${b.key}</span>
+                <span class="breakdown-val">${b.val}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="fee-lesson" id="fee-lesson" style="display: none;">
+          <div class="lesson-label">The Lesson</div>
+          <div class="lesson-text">${fee.lesson}</div>
+        </div>
+      `;
+
+      applyFeeStep(0);
+    }
+
+    function applyFeeStep(idx) {
+      const fee = FEES[activeFee];
+      if (idx < 0 || idx >= fee.steps.length) return;
+      currentStep = idx;
+      const step = fee.steps[idx];
+
+      // Update actors
+      document.querySelectorAll('#anim-actors .anim-actor').forEach((a, i) => {
+        a.classList.remove('lit', 'danger');
+        if (step.litActors.includes(i)) {
+          a.classList.add(step.danger ? 'danger' : 'lit');
+        }
+      });
+
+      // Update flow lines
+      document.querySelectorAll('.anim-flow-fill').forEach((f, i) => {
+        if (i < idx) {
+          f.style.width = '100%';
+          if (step.danger) f.classList.add('danger');
+        } else if (i === idx && idx > 0) {
+          f.style.width = '100%';
+        } else {
+          f.style.width = '0';
+        }
+      });
+
+      // Update narration
+      document.getElementById('step-narration-wrap').innerHTML = `
+        <div class="step-narration ${step.danger ? 'danger' : ''}">
+          <div class="step-narration-header">
+            <div class="step-num-badge ${step.danger ? 'danger' : ''}">${idx + 1}</div>
+            <div class="step-narration-title">${step.title}</div>
+            <div class="step-narration-time">${step.time}</div>
+          </div>
+          <div class="step-narration-body">${step.body}</div>
+        </div>
+      `;
+
+      // Update dots
+      document.querySelectorAll('#step-dots .step-dot').forEach((d, i) => {
+        d.classList.remove('active', 'done');
+        if (i < idx) d.classList.add('done');
+        if (i === idx) d.classList.add('active');
+      });
+
+      document.getElementById('step-progress-text').textContent = `Step ${idx + 1} of ${fee.steps.length}`;
+      document.getElementById('prev-btn').disabled = idx === 0;
+
+      const nextBtn = document.getElementById('next-btn');
+      const isLast = idx === fee.steps.length - 1;
+      nextBtn.textContent = isLast ? 'See breakdown ↓' : 'next →';
+
+      DCC.playClick();
+
+      // Show breakdown on final step
+      if (isLast) {
+        document.getElementById('fee-breakdown').style.display = 'block';
+        document.getElementById('fee-lesson').style.display = 'block';
+      }
+    }
+
+    function nextFeeStep() {
+      const fee = FEES[activeFee];
+      if (currentStep < fee.steps.length - 1) {
+        applyFeeStep(currentStep + 1);
+      } else {
+        // Already at last step, scroll to breakdown
+        document.getElementById('fee-breakdown').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function prevFeeStep() {
+      if (currentStep > 0) applyFeeStep(currentStep - 1);
+    }
+
+    // Init
+    renderFeeGrid();
+  </script>
+</body>
+</html>

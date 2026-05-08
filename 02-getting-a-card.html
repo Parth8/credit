@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>II. Getting a Card — Decoding Credit Cards</title>
+  <link rel="stylesheet" href="../css/global.css">
+  <style>
+    .chapter-shell { min-height: 100vh; padding-top: 80px; }
+    .chapter-header { padding: 32px 0; border-bottom: 1px dashed var(--border-strong); margin-bottom: 32px; }
+    .chapter-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .chapter-roman { font-family: var(--font-display); font-size: 14px; font-style: italic; color: var(--electric); letter-spacing: 0.04em; }
+    .chapter-progress-text { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .chapter-h1 { font-family: var(--font-display); font-size: clamp(48px, 6vw, 80px); font-weight: 800; line-height: 1; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .chapter-h1 em { font-style: italic; font-weight: 300; color: var(--electric); }
+    .chapter-intro { font-size: 18px; color: var(--ink-muted); max-width: 600px; line-height: 1.6; }
+
+    .app-stage { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin: 48px 0; }
+
+    .app-form-card {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.04);
+    }
+
+    .app-form-card h3 {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .app-form-card h3 em { font-style: italic; font-weight: 300; color: var(--electric); }
+
+    .app-form-card > p {
+      font-size: 13px;
+      color: var(--ink-muted);
+      margin-bottom: 28px;
+    }
+
+    .form-field {
+      margin-bottom: 20px;
+    }
+
+    .form-field label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .form-field input[type="range"] {
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      background: transparent;
+      cursor: pointer;
+      outline: none;
+      padding: 8px 0;
+    }
+
+    .form-field input[type="range"]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 4px;
+      background: var(--parchment);
+      border-radius: 2px;
+    }
+
+    .form-field input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 22px;
+      width: 22px;
+      border-radius: 50%;
+      background: var(--electric);
+      border: 3px solid white;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+      margin-top: -9px;
+      cursor: pointer;
+    }
+
+    .form-value {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+
+    .form-toggle {
+      display: flex;
+      gap: 4px;
+      background: var(--paper);
+      border-radius: 999px;
+      padding: 3px;
+    }
+
+    .form-toggle button {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .form-toggle button.active {
+      background: var(--ink);
+      color: white;
+    }
+
+    .form-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      font-size: 15px;
+      margin-top: 16px;
+    }
+
+    /* DECISION CARD */
+    .decision-card {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.04);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .decision-card.approved { border-left: 6px solid var(--success); }
+    .decision-card.declined { border-left: 6px solid var(--danger); }
+    .decision-card.review { border-left: 6px solid var(--warm); }
+
+    .decision-status {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .decision-status.approved { color: var(--success); }
+    .decision-status.declined { color: var(--danger); }
+    .decision-status.review { color: var(--warm); }
+
+    .decision-headline {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .decision-headline em { font-style: italic; font-weight: 300; }
+
+    .decision-summary {
+      font-size: 15px;
+      color: var(--ink-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .decision-stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .decision-stat {
+      padding: 16px;
+      background: var(--paper);
+      border-radius: 8px;
+    }
+
+    .decision-stat-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-faint);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .decision-stat-value {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .factor-rundown { display: flex; flex-direction: column; gap: 8px; }
+    .factor-rundown-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; line-height: 1.5; padding: 10px 14px; background: var(--paper); border-radius: 8px; }
+    .factor-icon { flex-shrink: 0; }
+    .factor-icon.good { color: var(--success); }
+    .factor-icon.bad { color: var(--danger); }
+    .factor-icon.warn { color: var(--warm); }
+
+    /* HOW IT WORKS */
+    .how-section { padding: 80px 0; border-top: 1px dashed var(--border-strong); }
+    .how-section h2 { font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 44px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 24px; }
+    .how-section h2 em { font-style: italic; font-weight: 300; color: var(--electric); }
+    .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
+    .how-card { background: white; border: 1px solid var(--border-strong); border-radius: var(--radius-md); padding: 24px; }
+    .how-num { font-family: var(--font-display); font-size: 32px; font-weight: 800; color: var(--electric); font-style: italic; line-height: 1; margin-bottom: 12px; }
+    .how-card h4 { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .how-card p { font-size: 13px; color: var(--ink-muted); line-height: 1.5; }
+
+    /* CHECKPOINT */
+    .checkpoint { padding: 80px 0; text-align: center; }
+    .checkpoint-card { background: white; border: 2px dashed var(--electric); border-radius: var(--radius-lg); padding: 48px 32px; max-width: 640px; margin: 0 auto; }
+    .checkpoint-title { font-family: var(--font-display); font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+    .checkpoint-title em { font-style: italic; font-weight: 300; color: var(--electric); }
+    .checkpoint-body { font-size: 15px; color: var(--ink-muted); line-height: 1.6; margin-bottom: 28px; }
+    .checkpoint-cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    .chapter-nav-bottom { padding: 40px 0 80px; display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-strong); }
+    .chapter-nav-link { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: inherit; transition: transform 0.3s ease; }
+    .chapter-nav-link:hover { transform: translateX(-4px); }
+    .chapter-nav-link.next { align-items: flex-end; }
+    .chapter-nav-link.next:hover { transform: translateX(4px); }
+    .chapter-nav-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; }
+    .chapter-nav-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+
+    @media (max-width: 768px) {
+      .app-stage { grid-template-columns: 1fr; }
+      .how-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html#chapters">All Chapters</a></li>
+      <li><a href="03-the-anatomy.html">Next →</a></li>
+    </ul>
+  </nav>
+
+  <div class="chapter-shell">
+    <div class="container">
+      <div class="chapter-header">
+        <div class="chapter-header-row">
+          <div class="chapter-roman">Chapter II</div>
+          <div class="chapter-progress-text">2 of 22 · ~6 min</div>
+        </div>
+        <h1 class="chapter-h1"><em>Getting</em> a Card</h1>
+        <p class="chapter-intro">Fill in your real-feeling profile. Click "Apply." Watch the bank's algorithm decide. See exactly which factors helped, which hurt.</p>
+      </div>
+
+      <section style="padding: 32px 0;">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em; margin-bottom: 8px;">The simulator</div>
+        <h2 style="font-family: var(--font-display); font-size: clamp(28px, 3.5vw, 44px); font-weight: 700; letter-spacing: -0.02em;">A real-feeling <em style="font-style: italic; font-weight: 300; color: var(--electric);">credit card application.</em></h2>
+        <p style="font-size: 16px; color: var(--ink-muted); max-width: 540px;">Move the sliders, change your profile. The decision recalculates every time.</p>
+
+        <div class="app-stage">
+          <div class="app-form-card">
+            <h3>HDFC <em>Millennia Card</em></h3>
+            <p>Standard application form. Fill it in, click Apply.</p>
+
+            <div class="form-field">
+              <div class="form-row">
+                <label>Monthly Income</label>
+                <div class="form-value" id="display-income">₹50,000</div>
+              </div>
+              <input type="range" id="income" min="15000" max="500000" step="5000" value="50000" oninput="updateApp()">
+              <div style="font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); display: flex; justify-content: space-between;"><span>₹15K</span><span>₹5L+</span></div>
+            </div>
+
+            <div class="form-field">
+              <div class="form-row">
+                <label>Age</label>
+                <div class="form-value" id="display-age">24</div>
+              </div>
+              <input type="range" id="age" min="18" max="65" value="24" oninput="updateApp()">
+            </div>
+
+            <div class="form-field">
+              <div class="form-row">
+                <label>CIBIL Score</label>
+                <div class="form-value" id="display-cibil">700</div>
+              </div>
+              <input type="range" id="cibil" min="300" max="900" value="700" oninput="updateApp()">
+              <div style="font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); display: flex; justify-content: space-between;"><span>poor</span><span>excellent</span></div>
+            </div>
+
+            <div class="form-field">
+              <label>Employment Type</label>
+              <div class="form-toggle" id="emp-toggle">
+                <button class="active" onclick="setEmp('salaried')">Salaried</button>
+                <button onclick="setEmp('self')">Self-employed</button>
+                <button onclick="setEmp('student')">Student</button>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Existing Cards</label>
+              <div class="form-toggle" id="cards-toggle">
+                <button class="active" onclick="setCards(0)">None</button>
+                <button onclick="setCards(1)">1</button>
+                <button onclick="setCards(2)">2</button>
+                <button onclick="setCards(3)">3+</button>
+              </div>
+            </div>
+
+            <button class="btn btn--primary submit-btn" onclick="submitApp()">Apply Now →</button>
+          </div>
+
+          <div class="decision-card review" id="decision-card">
+            <div class="decision-status review" id="dec-status">Awaiting application</div>
+            <div class="decision-headline" id="dec-headline">Click <em>Apply</em> to see decision</div>
+            <div class="decision-summary" id="dec-summary">Adjust the sliders on the left, then submit. The bank's algorithm will run on your profile.</div>
+            <div id="dec-details" style="display: none;">
+              <div class="decision-stat-row">
+                <div class="decision-stat">
+                  <div class="decision-stat-label">Approved limit</div>
+                  <div class="decision-stat-value" id="dec-limit">—</div>
+                </div>
+                <div class="decision-stat">
+                  <div class="decision-stat-label">Interest rate (APR)</div>
+                  <div class="decision-stat-value" id="dec-apr">—</div>
+                </div>
+              </div>
+              <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em; margin-bottom: 12px; text-transform: uppercase;">What helped / hurt</div>
+              <div class="factor-rundown" id="dec-factors"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="how-section">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.06em; margin-bottom: 8px;">Behind the scenes</div>
+        <h2>What <em>actually</em> happens when you apply.</h2>
+        <p style="font-size: 16px; color: var(--ink-muted); max-width: 540px;">In real life, this all happens in 30 seconds to 7 days, depending on the bank.</p>
+
+        <div class="how-grid">
+          <div class="how-card">
+            <div class="how-num">i.</div>
+            <h4>The bureau pull</h4>
+            <p>The bank requests your full credit report from CIBIL/Experian/Equifax. They see every loan you've ever had, every payment, every default. <strong>This is a "hard inquiry"</strong> — knocks 5-10 points off your score temporarily.</p>
+          </div>
+          <div class="how-card">
+            <div class="how-num">ii.</div>
+            <h4>The income check</h4>
+            <p>Salaried applicants submit 3 months of pay slips. Self-employed need ITRs for 2-3 years. The bank calculates your <strong>EMI-to-income ratio</strong> — they want it under 50%, ideally under 30%.</p>
+          </div>
+          <div class="how-card">
+            <div class="how-num">iii.</div>
+            <h4>The algorithm</h4>
+            <p>An automated model scores your application against thousands of similar applicants. <strong>For most cards, no human ever looks at your application</strong> — the algorithm decides in seconds, sets the limit, and pre-prints the card.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="checkpoint">
+        <div class="checkpoint-card">
+          <div style="font-size: 56px; margin-bottom: 12px;">📝</div>
+          <h3 class="checkpoint-title">You now know <em>what banks see</em> when you apply.</h3>
+          <p class="checkpoint-body">Next, we look at the card itself — what every chip, hologram, and digit on it actually does.</p>
+          <div class="checkpoint-cta-row">
+            <a href="../index.html" class="btn btn--ghost">← all chapters</a>
+            <a href="03-the-anatomy.html" class="btn btn--primary btn--lg">Chapter III: The Anatomy →</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="chapter-nav-bottom">
+        <a href="01-the-handshake.html" class="chapter-nav-link">
+          <span class="chapter-nav-meta">← Previous</span>
+          <span class="chapter-nav-name">The Handshake</span>
+        </a>
+        <a href="03-the-anatomy.html" class="chapter-nav-link next">
+          <span class="chapter-nav-meta">Next →</span>
+          <span class="chapter-nav-name">The Anatomy of a Card</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/global.js"></script>
+  <script>
+    let emp = 'salaried';
+    let cards = 0;
+
+    function setEmp(v) { emp = v; document.querySelectorAll('#emp-toggle button').forEach(b => b.classList.remove('active')); event.target.classList.add('active'); updateApp(); }
+    function setCards(v) { cards = v; document.querySelectorAll('#cards-toggle button').forEach(b => b.classList.remove('active')); event.target.classList.add('active'); updateApp(); }
+
+    function fmt(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
+
+    function updateApp() {
+      const income = parseInt(document.getElementById('income').value);
+      const age = parseInt(document.getElementById('age').value);
+      const cibil = parseInt(document.getElementById('cibil').value);
+      document.getElementById('display-income').textContent = fmt(income);
+      document.getElementById('display-age').textContent = age;
+      document.getElementById('display-cibil').textContent = cibil;
+    }
+
+    function submitApp() {
+      const income = parseInt(document.getElementById('income').value);
+      const age = parseInt(document.getElementById('age').value);
+      const cibil = parseInt(document.getElementById('cibil').value);
+
+      let factors = [];
+      let pass = true;
+      let limit = income * 3;
+      let apr = 36;
+
+      // Age check
+      if (age < 21) { factors.push({ icon: '✗', cls: 'bad', text: 'Age below 21 — most premium cards require 21+' }); pass = false; }
+      else if (age >= 21 && age <= 28) factors.push({ icon: '~', cls: 'warn', text: 'Young profile — limit will start lower, grow over time' });
+      else if (age >= 29 && age <= 55) factors.push({ icon: '✓', cls: 'good', text: 'Prime working age — most banks favor this profile' });
+      else factors.push({ icon: '~', cls: 'warn', text: 'Senior profile — banks may ask for additional income proof' });
+
+      // Income
+      if (income < 25000 && emp !== 'student') { factors.push({ icon: '✗', cls: 'bad', text: `Income ${fmt(income)} below ₹25K minimum for this card` }); pass = false; }
+      else if (income < 50000) { factors.push({ icon: '~', cls: 'warn', text: `Income meets minimum but below comfort threshold` }); limit *= 0.6; }
+      else if (income >= 50000 && income < 150000) factors.push({ icon: '✓', cls: 'good', text: `Income ${fmt(income)} comfortably qualifies` });
+      else { factors.push({ icon: '✓', cls: 'good', text: `Strong income — premium cards open` }); limit *= 1.4; }
+
+      // CIBIL
+      if (cibil < 600) { factors.push({ icon: '✗', cls: 'bad', text: `CIBIL ${cibil} too low — bank views as high risk` }); pass = false; }
+      else if (cibil < 700) { factors.push({ icon: '~', cls: 'warn', text: `CIBIL ${cibil} acceptable but limits the offer` }); limit *= 0.7; apr = 42; }
+      else if (cibil < 750) { factors.push({ icon: '✓', cls: 'good', text: `CIBIL ${cibil} solid — standard terms` }); }
+      else { factors.push({ icon: '✓', cls: 'good', text: `CIBIL ${cibil} excellent — best terms available` }); apr = 30; limit *= 1.2; }
+
+      // Employment
+      if (emp === 'student') { factors.push({ icon: '~', cls: 'warn', text: 'Student profile — only secured/student cards available' }); limit = Math.min(limit, 25000); apr = 30; }
+      else if (emp === 'salaried') factors.push({ icon: '✓', cls: 'good', text: 'Salaried — most predictable profile for banks' });
+      else if (emp === 'self') factors.push({ icon: '~', cls: 'warn', text: 'Self-employed — needs 2 years ITR, lower limits typical' });
+
+      // Existing cards
+      if (cards === 0) factors.push({ icon: '~', cls: 'warn', text: 'No credit history — bank has no track record to evaluate' });
+      else if (cards <= 2) factors.push({ icon: '✓', cls: 'good', text: `${cards} existing card${cards > 1 ? 's' : ''} — healthy credit footprint` });
+      else { factors.push({ icon: '~', cls: 'warn', text: '3+ existing cards — bank concerned about over-leverage' }); limit *= 0.7; }
+
+      const card = document.getElementById('decision-card');
+      const status = document.getElementById('dec-status');
+      const headline = document.getElementById('dec-headline');
+      const summary = document.getElementById('dec-summary');
+
+      card.classList.remove('approved', 'declined', 'review');
+      status.classList.remove('approved', 'declined', 'review');
+
+      if (pass && cibil >= 700) {
+        card.classList.add('approved'); status.classList.add('approved');
+        status.textContent = '✓ Approved · in seconds';
+        headline.innerHTML = '<em>Welcome aboard.</em>';
+        summary.textContent = 'Your application meets all the bank\'s automated criteria. Card delivered in 5-7 working days.';
+      } else if (pass) {
+        card.classList.add('review'); status.classList.add('review');
+        status.textContent = '⏳ Manual Review · 2-7 days';
+        headline.innerHTML = '<em>Pending review</em>';
+        summary.textContent = 'Borderline approval. A credit officer will manually assess. Outcome depends on fine-grained details.';
+      } else {
+        card.classList.add('declined'); status.classList.add('declined');
+        status.textContent = '✗ Declined';
+        headline.innerHTML = '<em>Not this time.</em>';
+        summary.textContent = 'Your profile didn\'t clear the automated thresholds. Specific reasons listed below — you can address these and reapply in 90 days.';
+      }
+
+      document.getElementById('dec-details').style.display = 'block';
+      document.getElementById('dec-limit').textContent = pass ? fmt(Math.max(10000, limit)) : '—';
+      document.getElementById('dec-apr').textContent = pass ? apr + '%' : '—';
+
+      const factorsEl = document.getElementById('dec-factors');
+      factorsEl.innerHTML = factors.map(f => `
+        <div class="factor-rundown-item">
+          <span class="factor-icon ${f.cls}">${f.icon}</span>
+          <span>${f.text}</span>
+        </div>
+      `).join('');
+
+      DCC.playClick();
+      if (pass && cibil >= 700) setTimeout(() => DCC.playSuccess(), 200);
+    }
+
+    updateApp();
+  </script>
+</body>
+</html>
