@@ -118,6 +118,36 @@
       z-index: 5;
     }
 
+    /* Bottom-row elements (name, expiry, network) live in flex flow.
+       The .part-hotspot rule above sets absolute — undo that for these. */
+    .anatomy-bottom .part-hotspot {
+      position: relative;
+    }
+
+    /* Issuer logo (top-right corner of card front) */
+    .anatomy-issuer {
+      position: absolute;
+      top: 32px;
+      right: 32px;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: white;
+      opacity: 0.95;
+      text-align: right;
+    }
+    .anatomy-issuer .issuer-cobrand {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      opacity: 0.6;
+      margin-top: 2px;
+      text-transform: uppercase;
+    }
+
     .part-hotspot::after {
       content: '';
       position: absolute;
@@ -197,6 +227,14 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
+      gap: 24px;
+    }
+
+    .anatomy-bottom-left {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
     }
 
     .anatomy-name {
@@ -211,7 +249,6 @@
       font-family: var(--font-mono);
       font-size: 11px;
       opacity: 0.7;
-      margin-top: 4px;
     }
 
     .anatomy-network {
@@ -405,12 +442,18 @@
               <!-- HOLOGRAM CIRCLE -->
               <div class="part-hotspot" data-part="hologram" onclick="selectPart('hologram')" style="position: absolute; top: 100px; right: 120px; width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1)); backdrop-filter: blur(2px);"></div>
 
+              <!-- ISSUER (top-right) -->
+              <div class="anatomy-issuer part-hotspot" data-part="issuer" onclick="selectPart('issuer')">
+                HDFC
+                <span class="issuer-cobrand">× SmartBuy</span>
+              </div>
+
               <!-- NUMBER -->
               <div class="anatomy-number part-hotspot" data-part="number" onclick="selectPart('number')">4539 1234 5678 7821</div>
 
               <!-- BOTTOM -->
               <div class="anatomy-bottom">
-                <div>
+                <div class="anatomy-bottom-left">
                   <div class="anatomy-name part-hotspot" data-part="name" onclick="selectPart('name')">YOUR NAME</div>
                   <div class="anatomy-expiry part-hotspot" data-part="expiry" onclick="selectPart('expiry')">VALID THRU 12/29</div>
                 </div>
@@ -431,7 +474,7 @@
         <button class="flip-btn" onclick="flipCard()">⟳ flip the card</button>
 
         <div class="anatomy-progress">
-          <span id="parts-seen">0 of 9 parts explored</span>
+          <span id="parts-seen">0 of 10 parts explored</span>
           <div class="progress-pips" id="parts-pips"></div>
         </div>
 
@@ -510,6 +553,12 @@
         text: `The network logo identifies which payment rails your card runs on. <strong>Visa</strong> and <strong>Mastercard</strong> dominate globally. <strong>RuPay</strong> is India's domestic network — works seamlessly within India and is rapidly expanding internationally. <strong>American Express</strong> operates its own network and acts as both issuer and network.`,
         tip: `<strong>Travel tip:</strong> RuPay cards work in India, Singapore, UAE, and a few others — but for most international travel, you want Visa or Mastercard. Always check your card's acceptance before flying.`
       },
+      issuer: {
+        title: 'The <em>issuer & co-brand</em>',
+        tag: 'Bank logo · sometimes paired with a partner brand',
+        text: `The bank logo (HDFC, ICICI, Axis, SBI, etc.) tells you who actually <strong>issued the card and is lending you the money</strong>. The issuer is who you call when something goes wrong, who reports to credit bureaus, and who decides your limit. <br><br>If there's a <em>second logo</em> next to it — like "HDFC × SmartBuy" or "Axis × Flipkart" or "ICICI × Amazon Pay" — that's a <strong>co-brand partnership</strong>. The bank still issues the card, but the partner brand pays for boosted rewards inside their ecosystem (e.g., 5% on Flipkart for the Axis × Flipkart card). <br><br>The card's behavior changes based on the co-brand: same network, same chip, same security — but radically different reward rates depending on where you spend.`,
+        tip: `<strong>How to read it:</strong> The bigger logo is your issuer (the lender). The smaller/secondary logo is the co-brand partner (the perks engine). Always know who your issuer is — that's the entity with legal claim if you default, and the one you'll be talking to for the next several years.`
+      },
       magstripe: {
         title: 'The <em>magnetic stripe</em>',
         tag: 'Legacy authentication · Track 1 & 2',
@@ -552,7 +601,7 @@
       const panel = document.getElementById('detail-panel');
       panel.classList.remove('empty');
       panel.innerHTML = `
-        <div class="detail-eyebrow">PART · ${seenParts.size} of 9</div>
+        <div class="detail-eyebrow">PART · ${seenParts.size} of 10</div>
         <div class="detail-title">${part.title}</div>
         <div class="detail-tag">${part.tag}</div>
         <div class="detail-text">${part.text}</div>
@@ -560,12 +609,12 @@
       `;
 
       // Update progress
-      document.getElementById('parts-seen').textContent = `${seenParts.size} of 9 parts explored`;
+      document.getElementById('parts-seen').textContent = `${seenParts.size} of 10 parts explored`;
       const pipsEl = document.getElementById('parts-pips');
       pipsEl.innerHTML = Object.keys(PARTS).map(k => `<div class="pip ${seenParts.has(k) ? 'seen' : ''}"></div>`).join('');
 
       DCC.playClick();
-      if (seenParts.size === 9) setTimeout(() => DCC.playSuccess(), 200);
+      if (seenParts.size === 10) setTimeout(() => DCC.playSuccess(), 200);
     }
 
     // Init pips
