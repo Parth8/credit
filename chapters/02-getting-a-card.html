@@ -327,8 +327,8 @@
 
           <div class="decision-card review" id="decision-card">
             <div class="decision-status review" id="dec-status">Awaiting application</div>
-            <div class="decision-headline" id="dec-headline">Click <em>Apply</em> to see decision</div>
-            <div class="decision-summary" id="dec-summary">Adjust the sliders on the left, then submit. The bank's algorithm will run on your profile.</div>
+            <div class="decision-headline" id="dec-headline">Live preview</div>
+            <div class="decision-summary" id="dec-summary">The bank's algorithm is running on your profile right now. Move the sliders — the decision updates instantly.</div>
             <div id="dec-details" style="display: none;">
               <div class="decision-stat-row">
                 <div class="decision-stat">
@@ -406,6 +406,9 @@
 
     function fmt(n) { return '₹' + Math.round(n).toLocaleString('en-IN'); }
 
+    // Live-recalculate the decision on every slider/toggle change.
+    // updateApp() handles BOTH the display-value updates AND the decision panel,
+    // so the result reflects the current state at all times.
     function updateApp() {
       const income = parseInt(document.getElementById('income').value);
       const age = parseInt(document.getElementById('age').value);
@@ -413,12 +416,6 @@
       document.getElementById('display-income').textContent = fmt(income);
       document.getElementById('display-age').textContent = age;
       document.getElementById('display-cibil').textContent = cibil;
-    }
-
-    function submitApp() {
-      const income = parseInt(document.getElementById('income').value);
-      const age = parseInt(document.getElementById('age').value);
-      const cibil = parseInt(document.getElementById('cibil').value);
 
       let factors = [];
       let pass = true;
@@ -489,9 +486,20 @@
           <span>${f.text}</span>
         </div>
       `).join('');
+    }
 
+    // Apply button is now a celebration trigger — confetti on approval,
+    // soft thud on decline. State is already on screen; the button just
+    // marks the moment.
+    function submitApp() {
+      const cibil = parseInt(document.getElementById('cibil').value);
+      const card = document.getElementById('decision-card');
       DCC.playClick();
-      if (pass && cibil >= 700) setTimeout(() => DCC.playSuccess(), 200);
+      if (card.classList.contains('approved')) {
+        setTimeout(() => DCC.playSuccess(), 150);
+        const rect = card.getBoundingClientRect();
+        DCC.burstConfetti(rect.left + rect.width / 2, rect.top + 80);
+      }
     }
 
     updateApp();
