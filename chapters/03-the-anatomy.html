@@ -112,47 +112,14 @@
     }
 
     /* CLICKABLE PARTS */
+    /* CLICKABLE PARTS — cursor only, no positioning here */
     .part-hotspot {
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: opacity 0.3s ease;
     }
     
-    /* Elements that need absolute positioning for card layout */
-    .anatomy-chip,
-    .anatomy-contactless,
-    .anatomy-number,
-    .anatomy-issuer,
-    .anatomy-bottom,
-    .magstripe,
-    .signature-strip,
-    .cvv-box,
-    div[data-part="hologram"] {
-      position: absolute;
-      z-index: 5;
-    }
-
-    /* Issuer logo (top-right corner of card front) */
-    .anatomy-issuer {
-      position: absolute;
-      top: 32px;
-      right: 32px;
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      color: white;
-      opacity: 0.95;
-      text-align: right;
-    }
-    .anatomy-issuer .issuer-cobrand {
-      display: block;
-      font-family: var(--font-mono);
-      font-size: 9px;
-      font-weight: 400;
-      letter-spacing: 0.06em;
-      opacity: 0.6;
-      margin-top: 2px;
-      text-transform: uppercase;
+    .part-hotspot:hover {
+      opacity: 0.9;
     }
 
     .part-hotspot::after {
@@ -162,6 +129,7 @@
       border: 2px dashed transparent;
       border-radius: 8px;
       transition: all 0.3s ease;
+      pointer-events: none;
     }
 
     .part-hotspot:hover::after {
@@ -190,14 +158,15 @@
       50% { box-shadow: 0 0 0 8px rgba(37,99,235,0); }
     }
 
+    /* FRONT FACE ELEMENTS — all absolutely positioned */
     .anatomy-chip {
+      position: absolute;
       top: 100px;
       left: 32px;
       width: 56px;
       height: 44px;
       background: linear-gradient(135deg, #d4a843 0%, #c9952e 50%, #e0bc5f 100%);
       border-radius: 8px;
-      position: absolute;
     }
 
     .anatomy-chip::after {
@@ -209,12 +178,12 @@
     }
 
     .anatomy-contactless {
+      position: absolute;
       top: 32px;
       right: 32px;
       width: 40px;
       height: 40px;
       opacity: 0.75;
-      position: absolute;
     }
 
     .anatomy-number {
@@ -224,10 +193,35 @@
       font-family: var(--font-mono);
       font-size: 22px;
       letter-spacing: 0.12em;
-      color: white;
-      text-decoration: none;
+      color: white !important;
+      text-decoration: none !important;
     }
 
+    .anatomy-issuer {
+      position: absolute;
+      top: 32px;
+      right: 32px;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: white;
+      opacity: 0.95;
+      text-align: right;
+    }
+
+    .issuer-cobrand {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      opacity: 0.6;
+      margin-top: 2px;
+      text-transform: uppercase;
+    }
+
+    /* BOTTOM ROW — absolutely positioned container, flex contents */
     .anatomy-bottom {
       position: absolute;
       bottom: 32px;
@@ -252,18 +246,66 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
       opacity: 0.85;
+      color: white;
     }
 
     .anatomy-expiry {
       font-family: var(--font-mono);
       font-size: 11px;
       opacity: 0.7;
+      color: white;
     }
 
     .anatomy-network {
       font-family: var(--font-body);
       font-size: 22px;
       font-weight: 700;
+      color: white;
+    }
+
+    /* BACK FACE ELEMENTS — all absolutely positioned */
+    .magstripe {
+      position: absolute;
+      top: 40px;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+    }
+
+    .signature-strip {
+      position: absolute;
+      top: 120px;
+      left: 32px;
+      right: 90px;
+      height: 40px;
+      background: linear-gradient(135deg, #f8f8f8 0%, #e0e0e0 100%);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      font-family: var(--font-hand);
+      font-size: 16px;
+      color: #333;
+      font-style: italic;
+    }
+
+    .cvv-box {
+      position: absolute;
+      top: 120px;
+      right: 32px;
+      width: 50px;
+      height: 40px;
+      background: white;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 16px;
+      font-weight: 700;
+      color: #000;
+      font-style: italic;
     }
 
     /* FLIP BUTTON */
@@ -402,34 +444,28 @@
 
     @media (max-width: 768px) {
       .anatomy-card { width: 320px; height: 200px; }
-      .anatomy-chip { width: 38px; height: 30px; top: 60px; left: 20px; }
-      .anatomy-number { font-size: 14px; bottom: 50px; left: 20px; }
-      .anatomy-bottom { left: 20px; right: 20px; bottom: 20px; }
-      .anatomy-contactless { width: 32px; height: 32px; top: 20px; right: 20px; opacity: 0.8; }
       .anatomy-face { padding: 20px; }
-      .magstripe { top: 20px; }
-      .signature-strip { top: 80px; left: 20px; right: 70px; height: 30px; }
-      .cvv-box { top: 80px; right: 20px; height: 30px; width: 44px; }
+      
+      /* Front elements */
+      .anatomy-chip { width: 38px; height: 30px; top: 60px; left: 20px; }
+      .anatomy-contactless { width: 32px; height: 32px; top: 20px; right: 20px; opacity: 0.8; }
+      .anatomy-issuer { top: 20px; right: 20px; font-size: 16px; }
+      .anatomy-number { font-size: 16px; bottom: 50px; left: 20px; }
+      .anatomy-bottom { left: 20px; right: 20px; bottom: 20px; gap: 16px; }
+      .anatomy-name { font-size: 11px; }
+      .anatomy-expiry { font-size: 10px; }
+      .anatomy-network { font-size: 20px; }
+      
+      /* Back elements */
+      .magstripe { top: 20px; height: 50px; }
+      .signature-strip { top: 90px; left: 20px; right: 70px; height: 36px; font-size: 14px; }
+      .cvv-box { top: 90px; right: 20px; width: 44px; height: 36px; font-size: 14px; }
+      
+      /* Detail panel */
       .detail-panel { padding: 28px 20px; }
       
-      /* Expand hotspot touch targets via invisible ::before pseudo-element
-         so we don't break the absolute positioning of the actual element */
-      .part-hotspot::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        min-width: 44px;
-        min-height: 44px;
-        z-index: -1;
-      }
-      
-      /* Flip button bigger on mobile */
-      .flip-btn {
-        padding: 12px 24px;
-        font-size: 14px;
-      }
+      /* Flip button */
+      .flip-btn { padding: 12px 24px; font-size: 14px; }
     }
   </style>
 </head>
