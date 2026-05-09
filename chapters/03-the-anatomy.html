@@ -402,6 +402,22 @@
       .signature-strip { top: 80px; left: 20px; right: 70px; height: 30px; }
       .cvv-box { top: 80px; right: 20px; height: 30px; width: 44px; }
       .detail-panel { padding: 28px 20px; }
+      
+      /* Expand all hotspot touch targets for mobile — add invisible padding */
+      .part-hotspot {
+        padding: 8px;
+        min-width: 44px;
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      /* Flip button bigger on mobile */
+      .flip-btn {
+        padding: 12px 24px;
+        font-size: 14px;
+      }
     }
   </style>
 </head>
