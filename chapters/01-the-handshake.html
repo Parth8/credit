@@ -920,7 +920,7 @@
               <div class="participant" data-step="2">
                 <div class="participant-circle">⚙️</div>
                 <div class="participant-name">Razorpay</div>
-                <div class="participant-role">Acquirer</div>
+                <div class="participant-role">Gateway / Acquirer</div>
               </div>
 
               <div class="participant" data-step="3">
@@ -984,7 +984,7 @@
           <div class="meet-card" onclick="selectPlayer(2)" id="meet-2">
             <div class="meet-icon">⚙️</div>
             <div class="meet-name">Acquirer</div>
-            <div class="meet-role">Their Bank</div>
+            <div class="meet-role">Gateway & Bank</div>
           </div>
           <div class="meet-card" onclick="selectPlayer(3)" id="meet-3">
             <div class="meet-icon">🌐</div>
@@ -1075,18 +1075,18 @@
       {
         icon: '⚙️',
         name: 'Acquirer',
-        role: 'Their Bank',
-        emTitle: 'Acquirer',
-        tag: 'The merchant\'s payment processor',
-        desc: `The acquirer is the financial institution that lets the merchant accept cards. When you pay at Swiggy, their acquirer (could be Razorpay, PayU, or CCAvenue) receives the transaction, routes it through the network, and eventually deposits the money in Swiggy's bank account. They're the merchant's invisible partner.`,
+        role: 'Merchant\'s Bank',
+        emTitle: 'Acquirer & Payment Gateway',
+        tag: 'The merchant\'s payment stack',
+        desc: `Two players work together on the merchant's side. The <strong>payment gateway</strong> (Razorpay, PayU, CCAvenue) is the software layer that captures your card data, encrypts it, and sends it onward — Razorpay is technically a payment aggregator, not an acquirer itself. The <strong>acquirer</strong> is the actual bank behind it (often Yes Bank or ICICI Bank in Razorpay's case) that holds the merchant's account and has the license to receive funds. In everyday conversation, people say "Razorpay is the acquirer" — now you know the precise distinction.`,
         responsibilities: [
-          'Process transactions for thousands of merchants',
-          'Route auth requests to the card network',
-          'Collect settled funds from issuers',
-          'Deposit net amounts to merchant accounts',
-          'Handle chargeback disputes on the merchant\'s behalf'
+          'Gateway encrypts and forwards the card data',
+          'Acquirer routes auth requests to the card network',
+          'Acquirer collects settled funds from issuers',
+          'Deposits net amounts into the merchant\'s bank account',
+          'Handles chargeback disputes on the merchant\'s behalf'
         ],
-        profit: `Acquirers earn ~0.3–0.5% per transaction as their slice of the Merchant Discount Rate. On millions of daily transactions, this is a quiet but enormous business.`
+        profit: `Acquirers + gateways together earn ~0.3–0.5% per transaction as their slice of the Merchant Discount Rate. On millions of daily transactions, this is a quiet but enormous business.`
       },
       {
         icon: '🌐',
@@ -1142,7 +1142,7 @@
         num: 2,
         name: 'Merchant asks for permission',
         time: 'T+200ms',
-        body: `The merchant's terminal packages your card data into an authorization request and sends it to their acquirer (in our case, Razorpay). The acquirer's job is to route this to whoever issued the card.`,
+        body: `The merchant's terminal packages your card data into an authorization request and sends it to their payment gateway — in our case, Razorpay. Razorpay encrypts it and forwards it to the acquirer bank behind it (Yes Bank), whose job is to route this to whoever issued the card.`,
         litNodes: [1, 2],
         lineFill: 1,
         traveler: { from: 1, to: 2, type: 'out' },
@@ -1152,7 +1152,7 @@
         num: 3,
         name: 'Network finds your bank',
         time: 'T+400ms',
-        body: `Razorpay forwards the request to the card network — VISA. The network looks at the first 6 digits of your card number (the BIN) to figure out which bank issued it. It's basically a phone book for banks.`,
+        body: `Razorpay (the gateway) forwards the request to the card network — VISA. The network looks at the first 6 digits of your card number (the BIN) to figure out which bank issued it. It's basically a phone book for banks.`,
         litNodes: [2, 3],
         lineFill: 2,
         traveler: { from: 2, to: 3, type: 'out' },
@@ -1172,7 +1172,7 @@
         num: 5,
         name: 'Approval flies back',
         time: 'T+1.4s',
-        body: `The "yes" travels all the way back: HDFC → VISA → Razorpay → terminal. The whole round trip took about 1.4 seconds. The terminal beeps. The merchant sees APPROVED. <strong>But — and this matters — no money has actually moved yet.</strong> Your available credit just dropped. Real settlement happens days later.`,
+        body: `The "yes" travels all the way back: HDFC → VISA → Razorpay (gateway) → terminal. The whole round trip took about 1.4 seconds. The terminal beeps. The merchant sees APPROVED. <strong>But — and this matters — no money has actually moved yet.</strong> Your available credit just dropped. Real settlement happens days later.`,
         litNodes: [0, 1, 2, 3, 4],
         lineFill: -1, // all lit
         traveler: { from: 4, to: 0, type: 'in' },
