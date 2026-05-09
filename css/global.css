@@ -177,6 +177,14 @@ body::before {
   color: var(--ink);
 }
 
+.nav-links a.btn--primary {
+  color: white;
+}
+
+.nav-links a.btn--primary:hover {
+  color: white;
+}
+
 .nav-links a.active::after {
   content: '';
   position: absolute;
