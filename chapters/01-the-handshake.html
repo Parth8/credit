@@ -762,6 +762,523 @@
 
     /* CHAPTER NAV */
     .chapter-nav-bottom {
+
+    /* ============================================================
+       LIFECYCLE — phases strip + panels
+       ============================================================ */
+    .lifecycle-section {
+      padding: 80px 0 48px;
+      border-top: 1px dashed var(--border-strong);
+    }
+
+    .lifecycle-header {
+      margin-bottom: 48px;
+    }
+
+    .lifecycle-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--electric);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .lifecycle-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin-bottom: 12px;
+    }
+
+    .lifecycle-title em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--electric);
+    }
+
+    .lifecycle-sub {
+      font-size: 17px;
+      color: var(--ink-muted);
+      max-width: 640px;
+      line-height: 1.6;
+    }
+
+    /* Phase selector strip */
+    .phase-strip {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .phase-arrow {
+      color: var(--ink-ghost);
+      font-size: 20px;
+    }
+
+    .phase-item {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 16px 24px;
+      cursor: pointer;
+      transition: all 0.25s var(--ease-out);
+      min-width: 140px;
+    }
+
+    .phase-item:hover {
+      border-color: var(--electric);
+      transform: translateY(-2px);
+    }
+
+    .phase-item.active {
+      background: var(--electric);
+      border-color: var(--electric);
+      color: white;
+    }
+
+    .phase-time {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      opacity: 0.7;
+      margin-bottom: 4px;
+    }
+
+    .phase-name {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .phase-tag {
+      font-size: 11px;
+      opacity: 0.6;
+      margin-top: 2px;
+    }
+
+    /* Phase content panels */
+    .phase-panel {
+      display: none;
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      animation: fade-up 0.4s var(--ease-out) both;
+    }
+
+    .phase-panel.active {
+      display: block;
+    }
+
+    .phase-panel-inner {
+      display: flex;
+      gap: 28px;
+      align-items: flex-start;
+    }
+
+    .phase-panel-icon {
+      font-size: 40px;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .phase-panel-body h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+
+    .phase-panel-body p {
+      font-size: 15px;
+      color: var(--ink-muted);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .phase-callout {
+      background: var(--electric-soft);
+      border-left: 3px solid var(--electric);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 14px 18px;
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.6;
+      margin-top: 16px;
+    }
+
+    /* ============================================================
+       MDR SPLIT
+       ============================================================ */
+    .mdr-section {
+      padding: 80px 0 48px;
+      border-top: 1px dashed var(--border-strong);
+    }
+
+    .mdr-header {
+      margin-bottom: 48px;
+    }
+
+    .mdr-calc {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 32px 40px;
+      margin-bottom: 32px;
+    }
+
+    .mdr-input-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .mdr-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .mdr-amount-display {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    .mdr-slider {
+      width: 100%;
+      margin-bottom: 8px;
+    }
+
+    .mdr-range-labels {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-faint);
+    }
+
+    /* MDR pipe and recipients */
+    .mdr-flow {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .mdr-pipe-wrap {
+      background: var(--electric);
+      border-radius: var(--radius-md);
+      padding: 24px 20px;
+      color: white;
+      text-align: center;
+      position: relative;
+    }
+
+    .mdr-pipe-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      opacity: 0.8;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .mdr-pipe-amount {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .mdr-pipe-line {
+      position: absolute;
+      right: -24px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 2px;
+      background: var(--border-strong);
+    }
+
+    .mdr-recipients {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .mdr-recipient {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: transform 0.2s ease;
+    }
+
+    .mdr-recipient:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .mdr-recipient.merchant {
+      border-color: var(--electric);
+      background: var(--electric-soft);
+    }
+
+    .mdr-recipient-icon {
+      font-size: 24px;
+    }
+
+    .mdr-recipient-name {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .mdr-recipient-name span {
+      font-weight: 400;
+      font-size: 12px;
+      color: var(--ink-muted);
+    }
+
+    .mdr-recipient-pct {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-faint);
+      letter-spacing: 0.04em;
+    }
+
+    .mdr-recipient-amt {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--ink-muted);
+      letter-spacing: -0.01em;
+      margin-top: 4px;
+    }
+
+    .mdr-recipient-amt.merchant-amt {
+      color: var(--electric);
+      font-size: 28px;
+    }
+
+    .mdr-recipient-why {
+      font-size: 12px;
+      color: var(--ink-ghost);
+      line-height: 1.5;
+      margin-top: 4px;
+    }
+
+    .mdr-note {
+      margin-top: 24px;
+      background: var(--cream);
+      border-radius: var(--radius-md);
+      padding: 18px 24px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink-muted);
+    }
+
+    /* ============================================================
+       SHOWROOM SCENARIO
+       ============================================================ */
+    .showroom-section {
+      padding: 80px 0 48px;
+      border-top: 1px dashed var(--border-strong);
+    }
+
+    .showroom-scenario {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .showroom-scene {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 36px 40px;
+    }
+
+    .showroom-scene-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--electric);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .showroom-scene p {
+      font-size: 16px;
+      color: var(--ink-muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .showroom-quote {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--warm);
+      letter-spacing: -0.01em;
+      padding: 20px 28px;
+      background: rgba(234,88,12,0.06);
+      border-left: 4px solid var(--warm);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    }
+
+    .showroom-breakdown {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .showroom-calc-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
+      border-bottom: 1px solid var(--border);
+      font-size: 15px;
+      color: var(--ink-muted);
+    }
+
+    .showroom-calc-row:last-child {
+      border-bottom: none;
+    }
+
+    .showroom-calc-row.highlight {
+      background: rgba(234,88,12,0.05);
+    }
+
+    .showroom-num {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .showroom-num.muted {
+      color: var(--ink-muted);
+    }
+
+    .showroom-num.warm {
+      color: var(--warm);
+    }
+
+    .showroom-truth {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 32px 40px;
+    }
+
+    .showroom-truth-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+    }
+
+    .showroom-truth p {
+      font-size: 15px;
+      color: var(--ink-muted);
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+
+    .showroom-truth p:last-child {
+      margin-bottom: 0;
+    }
+
+    .showroom-moves {
+      background: white;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 36px 40px;
+    }
+
+    .showroom-moves-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 24px;
+    }
+
+    .showroom-move-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .showroom-move {
+      background: var(--cream);
+      border-radius: var(--radius-md);
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .showroom-move-icon {
+      font-size: 28px;
+    }
+
+    .showroom-move-label {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .showroom-move-desc {
+      font-size: 13px;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+
+    /* Mobile responsive for new sections */
+    @media (max-width: 768px) {
+      .phase-strip { gap: 8px; }
+      .phase-arrow { display: none; }
+      .phase-item { min-width: 0; flex: 1; padding: 12px 14px; }
+      .phase-panel { padding: 24px 20px; }
+      .phase-panel-inner { flex-direction: column; gap: 16px; }
+      .mdr-flow { grid-template-columns: 1fr; }
+      .mdr-pipe-wrap { text-align: left; display: flex; justify-content: space-between; align-items: center; }
+      .mdr-pipe-line { display: none; }
+      .mdr-recipients { grid-template-columns: repeat(2, 1fr); }
+      .mdr-calc { padding: 24px 20px; }
+      .showroom-calc-row { padding: 14px 20px; }
+      .showroom-scene { padding: 24px 20px; }
+      .showroom-truth { padding: 24px 20px; }
+      .showroom-moves { padding: 24px 20px; }
+      .showroom-move-grid { grid-template-columns: 1fr; }
+    }
+
+    /* END new lifecycle/MDR/showroom styles */
       padding: 40px 0 80px;
       display: flex;
       justify-content: space-between;
@@ -1006,10 +1523,224 @@
       <!-- CHECKPOINT -->
       <section class="checkpoint">
         <div class="checkpoint-card reveal">
-          <div class="checkpoint-icon">※</div>
-          <h3 class="checkpoint-title">You just completed your <em>first transaction</em>.</h3>
+          <div class="checkpoint-icon">⚡</div>
+          <h3 class="checkpoint-title">That was <em>1.4 seconds</em>.</h3>
           <p class="checkpoint-body">
-            That entire dance happens every time you swipe — and you now understand more about it than 95% of cardholders. In the next chapter, we'll get you a card.
+            The authorization — the bit you just experienced — is the fast part. But the transaction isn't actually done. Money hasn't moved yet. What happens over the next 3 days is where it gets interesting.
+          </p>
+          <div class="checkpoint-cta-row">
+            <a href="#lifecycle" class="btn btn--primary btn--lg">See the full lifecycle ↓</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SCENE 3 — CLEARING
+           ============================================================ -->
+      <section class="lifecycle-section" id="lifecycle">
+        <div class="lifecycle-header">
+          <div class="lifecycle-eyebrow">The Full Picture · 3 phases</div>
+          <h2 class="lifecycle-title">Authorization was just <em>phase one.</em></h2>
+          <p class="lifecycle-sub">Money hasn't moved yet. Here's what happens next — over the next 72 hours, invisibly.</p>
+        </div>
+
+        <!-- PHASE TIMELINE STRIP -->
+        <div class="phase-strip">
+          <div class="phase-item active" id="phase-0" onclick="setPhase(0)">
+            <div class="phase-time">~1.4 sec</div>
+            <div class="phase-name">Authorization</div>
+            <div class="phase-tag">Done ✓</div>
+          </div>
+          <div class="phase-arrow">→</div>
+          <div class="phase-item" id="phase-1" onclick="setPhase(1)">
+            <div class="phase-time">End of day</div>
+            <div class="phase-name">Clearing</div>
+            <div class="phase-tag">Tap to explore</div>
+          </div>
+          <div class="phase-arrow">→</div>
+          <div class="phase-item" id="phase-2" onclick="setPhase(2)">
+            <div class="phase-time">1-3 days</div>
+            <div class="phase-name">Settlement</div>
+            <div class="phase-tag">Tap to explore</div>
+          </div>
+        </div>
+
+        <!-- PHASE CONTENT PANELS -->
+        <div class="phase-panel active" id="panel-0">
+          <div class="phase-panel-inner">
+            <div class="phase-panel-icon">⚡</div>
+            <div class="phase-panel-body">
+              <h3>Authorization — you just saw this.</h3>
+              <p>Your card gets approved in ~1.4 seconds. HDFC puts a <strong>hold</strong> on ₹4,200 of your credit limit. <em>No money has actually moved.</em> Swiggy hasn't received anything yet — they just got a "yes, good for it."</p>
+              <div class="phase-callout">Think of it like a hotel blocking your card for the room rate at check-in. The charge isn't final — it's a reservation of funds.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase-panel" id="panel-1">
+          <div class="phase-panel-inner">
+            <div class="phase-panel-icon">📦</div>
+            <div class="phase-panel-body">
+              <h3>Clearing — end of business day</h3>
+              <p>At the end of each day, Swiggy's system batches up every transaction from the day and submits them to Razorpay (their gateway). Razorpay packages these into a <strong>clearing file</strong> and sends it through Visa to each issuing bank.</p>
+              <p>This is when HDFC gets the actual transaction details — exactly what was bought, when, and for how much. They match it against the authorization hold from earlier.</p>
+              <div class="phase-callout">This is also why your statement sometimes shows a transaction one day but it clears your available balance a day earlier — the hold and the clear are two different events.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="phase-panel" id="panel-2">
+          <div class="phase-panel-inner">
+            <div class="phase-panel-icon">🏦</div>
+            <div class="phase-panel-body">
+              <h3>Settlement — 1 to 3 days later</h3>
+              <p>Now the money actually moves. HDFC transfers funds to Visa's settlement bank. Visa nets out all the transactions between banks and moves the right amounts to each acquirer. Razorpay deposits the net amount into Swiggy's account.</p>
+              <p>But here's the part that changes the number: <strong>the Merchant Discount Rate</strong>. Swiggy doesn't get ₹4,200. They get slightly less.</p>
+              <div class="phase-callout">Scroll down to see exactly where each rupee goes.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SCENE 4 — MDR SPLIT (live calculator)
+           ============================================================ -->
+      <section class="mdr-section">
+        <div class="mdr-header">
+          <div class="lifecycle-eyebrow">The MDR · Merchant Discount Rate</div>
+          <h2 class="lifecycle-title">Every transaction is a <em>four-way split.</em></h2>
+          <p class="lifecycle-sub">When you pay ₹4,200, Swiggy doesn't receive ₹4,200. The MDR — roughly 1.5–2% — is taken out before the merchant sees a rupee. Here's who gets what.</p>
+        </div>
+
+        <div class="mdr-calc">
+          <div class="mdr-input-row">
+            <label class="mdr-label">Transaction amount</label>
+            <div class="mdr-amount-display" id="mdr-display">₹4,200</div>
+          </div>
+          <input type="range" class="mdr-slider" id="mdr-slider" min="500" max="100000" step="100" value="4200" oninput="updateMDR()">
+          <div class="mdr-range-labels"><span>₹500</span><span>₹1,00,000</span></div>
+        </div>
+
+        <div class="mdr-flow">
+          <!-- The pipe visual -->
+          <div class="mdr-pipe-wrap">
+            <div class="mdr-pipe-label">You pay</div>
+            <div class="mdr-pipe-amount" id="mdr-total">₹4,200</div>
+            <div class="mdr-pipe-line">
+              <div class="mdr-pipe-fill"></div>
+            </div>
+          </div>
+
+          <!-- The four recipients -->
+          <div class="mdr-recipients">
+            <div class="mdr-recipient issuer">
+              <div class="mdr-recipient-icon">🏛️</div>
+              <div class="mdr-recipient-name">HDFC <span>(Issuer)</span></div>
+              <div class="mdr-recipient-pct">~1.1% interchange</div>
+              <div class="mdr-recipient-amt" id="mdr-issuer">₹46</div>
+              <div class="mdr-recipient-why">Largest cut — they took the credit risk and fund the rewards you earn</div>
+            </div>
+            <div class="mdr-recipient network">
+              <div class="mdr-recipient-icon">🌐</div>
+              <div class="mdr-recipient-name">Visa <span>(Network)</span></div>
+              <div class="mdr-recipient-pct">~0.1% network fee</div>
+              <div class="mdr-recipient-amt" id="mdr-network">₹4</div>
+              <div class="mdr-recipient-why">Smallest cut — they provide the rails, fraud detection, and settlement infrastructure</div>
+            </div>
+            <div class="mdr-recipient gateway">
+              <div class="mdr-recipient-icon">⚙️</div>
+              <div class="mdr-recipient-name">Razorpay <span>(Gateway)</span></div>
+              <div class="mdr-recipient-pct">~0.3% gateway fee</div>
+              <div class="mdr-recipient-amt" id="mdr-gateway">₹13</div>
+              <div class="mdr-recipient-why">For routing, encryption, fraud tools, and the Razorpay dashboard Swiggy uses</div>
+            </div>
+            <div class="mdr-recipient merchant">
+              <div class="mdr-recipient-icon">🏪</div>
+              <div class="mdr-recipient-name">Swiggy <span>(Merchant)</span></div>
+              <div class="mdr-recipient-pct">Gets the rest</div>
+              <div class="mdr-recipient-amt merchant-amt" id="mdr-merchant">₹4,137</div>
+              <div class="mdr-recipient-why">Net settlement — the actual amount that hits Swiggy's bank account 1-3 days later</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mdr-note">
+          <strong>Note:</strong> Actual MDR rates vary by card type, merchant category, and contract. Premium/rewards cards carry higher interchange (~1.5–2%) because the issuer funds your cashback from it. UPI transactions carry 0% MDR — which is why your local grocery store sometimes has a "no credit card" sign but accepts UPI without hesitation.
+        </div>
+      </section>
+
+      <!-- ============================================================
+           SCENE 5 — THE SHOWROOM MOMENT
+           ============================================================ -->
+      <section class="showroom-section">
+        <div class="mdr-header">
+          <div class="lifecycle-eyebrow">The Real World · What this means for you</div>
+          <h2 class="lifecycle-title">The <em>"3% credit card charge"</em> explained.</h2>
+          <p class="lifecycle-sub">You've seen how MDR works. Now here's where it shows up in your life — and what you can do about it.</p>
+        </div>
+
+        <div class="showroom-scenario">
+          <div class="showroom-scene">
+            <div class="showroom-scene-label">The scenario</div>
+            <p>You're at an electronics showroom. ₹80,000 TV. You pull out your credit card. The salesperson says:</p>
+            <div class="showroom-quote">"Sir, credit card pe 3% extra lagega."</div>
+          </div>
+
+          <div class="showroom-breakdown">
+            <div class="showroom-calc-row">
+              <span>TV price</span>
+              <span class="showroom-num">₹80,000</span>
+            </div>
+            <div class="showroom-calc-row">
+              <span>Their actual MDR (cost to merchant)</span>
+              <span class="showroom-num muted">~₹1,200–1,600</span>
+            </div>
+            <div class="showroom-calc-row highlight">
+              <span>What they're charging you (3%)</span>
+              <span class="showroom-num warm">₹2,400</span>
+            </div>
+            <div class="showroom-calc-row">
+              <span>The gap (their markup on the charge)</span>
+              <span class="showroom-num warm">₹800–1,200</span>
+            </div>
+          </div>
+
+          <div class="showroom-truth">
+            <div class="showroom-truth-title">What's actually happening</div>
+            <p>The MDR is a contract between the merchant and their bank — <strong>you are not party to it.</strong> The merchant chose to accept cards. The 3% surcharge isn't a fee you legally owe; it's the merchant passing their cost of acceptance onto you — and often marking it up.</p>
+            <p>This is a grey zone. RBI guidelines discourage surcharging, but enforcement is weak. It happens constantly on big-ticket purchases — jewellery, electronics, car accessories.</p>
+          </div>
+
+          <div class="showroom-moves">
+            <div class="showroom-moves-title">Your three moves</div>
+            <div class="showroom-move-grid">
+              <div class="showroom-move">
+                <div class="showroom-move-icon">💳</div>
+                <div class="showroom-move-label">Pay UPI</div>
+                <div class="showroom-move-desc">0% MDR. Zero surcharge. Instant. The merchant actually prefers this — no fee, no 3-day wait for settlement.</div>
+              </div>
+              <div class="showroom-move">
+                <div class="showroom-move-icon">🤝</div>
+                <div class="showroom-move-label">Negotiate</div>
+                <div class="showroom-move-desc">MDR is their cost, not yours. Ask them to split the 3% — or waive it. On ₹80,000, they're motivated. "Aap 1.5% lo, main 1.5% deta hoon" is a reasonable ask.</div>
+              </div>
+              <div class="showroom-move">
+                <div class="showroom-move-icon">📊</div>
+                <div class="showroom-move-label">Do the math first</div>
+                <div class="showroom-move-desc">If your card gives 5% cashback on electronics, paying the 3% surcharge still nets you 2% back. Run the numbers before deciding. Sometimes the surcharge is worth it.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FINAL CHECKPOINT -->
+      <section class="checkpoint">
+        <div class="checkpoint-card reveal">
+          <div class="checkpoint-icon">※</div>
+          <h3 class="checkpoint-title">You now see the <em>full picture.</em></h3>
+          <p class="checkpoint-body">
+            Authorization → Clearing → Settlement. The MDR split. The showroom surcharge. You understand more about what happens when you tap your card than most people who've been using one for years. Up next: getting one.
           </p>
           <div class="checkpoint-cta-row">
             <a href="../index.html" class="btn btn--ghost">← all chapters</a>
@@ -1394,6 +2125,51 @@
       selectedPlayer = idx;
       DCC.playClick();
     }
+
+    // ============================================================
+    // PHASE SWITCHER (Clearing/Settlement tabs)
+    // ============================================================
+    function setPhase(idx) {
+      document.querySelectorAll('.phase-item').forEach((el, i) => {
+        el.classList.toggle('active', i === idx);
+      });
+      document.querySelectorAll('.phase-panel').forEach((el, i) => {
+        el.classList.toggle('active', i === idx);
+      });
+      DCC.playClick();
+    }
+
+    // ============================================================
+    // MDR CALCULATOR
+    // ============================================================
+    function fmt(n) {
+      return '₹' + Math.round(n).toLocaleString('en-IN');
+    }
+
+    function updateMDR() {
+      const amount = parseInt(document.getElementById('mdr-slider').value);
+      document.getElementById('mdr-display').textContent = fmt(amount);
+      document.getElementById('mdr-total').textContent = fmt(amount);
+
+      // MDR split rates (approximate, typical Indian CC MDR ~1.5%)
+      const issuerPct   = 0.011;  // ~1.1% interchange
+      const networkPct  = 0.001;  // ~0.1% network
+      const gatewayPct  = 0.003;  // ~0.3% gateway
+      // Merchant gets the rest
+
+      const issuerAmt   = amount * issuerPct;
+      const networkAmt  = amount * networkPct;
+      const gatewayAmt  = amount * gatewayPct;
+      const merchantAmt = amount - issuerAmt - networkAmt - gatewayAmt;
+
+      document.getElementById('mdr-issuer').textContent  = fmt(issuerAmt);
+      document.getElementById('mdr-network').textContent = fmt(networkAmt);
+      document.getElementById('mdr-gateway').textContent = fmt(gatewayAmt);
+      document.getElementById('mdr-merchant').textContent = fmt(merchantAmt);
+    }
+
+    // Init MDR on load
+    updateMDR();
   </script>
 </body>
 </html>
