@@ -113,16 +113,22 @@
 
     /* CLICKABLE PARTS */
     .part-hotspot {
-      position: absolute;
       cursor: pointer;
       transition: all 0.3s ease;
-      z-index: 5;
     }
-
-    /* Bottom-row elements (name, expiry, network) live in flex flow.
-       The .part-hotspot rule above sets absolute — undo that for these. */
-    .anatomy-bottom .part-hotspot {
-      position: relative;
+    
+    /* Elements that need absolute positioning for card layout */
+    .anatomy-chip,
+    .anatomy-contactless,
+    .anatomy-number,
+    .anatomy-issuer,
+    .anatomy-bottom,
+    .magstripe,
+    .signature-strip,
+    .cvv-box,
+    div[data-part="hologram"] {
+      position: absolute;
+      z-index: 5;
     }
 
     /* Issuer logo (top-right corner of card front) */
