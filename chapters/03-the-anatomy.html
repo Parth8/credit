@@ -5,6 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="format-detection" content="telephone=no">
   <title>III. The Anatomy of a Card — Decoding Credit Cards</title>
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://parth8.github.io/credit/chapters/03-the-anatomy.html">
+  <meta property="og:title" content="III. The Anatomy of a Card — Decoding Credit Cards">
+  <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+  <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Decoding Credit Cards">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="III. The Anatomy of a Card — Decoding Credit Cards">
+  <meta name="twitter:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+  <meta name="twitter:image" content="https://parth8.github.io/credit/og-image.png">
+  
+
   <link rel="stylesheet" href="../css/global.css">
   <style>
     .chapter-shell { min-height: 100vh; padding-top: 80px; }
@@ -32,7 +49,9 @@
       position: relative;
       box-shadow: 0 24px 64px rgba(0,0,0,0.18), 0 4px 16px rgba(0,0,0,0.1);
       transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
       transition: transform 0.8s var(--ease-out);
+      will-change: transform;
     }
 
     .anatomy-card.flipped {
@@ -47,6 +66,9 @@
       padding: 32px;
       color: white;
       border-radius: 20px;
+      overflow: hidden;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
     }
 
     /* Disable pointer events on the hidden side — backface-visibility: hidden hides visuals but NOT clicks */
@@ -67,7 +89,8 @@
     }
 
     .anatomy-face.back {
-      transform: rotateY(180deg);
+      transform: rotateY(180deg) translateZ(1px);
+      -webkit-transform: rotateY(180deg) translateZ(1px);
       background: linear-gradient(135deg, #1e293b 0%, #2d3a4f 50%, #1e293b 100%);
     }
 
@@ -179,11 +202,35 @@
 
     .anatomy-contactless {
       position: absolute;
-      top: 32px;
+      top: 50%;
       right: 32px;
-      width: 40px;
-      height: 40px;
-      opacity: 0.75;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      opacity: 0.7;
+    }
+
+    .anatomy-hologram {
+      position: absolute;
+      top: 110px;
+      left: 110px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: 
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.5) 0%, transparent 50%),
+        conic-gradient(from 0deg, #c9a8ff, #ffd4a8, #a8e0ff, #ffa8d4, #c9a8ff);
+      opacity: 0.55;
+      mix-blend-mode: screen;
+      box-shadow: 0 0 8px rgba(255,255,255,0.2);
+    }
+
+    .anatomy-hologram::after {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 60%);
     }
 
     .anatomy-number {
@@ -448,7 +495,8 @@
       
       /* Front elements */
       .anatomy-chip { width: 38px; height: 30px; top: 60px; left: 20px; }
-      .anatomy-contactless { width: 32px; height: 32px; top: 20px; right: 20px; opacity: 0.8; }
+      .anatomy-contactless { width: 28px; height: 28px; top: 50%; right: 20px; transform: translateY(-50%); opacity: 0.75; }
+      .anatomy-hologram { width: 26px; height: 26px; top: 75px; left: 75px; }
       .anatomy-issuer { top: 20px; right: 20px; font-size: 16px; }
       .anatomy-number { font-size: 16px; bottom: 50px; left: 20px; }
       .anatomy-bottom { left: 20px; right: 20px; bottom: 20px; gap: 16px; }
@@ -471,7 +519,7 @@
 </head>
 <body>
   <nav class="site-nav">
-    <a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>✦</span></a>
+    <a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>※</span></a>
     <ul class="nav-links">
       <li><a href="../index.html#chapters">All Chapters</a></li>
       <li><a href="04-types-of-cards.html">Next →</a></li>
@@ -504,7 +552,7 @@
               </svg>
 
               <!-- HOLOGRAM CIRCLE -->
-              <div class="part-hotspot" data-part="hologram" onclick="selectPart('hologram')" style="position: absolute; top: 100px; right: 120px; width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1)); backdrop-filter: blur(2px);"></div>
+              <div class="anatomy-hologram part-hotspot" data-part="hologram" onclick="selectPart('hologram')"></div>
 
               <!-- ISSUER (top-right) -->
               <div class="anatomy-issuer part-hotspot" data-part="issuer" onclick="selectPart('issuer')">
@@ -549,7 +597,7 @@
 
       <section class="checkpoint">
         <div class="checkpoint-card">
-          <div style="font-size: 56px; margin-bottom: 12px;">✦</div>
+          <div style="font-size: 56px; margin-bottom: 12px;">※</div>
           <h3 class="checkpoint-title">Now you know <em>every part</em>.</h3>
           <p class="checkpoint-body">Up next: a sorting game where you'll learn the difference between secured, unsecured, charge, prepaid, and co-branded cards.</p>
           <div class="checkpoint-cta-row">

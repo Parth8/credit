@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F7F3ED"/>
+      <stop offset="100%" stop-color="#EDE8DF"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="50%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="chipGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4a843"/>
+      <stop offset="50%" stop-color="#c9952e"/>
+      <stop offset="100%" stop-color="#e0bc5f"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="12"/>
+      <feOffset dx="0" dy="16" result="offsetblur"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  
+  <!-- Subtle grid texture -->
+  <g opacity="0.03">
+    <line x1="0" y1="200" x2="1200" y2="200" stroke="#1A1A18" stroke-width="1" stroke-dasharray="4,8"/>
+    <line x1="0" y1="430" x2="1200" y2="430" stroke="#1A1A18" stroke-width="1" stroke-dasharray="4,8"/>
+  </g>
+  
+  <!-- Title -->
+  <text x="80" y="180" font-family="'Fraunces', Georgia, serif" font-size="84" font-weight="900" fill="#1A1A18" letter-spacing="-2">
+    Credit cards,
+  </text>
+  <text x="80" y="280" font-family="'Fraunces', Georgia, serif" font-size="84" font-weight="900" font-style="italic" fill="#2563EB" letter-spacing="-2">
+    finally
+  </text>
+  <text x="338" y="280" font-family="'Fraunces', Georgia, serif" font-size="84" font-weight="900" fill="#1A1A18" letter-spacing="-2">
+    explained.
+  </text>
+  
+  <!-- Tagline -->
+  <text x="80" y="345" font-family="'Instrument Sans', system-ui, sans-serif" font-size="24" font-weight="500" fill="#5C5C54">
+    An interactive guide to how your card actually works.
+  </text>
+  <text x="80" y="380" font-family="'Instrument Sans', system-ui, sans-serif" font-size="24" font-weight="500" fill="#5C5C54">
+    Free. Forever. No card recommendations.
+  </text>
+
+  <!-- Handwritten annotation -->
+  <text x="80" y="478" font-family="'Caveat', cursive" font-size="32" fill="#EA580C" transform="rotate(-2 80 478)">
+    by playing with one →
+  </text>
+  
+  <!-- Bottom corner — credit card illustration -->
+  <g transform="translate(770, 380)" filter="url(#cardShadow)">
+    <rect width="350" height="220" rx="16" fill="url(#cardGrad)"/>
+    
+    <!-- Chip -->
+    <rect x="28" y="80" width="48" height="38" rx="6" fill="url(#chipGrad)"/>
+    <rect x="34" y="86" width="36" height="26" rx="3" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="1"/>
+    
+    <!-- HDFC text -->
+    <text x="322" y="40" font-family="'Fraunces', serif" font-size="20" font-weight="800" fill="white" text-anchor="end" opacity="0.95">HDFC</text>
+    
+    <!-- NFC waves -->
+    <g transform="translate(280, 100)" stroke="white" stroke-width="2" fill="none" opacity="0.7">
+      <path d="M5 13a10 10 0 0114 0"/>
+      <path d="M8 16a6 6 0 018 0"/>
+      <path d="M11 19a2 2 0 012 0"/>
+    </g>
+    
+    <!-- Number -->
+    <text x="28" y="160" font-family="'Space Mono', monospace" font-size="16" fill="white" letter-spacing="2">4539  1234  5678  7821</text>
+    
+    <!-- VISA -->
+    <text x="322" y="195" font-family="'Instrument Sans', sans-serif" font-size="22" font-weight="700" fill="white" text-anchor="end">VISA</text>
+  </g>
+  
+  <!-- Brand mark bottom-left -->
+  <text x="80" y="580" font-family="'Fraunces', serif" font-size="22" font-weight="700" fill="#1A1A18">
+    Decoding<tspan fill="#5C5C54">·</tspan>Credit Cards <tspan fill="#5C5C54" font-size="22">※</tspan>
+  </text>
+</svg>

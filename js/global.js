@@ -58,7 +58,7 @@ function showCompletion(title, body, ctaText, ctaHref) {
   burst.className = 'completion-burst active';
   burst.innerHTML = `
     <div class="completion-inner">
-      <div style="font-size:64px;margin-bottom:16px;">✦</div>
+      <div style="font-size:64px;margin-bottom:16px;">※</div>
       <h2 style="font-family:var(--font-display);font-size:48px;font-weight:900;letter-spacing:-0.02em;margin-bottom:16px;">${title}</h2>
       <p style="font-size:16px;color:var(--ink-muted);max-width:480px;margin:0 auto 32px;line-height:1.6;">${body}</p>
       <div style="display:flex;gap:12px;justify-content:center;">
