@@ -756,12 +756,56 @@ body::before {
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
+  /* TYPOGRAPHY — bump base + all utility text for mobile legibility */
+  body { font-size: 16px; }
+  
+  /* Utility text (mono, labels, metadata, eyebrows) — never smaller than 14px on mobile */
+  .chapter-meta,
+  .chapter-eyebrow,
+  .detail-eyebrow,
+  .hero-eyebrow,
+  .trust-label,
+  .factor-rundown-item,
+  .decision-status,
+  .test-opt,
+  .flip-btn,
+  .why-num,
+  [class*="-label"],
+  [class*="-meta"],
+  [class*="eyebrow"] {
+    font-size: 14px !important;
+  }
+
+  /* LAYOUT */
   .container { padding: 0 16px; }
   .site-nav { padding: 12px 16px; }
   .nav-links { display: none; }
+  
+  /* VISUALS */
   .cc-visual { width: 260px; height: 165px; padding: 18px; }
   .pos-terminal { width: 160px; }
   .flow-node-circle { width: 48px; height: 48px; font-size: 20px; }
+  
+  /* INTERACTIVE — ensure all buttons/links have sufficient touch target (min 44px height) */
+  button,
+  .btn,
+  a:not(.nav-brand),
+  input[type="range"],
+  [role="button"] {
+    min-height: 44px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  
+  /* Range sliders — bigger thumb on mobile */
+  input[type="range"]::-webkit-slider-thumb {
+    width: 24px;
+    height: 24px;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 /* ============================================================
