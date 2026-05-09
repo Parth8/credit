@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
   <title>III. The Anatomy of a Card — Decoding Credit Cards</title>
   <link rel="stylesheet" href="../css/global.css">
   <style>
@@ -204,9 +205,9 @@
     .anatomy-contactless {
       top: 32px;
       right: 32px;
-      width: 36px;
-      height: 36px;
-      opacity: 0.6;
+      width: 40px;
+      height: 40px;
+      opacity: 0.75;
       position: absolute;
     }
 
@@ -217,6 +218,8 @@
       font-family: var(--font-mono);
       font-size: 22px;
       letter-spacing: 0.12em;
+      color: white;
+      text-decoration: none;
     }
 
     .anatomy-bottom {
@@ -396,21 +399,24 @@
       .anatomy-chip { width: 38px; height: 30px; top: 60px; left: 20px; }
       .anatomy-number { font-size: 14px; bottom: 50px; left: 20px; }
       .anatomy-bottom { left: 20px; right: 20px; bottom: 20px; }
-      .anatomy-contactless { width: 24px; height: 24px; top: 20px; right: 20px; }
+      .anatomy-contactless { width: 32px; height: 32px; top: 20px; right: 20px; opacity: 0.8; }
       .anatomy-face { padding: 20px; }
       .magstripe { top: 20px; }
       .signature-strip { top: 80px; left: 20px; right: 70px; height: 30px; }
       .cvv-box { top: 80px; right: 20px; height: 30px; width: 44px; }
       .detail-panel { padding: 28px 20px; }
       
-      /* Expand all hotspot touch targets for mobile — add invisible padding */
-      .part-hotspot {
-        padding: 8px;
+      /* Expand hotspot touch targets via invisible ::before pseudo-element
+         so we don't break the absolute positioning of the actual element */
+      .part-hotspot::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         min-width: 44px;
         min-height: 44px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+        z-index: -1;
       }
       
       /* Flip button bigger on mobile */
