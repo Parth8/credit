@@ -1267,18 +1267,34 @@
 
     /* Mobile responsive for new sections */
     @media (max-width: 768px) {
+      /* Phase tabs — shrink text and adjust padding so labels don't overflow */
       .phase-strip { gap: 8px; }
       .phase-arrow { display: none; }
-      .phase-item { min-width: 0; flex: 1; padding: 12px 14px; }
+      .phase-item { min-width: 0; flex: 1; padding: 12px 10px; min-width: 0; overflow: hidden; }
+      .phase-item .phase-name { font-size: 14px; line-height: 1.1; word-break: break-word; }
+      .phase-item .phase-time { font-size: 9px; }
+      .phase-item .phase-tag { font-size: 10px; line-height: 1.2; }
       .phase-panel { padding: 24px 20px; }
       .phase-panel-inner { flex-direction: column; gap: 16px; }
+      /* MDR */
       .mdr-flow { grid-template-columns: 1fr; }
       .mdr-pipe-wrap { text-align: left; display: flex; justify-content: space-between; align-items: center; }
       .mdr-pipe-line { display: none; }
       .mdr-recipients { grid-template-columns: repeat(2, 1fr); }
       .mdr-calc { padding: 24px 20px; }
-      .showroom-calc-row { padding: 14px 20px; }
+      /* Showroom — stack label above value, align right value cleanly */
+      .showroom-calc-row {
+        padding: 14px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      .showroom-calc-row .showroom-num {
+        font-size: 18px;
+        align-self: flex-end;
+      }
       .showroom-scene { padding: 24px 20px; }
+      .showroom-quote { font-size: 19px; padding: 16px 20px; }
       .showroom-truth { padding: 24px 20px; }
       .showroom-moves { padding: 24px 20px; }
       .showroom-move-grid { grid-template-columns: 1fr; }
@@ -1683,7 +1699,7 @@
           <div class="showroom-scene">
             <div class="showroom-scene-label">The scenario</div>
             <p>You're at an electronics showroom. ₹80,000 TV. You pull out your credit card. The salesperson says:</p>
-            <div class="showroom-quote">"Sir/Ma'am, there is a 3% charge on using a credit card to make the payment."</div>
+            <div class="showroom-quote">"Sir, credit card pe 3% extra lagega."</div>
           </div>
 
           <div class="showroom-breakdown">
