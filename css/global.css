@@ -791,6 +791,7 @@ body::before {
   
   /* VISUALS */
   .cc-visual { width: 260px; height: 165px; padding: 18px; }
+  .cc-number { font-size: 14px; letter-spacing: 0.1em; white-space: nowrap; }
   .pos-terminal { width: 160px; }
   .flow-node-circle { width: 48px; height: 48px; font-size: 20px; }
   
