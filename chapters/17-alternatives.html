@@ -1,169 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>XVII. UPI, Wallets & The Rest — Decoding Credit Cards</title>
-  <!-- Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://parth8.github.io/credit/chapters/17-alternatives.html">
-  <meta property="og:title" content="XVII. UPI, Wallets & The Rest — Decoding Credit Cards">
-  <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:site_name" content="Decoding Credit Cards">
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="XVII. UPI, Wallets & The Rest — Decoding Credit Cards">
-  <meta name="twitter:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta name="twitter:image" content="https://parth8.github.io/credit/og-image.png">
-  
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>XVII. Cards vs Everything Else — Decoding Credit Cards</title>
+<meta name="description" content="A credit card is one of five ways to pay, and often not the best one. Match six everyday situations to the right tool — then see how the five compare.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/17-alternatives.html">
+<meta property="og:title" content="XVII. Cards vs Everything Else — Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
 <link rel="stylesheet" href="../css/global.css">
 <style>
-.chapter-shell{min-height:100vh;padding-top:80px}
-.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
-.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
-.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
-.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
-.chapter-h1 em{font-style:italic;font-weight:300;color:var(--electric)}
-.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
-.compare-table{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-lg);overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.04);margin:32px 0}
-.tab-row{display:grid;grid-template-columns:repeat(5,1fr);background:var(--paper);border-bottom:1px solid var(--border)}
-.tab-btn{padding:18px 12px;border:none;background:transparent;cursor:pointer;text-align:center;transition:all .2s;border-bottom:3px solid transparent;font-family:var(--font-body)}
-.tab-btn.active{background:white;border-bottom-color:var(--electric)}
-.tab-icon{font-size:28px;margin-bottom:6px;display:block}
-.tab-label{font-family:var(--font-display);font-size:13px;font-weight:700;letter-spacing:-.01em}
-.tab-content{padding:36px 40px}
-.tab-headline{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:6px}
-.tab-headline em{font-style:italic;font-weight:300;color:var(--electric)}
-.tab-tagline{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);letter-spacing:.04em;margin-bottom:24px}
-.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:24px}
-.feature-block h5{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
-.feature-list{list-style:none;display:flex;flex-direction:column;gap:8px}
-.feature-list li{font-size:14px;color:var(--ink-soft);line-height:1.5;padding-left:24px;position:relative}
-.feature-list li::before{position:absolute;left:0;top:0;font-family:var(--font-mono);font-weight:700}
-.feature-list.pros li::before{content:'+';color:var(--success)}
-.feature-list.cons li::before{content:'−';color:var(--danger)}
-.use-case{margin-top:24px;padding:20px 24px;background:var(--electric-soft);border-radius:var(--radius-md);border-left:3px solid var(--electric)}
-.use-case strong{color:var(--electric);font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:6px}
-.use-case p{font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0}
-.checkpoint{padding:80px 0;text-align:center}
-.checkpoint-card{background:white;border:2px dashed var(--electric);border-radius:var(--radius-lg);padding:48px 32px;max-width:640px;margin:0 auto}
-.checkpoint-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
-.checkpoint-title em{font-style:italic;font-weight:300;color:var(--electric)}
-.checkpoint-body{font-size:15px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px}
-.checkpoint-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
-.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
-.chapter-nav-link:hover{transform:translateX(-4px)}
-.chapter-nav-link.next{align-items:flex-end}
-.chapter-nav-link.next:hover{transform:translateX(4px)}
-.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
-.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
-@media(max-width:768px){.tab-row{grid-template-columns:repeat(3,1fr)}.feature-grid{grid-template-columns:1fr}.tab-content{padding:24px}}
-</style></head><body>
-<nav class="site-nav">
-<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>※</span></a>
-<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="18-taxes.html">Next →</a></li></ul>
-</nav>
+.matrix { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.matrix th, .matrix td { padding: 10px 8px; border-bottom: 1px dashed var(--border-strong); text-align: center; }
+.matrix th:first-child, .matrix td:first-child { text-align: left; font-weight: 600; }
+.matrix thead th { font: 400 .68rem var(--font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-faint); vertical-align: bottom; }
+.scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-inline: calc(-1 * clamp(18px, 3.4vw, 40px)); padding-inline: clamp(18px, 3.4vw, 40px); }
+.scroll table { min-width: 560px; }
+</style>
+</head>
+<body data-ch="17">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>Cards vs <em>Everything Else</em></h1>
+  <p>A credit card is one of five ways to pay, and often not the best one. Match six everyday situations to the right tool — then see how the five compare.</p>
+</header>
 
-<div class="chapter-shell"><div class="container">
-<div class="chapter-header">
-<div class="chapter-header-row"><div class="chapter-roman">Chapter XVII</div><div class="chapter-progress-text">17 of 22 · ~6 min</div></div>
-<h1 class="chapter-h1">UPI, Wallets & <em>The Rest</em></h1>
-<p class="chapter-intro">Credit cards aren\'t the only way to pay anymore. Tap each option. Learn when each one is the right tool — and when it\'s the wrong one.</p>
-</div>
-
-<section style="padding:32px 0;">
-<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;">The full toolkit</div>
-<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;">Which one <em style="font-style:italic;font-weight:300;color:var(--electric);">when</em>?</h2>
-
-<div class="compare-table" id="compare-table">
-<div class="tab-row" id="tab-row"></div>
-<div class="tab-content" id="tab-content"></div>
-</div>
+<section class="sec">
+  <div class="eyebrow">Pick the right tool</div>
+  <h2 class="h2">Six situations. <em>How would you pay?</em></h2>
+  <div class="stage" id="game"></div>
 </section>
 
-<section class="checkpoint">
-<div class="checkpoint-card">
-<div style="font-size:56px;margin-bottom:12px;">※</div>
-<h3 class="checkpoint-title">You can <em>pick the right tool</em>.</h3>
-<p class="checkpoint-body">Up next: how taxes interact with credit card spending — including the 7-lakh international threshold most people don\'t know about.</p>
-<div class="checkpoint-cta-row">
-<a href="../index.html" class="btn btn--ghost">← all chapters</a>
-<a href="18-taxes.html" class="btn btn--primary btn--lg">Chapter XVIII: Taxes & TCS →</a>
-</div></div></section>
+<section class="sec">
+  <div class="eyebrow">The toolkit in {name}</div>
+  <h2 class="h2">Five tools, <em>side by side</em>.</h2>
+  <div class="stage">
+    <div class="seg" id="tabs"></div>
+    <div id="tab" style="margin-top:24px" aria-live="polite"></div>
+  </div>
+  <div class="stage"><div class="eyebrow">At a glance</div><div class="scroll"><table class="matrix" id="matrix"></table></div></div>
+</section>
 
-<div class="chapter-nav-bottom">
-<a href="16-customer-service.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">Talking to Your Bank</span></a>
-<a href="18-taxes.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Next →</span><span class="chapter-nav-name">Taxes & TCS</span></a>
-</div>
-</div></div>
-
+<aside class="checkpoint">
+  <h3>You can pick the <em>right tool</em>.</h3>
+  <p>Protection when you are buying from a stranger, speed when you are paying a friend, your own money when you are on a budget. Next: where tax comes into it.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
 <script src="../js/global.js"></script>
 <script>
-const TABS = [
-  { id: 'cc', icon: '💳', label: 'Credit Card',
-    headline: 'The <em>flexibility</em> tool', tagline: 'Borrow now, pay later (within 30-50 days)',
-    pros: ['Up to 50 days interest-free credit', 'Rewards & cashback on every transaction', 'Strong fraud protection (zero-liability with prompt reporting)', 'Builds credit history & CIBIL score', 'Insurance, lounge access, purchase protection on premium cards'],
-    cons: ['36-48% APR if you carry balance', 'Annual fees on most cards', 'Requires creditworthiness to qualify', 'Easy to overspend without realizing'],
-    when: 'Big purchases (so you have grace period + protection), online shopping (chargeback rights), travel (insurance + rewards), recurring monthly bills (build rewards on autopilot).' },
-  { id: 'upi', icon: '🟣', label: 'UPI',
-    headline: 'The <em>everyday</em> tool', tagline: 'Instant bank-to-bank payments via your phone',
-    pros: ['Free for both sender and receiver', 'Instant — money moves in seconds', 'Works with just a phone number/UPI ID', 'No card needed, no number to leak', 'Works across all banks via NPCI'],
-    cons: ['Spends from your bank account directly (no float)', 'No rewards on most transactions (some apps offer cashback)', 'No fraud chargeback rights (once sent, near-impossible to reverse)', 'Limited fraud protection compared to cards'],
-    when: 'Splitting a restaurant bill, paying small merchants, sending money to friends, daily groceries, anything where you\'d use cash before 2018.' },
-  { id: 'debit', icon: '💵', label: 'Debit Card',
-    headline: 'The <em>controlled</em> tool', tagline: 'Card with direct deduction from your bank account',
-    pros: ['Spend only what you have — no debt risk', 'Widely accepted internationally', 'No annual fees on most cards', 'No interest, no minimum payment traps'],
-    cons: ['Money leaves your account immediately (no float)', 'No rewards on most cards', 'Disputes are harder — you\'re trying to claw back YOUR money, not stop a bank from paying', 'No credit history built from usage', 'Less fraud protection than credit cards'],
-    when: 'ATM withdrawals abroad, places that don\'t accept credit cards, building spending discipline if cards tempt you, kids/teens learning money management.' },
-  { id: 'bnpl', icon: '⏳', label: 'BNPL',
-    headline: 'The <em>installment</em> tool', tagline: 'Buy Now Pay Later — split into 3-4 EMIs',
-    pros: ['Simple to qualify (often just KYC)', 'No interest if paid on time', 'Quick approval, no credit pull (mostly)', 'Useful for one-time large purchases'],
-    cons: ['Late fees can be brutal (often higher than credit cards)', 'Easy to take multiple BNPL loans simultaneously and lose track', 'Many BNPL services now report to credit bureaus — defaults can hurt CIBIL', 'No rewards', 'Encourages buying things you can\'t afford'],
-    when: 'A specific large purchase (laptop, appliance) where you genuinely have the money but want to spread it. Avoid for daily/discretionary spending.' },
-  { id: 'wallet', icon: '👛', label: 'Wallets',
-    headline: 'The <em>convenience</em> tool', tagline: 'Pre-loaded balance for fast micro-payments',
-    pros: ['Faster than entering card details', 'Often offers cashback for loading from credit card', 'Some merchants give wallet-only discounts', 'Low-stakes if compromised (limited balance)'],
-    cons: ['Money sits in the wallet earning nothing', 'Wallets can shut down (Paytm Payments Bank lessons)', 'Refunds often go back to wallet, not your bank — locked', 'Limited fraud recourse compared to credit cards'],
-    when: 'Specific use cases — Paytm for movie tickets/coupons, Amazon Pay for Amazon discounts, Mobikwik for niche merchants. Don\'t use as your primary daily payment method.' }
-];
+{
+const { $, $$, R, rid, money, t, pick } = DCC;
+const N = pick({ in: { instant: 'UPI', bnpl: 'Pay-later / credit line', wallet: 'Wallets', debit: 'Debit card' }, us: { instant: 'Zelle / Venmo', bnpl: 'Buy now, pay later', wallet: 'Apple Pay / Google Pay', debit: 'Debit card' },
+  uk: { instant: 'Bank transfer', bnpl: 'Buy now, pay later', wallet: 'Apple Pay / Google Pay', debit: 'Debit card' }, au: { instant: 'PayID / Osko', bnpl: 'Buy now, pay later', wallet: 'Apple Pay / Google Pay', debit: 'Debit / eftpos' } });
+const T = {
+  card: ['💳', 'Credit card', 'The <em>protected</em> tool', 'Borrow for up to ' + R.freeDays + ' days, free, with the strongest buyer protection there is.',
+    ['Interest-free if you pay in full', 'Chargeback rights' + pick({ in: ' and zero liability for fraud reported in 3 days', us: ' and a $50 legal cap on fraud losses', uk: ', plus Section 75 above £100', au: ' and ePayments Code protection' }), 'It is the bank’s money at risk during a dispute, not yours', 'Builds credit history', 'Rewards and built-in insurance'],
+    [R.aprTypical + ' interest if you do not pay in full', 'Easy to spend money you do not have', 'Fees: annual, late, foreign, cash', pick({ in: 'Some shops add a surcharge or refuse cards', us: 'Some shops add a surcharge', uk: 'Amex not accepted everywhere', au: 'Amex may still be surcharged' })],
+    'Online shopping, travel, large purchases, anything bought from a business you do not know well.'],
+  instant: ['⚡', N.instant, 'The <em>instant</em> tool', pick({ in: 'Bank-to-bank in seconds through NPCI. Over 20 billion transactions a month.', us: 'Bank-to-bank in minutes. Built for people who know each other.', uk: 'Faster Payments moves money between any two UK accounts in seconds; “Pay by Bank” uses it at checkouts. In the eurozone, SEPA Instant and Wero do the same.', au: 'Bank-to-bank in seconds on the New Payments Platform, using a phone number or email as the address.' }),
+    ['Instant and usually free', 'No card details to steal', pick({ in: 'Zero merchant fee, so it is accepted everywhere down to the chai stall', us: 'Nearly every bank app has it built in', uk: 'Name-checking (confirmation of payee) before you send', au: 'Confirmation of payee shows the account name before you send' }), 'Your own money — no debt'],
+    ['<strong>No chargeback.</strong> Once sent, it is gone', pick({ in: 'Fraud recovery depends on reporting within hours to 1930', us: 'Banks rarely refund payments you were tricked into making', uk: 'Scam reimbursement exists (up to £85,000) but not for ordinary purchase disputes', au: 'Scam losses are hard to recover' }), 'No interest-free period, no rewards', 'The first choice of every scammer'],
+    'Paying people you know: splitting a bill, rent to a landlord, a tradesperson you trust. ' + pick({ in: 'And small everyday purchases.', us: 'Never for buying from strangers online.', uk: 'Not for buying from strangers on marketplaces.', au: 'Not for buying from strangers on marketplaces.' })],
+  debit: ['💵', N.debit, 'The <em>disciplined</em> tool', 'A card that spends your own balance.',
+    ['You cannot spend what you do not have', 'No interest, no bill at the end of the month', 'Cheapest way to take out cash, at home and abroad', pick({ in: 'RuPay debit and UPI carry no merchant fee', us: 'No surcharge is allowed on debit', uk: 'Chargeback still applies', au: 'Least-cost routing keeps merchant fees low' })],
+    ['A fraud empties <em>your</em> account while it is investigated', pick({ in: 'Liability rules match credit cards, but the money is gone meanwhile', us: 'Weaker legal protection: liability can reach $500, or more if you report late', uk: 'No Section 75', au: 'Fewer insurance extras' }), 'Hotel and car-hire holds freeze your own cash', 'Builds no credit history'],
+    'Cash withdrawals, everyday spending if a credit card tempts you, and any month you are on a tight budget.'],
+  bnpl: ['⏳', N.bnpl, 'The <em>instalment</em> tool', pick({ in: 'Short-term credit at checkout, now mostly offered as a bank or NBFC credit line — increasingly on UPI.', us: 'Four payments over six weeks, usually interest-free, from Affirm, Klarna, Afterpay and others.', uk: 'Split into three or pay in 30 days. <strong>Regulated by the FCA since 15 July 2026</strong>: affordability checks, clear information and access to the Ombudsman.', au: 'Four fortnightly payments. <strong>Regulated as credit since 10 June 2025</strong>: providers need a licence and must check you can afford it.' }),
+    ['Interest-free if every instalment is on time', 'Quick to get', 'A fixed end date, unlike a card balance'],
+    ['Late fees add up fast', 'Several plans at once are easy to lose track of', pick({ in: 'It is a loan: it is reported to the bureaus, and a missed ₹500 instalment is a default', us: 'Now starting to appear on credit reports and in newer FICO scores', uk: 'Now appears on credit files; Section 75 applies only to newer agreements', au: 'Can appear on your credit file and count in home-loan assessments' }), 'Refunds are slow and messy', 'Designed to make you spend more'],
+    'One planned purchase you could pay for in cash today. If you need it to afford the thing, that is the warning.'],
+  wallet: ['📱', N.wallet, 'The <em>convenient</em> tool', pick({ in: 'A prepaid balance (Paytm, Amazon Pay, PhonePe wallet) for quick small payments — or, from 2026, your card inside Apple Pay or Google Pay.', us: 'Not a separate way to pay: a safer wrapper around the card you already have.', uk: 'Not a separate way to pay: a safer wrapper around the card you already have.', au: 'Not a separate way to pay: a safer wrapper around the card you already have.' }),
+    pick({ in: ['Fast for small payments', 'Limited balance means limited damage', 'A card in a phone wallet is tokenised and needs your fingerprint'], us: ['The shop never sees your real card number', 'Needs your face or fingerprint', 'Keeps all the card’s rewards and protections', 'No contactless limit'] }),
+    pick({ in: ['Money sits there earning nothing', 'Refunds often return to the wallet, not your bank', 'Loading by credit card can cost a fee and earn no points', 'A wallet provider can be shut down — it has happened'], us: ['Dead battery, no payment', 'Not accepted everywhere', 'Makes spending even more frictionless'] }),
+    pick({ in: 'Small, frequent payments where the app gives a discount. Not a place to keep money.', us: 'Wherever it is accepted, in place of the plastic. It is the same card, better protected.' })]
+};
+const keys = ['card', 'instant', 'debit', 'bnpl', 'wallet'];
+const tab = k => { const x = T[k]; $$('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.k === k));
+  $('#tab').innerHTML = `<h3 class="h3">${x[2]}</h3><p class="lede">${x[3]}</p><div class="split" style="margin-top:20px"><div class="panel"><div class="eyebrow c-success">Where it wins</div><ul class="ticks">${x[4].map(p => `<li>${p}</li>`).join('')}</ul></div><div class="panel"><div class="eyebrow c-danger">Where it fails</div><ul class="crosses">${x[5].map(p => `<li>${p}</li>`).join('')}</ul></div></div><div class="callout" style="margin-top:18px"><b>Use it for</b>${x[6]}</div>`; };
+$('#tabs').innerHTML = keys.map(k => `<button data-k="${k}">${T[k][0]}<br>${T[k][1]}</button>`).join('');
+$('#tabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { tab(b.dataset.k); DCC.playClick(); } });
+tab('card');
+const cell = v => v === 2 ? '<span class="c-success">●●</span>' : v === 1 ? '<span class="c-gold">●○</span>' : '<span class="c-danger">○○</span>';
+$('#matrix').innerHTML = `<thead><tr><th></th>${keys.map(k => `<th>${T[k][1]}</th>`).join('')}</tr></thead><tbody>${[['Get money back if it goes wrong', 2, 0, 1, 1, rid === 'in' ? 0 : 2], ['Fraud hits the bank’s money, not yours', 2, 0, 0, 2, rid === 'in' ? 0 : 2], ['Cannot overspend', 0, 2, 2, 0, rid === 'in' ? 2 : 0], ['Free to use', 1, 2, 2, 1, 2], ['Builds credit history', 2, 0, 0, 1, 0], ['Speed', 2, 2, 2, 1, 2]].map(r => `<tr><td>${r[0]}</td>${r.slice(1).map(cell).join('')}</tr>`).join('')}</tbody>`;
 
-let activeTab = 'cc';
-
-function renderTabs() {
-  const tr = document.getElementById('tab-row');
-  tr.innerHTML = TABS.map(t => `
-    <button class="tab-btn ${t.id === activeTab ? 'active' : ''}" onclick="setTab('${t.id}')" data-id="${t.id}">
-      <span class="tab-icon">${t.icon}</span>
-      <span class="tab-label">${t.label}</span>
-    </button>`).join('');
-
-  const t = TABS.find(x => x.id === activeTab);
-  document.getElementById('tab-content').innerHTML = `
-    <div class="tab-headline">${t.headline}</div>
-    <div class="tab-tagline">${t.tagline}</div>
-    <div class="feature-grid">
-      <div class="feature-block">
-        <h5>WHAT IT DOES WELL</h5>
-        <ul class="feature-list pros">${t.pros.map(p => `<li>${p}</li>`).join('')}</ul>
-      </div>
-      <div class="feature-block">
-        <h5>WHERE IT FAILS</h5>
-        <ul class="feature-list cons">${t.cons.map(p => `<li>${p}</li>`).join('')}</ul>
-      </div>
-    </div>
-    <div class="use-case">
-      <strong>Use it for:</strong>
-      <p>${t.when}</p>
-    </div>`;
+const o = ok => keys.map(k => ({ t: `${T[k][0]} <strong>${T[k][1]}</strong>`, ok: [].concat(ok).includes(k) }));
+const S = [
+  ['A ' + money(R.a.laptop) + ' laptop from an online shop you have never used.', 'card', 'If it never arrives, or arrives broken, a credit card lets you dispute it — and it is the bank’s money tied up while you do. ' + pick({ in: 'UPI has no chargeback.', us: 'A debit card would work, with weaker protection.', uk: 'Over £100, so Section 75 applies too.', au: 'A debit card has chargeback too, but your own money is gone meanwhile.' })],
+  ['Your share of last night’s dinner, owed to a friend.', 'instant', 'Instant, free, and you know the person. This is exactly what bank-to-bank payments were built for.'],
+  ['A stranger on a marketplace wants paying up front for a second-hand phone.', ['card', 'wallet'], 'Pay through the platform, by card, so there is someone to dispute it with. A direct bank transfer to a stranger is the single most common way people lose money — there is no way back.'],
+  ['The last week before payday, and money is tight.', 'debit', 'Spend only what is there. A credit card or pay-later plan this week is a bill next month, with less to pay it from.'],
+  ['Flights and a hotel for a holiday four months away.', 'card', 'If the airline or agent fails before you travel, card protection gets the money back, and paying by card is often what activates the travel cover.'],
+  ['A ' + money(R.a.big) + ' television. You have the cash, the shop offers four interest-free instalments.', ['bnpl', 'card'], 'Fine either way <em>because you have the money</em>: an instalment plan with autopay costs nothing, and a credit card paid in full gives more protection. The wrong answer would be using either because you could not otherwise afford it.']
+].map(([q, ok, why]) => ({ title: q, opts: o(ok), explain: `<p>${why}</p>`, yes: 'Good choice.', no: 'There is a better tool.' }));
+DCC.quiz($('#game'), { items: S, label: 'Situation', onEnd(s, n, again) { $('#game').innerHTML = `<div style="text-align:center"><h3 class="h3">${s} of ${n} <em>well paid</em>.</h3><p class="lede" style="margin-inline:auto">The rule underneath: the less you know the seller, the more you want a payment you can reverse.</p><div class="row" style="justify-content:center;margin-top:16px"><button class="btn btn--outline" id="again">↻ Again</button></div></div>`; $('#again').onclick = again; DCC.playSuccess(); DCC.markDone(); } });
 }
-
-function setTab(id) { activeTab = id; renderTabs(); DCC.playClick(); }
-renderTabs();
 </script>
-</body></html>
+</body>
+</html>

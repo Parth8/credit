@@ -66,7 +66,7 @@
   const num = n => nf.format(n);
   // {issuer} → region value, {$debt} → formatted amount from R.a
   const t = s => String(s).replace(/\{(\$?)([a-zA-Z_]+)\}/g, (m, d, k) => d ? (k in R.a ? money(R.a[k]) : m) : (k in R ? R[k] : m));
-  const pick = v => (v && typeof v === 'object' && !Array.isArray(v) && ('in' in v || 'us' in v || 'uk' in v || 'au' in v)) ? (v[rid] ?? v.in) : v;
+  const pick = v => (v && typeof v === 'object' && !Array.isArray(v) && ('in' in v || 'us' in v || 'uk' in v || 'au' in v)) ? (v[rid] ?? (rid === 'in' ? v.in : v.us) ?? v.in ?? v.us) : v;
   function setRegion(id) {
     if (!REG[id]) return;
     store.set('region', id);

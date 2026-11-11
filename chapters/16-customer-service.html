@@ -1,283 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
 <title>XVI. Talking to Your Bank — Decoding Credit Cards</title>
-  <!-- Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://parth8.github.io/credit/chapters/16-customer-service.html">
-  <meta property="og:title" content="XVI. Talking to Your Bank — Decoding Credit Cards">
-  <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:site_name" content="Decoding Credit Cards">
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="XVI. Talking to Your Bank — Decoding Credit Cards">
-  <meta name="twitter:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta name="twitter:image" content="https://parth8.github.io/credit/og-image.png">
-  
-
+<meta name="description" content="The same request gets a yes or a no depending on how it is put. Pick a call, choose what you say at each turn, and see how the agent reacts.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/16-customer-service.html">
+<meta property="og:title" content="XVI. Talking to Your Bank — Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
 <link rel="stylesheet" href="../css/global.css">
 <style>
-.chapter-shell{min-height:100vh;padding-top:80px}
-.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
-.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
-.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
-.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
-.chapter-h1 em{font-style:italic;font-weight:300;color:var(--electric)}
-.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
-.scenario-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:32px}
-.scen-btn{padding:24px;background:white;border:1px solid var(--border-strong);border-radius:var(--radius-md);cursor:pointer;transition:all .3s;text-align:left}
-.scen-btn:hover{transform:translateY(-3px);border-color:var(--electric);box-shadow:0 8px 24px rgba(37,99,235,.06)}
-.scen-icon{font-size:36px;margin-bottom:10px}
-.scen-btn h4{font-family:var(--font-display);font-size:18px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
-.scen-btn p{font-size:13px;color:var(--ink-muted);line-height:1.5}
-.dialogue-stage{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-lg);padding:32px;box-shadow:0 1px 3px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.04);margin:32px 0;display:none}
-.dialogue-stage.active{display:block}
-.call-header{display:flex;align-items:center;gap:16px;padding-bottom:20px;border-bottom:1px dashed var(--border);margin-bottom:24px}
-.call-icon{width:48px;height:48px;border-radius:50%;background:var(--success);display:flex;align-items:center;justify-content:center;font-size:24px;animation:call-pulse 2s ease infinite}
-@keyframes call-pulse{0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,.4)}50%{box-shadow:0 0 0 8px rgba(22,163,74,0)}}
-.call-info h4{font-family:var(--font-display);font-size:18px;font-weight:700;margin-bottom:2px}
-.call-info p{font-size:12px;color:var(--ink-muted);font-family:var(--font-mono)}
-.dialogue-thread{display:flex;flex-direction:column;gap:16px}
-.bubble{max-width:75%;padding:14px 18px;border-radius:18px;font-size:14px;line-height:1.5}
-.bubble.agent{background:var(--paper);color:var(--ink);border-radius:18px 18px 18px 4px;align-self:flex-start}
-.bubble.you{background:var(--electric);color:white;border-radius:18px 18px 4px 18px;align-self:flex-end}
-.bubble.you-correct{background:var(--success)}
-.bubble.you-wrong{background:var(--danger)}
-.bubble-from{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);letter-spacing:.04em;margin-bottom:4px}
-.bubble.you .bubble-from,.bubble.you-correct .bubble-from,.bubble.you-wrong .bubble-from{color:rgba(255,255,255,.7)}
-.choice-row{display:flex;flex-direction:column;gap:8px;margin-top:16px}
-.choice-btn{padding:14px 18px;background:white;border:1.5px solid var(--border-strong);border-radius:14px;cursor:pointer;font-size:14px;line-height:1.4;text-align:left;transition:all .2s;font-family:var(--font-body);color:var(--ink)}
-.choice-btn:hover{border-color:var(--electric);background:var(--electric-soft);transform:translateX(4px)}
-.coach-note{margin-top:16px;padding:14px 18px;background:var(--electric-soft);border-left:3px solid var(--electric);border-radius:0 8px 8px 0;font-size:13px;line-height:1.5;color:var(--ink-soft)}
-.coach-note strong{color:var(--electric);font-family:var(--font-mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase}
-.checkpoint{padding:80px 0;text-align:center}
-.checkpoint-card{background:white;border:2px dashed var(--electric);border-radius:var(--radius-lg);padding:48px 32px;max-width:640px;margin:0 auto}
-.checkpoint-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
-.checkpoint-title em{font-style:italic;font-weight:300;color:var(--electric)}
-.checkpoint-body{font-size:15px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px}
-.checkpoint-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
-.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
-.chapter-nav-link:hover{transform:translateX(-4px)}
-.chapter-nav-link.next{align-items:flex-end}
-.chapter-nav-link.next:hover{transform:translateX(4px)}
-.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
-.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
-@media(max-width:768px){.scenario-grid{grid-template-columns:1fr}.dialogue-stage{padding:20px}.bubble{max-width:90%}}
-</style></head><body>
-<nav class="site-nav">
-<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>※</span></a>
-<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="17-alternatives.html">Next →</a></li></ul>
-</nav>
+.callbar { display: flex; align-items: center; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.callbar .dot { width: 44px; height: 44px; border-radius: 50%; background: var(--success); display: grid; place-items: center; font-size: 1.3rem; }
+.thread { display: flex; flex-direction: column; gap: 10px; min-height: 120px; }
+.msg { max-width: 86%; padding: 12px 16px; border-radius: 18px; font-size: .96rem; line-height: 1.45; animation: rise .4s var(--ease-out); }
+.msg small { display: block; font: 400 .62rem var(--font-mono); letter-spacing: .08em; text-transform: uppercase; opacity: .6; margin-bottom: 2px; }
+.msg.agent { background: var(--paper); border-bottom-left-radius: 4px; align-self: flex-start; }
+.msg.you { background: var(--electric); color: #fff; border-bottom-right-radius: 4px; align-self: flex-end; }
+.msg.you.bad { background: var(--danger); }
+.typing { align-self: flex-start; background: var(--paper); border-radius: 18px; padding: 14px 18px; display: flex; gap: 5px; }
+.typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-faint); animation: blink 1s infinite; } .typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes blink { 50% { opacity: .2; transform: translateY(-3px); } }
+.say { margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--border-strong); }
+</style>
+</head>
+<body data-ch="16">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>Talking to <em>Your Bank</em></h1>
+  <p>The same request gets a yes or a no depending on how it is put. Pick a call, choose what you say at each turn, and see how the agent reacts.</p>
+</header>
 
-<div class="chapter-shell"><div class="container">
-<div class="chapter-header">
-<div class="chapter-header-row"><div class="chapter-roman">Chapter XVI</div><div class="chapter-progress-text">16 of 22 · ~5 min</div></div>
-<h1 class="chapter-h1">Talking to <em>Your Bank</em></h1>
-<p class="chapter-intro">When you actually need to call. Pick a scenario. Practice the conversation. Learn the exact words that get results faster than vague complaints.</p>
-</div>
-
-<section style="padding:32px 0;" id="scen-section">
-<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;">Pick what you\'d be calling about</div>
-<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;">Four <em style="font-style:italic;font-weight:300;color:var(--electric);">real conversations</em>.</h2>
-
-<div class="scenario-grid">
-<button class="scen-btn" onclick="startScen(0)">
-<div class="scen-icon">💳</div><h4>Lost or stolen card</h4>
-<p>You realize your card is missing. Block it, get a replacement, ensure no charges go through.</p>
-</button>
-<button class="scen-btn" onclick="startScen(1)">
-<div class="scen-icon">📋</div><h4>Dispute a charge</h4>
-<p>A merchant double-billed you, or a refund never came through. You want it reversed.</p>
-</button>
-<button class="scen-btn" onclick="startScen(2)">
-<div class="scen-icon">📈</div><h4>Request limit increase</h4>
-<p>You\'ve had the card a while, salary went up. Time to ask for a higher limit.</p>
-</button>
-<button class="scen-btn" onclick="startScen(3)">
-<div class="scen-icon">💰</div><h4>Reverse a fee</h4>
-<p>You got hit with a late fee or annual fee. Many can be waived if you ask correctly.</p>
-</button>
-</div>
+<section class="sec">
+  <div class="eyebrow">Pick a call to practise</div>
+  <h2 class="h2">Six <em>real conversations</em>.</h2>
+  <div class="grid" id="calls" style="--min:210px;margin-top:22px"></div>
+  <div class="stage" id="call" hidden></div>
 </section>
 
-<section class="dialogue-stage" id="dialogue-stage">
-<div class="call-header">
-<div class="call-icon" id="call-icon">📞</div>
-<div class="call-info">
-<h4 id="call-title">HDFC Customer Service</h4>
-<p id="call-meta">Connected · 0:00</p>
-</div>
-<button class="btn btn--ghost" style="margin-left:auto;" onclick="resetScen()">↺ End call</button>
-</div>
-<div class="dialogue-thread" id="dialogue-thread"></div>
-<div id="dialogue-coach"></div>
+<section class="sec">
+  <div class="eyebrow">When the answer is still no</div>
+  <h2 class="h2">The <em>escalation ladder</em> in {name}.</h2>
+  <div id="ladder" style="margin-top:22px"></div>
 </section>
 
-<section class="checkpoint">
-<div class="checkpoint-card">
-<div style="font-size:56px;margin-bottom:12px;">📞</div>
-<h3 class="checkpoint-title">You\'ll <em>handle the call</em>.</h3>
-<p class="checkpoint-body">Up next: how UPI, debit cards, BNPL, and digital wallets stack up against credit cards — when to use which.</p>
-<div class="checkpoint-cta-row">
-<a href="../index.html" class="btn btn--ghost">← all chapters</a>
-<a href="17-alternatives.html" class="btn btn--primary btn--lg">Chapter XVII: UPI, Wallets & The Rest →</a>
-</div></div></section>
-
-<div class="chapter-nav-bottom">
-<a href="15-protections.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">Hidden Protections</span></a>
-<a href="17-alternatives.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Next →</span><span class="chapter-nav-name">UPI, Wallets & The Rest</span></a>
-</div>
-</div></div>
-
+<aside class="checkpoint" data-icon="📞">
+  <h3>You know <em>what to say</em>.</h3>
+  <p>Lead with the action you want, bring the facts, stay civil, get it in writing — and know where to go when the front line says no. Next: everything that is not a credit card.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
 <script src="../js/global.js"></script>
 <script>
-const SCENARIOS = [
-  // Lost card
-  [
-    { from: 'agent', text: 'Hello, this is HDFC customer support. How may I help you?' },
-    { from: 'you', choices: [
-      { t: 'I lost my card.', good: false, why: 'Too vague — they\'ll spend 5 minutes verifying and asking which card. Lead with action.' },
-      { t: 'I need to block my credit card immediately.', good: true, why: 'Direct, urgent, action-oriented. Agent skips small talk and goes to lookup.' },
-      { t: 'Hi, I\'m a customer of yours, sorry to bother you, but...', good: false, why: 'Don\'t apologize for needing service. They\'re paid to help. Lead with the issue.' }
-    ]},
-    { from: 'agent', text: 'I\'ve initiated the block. Your card is now inactive. Have you noticed any unauthorized transactions?' },
-    { from: 'you', choices: [
-      { t: 'No, I just lost it. I don\'t think anyone got hold of it.', good: false, why: 'Don\'t guess. Banks treat "no fraud" answers more lightly than "I want a fraud check."' },
-      { t: 'Please run a fraud check on the last 7 days and reverse anything I didn\'t authorize.', good: true, why: 'Even if you don\'t see fraud, RBI requires the bank to investigate if you ask. Always ask.' },
-      { t: 'I\'ll check my statement and call back.', good: false, why: 'You\'re already on the call. Use this time. They\'ll do the check faster than you\'ll get back to it.' }
-    ]},
-    { from: 'agent', text: 'Done. I\'ll dispatch a replacement card to your registered address — ETA 5-7 working days. Anything else?' },
-    { from: 'you', choices: [
-      { t: 'Can you also flag any auto-pay merchants so I know what\'ll break?', good: true, why: 'Smart. Replacement = new card number = subscriptions break. Get the list now to update them proactively.' },
-      { t: 'No, that\'s all, thanks!', good: false, why: 'Missed the auto-pay angle. You\'ll discover broken subscriptions one by one over the next few weeks.' }
-    ]}
-  ],
-  // Dispute
-  [
-    { from: 'agent', text: 'HDFC support, how can I help?' },
-    { from: 'you', choices: [
-      { t: 'I want to dispute a charge of ₹4,200 from Swiggy on the 15th — they double-billed me.', good: true, why: 'Specific: amount, merchant, date, reason. Agent can pull up the transaction in 30 seconds.' },
-      { t: 'Some weird charge on my statement, can you check?', good: false, why: 'Vague. They\'ll spend the call asking which one. Always lead with: amount, merchant, date.' }
-    ]},
-    { from: 'agent', text: 'Got it. Have you tried contacting Swiggy first? Standard procedure asks customers to attempt with the merchant before disputing.' },
-    { from: 'you', choices: [
-      { t: 'I emailed support 3 times over 8 days. They acknowledged once, then went silent. Here\'s the email thread.', good: true, why: 'Documented attempt + specifics. This converts the dispute from "you didn\'t try" to "merchant unresponsive" — much easier to win.' },
-      { t: 'No, but the merchant\'s clearly wrong, can\'t the bank just sort it out?', good: false, why: 'Bank will tell you to try the merchant first and call back. You\'ll lose 2 weeks.' }
-    ]},
-    { from: 'agent', text: 'Understood. I\'ll initiate a chargeback under "Duplicate Processing" — provisional credit in 7 days. Reference number is DSP-1102456.' },
-    { from: 'you', choices: [
-      { t: 'Could you also email me confirmation of this conversation and the reference number?', good: true, why: 'Always get written confirmation. If the agent forgets to file or someone "loses" the case, you have proof.' },
-      { t: 'Great, thanks!', good: false, why: 'Without written confirmation, your dispute lives in their internal system only. Some get lost.' }
-    ]}
-  ],
-  // Limit increase
-  [
-    { from: 'agent', text: 'HDFC, how may I help?' },
-    { from: 'you', choices: [
-      { t: 'I\'d like a credit limit increase. I\'ve had this card 18 months, salary increased from ₹60K to ₹85K, current utilization is around 25%.', good: true, why: 'You\'ve made the case for them. Tenure + income + good utilization = approval likely.' },
-      { t: 'I want a higher limit because I keep hitting it.', good: false, why: 'Sounds like you\'re overspending — the opposite of what gets approval. Frame as needing room, not chasing it.' }
-    ]},
-    { from: 'agent', text: 'Sure. Just to confirm — would you accept this as a soft pull (instant decision based on existing data) or a hard pull (slightly higher chance, but credit-bureau inquiry)?' },
-    { from: 'you', choices: [
-      { t: 'Soft pull, please. I want to avoid the score hit if possible.', good: true, why: 'Soft pull = no impact on credit score. Take it whenever offered.' },
-      { t: 'Hard pull is fine, I\'m confident I\'ll qualify.', good: false, why: 'You took an unnecessary 5-10 point hit. Soft pull would have done the same job.' }
-    ]},
-    { from: 'agent', text: 'Approved. Limit increased from ₹2L to ₹3.5L, effective immediately. Anything else?' },
-    { from: 'you', choices: [
-      { t: 'Yes — could you waive the next annual fee since I\'m a long-term customer?', good: true, why: 'Always ask. Banks waive fees for retention reasons. Cost: 30 seconds. Potential savings: ₹1,500-3,000.' },
-      { t: 'No, thanks!', good: false, why: 'Left ₹1,500-3,000 on the table. The "always ask" rule with banks pays off remarkably often.' }
-    ]}
-  ],
-  // Reverse fee
-  [
-    { from: 'agent', text: 'How can I help?' },
-    { from: 'you', choices: [
-      { t: 'I see a ₹950 late fee on this month\'s statement. I\'ve been a customer for 3 years with a perfect payment record. Could you waive this as a one-time courtesy?', good: true, why: 'Polite + factual + asks for "one-time courtesy." This wording is bank-internal language for fee reversal — works ~70% of the time for first offenses.' },
-      { t: 'Why are you charging me a late fee? Reverse it.', good: false, why: 'Aggressive tone makes the agent defensive and prevents them from going to bat for you. They\'ll cite policy and refuse.' },
-      { t: 'I want to talk to your manager about removing this fee.', good: false, why: 'Skipping the agent removes their ability to help you. Almost always the agent themselves has authority to reverse one-off fees.' }
-    ]},
-    { from: 'agent', text: 'Let me check your account. Yes, perfect record for 36 months. I can offer a one-time waiver. The fee will be reversed in 2-3 working days.' },
-    { from: 'you', choices: [
-      { t: 'Thank you — could you also remove the GST charged on the fee, since the underlying fee is being reversed?', good: true, why: 'Detail-oriented. The GST on the reversed fee is also reversible — agents sometimes forget unless asked. ₹171 saved.' },
-      { t: 'Great, thanks!', good: false, why: 'Missed the GST. ₹171 stays charged because the agent didn\'t auto-reverse it. Always check both line items.' }
-    ]}
-  ]
+{
+const { $, $$, R, rid, money, t, pick } = DCC;
+const A = R.a, late = money(R.lateFee), ag = s => ({ a: s }), you = (...c) => ({ c });
+const C = [
+  ['💳', 'Lost or stolen card', 'Block it, check for fraud, get a replacement.', [
+    ag(`Thank you for calling ${R.issuer}. How can I help?`),
+    you(['I need to block my credit card right now — it has been lost.', 1, 'Action first. The agent goes straight to the block instead of small talk.'], ['Hi, sorry to bother you, I think I might have lost my card somewhere…', 0, 'Every second of preamble is a second the card is live. Never apologise for needing the service.'], ['I lost my card.', 0, 'True, but vague — you will be asked which card, when, and what you want. Say what you want done.']),
+    ag('Done — the card is blocked. Have you seen any transactions you do not recognise?'),
+    you(['Please check the last few days with me now, and raise anything I did not make as unauthorised.', 1, 'You are already on the line with someone who can see everything. Use it — and it fixes your reporting time.'], ['I don’t think so. I’ll check later.', 0, 'Later is how small frauds become long disputes. Reporting promptly is what protects your liability.']),
+    ag('Nothing suspicious. A replacement will reach you in five to seven working days. Anything else?'),
+    you(['Yes — will the number change, and can I add the new card to my phone wallet straight away?', 1, 'A new number breaks subscriptions. Most issuers can push the new card to your wallet instantly, so you are not cardless for a week.'], ['No, that’s all.', 0, 'You will now find out about each broken subscription one failed payment at a time.'])]],
+  ['📋', 'Dispute a charge', 'A merchant billed you twice.', [
+    ag(`${R.issuer}, how can I help?`),
+    you([`I want to dispute a duplicate charge: ${money(A.meal * 5)} at ${R.foodApp} on the 15th, billed twice.`, 1, 'Amount, merchant, date, reason. The agent finds it in seconds.'], ['There’s something weird on my statement, can you look?', 0, 'They will spend the call working out which transaction you mean.']),
+    ag('I can see both. Have you contacted the merchant?'),
+    you(['Yes — I wrote to them on the 16th and the 20th and have had no reply. I can send both emails.', 1, 'A documented attempt turns “customer has not tried” into “merchant unresponsive”, which is the box the agent needs to tick.'], ['No — surely the bank can just sort it out?', 0, 'You will be told to try the merchant and call back. Two weeks lost.']),
+    ag('I have raised a dispute for duplicate processing. You should see a temporary credit within a few days.'),
+    you(['Thank you. Please give me the reference number and confirm this by email or secure message.', 1, 'If it is not written down it did not happen. The reference is what you quote at every later step.'], ['Great, thanks!', 0, 'No reference, no record you can point to if the case stalls.'])]],
+  ['📈', 'Ask for a higher limit', 'Your income has gone up.', [
+    ag(`${R.issuer}, how can I help?`),
+    you([`I’d like a credit limit increase. I’ve had the card two years, never missed a payment, and my income has risen to ${money(A.income * 1.3 * (rid === 'in' ? 1 : 12))}${rid === 'in' ? ' a month' : ' a year'}.`, 1, 'You have made the case for them: tenure, record, income.'], ['I keep hitting my limit and need more.', 0, 'That says you are stretched — the opposite of what gets approved.']),
+    ag(pick({ in: 'I can process that. You will need to upload your latest salary slips in the app.', us: 'I can submit that. It may require a hard inquiry on your credit report — shall I go ahead?', uk: 'I can look at that. We will need to run an affordability check, which may leave a search on your credit file.', au: 'I can take a request. We will need to reassess your income and expenses, as the law requires.' })),
+    you([pick({ in: 'Fine. Will this involve a fresh enquiry with the credit bureau?', us: 'Before you do — can it be done with a soft pull instead?', uk: 'Will that be a soft search or a hard search? I would rather avoid a hard one.', au: 'That is fine. Will this be recorded as a credit enquiry on my file?' }), 1, 'Always ask what goes on your credit file before you agree. Often the answer is “nothing” — but only if you ask.'], ['Sure, go ahead, whatever is needed.', 0, 'You may have just agreed to a hard enquiry you could have avoided.']),
+    ag('Approved — your new limit is active.'),
+    you(['Thanks. Please leave the over-limit facility switched off.', 1, 'A higher limit is for a lower utilisation ratio, not for more spending.'], ['Brilliant — time to go shopping.', 0, 'The limit rose to make your file look better. Spending up to it undoes that.'])]],
+  ['💰', 'Get a fee reversed', 'A late fee after years of paying on time.', [
+    ag('How can I help today?'),
+    you([`There is a ${late} late fee on my statement. I have paid on time for three years — could you waive it as a one-off courtesy?`, 1, 'Polite, factual, and the phrase “one-off courtesy” is exactly the category agents are allowed to approve.'], ['Why have you charged me this? Take it off.', 0, 'Hostility makes the agent quote policy rather than look for discretion.'], ['Put me through to a manager.', 0, 'The front-line agent almost always has authority to waive a first fee. Skipping them removes the person most able to say yes.']),
+    ag('I can see your record. I will reverse the late fee as a goodwill gesture.'),
+    you([pick({ in: 'Thank you. Please also reverse the GST charged on it, and any interest that arose from it.', us: 'Thank you. Could you also remove the interest that posted because of it?', uk: 'Thank you. Could you also confirm no missed-payment marker has gone to the credit reference agencies?', au: 'Thank you. Could you confirm it will not show as a late payment in my repayment history?' }), 1, 'The fee is one line. Its side-effects are others. Agents rarely reverse what you do not ask about.'], ['Thank you so much!', 0, 'The knock-on charge or marker stays, because nobody asked.'])]],
+  ['🆘', 'Tell them you are struggling', 'You cannot meet next month’s payment.', [
+    ag(`${R.issuer}, how can I help?`),
+    you(['My income has dropped and I will not be able to make my full payment next month. I’d like to talk about hardship options before I miss anything.', 1, 'Calling <em>before</em> the missed payment is the whole trick. You are a customer asking for help, not an account in arrears.'], ['Can I just skip a month?', 0, 'There is no “skip”. Without an agreed arrangement it is simply a missed payment, with a fee and a mark.'], ['(Do not call. Hope it sorts itself out.)', 0, 'The most common choice, and the most expensive. Options shrink with every missed payment.']),
+    ag('I am sorry to hear that. Can you tell me what you can realistically afford each month?'),
+    you(['I have worked out my budget: I can manage about a third of the usual payment for the next three months.', 1, 'A specific, affordable figure is something the agent can put into a plan. “As little as possible” is not.'], ['Whatever the minimum is, I’ll try.', 0, 'Agreeing to a payment you cannot keep leads to a broken arrangement, which is worse than none.']),
+    ag('We can set up a reduced payment plan for three months.'),
+    you(['Thank you. Will interest and fees be frozen during the plan, and how will it be reported on my credit file? Please confirm in writing.', 1, pick({ in: 'Restructuring and “settlement” are reported very differently in India. Know which one you are agreeing to before you say yes.', us: 'Hardship plans often lower the rate and waive fees, but may close the card. Get the terms in writing.', uk: 'Under FCA rules the lender should consider freezing interest and charges. Ask explicitly.', au: 'A formal hardship arrangement is reported as a neutral flag rather than a string of missed payments. Make sure that is what is recorded.' })], ['OK, thanks.', 0, 'You do not know whether interest is still running or what your credit file will say.'])]],
+  ['🧗', 'Escalate a complaint', 'A dispute was rejected and you think they are wrong.', [
+    ag('I have reviewed the case and the decision stands, I’m afraid.'),
+    you(['I’d like to make a formal complaint, please. Can you log it and give me the complaint reference?', 1, 'The word “complaint” starts a regulated process with a clock on it. A grumble does not.'], ['This is ridiculous. I’m going to post about this everywhere.', 0, 'A threat is not a complaint. Nothing is logged and no clock starts.']),
+    ag('I have logged it. Is there anything you would like to add?'),
+    you(['Yes: the facts in date order, the evidence I hold, and the outcome I want — a refund of the disputed amount.', 1, 'Whoever reviews it later sees only the file. Make the file complete, short and specific about the remedy.'], ['Just that I’m very unhappy.', 0, 'A reviewer cannot uphold a feeling. They can uphold a fact pattern.']),
+    ag('You will receive our final response in writing.'),
+    you([`Thank you. If I have not had a satisfactory answer within ${R.ombWait}, I will take it to ${R.ombudsman}.`, 1, 'It is free, it is independent, and banks know that every case costs them. Saying it calmly often changes the tone of the reply.'], ['Fine. I’ll wait to hear.', 0, 'Waiting without a date is how complaints die. Know the deadline and what comes after it.'])]]
 ];
-
-let activeScen = -1, scenStep = 0, msgs = [];
-
-function startScen(idx) {
-  activeScen = idx;
-  scenStep = 0;
-  msgs = [];
-  document.getElementById('scen-section').style.display = 'none';
-  document.getElementById('dialogue-stage').classList.add('active');
-  renderDialog();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+$('#calls').innerHTML = C.map((c, i) => `<button class="tile" data-i="${i}"><span class="tile-icon">${c[0]}</span><span class="tile-name">${c[1]}</span><span class="tile-sub">${c[2]}</span></button>`).join('');
+let ci, si, good, total;
+function start(i) {
+  ci = i; si = 0; good = 0; total = 0; $$('#calls .tile').forEach((x, k) => x.classList.toggle('on', k === i));
+  $('#call').hidden = false;
+  $('#call').innerHTML = `<div class="callbar"><div class="dot">📞</div><div><b>${R.issuer} customer service</b><div class="mono faint">${C[i][1]}</div></div><button class="btn btn--ghost btn--sm" style="margin-left:auto" data-end>End call</button></div><div class="thread" id="thread" aria-live="polite"></div><div class="say" id="say"></div>`;
+  $('#call').scrollIntoView({ behavior: 'smooth', block: 'start' }); step();
 }
-
-function renderDialog() {
-  const scen = SCENARIOS[activeScen];
-  const thread = document.getElementById('dialogue-thread');
-  thread.innerHTML = '';
-
-  // Render all messages so far
-  msgs.forEach(m => {
-    const div = document.createElement('div');
-    div.className = 'bubble ' + (m.cls || m.from);
-    div.innerHTML = `<div class="bubble-from">${m.from === 'agent' ? 'Agent' : 'You'}</div>${m.text}`;
-    thread.appendChild(div);
-  });
-
-  if (scenStep >= scen.length) {
-    document.getElementById('dialogue-coach').innerHTML = `<div style="margin-top:24px;padding:24px;background:var(--success-soft);border-radius:var(--radius-md);border-left:4px solid var(--success);"><div style="font-family:var(--font-display);font-size:18px;font-weight:700;margin-bottom:8px;">Call complete ✓</div><p style="font-size:13px;color:var(--ink-soft);line-height:1.6;margin-bottom:12px;">Notice the pattern: <strong>specific facts, polite tone, written confirmation, asking the right follow-ups</strong>. These conversations get resolved 5x faster when you front-load the right info.</p><button class="btn btn--ghost" onclick="resetScen()">↺ Try another</button></div>`;
-    return;
-  }
-
-  const step = scen[scenStep];
-  if (step.from === 'agent') {
-    msgs.push({ from: 'agent', text: step.text });
-    scenStep++;
-    setTimeout(renderDialog, 600);
-  } else {
-    // Show choices
-    document.getElementById('dialogue-coach').innerHTML = `
-      <div class="choice-row">
-        ${step.choices.map((c, i) => `<button class="choice-btn" onclick="pickChoice(${i})">${c.t}</button>`).join('')}
-      </div>`;
-  }
+const push = (cls, who, text) => $('#thread').insertAdjacentHTML('beforeend', `<div class="msg ${cls}"><small>${who}</small>${text}</div>`);
+function step() {
+  const s = C[ci][3][si], say = $('#say');
+  if (!s) { $$('#calls .tile')[ci].classList.add('done');
+    say.innerHTML = `<div class="fb ${good === total ? 'good' : ''}"><div class="fb-title">Call ended · ${good} of ${total} strong lines</div><p>The pattern never changes: <strong>say the action you want, give the facts, stay civil, get it in writing.</strong></p><div class="row"><button class="btn btn--outline" data-redo>↻ Redo this call</button><button class="btn btn--primary" data-end>Pick another</button></div></div>`;
+    DCC.playSuccess(); if ($$('#calls .tile.done').length === C.length) DCC.markDone(); return; }
+  if (s.a) { say.innerHTML = ''; $('#thread').insertAdjacentHTML('beforeend', '<div class="typing"><i></i><i></i><i></i></div>');
+    setTimeout(() => { const ty = $('.typing'); ty && ty.remove(); push('agent', 'Agent', t(s.a)); si++; step(); }, DCC.calm ? 0 : 750); return; }
+  const order = s.c.map((_, k) => k).sort(() => Math.random() - .5);
+  say.innerHTML = `<div class="eyebrow">What do you say?</div>${order.map(k => `<button class="opt" data-k="${k}"><span>${s.c[k][0]}</span></button>`).join('')}`;
 }
+$('#calls').addEventListener('click', e => { const b = e.target.closest('.tile'); if (b) { DCC.playClick(); start(+b.dataset.i); } });
+$('#call').addEventListener('click', e => {
+  if (e.target.closest('[data-end]')) { $('#call').hidden = true; $$('#calls .tile').forEach(x => x.classList.remove('on')); $('#calls').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+  if (e.target.closest('[data-redo]')) return start(ci);
+  if (e.target.closest('[data-go]')) { si++; step(); return; }
+  const b = e.target.closest('.opt'); if (!b) return;
+  const c = C[ci][3][si].c[+b.dataset.k]; total++; if (c[1]) good++;
+  push('you' + (c[1] ? '' : ' bad'), 'You', c[0]);
+  $('#say').innerHTML = `<div class="fb ${c[1] ? 'good' : 'bad'}"><div class="fb-title">${c[1] ? '✓ Strong line' : '✗ Weak line'}</div><p>${c[2]}</p><div class="row"><button class="btn btn--primary" data-go>Continue →</button></div></div>`;
+  c[1] ? DCC.playSuccess() : DCC.playError();
+});
 
-function pickChoice(idx) {
-  const scen = SCENARIOS[activeScen];
-  const step = scen[scenStep];
-  const choice = step.choices[idx];
-  msgs.push({ from: 'you', text: choice.t, cls: choice.good ? 'you-correct' : 'you-wrong' });
-  scenStep++;
-  document.getElementById('dialogue-coach').innerHTML = `
-    <div class="coach-note"><strong>${choice.good ? '✓ Smart move' : '✗ Costly phrasing'}:</strong> ${choice.why}</div>
-    <div style="margin-top:12px;display:flex;justify-content:flex-end;"><button class="btn btn--primary" onclick="continueDialog()">Continue →</button></div>`;
-  if (choice.good) DCC.playSuccess(); else DCC.playClick();
-}
-
-function continueDialog() {
-  document.getElementById('dialogue-coach').innerHTML = '';
-  renderDialog();
-}
-
-function resetScen() {
-  activeScen = -1; scenStep = 0; msgs = [];
-  document.getElementById('scen-section').style.display = 'block';
-  document.getElementById('dialogue-stage').classList.remove('active');
-  document.getElementById('dialogue-coach').innerHTML = '';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+$('#ladder').innerHTML = pick({
+  in: [['The front line', 'Phone, chat or in-app. Get a complaint or service-request number every time.'], ['The bank’s grievance redressal officer', 'Every bank publishes an escalation matrix: nodal officer, then principal nodal officer. Write, quoting the earlier reference.'], ['The RBI Integrated Ombudsman', 'If you have no reply within 30 days, or are unhappy with it, file free at <strong>cms.rbi.org.in</strong> (within a year). The Ombudsman can award compensation, and banks are also liable to pay ₹500 a day for delays in closing a card on request.'], ['Consumer commission', 'For larger losses, the consumer disputes commissions (e-Daakhil) remain open to you.']],
+  us: [['The front line', 'Phone, chat or secure message. Note the date, the name and the reference.'], ['A written dispute or the executive office', 'Billing-error rights under the Fair Credit Billing Act apply to disputes sent <strong>in writing</strong> to the address for billing inquiries. Most issuers also have an executive customer relations team.'], ['The CFPB', 'File at <strong>consumerfinance.gov/complaint</strong>. The issuer must respond, normally within 15 days, and the complaint is logged with the regulator.'], ['Your state and small claims', 'State attorneys general take banking complaints; small-claims court is an option, though most card agreements require arbitration.']],
+  uk: [['The front line', 'Phone, chat or secure message. Say the word “complaint”.'], ['The firm’s final response', 'Regulated firms have up to <strong>8 weeks</strong> to send a final response (15 days for payment-services complaints).'], ['The Financial Ombudsman Service', 'Free. Go there after the final response or after 8 weeks, and within 6 months of the final response. Its decisions bind the firm.'], ['Small claims', 'Section 75 claims can also be pursued through the county court’s small-claims track.']],
+  au: [['The front line', 'Phone, chat or secure message. Ask for the complaint to be logged.'], ['Internal dispute resolution', 'The bank must respond within <strong>30 days</strong> (21 days for hardship and default-notice complaints).'], ['AFCA', 'The Australian Financial Complaints Authority is free and its decisions bind the bank. Lodge at <strong>afca.org.au</strong>, generally within two years of the bank’s final response.'], ['In New Zealand', 'The Banking Ombudsman Scheme plays the same role once the bank’s own process is exhausted.']]
+}).map(([h, p], i) => `<details class="fold" ${i ? '' : 'open'}><summary><span class="mono faint">Rung ${i + 1} · </span><span class="h4">${h}</span></summary><div class="fold-body"><p>${p}</p></div></details>`).join('');
 }
 </script>
-</body></html>
+</body>
+</html>
