@@ -1,44 +1,46 @@
 # Decoding Credit Cards
 
-A free, interactive 22-chapter guide to credit cards — built for the mobile-native generation.
+A free, interactive 22-chapter guide to credit cards — built for the mobile-native generation, in four regional editions.
 
 Every chapter is an interaction. No reading-and-scrolling. Tap, drag, simulate, decide.
 
 ## What's inside
 
-22 chapters covering the full lifecycle of credit cards in the Indian context:
+22 interactive chapters covering the full life of a credit card — and four regional editions.
+Pick **India, USA, UK & Europe, or Australia & NZ** and every amount, example, law, regulator
+and scam on the site switches to that market.
 
-| # | Chapter | Interaction |
+| # | Chapter | What you do |
 |---|---------|-------------|
-| I | The Handshake | 5-step transaction lifecycle with money packets |
-| II | Getting a Card | Live application form with real-time approval |
-| III | The Anatomy | 3D-flippable card with 9 clickable hotspots |
-| IV | Types of Cards | Drag-and-drop sorting game |
-| V | The Billing Cycle | Interactive 30-day calendar |
-| VI | The Trap | Live debt simulator (the crown jewel) |
-| VII | Every Fee | 8 animated fee scenarios |
-| VIII | Your Score | Live CIBIL gauge with 5 sliders |
-| IX | Rewards Game | 6-round card-matching game |
-| X | Spot the Fraud | 6 phishing/fraud scenarios with grading |
-| XI | Defense System | 5-layer security explorer |
-| XII | Disputes | Step-by-step chargeback walkthrough |
-| XIII | International | Trip simulator with forex/DCC math |
-| XIV | Managing Like a Pro | 6-month decision simulator |
-| XV | Hidden Protections | 6 expandable benefit cards |
-| XVI | Talking to Bank | Simulated agent dialogues |
-| XVII | UPI, Wallets & The Rest | 5-tab payment comparison |
-| XVIII | Taxes & TCS | Live ₹7L threshold slider |
-| XIX | Your First Card | 5-step student playbook |
-| XX | Relationship with Money | 6 psychological biases |
-| XXI | What's Coming Next | Future-of-payments timeline |
-| XXII | Graduation | 10-question final test + diploma |
+| I | The Handshake | Tap a card, step through authorisation, split the merchant fee |
+| II | Getting a Card | Fill in an application and watch the decision change |
+| III | The Anatomy | Flip a card and find all 12 parts |
+| IV | Types of Cards | Match six people to the right kind of card |
+| V | The Billing Cycle | Move a purchase around the calendar |
+| VI | The Minimum Payment Trap | Live debt simulator with a payoff chart |
+| VII | Every Fee | Trigger eight fees and watch the cost climb |
+| VIII | Your Credit Score | Change habits, watch the gauge |
+| IX | The Rewards Game | Pick the best card, then price rewards against interest |
+| X | Spot the Fraud | Six scams that are running now |
+| XI | Your Defense System | Launch five attacks against six security layers |
+| XII | Disputes & Chargebacks | Walk four dispute flows |
+| XIII | Going International | Press the terminal button; plan a trip |
+| XIV | Managing Like a Pro | Six months of decisions |
+| XV | Hidden Protections | Covered or not? Audit your own card |
+| XVI | Talking to Your Bank | Six branching phone calls |
+| XVII | Cards vs Everything Else | Choose the right payment tool |
+| XVIII | Taxes & Your Card | Myths versus rules |
+| XIX | Your First Card | A route in, five steps, five commitments |
+| XX | Your Relationship With Money | An anchoring experiment on yourself |
+| XXI | What's Coming Next | Set guardrails for an AI shopping agent |
+| XXII | Graduation | Twelve questions and a printable diploma |
 
 ## Stack
 
-- **Pure HTML/CSS/JS** — no build step, no frameworks
-- **Hosted on GitHub Pages** — completely free
-- **Mobile-first** — designed for 18-24 year olds on phones
-- **No dependencies** — Google Fonts is the only external resource
+- **Pure HTML/CSS/JS** — no build step, no frameworks, no dependencies
+- **Hosted on GitHub Pages**
+- **Mobile-first** — designed for phones, adapts to tablets and laptops
+- **Private** — progress and region are stored in your browser only; nothing is sent anywhere
 
 ## Deploy to GitHub Pages
 
@@ -63,40 +65,29 @@ For a custom domain, add a `CNAME` file containing your domain at the repo root.
 ## File structure
 
 ```
-decoding-cc/
-├── index.html              # Landing page with all 22 chapters
-├── README.md               # This file
-├── css/
-│   └── global.css          # Design system (colors, fonts, components)
-├── js/
-│   └── global.js           # Shared utilities (sound, confetti, etc.)
-└── chapters/
-    ├── 01-the-handshake.html
-    ├── 02-getting-a-card.html
-    ├── ... (22 total)
-    └── 22-graduation.html
+├── index.html          # Landing page; chapter list is rendered from the registry in js/global.js
+├── css/global.css      # Design system and shared components
+├── js/regions.js       # Everything that differs by region: names, rates, rules, amounts
+├── js/global.js        # Engine: region lens, progress, navigation, shared interactions
+└── chapters/           # 22 chapters, each a small HTML file with its own inline script
 ```
 
-Each chapter is fully self-contained — just HTML/CSS/JS with shared global styles. Edit any chapter independently without affecting others.
+`CLAUDE.md` documents the architecture, the region API and the content rules in detail.
+
+## Updating content
+
+- **A rate, fee, threshold or institution name** — edit `js/regions.js`. Bump `asOf` after re-checking.
+- **A chapter title or description** — edit the `CH` list in `js/global.js`.
+- **Copy that differs by region** — use `DCC.pick({ in, us, uk, au })` in the chapter script, or `{tokens}` in the HTML.
+- **Accent colour** — `--electric` in `css/global.css`.
+- Link straight to an edition with `?r=in`, `?r=us`, `?r=uk` or `?r=au`.
 
 ## Design system
 
-- **Background:** Cream (`#F7F3ED`) with subtle paper texture
-- **Accent:** Electric blue (`#2563EB`)
-- **Supporting:** Warm orange, gold, danger red, success green
-- **Typography:** Fraunces (display, italic for emphasis), Instrument Sans (body), Caveat (handwritten), Space Mono (data)
-
-The aesthetic is "warm editorial indie" — think zine meets indie game studio. Every chapter feels like a level with a completion moment.
-
-## Customization
-
-- **Update Indian banks/amounts:** Search-and-replace in chapter files (HDFC, ICICI, Axis, etc.)
-- **Change accent color:** Edit `--electric` in `css/global.css`
-- **Adjust mobile breakpoints:** All chapters break at `768px`
-- **Add more chapters:** Copy any existing chapter HTML, update content, add link in `index.html`
+Warm editorial zine: cream paper, one electric-blue accent, Fraunces / Instrument Sans / Caveat / Space Mono.
 
 ## Credits
 
 Built by [Parth](https://parth8.github.io/portfolio/) for anyone who wants to actually understand how their card works — not just have one.
 
-Made with care, coffee, and Claude. Free to use, fork, and remix.
+General education, not financial advice. Made with care, coffee, and Claude. Free to use, fork, and remix.

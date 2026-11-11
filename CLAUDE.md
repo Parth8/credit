@@ -9,19 +9,70 @@ name institutions (issuers, networks, regulators, merchants) but **do not recomm
 ## Stack and constraints
 
 - Pure static HTML/CSS/JS. No build step, no framework, no dependencies. Google Fonts is the only external request.
-- Must keep working when opened from GitHub Pages under `/credit/` — use relative paths only.
+- Must keep working from GitHub Pages under `/credit/` — relative paths only.
 - No test suite. Verify by serving the folder (`python3 -m http.server`) and driving it with Playwright
-  at phone (390), tablet (820) and laptop (1280+) widths, in each region.
+  at phone (360–390), tablet (820) and laptop (1280+) widths, in each region (`?r=in|us|uk|au`).
+  Check: no page errors, `scrollWidth == clientWidth`, no `{token}` or `undefined` left in `main`, `body.ready` set.
+- State is `localStorage` only, keys prefixed `dcc.`: `region`, `done` (chapter numbers), `mute`, `switches`,
+  `audit`, `pledge`, `name`. Nothing leaves the device.
 
 ## Layout
 
 ```
-index.html                landing: hero, why, chapter list, manifesto, footer
-css/global.css            design tokens + shared components
-js/global.js              shared engine, exposed as window.DCC
-chapters/NN-slug.html     22 chapters, each = shared head + own <style> + markup + own <script>
-og-image.png / .svg       social card
+index.html              landing: hero + edition picker, why, chapter list (rendered from the registry), manifesto
+css/global.css          design system v3: tokens, layout utilities, shared components, chapter shell, motion
+js/regions.js           window.DCC_REGIONS — every fact, name and amount that differs by geography
+js/global.js            engine, window.DCC — region lens, progress, page chrome, effects, quiz runner
+chapters/NN-slug.html   22 chapters: shared <head>, a small <style> for unique visuals, markup, one inline <script>
+og-image.png / .svg     social card
 ```
+
+### How a chapter is put together
+
+```html
+<body data-ch="5">
+<main class="ch"><div class="wrap">
+  <header class="ch-head"><h1>The <em>Billing Cycle</em></h1><p>intro…</p></header>
+  <section class="sec">…</section>
+  <aside class="checkpoint" data-icon="※"><h3>…</h3><p>…</p></aside>
+</div></main>
+<script src="../js/regions.js"></script><script src="../js/global.js"></script>
+<script>{ const { $, R, money, t, pick } = DCC; … }</script>
+```
+
+`global.js` injects everything else from `data-ch`: nav (region chip, sound toggle, chapter drawer), the
+"Chapter V · 5 of 22" line, checkpoint icon and next-chapter button, prev/next footer, the phone thumb bar and
+the site footer. Never hand-write those. Chapter titles, blurbs and minutes live in the `CH` registry in `global.js`
+— adding or renaming a chapter means editing that list (and `<title>`), nothing else.
+
+Chapter scripts are wrapped in `{ }` on purpose: they are classic scripts, and top-level `const top`, `name`, etc.
+collide with window globals.
+
+### Region API (the thing to know)
+
+- `DCC.R` — current region object; `DCC.rid` — `'in' | 'us' | 'uk' | 'au'`.
+- `{token}` in static HTML is replaced at load: `{issuer}`, `{network}`, `{merchant}`, `{apr}`… any key of `R`;
+  `{$key}` formats an amount from `R.a` (`{$debt}`, `{$meal}`, `{$phone}`).
+- `DCC.t(str)` does the same for strings built in JS. `DCC.money(n, withDecimals)` formats in the region's locale.
+- `DCC.pick({ in, us, uk, au })` returns the current region's value. Missing key: UK/AU fall back to `us`, then `in`.
+- `data-r="in"` on an element keeps it only in those regions (space-separated list).
+- Region resolution: `?r=` → saved choice → timezone guess (with a one-time "change" toast).
+- Do not put `data-region` on anything except the picker buttons — the click handler keys off it.
+
+### Shared components (css/global.css)
+
+Layout `.wrap .sec .split(--l/--r) .grid(--min) .row .stack .sticky` · type `.eyebrow .h2 .h3 .h4 .lede .mono .hand`
+· surfaces `.stage .panel .callout(.is-danger/.is-success/.is-warm) .chip` · controls `.btn(--primary/--outline/--ghost/--lg/--sm)
+.tile(.on/.done) .seg>button.on .field .val input[type=range] .opt` · data `.stat .kv .dots .meter ul.ticks ul.crosses`
+· `details.fold` for expandables · `.cc` card visual (add `data-tilt`) · `.reveal` scroll-in.
+Breakpoints are mobile-first: base = phone, `min-width: 700px` tablet, `900px` two-column splits, `1040px` laptop.
+
+### Engine helpers
+
+`DCC.quiz(el, { items, shuffle, onAnswer, onEnd })` drives chapters 4, 9, 10, 15, 17, 18, 22.
+`DCC.markDone()` records completion (also fires when the checkpoint scrolls into view).
+`DCC.playClick/playSuccess/playError` (sound + haptics, respect mute), `burstConfetti`, `animateNumber`,
+`observe()` after injecting `.reveal` nodes, `fillAll()` after injecting range inputs.
 
 ## Design language (keep)
 
@@ -29,68 +80,50 @@ og-image.png / .svg       social card
 danger red / success green / warm orange / gold as semantic colours only.
 Fonts: Fraunces (display; italic-light `<em>` in accent colour is the signature move), Instrument Sans (body),
 Caveat (hand annotations), Space Mono (data, labels). Symbol `※` is the brand mark.
-Every chapter ends in a "checkpoint" card and a prev/next footer.
+Interaction rule: the learner does something before any explanation appears; every result is visible within
+the same screen on a phone (sticky readouts, results ordered above controls where needed).
+Honours `prefers-reduced-motion`; all controls are real buttons with focus rings.
 
 ## Chapter inventory (what the learner does)
 
-| # | File | Interaction | Data lives in |
+| # | File | Interaction | Regional data |
 |---|------|-------------|---------------|
-| 1 | 01-the-handshake | tap card → 5-step auth stepper; 5 player cards; auth/clearing/settlement tabs; MDR split slider; surcharge scenario | `PLAYERS`, `STEPS` |
-| 2 | 02-getting-a-card | application sliders/toggles → live approve/review/decline + factor list | `updateApp()` |
-| 3 | 03-the-anatomy | 3D flip card, 11 hotspots (UI says 10) | `PARTS` |
-| 4 | 04-types-of-cards | 6 scenarios → pick card type; reference grid | `TYPES`, `SCENARIOS` |
-| 5 | 05-the-billing-cycle | 30-day calendar, 5 key days | `KEY_DAYS` |
-| 6 | 06-the-trap | debt payoff calculator (balance / APR / min-fixed-full) | `updateCalc()` |
-| 7 | 07-fees | 8 fees, each a stepper + breakdown + lesson | `FEES` |
-| 8 | 08-the-score | gauge + 5 factors + 3 personas | `state`, `utilImpact` |
-| 9 | 09-rewards | 6 purchases → pick best of 6 cards | `CARDS`, `PURCHASES` |
-| 10 | 10-fraud | 6 scam scenarios with mockups, red flags, grade | `SCENARIOS` |
-| 11 | 11-fraud-defense | 5 security layers | `LAYERS` |
-| 12 | 12-disputes | 4 dispute flows × 5 steps | `FLOWS` |
-| 13 | 13-international | trip simulator: destination, card type, DCC, spend | `DESTS` |
-| 14 | 14-management | 6-month decision sim, score + savings | `MONTHS` |
-| 15 | 15-protections | 6 expandable benefits | `PROTECTIONS` |
-| 16 | 16-customer-service | 4 branching phone dialogues with coaching | `SCENARIOS` |
-| 17 | 17-alternatives | 5 tabs: card vs other rails | `TABS` |
-| 18 | 18-taxes | threshold slider + 6 fact cards | inline |
-| 19 | 19-students | 5-step playbook + 5 tap commitments | static |
-| 20 | 20-relationship | 6 expandable biases | static |
-| 21 | 21-future | 6-item timeline | static |
-| 22 | 22-graduation | 10-question exam + diploma | `QS` |
+| 1 | 01-the-handshake | tap card → 5-step authorisation; cast of five; auth/clearing/settlement; fee-split slider; surcharge scene | split rates, surcharge law per region |
+| 2 | 02-getting-a-card | live application → approve / refer / decline with reasons | score scale, income basis, age rules, "behind the scenes" |
+| 3 | 03-the-anatomy | flip card, 12 hotspots, progress pips | contactless limits, networks, helplines |
+| 4 | 04-types-of-cards | match 6 people to a card type | starter card differs (FD-secured / deposit / credit-builder / low-limit) |
+| 5 | 05-the-billing-cycle | tap a day → interest-free days; pay full / minimum / late | grace days, late rules |
+| 6 | 06-the-trap | payoff simulator with chart; real declining minimum | APR, minimum formula, GST, exits |
+| 7 | 07-fees | trigger 8 fees, running cost counter | 5 shared fees + 3 region-specific |
+| 8 | 08-the-score | gauge + 5 factors + personas + myths | bureau scale, bands, weights (US only), local rules |
+| 9 | 09-rewards | pick best of 5 archetype cards; net-value calculator | reward rates, small print |
+| 10 | 10-fraud | 6 current scams with mockups | scam #4 fully local; reporting steps |
+| 11 | 11-fraud-defense | 5 attacks vs 6 layers; personal switches checklist | 2FA regime |
+| 12 | 12-disputes | 4 dispute flows | rights panel, deadlines |
+| 13 | 13-international | currency-choice terminal; trip simulator | home currency, fees, tips |
+| 14 | 14-management | 6-month decision sim | amounts, liability rules |
+| 15 | 15-protections | covered-or-not quiz; benefits; own-card audit | whole list is per region |
+| 16 | 16-customer-service | 6 branching calls incl. hardship and complaint | escalation ladder |
+| 17 | 17-alternatives | match situation to payment tool; 5-tool comparison | rail names, regulation |
+| 18 | 18-taxes | true/false; India-only LRS/TCS calculator | entirely per region |
+| 19 | 19-students | route picker; 5 steps; saved commitments | routes in |
+| 20 | 20-relationship | statement anchoring experiment; 6 biases | free help lines |
+| 21 | 21-future | AI-agent guardrails toy; timeline | 3 local + 4 shared items |
+| 22 | 22-graduation | 12-question exam, named printable diploma | questions tokenised |
 
-## Audit of the original site (May 2026 state) — why the rebuild
+## History — what the May 2026 original got wrong (do not reintroduce)
 
-### UI/UX and responsiveness
-- One breakpoint (768px). Tablets get cramped desktop grids; phones lose the whole nav (`.nav-links{display:none}`).
-- Fixed pixel widths (card 320px, POS 200px), `100vh` hero, 5-across grids that overflow at 360px.
-- `html,body{overflow-x:hidden}` breaks `position:sticky` (chapter 5 relies on it).
-- Mobile hacks: `a:not(.nav-brand){min-height:44px}` distorts inline links; `[class*="-label"]{font-size:14px!important}`.
-- Chapter shell CSS (header, checkpoint, bottom nav, stage) is copy-pasted into all 22 files; heavy inline `style=""`.
-- No progress memory: nothing records finished chapters; no resume; no way to jump between chapters from inside one.
-- Accessibility: clickable `<div onclick>` (no keyboard), no focus styles, no `prefers-reduced-motion`,
-  no `aria-live` on results, sounds play with no mute, custom cursor hides the system cursor.
-- Fonts loaded through CSS `@import` (slow chain).
-
-### Content — India-only, and several things wrong or stale
-- Ch 18: said international card spend above ₹7L triggers 20% TCS. Wrong: international **credit card** spend is
-  outside LRS/TCS (2023 deferral still in force); LRS TCS threshold is ₹10L since April 2025. "AIR for any single
-  transaction over ₹2L" is wrong — it is SFT reporting of ₹10L+/year card payments (₹1L+ in cash).
-- Ch 7: "even one second late counts". RBI's 2022 card directions: late fee and bureau reporting only after the
-  account is **more than 3 days** past due; late fee applies to the unpaid amount only. Over-limit needs explicit consent.
-- Ch 6: headline says 11.2 years / ₹87,420, but the calculator used a fixed payment (shows ~2.6 years).
-  No chart although the copy promises one. Graduation Q2 says "decades — possibly never". All three disagree.
-- Ch 8: FICO bands (580/670/740) and FICO weights presented as CIBIL. CIBIL is 300–900 with different bands;
-  it does not publish those weights.
-- Ch 5: "30 + 22 = ~52 days" — statement 5th, due 25th is 20 days → ~50.
-- Ch 21: "Apple Pay launched in India in 2025" — it launched 30 Sep 2026, Axis credit cards only.
-  Agentic commerce was filed under "10+ years"; it is shipping now.
-- Ch 7/9/15: named products with wrong details (called two cards "zero-forex" that are not; reward rates since changed)
-  — and naming products contradicts the no-recommendations promise.
-- Ch 1/3/11: "storing CVV is illegal under PCI DSS" — PCI DSS is a contractual industry standard, not law.
-  BINs are now 6–8 digits. "Cards drive 30–40% more spending" vs ch 20 "12–18%" — unsourced and inconsistent.
-- Ch 10: DCC example shows ₹25 difference while claiming 5–7%. No current scams (digital arrest, QR/collect, AI voice).
-- Ch 13: stale FX rates; dead code in `updateTrip()`.
-- Ch 3: UI says "10 parts", there are 11.
+- UI: single 768px breakpoint, nav hidden on phones, fixed pixel widths, `overflow-x:hidden` breaking sticky,
+  shell CSS duplicated in 22 files, no progress memory, clickable divs, no mute, custom cursor hiding the real one.
+- India tax: said international credit card spend above ₹7L triggers 20% TCS. Credit cards are outside LRS/TCS;
+  the LRS threshold is ₹10L. Reporting is SFT (₹10L+/year of card payments), not "any transaction over ₹2L".
+- India late fees: RBI's 2022 directions allow a fee and bureau report only when more than 3 days past due.
+- Minimum-payment chapter: headline numbers contradicted its own calculator. Numbers now come from one function.
+  Indian minimum due is ~5% of balance **plus** that month's interest, fees and GST.
+- Score chapter showed FICO bands and weights as CIBIL.
+- Named card products with wrong or stale details. No product names — archetypes only.
+- "Storing CVV is illegal under PCI DSS": it is an industry standard, not law. BINs are 6–8 digits.
+- Apple Pay India launched 30 Sep 2026 (Axis credit cards first), not 2025. Agentic checkout is live, not "10+ years".
 
 ## Regions (dynamic tailoring)
 
@@ -126,3 +159,5 @@ and the site should say "as of" where a figure is time-sensitive.
 
 - Branch for this work: `claude/gifted-brown-c28xk1`. No PR unless asked.
 - Order agreed with Parth: (1) redesign and responsive behaviour, (2) content accuracy + regions, (3) code optimisation last.
+- Site copy uses British spelling in shared text (authorisation, utilisation); keep it consistent.
+- Time-sensitive facts carry `asOf` in `regions.js` and the footer shows it. Re-verify figures before bumping the date.

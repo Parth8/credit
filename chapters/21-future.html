@@ -1,169 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>XXI. What's Coming Next — Decoding Credit Cards</title>
-  <!-- Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://parth8.github.io/credit/chapters/21-future.html">
-  <meta property="og:title" content="XXI. What's Coming Next — Decoding Credit Cards">
-  <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:site_name" content="Decoding Credit Cards">
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="XXI. What's Coming Next — Decoding Credit Cards">
-  <meta name="twitter:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta name="twitter:image" content="https://parth8.github.io/credit/og-image.png">
-  
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>XXI. What’s Coming Next — Decoding Credit Cards</title>
+<meta name="description" content="The plastic rectangle is becoming the least important part of a card. Set the rules for an AI agent that shops for you, then walk the timeline of what is already changing.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/21-future.html">
+<meta property="og:title" content="XXI. What’s Coming Next — Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
 <link rel="stylesheet" href="../css/global.css">
 <style>
-.chapter-shell{min-height:100vh;padding-top:80px}
-.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
-.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
-.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
-.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
-.chapter-h1 em{font-style:italic;font-weight:300;color:var(--electric)}
-.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
-.timeline{position:relative;padding-left:32px;margin:48px 0}
-.timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--electric)}
-.timeline-item{position:relative;padding:0 0 56px 32px;cursor:pointer}
-.timeline-item:last-child{padding-bottom:0}
-.timeline-item::before{content:'';position:absolute;left:-32px;top:6px;width:18px;height:18px;border-radius:50%;background:white;border:3px solid var(--electric);transition:all .3s;z-index:1}
-.timeline-item:hover::before{transform:scale(1.2);background:var(--electric)}
-.timeline-item.expanded::before{background:var(--electric);transform:scale(1.3)}
-.timeline-era{font-family:var(--font-mono);font-size:11px;color:var(--electric);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;font-weight:700}
-.timeline-item h3{font-family:var(--font-display);font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px;line-height:1.2}
-.timeline-item h3 em{font-style:italic;font-weight:300;color:var(--electric)}
-.timeline-blurb{font-size:14px;color:var(--ink-muted);line-height:1.6;margin-bottom:0}
-.timeline-detail{display:none;margin-top:16px;padding:20px 24px;background:var(--electric-soft);border-radius:var(--radius-md)}
-.timeline-item.expanded .timeline-detail{display:block}
-.timeline-detail p{font-size:14px;line-height:1.7;color:var(--ink-soft);margin-bottom:12px}
-.timeline-detail p:last-child{margin-bottom:0}
-.timeline-detail strong{color:var(--ink)}
-.timeline-detail em{font-style:italic;color:var(--electric)}
-.timeline-impact{margin-top:14px;padding:14px 18px;background:white;border-left:3px solid var(--ink);border-radius:0 6px 6px 0;font-size:13px;line-height:1.6;color:var(--ink-soft)}
-.timeline-impact strong{color:var(--ink);font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:6px}
-.checkpoint{padding:80px 0;text-align:center}
-.checkpoint-card{background:white;border:2px dashed var(--electric);border-radius:var(--radius-lg);padding:48px 32px;max-width:640px;margin:0 auto}
-.checkpoint-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
-.checkpoint-title em{font-style:italic;font-weight:300;color:var(--electric)}
-.checkpoint-body{font-size:15px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px}
-.checkpoint-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
-.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
-.chapter-nav-link:hover{transform:translateX(-4px)}
-.chapter-nav-link.next{align-items:flex-end}
-.chapter-nav-link.next:hover{transform:translateX(4px)}
-.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
-.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
-@media(max-width:768px){.timeline{padding-left:24px}.timeline-item{padding-left:24px;padding-bottom:40px}.timeline-item h3{font-size:22px}}
-</style></head><body>
-<nav class="site-nav">
-<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>※</span></a>
-<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="22-graduation.html">Final →</a></li></ul>
-</nav>
+.tl { position: relative; padding-left: 26px; margin-top: 22px; }
+.tl::before { content: ''; position: absolute; left: 6px; top: 8px; bottom: 8px; width: 2px; background: var(--parchment); }
+.tl details { position: relative; }
+.tl details::before { content: ''; position: absolute; left: -26px; top: 24px; width: 14px; height: 14px; border-radius: 50%; background: var(--cream); border: 3px solid var(--c, var(--electric)); }
+.tl .era { font: 400 .68rem var(--font-mono); letter-spacing: .08em; color: var(--c, var(--electric)); display: block; }
+.try { display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; padding: 12px 14px; border-radius: var(--r-md); background: var(--paper); border-left: 4px solid var(--ink-ghost); transition: background .3s, border-color .3s; }
+.try + .try { margin-top: 8px; }
+.try.ok { background: var(--success-soft); border-color: var(--success); } .try.no { background: var(--danger-soft); border-color: var(--danger); } .try.ask { background: var(--gold-soft); border-color: var(--gold); }
+.try small { display: block; color: var(--ink-muted); } .try b.v { font: 700 .72rem var(--font-mono); text-transform: uppercase; white-space: nowrap; }
+</style>
+</head>
+<body data-ch="21">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>What’s <em>Coming Next</em></h1>
+  <p>The plastic rectangle is becoming the least important part of a card. Set the rules for an AI agent that shops for you, then walk the timeline of what is already changing.</p>
+</header>
 
-<div class="chapter-shell"><div class="container">
-<div class="chapter-header">
-<div class="chapter-header-row"><div class="chapter-roman">Chapter XXI</div><div class="chapter-progress-text">21 of 22 · ~6 min</div></div>
-<h1 class="chapter-h1">What\'s <em>Coming Next</em></h1>
-<p class="chapter-intro">The plastic rectangle in your wallet is already a relic. Tap each milestone to see how payments are evolving — and what it means for how you\'ll handle money over the next decade.</p>
-</div>
-
-<section style="padding:32px 0;">
-<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;">A timeline of what\'s already happening</div>
-<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;">The plastic <em style="font-style:italic;font-weight:300;color:var(--electric);">isn\'t the point</em>.</h2>
-
-<div class="timeline">
-<div class="timeline-item" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="timeline-era">HAPPENING NOW</div>
-<h3>Tap-to-pay <em>everywhere</em></h3>
-<p class="timeline-blurb">The contactless wave that hit Europe a decade ago is now mainstream in Indian metros. Phone tap, watch tap, ring tap.</p>
-<div class="timeline-detail">
-<p>NFC-enabled credit cards allow contactless payments up to ₹5,000 without PIN entry in India (limit varies by issuer). For amounts above that, PIN is required. <strong>Apple Pay launched in India in 2025</strong>, joining Google Pay and Samsung Pay — meaning your phone IS your card.</p>
-<p><em>The wallet is the next thing to disappear.</em> Most metropolitan terminals already accept tap-to-pay. The card itself becomes redundant when you can pay from your watch.</p>
-<div class="timeline-impact"><strong>What this means for you</strong>Set up your card on Apple/Google Pay. Tap-to-pay is faster than UPI for in-store transactions and gives you all your usual rewards.</div>
-</div>
-</div>
-
-<div class="timeline-item" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="timeline-era">HAPPENING NOW</div>
-<h3>Virtual <em>credit cards</em></h3>
-<p class="timeline-blurb">A card number that exists only in your bank\'s app — generated for one transaction, then thrown away.</p>
-<div class="timeline-detail">
-<p>Banks like HDFC, ICICI, and Axis now offer virtual cards on demand: <strong>a fresh 16-digit number, unique CVV, valid for one transaction or a set time window</strong>. If a merchant gets breached, the leaked card is already useless. <em>It\'s tokenization made user-facing.</em></p>
-<p>For online subscriptions you\'re unsure about (free trials, dodgy merchants), generating a virtual card with a low limit prevents the worst case: a recurring charge you can\'t stop and a vendor that won\'t respond.</p>
-<div class="timeline-impact"><strong>What this means for you</strong>Use virtual cards for any new merchant you\'re not sure about. Generates safety; costs nothing.</div>
-</div>
-</div>
-
-<div class="timeline-item" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="timeline-era">EMERGING</div>
-<h3>Credit on <em>UPI</em></h3>
-<p class="timeline-blurb">RBI has enabled credit lines to be linked directly to UPI handles. Pay via UPI, but it\'s borrowed money.</p>
-<div class="timeline-detail">
-<p>The line between credit cards and UPI is blurring. <strong>Banks like HDFC, ICICI, and Axis offer credit-on-UPI</strong> — your UPI ID can be linked to a credit line. Merchants who accept UPI now effectively accept credit cards (at lower interchange fees, which is why merchants prefer it).</p>
-<p>This collapses two ecosystems into one. <em>The plastic credit card may become a backup for international transactions and offline purchases only.</em></p>
-<div class="timeline-impact"><strong>What this means for you</strong>The smartest financial setup combines: UPI for daily P2P, UPI-on-credit for daily merchant payments, virtual cards for online, physical card for travel. The mix matters more than any single tool.</div>
-</div>
-</div>
-
-<div class="timeline-item" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="timeline-era">5-10 YEARS OUT</div>
-<h3>Embedded <em>finance</em></h3>
-<p class="timeline-blurb">Your spending decisions move INTO the apps you already use. Amazon\'s checkout becomes its own credit ecosystem. Same with Zomato, BookMyShow.</p>
-<div class="timeline-detail">
-<p>Banks are increasingly invisible. <strong>The "card" of the future is whatever credit line is one tap away inside the app you\'re already using</strong>. Amazon launched co-branded cards. Zomato has BNPL options. Flipkart has Pay Later.</p>
-<p>The trade-off: convenience for fragmentation. <em>You may end up with 6 different micro-credit lines</em> across various apps — each "small" individually but adding up to significant debt without a unified statement.</p>
-<div class="timeline-impact"><strong>What this means for you</strong>Watch out for credit-line proliferation. Every BNPL, every "Pay Later," every "easy EMI" is debt with a friendlier name. Track them in one place — manually if you have to.</div>
-</div>
-</div>
-
-<div class="timeline-item" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="timeline-era">5-10 YEARS OUT</div>
-<h3>Stablecoins & <em>blockchain settlement</em></h3>
-<p class="timeline-blurb">Behind the scenes, the rails are changing. Stablecoins like USDC and PayPal\'s PYUSD already settle some cross-border merchant transactions in seconds.</p>
-<div class="timeline-detail">
-<p>You won\'t see this — but the <strong>3-day settlement on international card transactions</strong> (which costs merchants and creates dispute windows) is being replaced by <strong>blockchain settlement that finalizes in minutes</strong>. Visa and Mastercard both have stablecoin pilots.</p>
-<p><em>The user-facing card stays the same.</em> But behind it, money will move differently — cheaper for merchants, faster for refunds, with new fraud patterns to watch out for.</p>
-<div class="timeline-impact"><strong>What this means for you</strong>Refunds and chargebacks may resolve in days instead of weeks. International transactions may stop having "pending" status as they settle in real-time.</div>
-</div>
-</div>
-
-<div class="timeline-item" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="timeline-era">10+ YEARS</div>
-<h3>The end of <em>"the card"</em></h3>
-<p class="timeline-blurb">Biometrics + AI authorization + spending agents. Your "card" might become a permission your AI assistant manages on your behalf.</p>
-<div class="timeline-detail">
-<p>Imagine: <strong>"Buy me the cheapest flight to Mumbai for next Friday"</strong> said to your AI. Behind the scenes, it generates a virtual card scoped only to that purchase, validates against your bank\'s spending policy, biometrically signs the authorization, and completes — all without you opening an app.</p>
-<p>This isn\'t science fiction; agentic commerce is being prototyped at every major bank now. <em>The card becomes a permission, not a thing.</em> What you\'ll need to manage isn\'t a credit limit — it\'s the rules your agent operates within.</p>
-<div class="timeline-impact"><strong>What this means for you</strong>The financial literacy that\'ll matter is no longer "how do I use my card" but "what guardrails do I want around what software can spend on my behalf?" The questions in this guide will still apply — but to AI agents, not just to you.</div>
-</div>
-</div>
-</div>
+<section class="sec">
+  <div class="eyebrow">Try the near future</div>
+  <h2 class="h2">Your AI agent has your card. <em>Set its rules.</em></h2>
+  <p class="lede">Agent checkout is live with the major networks and AI assistants. The skill that matters is no longer using a card — it is deciding what software may spend for you. Move the controls and watch four purchase attempts.</p>
+  <div class="stage split">
+    <div>
+      <div class="field"><div class="field-top"><label for="cap">Most it may spend on one purchase</label><span class="val" id="cap-v"></span></div><input type="range" id="cap"></div>
+      <div class="field"><div class="field-top"><label for="ask">Ask me first above</label><span class="val" id="ask-v"></span></div><input type="range" id="ask"></div>
+      <div class="field"><label>Where it may shop</label><div class="seg" id="where" style="margin-top:6px"><button data-v="known" class="on">Shops I have used</button><button data-v="any">Anywhere</button></div></div>
+      <div class="field"><label>Subscriptions and repeat charges</label><div class="seg" id="subs" style="margin-top:6px"><button data-v="no" class="on">Never</button><button data-v="yes">Allowed</button></div></div>
+    </div>
+    <div class="sticky" aria-live="polite">
+      <div class="eyebrow">What the agent tries this week</div>
+      <div id="tries"></div>
+      <div class="callout" id="agent-note" style="margin-top:16px"></div>
+    </div>
+  </div>
 </section>
 
-<section class="checkpoint">
-<div class="checkpoint-card">
-<div style="font-size:56px;margin-bottom:12px;">🚀</div>
-<h3 class="checkpoint-title">You\'re ready for <em>what\'s next</em>.</h3>
-<p class="checkpoint-body">Final chapter — your graduation. A test of everything you\'ve learned, and your diploma in card literacy.</p>
-<div class="checkpoint-cta-row">
-<a href="../index.html" class="btn btn--ghost">← all chapters</a>
-<a href="22-graduation.html" class="btn btn--primary btn--lg">Chapter XXII: Graduation →</a>
-</div></div></section>
+<section class="sec">
+  <div class="eyebrow">The timeline in {name}</div>
+  <h2 class="h2">The plastic <em>is not the point</em>.</h2>
+  <div class="tl" id="tl"></div>
+</section>
 
-<div class="chapter-nav-bottom">
-<a href="20-relationship.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">Relationship with Money</span></a>
-<a href="22-graduation.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Final →</span><span class="chapter-nav-name">Graduation</span></a>
-</div>
-</div></div>
-
+<aside class="checkpoint" data-icon="🔭">
+  <h3>You can see <em>where this is going</em>.</h3>
+  <p>The card becomes a permission rather than an object. Everything you have learned still applies — to wallets, tokens and agents. One chapter left.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
 <script src="../js/global.js"></script>
-</body></html>
+<script>
+{
+const { $, $$, R, rid, money, t, pick } = DCC;
+const A = R.a, s = { where: 'known', subs: 'no' }, cap = $('#cap'), ask = $('#ask');
+cap.min = ask.min = A.meal; cap.max = ask.max = A.big * 1.5; cap.step = ask.step = Math.max(1, Math.round(A.meal / 2)); cap.value = A.laptop * .5; ask.value = A.groceries;
+const TRY = [['🛒', 'Weekly groceries, your usual shop', A.groceries, true, false], ['✈️', 'Cheapest flight for Friday', Math.round(A.trip * .2), true, false], ['🎧', 'Headphones from a site with a “90% off” banner', Math.round(A.laptop * .15), false, false], ['📺', 'A streaming trial that renews monthly', A.meal, true, true]];
+function run() {
+  const c = +cap.value, a = Math.min(+ask.value, c); $('#cap-v').textContent = money(c); $('#ask-v').textContent = money(a);
+  let risky = 0, blocked = 0;
+  $('#tries').innerHTML = TRY.map(([ic, n, amt, known, sub]) => {
+    let v = 'ok', why = 'Within your rules — bought with a one-off token.';
+    if (amt > c) { v = 'no'; why = 'Over your per-purchase cap.'; } else if (!known && s.where === 'known') { v = 'no'; why = 'Not a shop you have used.'; } else if (sub && s.subs === 'no') { v = 'no'; why = 'Recurring charge not allowed.'; } else if (amt > a) { v = 'ask'; why = 'Above your ask-first line — sent to your phone.'; }
+    if (v === 'ok' && (!known || sub)) risky++; if (v === 'no') blocked++;
+    return `<div class="try ${v}"><span style="font-size:1.4rem">${ic}</span><div><b>${n}</b><small>${money(amt)} · ${why}</small></div><b class="v">${{ ok: 'bought', no: 'blocked', ask: 'asks you' }[v]}</b></div>`; }).join('');
+  const n = $('#agent-note');
+  if (risky) { n.className = 'callout is-danger'; n.innerHTML = '<b>Too loose</b>The agent just bought from an unknown site or signed you up to a repeat charge without asking. Who is liable when an agent is tricked is still being worked out — tighten the rules until the law catches up.'; }
+  else if (blocked === TRY.length) { n.className = 'callout is-warm'; n.innerHTML = '<b>Too tight</b>Nothing gets through, so the agent is no use. Guardrails are a trade between convenience and control, not a way to avoid deciding.'; }
+  else { n.className = 'callout is-success'; n.innerHTML = '<b>Sensible</b>Routine purchases go through, anything unusual stops or comes to you. This is the same thinking as a credit limit, alerts and card locks — applied to software.'; }
+}
+document.addEventListener('input', e => e.target.type === 'range' && run());
+['where', 'subs'].forEach(k => $('#' + k).addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; s[k] = b.dataset.v; $$('#' + k + ' button').forEach(x => x.classList.toggle('on', x === b)); DCC.playClick(); run(); }));
+run();
+
+const NOW = 'var(--success)', SOON = 'var(--gold)', LATER = 'var(--electric)';
+const common = [
+  ['HAPPENING NOW', NOW, 'AI agents that <em>check out for you</em>', 'Visa, Mastercard and the big AI assistants launched agent payments in 2025–26.', 'The agent is issued a token scoped to one merchant, amount and time window, and the network can tell an approved agent from a bot. Open standards for this are being adopted by processors and shops. What is unsettled is liability: if an agent is tricked by a fake listing, the dispute rules were written for humans.', 'Start with tight limits and approval above a small amount. Treat the agent like a new employee with a company card.'],
+  ['HAPPENING NOW', NOW, 'Passkeys <em>replace</em> the one-time code', 'Approve a payment with your face or fingerprint instead of typing six digits.', 'Networks and banks are rolling out payment passkeys. Unlike a texted code, a passkey cannot be read out to a caller or typed into a fake site — it closes the door that most scams in chapter X walk through.', 'Turn it on when your bank offers it. A scam that needs your code no longer works.'],
+  ['EMERGING', SOON, 'Stablecoins behind the <em>scenes</em>', 'The networks have started settling with banks in dollar stablecoins.', 'You will not see it. The card looks the same, but settlement between banks can run around the clock instead of on banking days. The United States passed a stablecoin law in 2025 and the EU’s rules are in force. Cards funded from a crypto balance also exist; they run on the same networks, with the same rules.', 'Faster refunds, eventually. Meanwhile, a card that spends crypto is still a card: the dispute rights come from the network, not the coin.'],
+  ['5–10 YEARS', LATER, 'The end of the <em>card number</em>', 'No number, no expiry, no plastic.', 'Every credential becomes a token bound to a device, a merchant or an agent, approved by biometrics. A stolen “card number” stops being a thing that exists. The fraud that remains is the kind that persuades you — which technology does not fix.', 'The lessons that last are the human ones: slow down, verify through your own channel, and know your rights.']
+];
+const local = pick({
+  in: [['HAPPENING NOW', NOW, 'Credit on <em>UPI</em>', 'RuPay credit cards and bank credit lines now pay by scanning any UPI QR code.', 'This joins India’s two payment worlds: the reach of UPI with the float of a card. Small merchants pay no fee on low-value payments. Apple Pay arrived in September 2026 for some credit cards, joining Google Pay’s tap-to-pay.', 'Paying by QR feels like spending your own money. If it is drawing on a credit line, it is debt — know which account your UPI app is set to use.'],
+       ['HAPPENING NOW', NOW, 'Authentication beyond <em>SMS OTP</em>', 'From April 2026 banks may use app approval, biometrics or passkeys as the second factor.', 'RBI’s new framework is risk-based: low-risk payments may need less, high-risk ones more. Card networks can also be chosen at issue or renewal, and bank websites have moved to .bank.in addresses.', 'The spoken OTP was the scammer’s favourite tool. In-app approval that shows the amount and merchant is much harder to trick out of you.'],
+       ['EMERGING', SOON, 'The <em>e-rupee</em> and pay-later everywhere', 'The RBI’s digital rupee is in wide pilot, and every shopping app offers its own credit line.', 'Six small credit lines across six apps add up to one large debt with no single statement. All of them now report to the bureaus.', 'Keep a list of every pay-later and credit line you hold. Close the ones you do not use.']],
+  us: [['HAPPENING NOW', NOW, 'Tap to pay <em>finally</em> everywhere', 'The US was a decade behind; contactless and phone wallets are now the norm in stores and on transit.', 'Paying with a phone sends a token, never the card number, and needs your face or fingerprint.', 'Use the wallet instead of the plastic wherever you can. It is the same card, better protected.'],
+       ['EMERGING', SOON, 'Pay by bank and <em>instant payments</em>', 'FedNow and RTP let money move in seconds; retailers are pushing “pay by bank” to avoid card fees.', 'Merchants may offer a discount for it. What you give up is the credit card’s dispute rights and float.', 'A discount for paying by bank is a real trade. Take it for bills and known merchants, not for purchases you might need to dispute.'],
+       ['EMERGING', SOON, 'Interchange and <em>rewards</em> under pressure', 'A long-running merchant lawsuit and proposed legislation both aim to lower swipe fees.', 'Rich US rewards are funded by uncapped interchange. Wherever regulators have capped it — Europe, Australia — rewards shrank within a couple of years. Pay-later loans are also starting to appear on credit reports.', 'Do not build your finances around a rewards programme. Its terms can change with one email.']],
+  uk: [['HAPPENING NOW', NOW, 'Contactless <em>without a cap</em>', 'Since March 2026 UK banks can set their own contactless limits, or let you choose yours.', 'Most have kept £100 for now. Phone wallets never had a limit because biometrics do the checking.', 'Decide your own limit in the app rather than accepting the default — lower if you worry about loss, higher if you use it for everything.'],
+       ['HAPPENING NOW', NOW, 'Pay-later is <em>regulated</em>', 'Since 15 July 2026 buy-now-pay-later is FCA-regulated credit.', 'Affordability checks, clearer information, the right to complain to the Ombudsman, and Section 75 on newer agreements. It also now appears on credit files.', 'Treat it as what it is — borrowing — and expect lenders to see it when you apply for a mortgage.'],
+       ['EMERGING', SOON, 'Pay by bank, Wero and a <em>digital euro</em>', 'Account-to-account payment at checkout is growing; Europe is building its own alternatives to the card networks.', 'Wero is live in several eurozone countries and the ECB is preparing a digital euro. Reimbursement for bank-transfer scams is now mandatory in the UK, and the EU is moving the same way.', 'Paying by bank is cheap for the shop but has no chargeback and no Section 75. For a big purchase, a credit card is still the protected choice.']],
+  au: [['HAPPENING NOW', NOW, 'No more <em>surcharges</em>', 'From 1 October 2026 surcharging on eftpos, Visa and Mastercard is banned and interchange is capped lower.', 'Shops pay less to accept cards; issuers earn less; points programmes are being cut back. American Express sits outside the rules.', 'Re-check what your rewards card earns now against its annual fee. Many no longer pay their way.'],
+       ['HAPPENING NOW', NOW, 'Scam duties on <em>banks, telcos and platforms</em>', 'The Scams Prevention Framework makes all three legally responsible for preventing and responding to scams.', 'Confirmation of payee now checks the account name before a transfer, and an SMS sender ID register blocks spoofed bank names.', 'Take a name-mismatch warning seriously. It is the system telling you the account is not who it claims to be.'],
+       ['EMERGING', SOON, 'PayTo, pay-later rules and the end of <em>cheques</em>', 'PayTo lets you approve bank-account payments in your banking app; pay-later has been regulated credit since June 2025; cheques are being phased out.', 'More payments will bypass cards entirely — cheaper for merchants, with different protections for you.', 'Before paying a business by bank transfer, ask yourself how you would get the money back.']]
+});
+const items = [local[0], common[0], local[1], common[1], local[2], common[2], common[3]];
+$('#tl').innerHTML = items.map(([era, c, h, blurb, body, you]) => `<details class="fold" style="--c:${c}"><summary><span class="era">${era}</span><span class="h4">${h}</span><br><span class="small muted">${blurb}</span></summary><div class="fold-body"><p>${body}</p><div class="callout"><b>What it means for you</b>${you}</div></div></details>`).join('');
+}
+</script>
+</body>
+</html>

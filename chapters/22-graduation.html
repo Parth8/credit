@@ -1,289 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
 <title>XXII. Graduation — Decoding Credit Cards</title>
-  <!-- Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://parth8.github.io/credit/chapters/22-graduation.html">
-  <meta property="og:title" content="XXII. Graduation — Decoding Credit Cards">
-  <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:site_name" content="Decoding Credit Cards">
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="XXII. Graduation — Decoding Credit Cards">
-  <meta name="twitter:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta name="twitter:image" content="https://parth8.github.io/credit/og-image.png">
-  
-
+<meta name="description" content="Twelve questions drawn from every part of the guide, set in the {name} edition. No looking things up. See what stuck — then collect your diploma.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/22-graduation.html">
+<meta property="og:title" content="XXII. Graduation — Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
 <link rel="stylesheet" href="../css/global.css">
 <style>
-.chapter-shell{min-height:100vh;padding-top:80px}
-.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
-.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
-.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
-.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
-.chapter-h1 em{font-style:italic;font-weight:300;color:var(--gold)}
-.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
-.test-stage{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-lg);padding:48px;box-shadow:0 1px 3px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.04);margin:32px 0;position:relative;overflow:hidden}
-.test-progress{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:20px;border-bottom:1px dashed var(--border)}
-.test-q-num{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);letter-spacing:.04em}
-.test-score{font-family:var(--font-mono);font-size:12px;padding:6px 14px;background:var(--paper);border-radius:999px}
-.test-score strong{font-family:var(--font-display);font-size:14px;color:var(--ink);margin-left:4px}
-.test-q-tag{font-family:var(--font-mono);font-size:11px;color:var(--electric);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
-.test-q-text{font-family:var(--font-display);font-size:24px;font-weight:700;letter-spacing:-.01em;line-height:1.3;margin-bottom:24px}
-.test-q-text em{font-style:italic;font-weight:300;color:var(--electric)}
-.test-options{display:flex;flex-direction:column;gap:12px}
-.test-opt{padding:16px 20px;background:white;border:1.5px solid var(--border-strong);border-radius:var(--radius-md);cursor:pointer;text-align:left;font-family:var(--font-body);font-size:14px;line-height:1.5;color:var(--ink);transition:all .2s}
-.test-opt:hover{border-color:var(--electric);background:var(--electric-soft);transform:translateX(4px)}
-.test-opt.right{border-color:var(--success);background:var(--success-soft)}
-.test-opt.wrong{border-color:var(--danger);background:var(--danger-soft);opacity:.8}
-.test-opt.dim{opacity:.4;pointer-events:none}
-.test-explain{margin-top:20px;padding:20px 24px;background:var(--paper);border-radius:var(--radius-md);border-left:4px solid var(--electric);display:none}
-.test-explain.show{display:block}
-.test-explain h4{font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:8px}
-.test-explain p{font-size:13px;color:var(--ink-soft);line-height:1.6;margin:0}
+.dip { background: var(--white); border: 3px double var(--ink); border-radius: var(--r-md); padding: clamp(24px, 6vw, 60px) clamp(18px, 5vw, 56px); text-align: center; position: relative; box-shadow: var(--shadow-lift); animation: rise .8s var(--ease-out); }
+.dip::before { content: '※'; position: absolute; top: 14px; left: 18px; color: var(--electric); font-size: 1.4rem; } .dip::after { content: '※'; position: absolute; bottom: 14px; right: 18px; color: var(--electric); font-size: 1.4rem; }
+.dip h2 { font: 800 var(--step-3)/1.05 var(--font-display); letter-spacing: -.03em; margin-block: 8px; } .dip h2 em { font-style: italic; font-weight: 300; color: var(--electric); }
+.dip input { font: italic 500 var(--step-2) var(--font-display); text-align: center; border: 0; border-bottom: 2px dashed var(--ink-ghost); background: none; width: min(100%, 420px); padding: 6px; color: var(--electric); }
+.dip input:focus { outline: none; border-color: var(--electric); }
+.dip .score { font: 900 clamp(3.4rem, 12vw, 5.5rem)/1 var(--font-display); letter-spacing: -.04em; }
+.seal { display: inline-block; margin-top: 18px; padding: 10px 22px; border: 2px solid var(--gold); color: var(--gold); border-radius: var(--r-pill); font: 700 .72rem var(--font-mono); letter-spacing: .1em; transform: rotate(-2deg); }
+.review a { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px dashed var(--border-strong); color: inherit; text-decoration: none; }
+.review a:hover b { color: var(--electric); }
+@media print { main > .wrap > *:not(#exam) { display: none; } .dip { box-shadow: none; } .no-print { display: none !important; } }
+</style>
+</head>
+<body data-ch="22">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1><em>Graduation</em></h1>
+  <p>Twelve questions drawn from every part of the guide, set in the {name} edition. No looking things up. See what stuck — then collect your diploma.</p>
+</header>
 
-.diploma{display:none;background:linear-gradient(135deg,#FBF7EF 0%,#F4EAD5 100%);border:3px double var(--gold);border-radius:var(--radius-lg);padding:64px 48px;text-align:center;position:relative;overflow:hidden;margin:32px 0;box-shadow:0 1px 3px rgba(0,0,0,.04),0 24px 60px rgba(0,0,0,.08)}
-.diploma.show{display:block}
-.diploma::before,.diploma::after{content:'※';position:absolute;font-size:24px;color:var(--gold);opacity:.4}
-.diploma::before{top:24px;left:24px}
-.diploma::after{bottom:24px;right:24px}
-.diploma-tag{font-family:var(--font-mono);font-size:11px;color:var(--gold);letter-spacing:.16em;text-transform:uppercase;margin-bottom:16px}
-.diploma-title{font-family:var(--font-display);font-size:clamp(32px,4vw,52px);font-weight:800;letter-spacing:-.02em;line-height:1;margin-bottom:8px;color:var(--ink)}
-.diploma-title em{font-style:italic;font-weight:300;color:var(--gold)}
-.diploma-subtitle{font-family:var(--font-display);font-style:italic;font-size:18px;color:var(--ink-muted);margin-bottom:32px}
-.diploma-body{font-size:15px;color:var(--ink-soft);line-height:1.8;max-width:560px;margin:0 auto 32px}
-.diploma-score{font-family:var(--font-display);font-size:80px;font-weight:900;letter-spacing:-.04em;color:var(--gold);line-height:1;margin:24px 0;font-style:italic}
-.diploma-score-tag{font-family:var(--font-mono);font-size:11px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase}
-.diploma-seal{display:inline-flex;align-items:center;gap:12px;padding:14px 24px;background:var(--ink);color:white;border-radius:999px;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-top:24px}
-.diploma-seal::before{content:'※';color:#F7B87A;font-size:14px}
-.diploma-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:32px}
-
-.checkpoint{padding:80px 0;text-align:center}
-.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
-.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
-.chapter-nav-link:hover{transform:translateX(-4px)}
-.chapter-nav-link.next{align-items:flex-end}
-.chapter-nav-link.next:hover{transform:translateX(4px)}
-.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
-.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
-@media(max-width:768px){.test-stage{padding:24px}.test-q-text{font-size:20px}.diploma{padding:40px 24px}}
-</style></head><body>
-<nav class="site-nav">
-<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>※</span></a>
-<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="../index.html">Home</a></li></ul>
-</nav>
-
-<div class="chapter-shell"><div class="container">
-<div class="chapter-header">
-<div class="chapter-header-row"><div class="chapter-roman">Chapter XXII</div><div class="chapter-progress-text">22 of 22 · ~10 min</div></div>
-<h1 class="chapter-h1"><em>Graduation</em></h1>
-<p class="chapter-intro">Ten questions. One last test. Each one stitches together what you\'ve learned across the previous twenty-one chapters. No googling, no pre-thinking — just see what\'s stuck.</p>
-</div>
-
-<section style="padding:32px 0;">
-<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;">The final exam</div>
-<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;">Show <em style="font-style:italic;font-weight:300;color:var(--gold);">what you know</em>.</h2>
-
-<div class="test-stage" id="test-stage"></div>
-
-<div class="diploma" id="diploma">
-<div class="diploma-tag">CERTIFIED</div>
-<div class="diploma-title">Diploma in <em>Card Literacy</em></div>
-<div class="diploma-subtitle">presented to a person who <em>actually read all 22 chapters</em></div>
-<div class="diploma-score-tag">FINAL SCORE</div>
-<div class="diploma-score" id="dip-score">10 / 10</div>
-<div class="diploma-body" id="dip-body"></div>
-<div class="diploma-seal" id="dip-seal">Decoding · Credit Cards · 2026</div>
-<div class="diploma-cta-row">
-<a href="../index.html" class="btn btn--primary btn--lg">← back to all chapters</a>
-<button class="btn btn--ghost" onclick="resetTest()">↻ retake the test</button>
-</div>
-</div>
+<section class="sec" id="exam">
+  <div class="stage" id="game" style="margin-top:0"></div>
 </section>
-
-<div class="chapter-nav-bottom">
-<a href="21-future.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">What\'s Coming Next</span></a>
-<a href="../index.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Done →</span><span class="chapter-nav-name">All Chapters</span></a>
-</div>
-</div></div>
-
+</div></main>
+<script src="../js/regions.js"></script>
 <script src="../js/global.js"></script>
 <script>
+{
+const { $, $$, R, rid, money, t, pick, chapters, isDone, store } = DCC;
+const d = R.a.debt, q = (ch, title, right, wrong, why) => ({ kicker: `Chapter ${chapters[ch - 1].roman} · ${chapters[ch - 1].title}`, ch, title, opts: [{ t: right, ok: true }, ...wrong.map(x => ({ t: x }))], explain: `<p>${why}</p>` });
 const QS = [
-  {
-    tag: 'CHAPTER I — THE HANDSHAKE',
-    q: 'When you tap your card at a coffee shop, who actually sends the merchant their money?',
-    opts: [
-      { t: 'Your bank (the issuer) directly to the merchant', ok: false, why: 'Close, but not quite. The issuer pays the acquirer, who pays the merchant. There\'s an intermediary.' },
-      { t: 'The merchant\'s bank (the acquirer), who later collects from your bank via the network', ok: true, why: 'Right. The acquirer fronts the money to the merchant within 1-2 days, then settles with the issuer through the network (Visa/Mastercard). The merchant never deals with your bank directly.' },
-      { t: 'Visa or Mastercard pays the merchant', ok: false, why: 'Visa and Mastercard are networks — they route information, not money. They\'re the rails, not the bank.' }
-    ]
-  },
-  {
-    tag: 'CHAPTER VI — THE TRAP',
-    q: 'You owe ₹50,000 on your card at 36% APR. You pay only the minimum (5%) every month. <em>Roughly</em> how long does it take to clear the debt — assuming no new spending?',
-    opts: [
-      { t: 'About 2 years', ok: false, why: 'Way too optimistic. Minimum payments barely cover interest on high-APR debt.' },
-      { t: 'About 7 years', ok: false, why: 'Closer, but still under-counts. The interest math is brutal at 36%.' },
-      { t: 'Decades — possibly never if APR exceeds the minimum percentage', ok: true, why: 'Right. At 36% APR (3% per month) and 5% minimum, ~60% of every payment goes to interest. The principal barely moves. This is why the minimum payment is the trap.' }
-    ]
-  },
-  {
-    tag: 'CHAPTER VIII — YOUR SCORE',
-    q: 'Of the five things that affect your CIBIL score, which one matters <em>most</em>?',
-    opts: [
-      { t: 'Credit utilization (how much of your limit you\'re using)', ok: false, why: 'Important — about 30% — but not the largest factor.' },
-      { t: 'Payment history (do you pay on time, every time)', ok: true, why: 'Right. Payment history is ~35% of your score — the single biggest factor. One missed payment can drop your score 50-100 points and stays on your report for 7 years.' },
-      { t: 'Length of credit history', ok: false, why: 'Matters, but less than utilization or payment history.' }
-    ]
-  },
-  {
-    tag: 'CHAPTER VII — FEES',
-    q: 'When does a credit card cash advance start accruing interest?',
-    opts: [
-      { t: 'After your statement closes, like normal purchases', ok: false, why: 'Wrong. This is a critical misconception that costs people thousands.' },
-      { t: 'Immediately, from the moment you withdraw — no grace period', ok: true, why: 'Right. Cash advances are the most expensive credit you can take. Interest starts the second you withdraw, plus a 2.5-3.5% upfront fee. Avoid cash advances entirely; use UPI or your debit card for cash needs.' },
-      { t: 'After 30 days, if not repaid', ok: false, why: 'Wrong. There\'s no grace period on cash advances — that\'s the whole point of the trap.' }
-    ]
-  },
-  {
-    tag: 'CHAPTER XIII — INTERNATIONAL',
-    q: 'You\'re paying for a hotel in Bangkok. The terminal asks: pay in INR ₹52,000 or pay in THB ฿21,500. <em>What\'s the right choice</em>?',
-    opts: [
-      { t: 'INR — the rate is locked, no surprises', ok: false, why: 'This is the DCC trap. The "locked rate" includes a 5-7% markup baked in by the merchant. You pay more.' },
-      { t: 'THB — let your bank do the conversion', ok: true, why: 'Right. Banks convert at near-market rates. DCC ("pay in INR") adds a chunky markup the merchant pockets. <strong>Always pay in local currency abroad</strong> — even though the "no surprises" framing makes the trap option feel safer.' },
-      { t: 'It doesn\'t matter, both arrive at the same total', ok: false, why: 'The DCC option is consistently 4-7% more expensive. It matters a lot.' }
-    ]
-  },
-  {
-    tag: 'CHAPTER X — SPOT THE FRAUD',
-    q: 'You get an SMS: "HDFC ALERT: ₹49,999 spent on your card. If not you, click here to dispute: hdfc-bank-secure.in/verify". <em>What do you do</em>?',
-    opts: [
-      { t: 'Click immediately and dispute — speed matters with fraud', ok: false, why: 'This is exactly what phishers want. The URL is a lookalike domain (hdfc-bank-secure.in vs the real hdfcbank.com). Real banks never send dispute links via SMS.' },
-      { t: 'Ignore the SMS and call the number on the back of your card', ok: true, why: 'Right. Real banks never send disputable links via SMS. The number on the back of your card is the only verified way to reach them. Even if the SMS happened to be real, calling the official number gives you the same outcome safely.' },
-      { t: 'Reply to the SMS with my card number to verify', ok: false, why: 'Never share card numbers via SMS. Banks never request this — only scammers do.' }
-    ]
-  },
-  {
-    tag: 'CHAPTER V — BILLING CYCLE',
-    q: 'Your statement closes on the 5th, and the due date is the 25th. <em>Which purchase gets the longest interest-free period</em>?',
-    opts: [
-      { t: 'A purchase made on the 4th (just before statement)', ok: false, why: 'This gets only ~22 days — it\'s on this statement, due in three weeks.' },
-      { t: 'A purchase made on the 6th (just after statement closes)', ok: true, why: 'Right. A purchase on the 6th gets ~52 days of interest-free credit: 30 days till the next statement closes, plus 22 days till that next due date. <strong>Time big purchases just after your statement closes</strong> for max grace period.' },
-      { t: 'A purchase made on the 25th (on the due date itself)', ok: false, why: 'Same as the 6th — but you\'d also be making your old payment that same day. The 6th is cleaner.' }
-    ]
-  },
-  {
-    tag: 'CHAPTER XVIII — TAXES',
-    q: 'You spend ₹9 lakh on international transactions in a financial year (April-March). What happens?',
-    opts: [
-      { t: 'Nothing — international card spending isn\'t taxable', ok: false, why: 'Wrong. Above ₹7L per FY, TCS kicks in.' },
-      { t: '20% TCS is deducted on the amount above ₹7L (i.e., on ₹2L = ₹40,000)', ok: true, why: 'Right. The first ₹7L is exempt; only the excess gets TCS. ₹40,000 is deducted but it\'s reclaimable when you file your ITR — it\'s a deposit, not a tax. You only lose it if you skip ITR filing.' },
-      { t: '20% TCS on the entire ₹9L (₹1.8 lakh)', ok: false, why: 'Wrong. TCS only applies above the ₹7L threshold, not on the whole amount.' }
-    ]
-  },
-  {
-    tag: 'CHAPTER XII — DISPUTES',
-    q: 'You ordered a laptop online for ₹65K. It never arrived. The merchant has stopped responding. <em>What\'s your strongest move</em>?',
-    opts: [
-      { t: 'Keep emailing the merchant and wait', ok: false, why: 'Time-bound. Card chargeback windows are usually 60-120 days. Wait too long and you lose the option entirely.' },
-      { t: 'File a "non-delivery" chargeback with your bank', ok: true, why: 'Right. The chargeback flow puts the burden of proof on the merchant — they have to show proof of delivery. Most flaky sellers can\'t. You\'ll typically get a provisional credit in 7-10 days, made permanent in 30-60 days.' },
-      { t: 'Report it to police and consumer court', ok: false, why: 'Possible escalation, but slow and expensive. Chargeback is faster, free, and works in 80%+ of clean-cut cases.' }
-    ]
-  },
-  {
-    tag: 'CHAPTER XIX — YOUR FIRST CARD',
-    q: 'You just got your first credit card. What\'s the <em>single most important thing</em> to do on day one?',
-    opts: [
-      { t: 'Make a small purchase to "activate" the rewards', ok: false, why: 'Cards activate when you do KYC, not via purchase. Premature spending without setup is risky.' },
-      { t: 'Set up auto-pay for "full balance" on the due date', ok: true, why: 'Right. This single action prevents 90% of beginner credit card disasters — missed payments, snowballing interest, score damage. Set it once, never think about it again. <strong>Full balance only — never minimum.</strong>' },
-      { t: 'Apply for a higher credit limit', ok: false, why: 'Way too early. Build a track record for 6-12 months first.' }
-    ]
-  }
+  q(1, 'You tap your card in a café. Who actually pays the café?', 'The café’s own bank (the acquirer), which then collects from your bank through the network', ['Your bank pays the café directly', `${R.network} pays the café`], 'The network carries messages and nets the banks against each other. The acquirer pays the shop, minus the merchant fee.'),
+  q(1, 'Why are credit card rewards ' + pick({ in: 'possible at all', us: 'so much richer in the US than in Europe', uk: 'so thin in the UK and EU', au: 'getting thinner in Australia' }) + '?', pick({ in: 'They are funded by interchange — a cut of the merchant fee — and by people who pay interest', us: 'US credit interchange is uncapped, so shops fund generous rewards', uk: 'Credit interchange is capped at 0.3%, leaving little to give back', au: 'The interchange cap was cut to 0.3% in October 2026' }), ['Banks pay them out of goodwill', 'The government subsidises them'], 'Rewards come out of the fee the shop pays. Where that fee is capped, rewards shrink.'),
+  q(5, 'Your statement closes on the 5th. Which purchase gets the longest interest-free period?', 'One made on the 6th', ['One made on the 4th', 'One made on the due date'], `A purchase the day after the statement closes waits a whole cycle and then the grace period: about ${R.freeDays} days.`),
+  q(6, `You owe ${money(d)} at ${R.apr}% and pay only the minimum each month. What happens?`, 'It takes many years, because the minimum shrinks as the balance shrinks', ['It is cleared in about a year', 'Interest stops once you have paid back what you borrowed'], 'A falling minimum keeps the debt alive. A fixed payment — even a modest one — clears it in a fraction of the time.'),
+  q(7, 'When does interest start on cash taken out with a credit card?', 'Immediately — there is no interest-free period on cash', ['After the statement closes', 'After 30 days'], 'Plus a cash fee on top. It is the most expensive thing a card does.'),
+  q(7, pick({ in: 'You pay two days after the due date. What do RBI’s rules say?', us: 'You are 60 days late. What may the issuer now do?', uk: 'What is the standard late-payment fee on a UK credit card?', au: 'You pay in full after two months of carrying a balance. What have you lost in the meantime?' }),
+    pick({ in: 'No late fee or bureau report until the payment is more than three days overdue', us: 'Apply a penalty APR of around 30% to your balance', uk: '£12', au: 'Your interest-free days on new purchases' }),
+    pick({ in: ['A late fee applies from the first minute', 'The card is cancelled'], us: ['Nothing beyond the late fee', 'Close the account without notice and keep your payments'], uk: ['£35', '5% of the balance'], au: ['Nothing — interest only applies to the old balance', 'Your credit limit'] }),
+    pick({ in: 'The three-day buffer came in with RBI’s 2022 card directions. Interest still runs from the due date.', us: 'Six on-time payments in a row oblige the issuer to review it.', uk: 'Plus interest on the balance and a marker on your credit file.', au: 'Until a statement is paid in full, new purchases accrue interest from the day you make them.' })),
+  q(8, 'Which habit moves a credit score the most?', 'Paying on time, every time', ['Earning a higher salary', 'Checking your score often'], 'Payment history outweighs everything else. Income is not on a credit report at all, and checking your own file costs nothing.'),
+  q(10, `A caller from “${R.issuer} fraud team” knows your name and card number and asks you to ${pick({ in: 'read out the OTP you just received', us: 'read out a code and then move money with Zelle', uk: 'move your money to a safe account', au: 'read out a code and move money to a secure account' })}. You…`, 'Hang up and call the number on the back of your card', ['Do it — they knew your details', 'Ask them to prove who they are'], 'Knowing your details proves nothing; they leak constantly. No bank needs a code it just sent you, and no bank moves your money to keep it safe.'),
+  q(12, 'A ' + money(R.a.laptop) + ' laptop you paid for by credit card never arrives and the seller has vanished. Your strongest move?', pick({ in: 'Raise a “goods not received” dispute with your card issuer', us: 'Dispute it with your issuer in writing within 60 days of the statement', uk: 'Claim from the card provider under Section 75', au: 'Ask your bank to raise a chargeback' }), ['Keep emailing the seller', 'Accept the loss — you authorised the payment'], pick({ in: 'The merchant must prove delivery. Disputes have deadlines, so do not wait.', us: 'The Fair Credit Billing Act gives you this right, and you need not pay the disputed amount meanwhile.', uk: 'Over £100, so the card provider is jointly liable with the seller.', au: 'Chargebacks have time limits; if the bank refuses, AFCA is free.' })),
+  q(13, 'Abroad, the terminal offers to charge you in ' + R.homeCur + ' at a “guaranteed rate”. You choose…', 'The local currency', [R.homeCur + ' — no surprises', 'It makes no difference'], 'That offer is dynamic currency conversion: the terminal’s rate is typically 3–8% worse than your bank’s.'),
+  q(17, 'A stranger on a marketplace asks you to pay by ' + pick({ in: 'UPI', us: 'Zelle', uk: 'bank transfer', au: 'PayID' }) + ' for a second-hand phone. Why hesitate?', 'An instant bank payment has no chargeback — once sent, it is gone', ['It is slower than a card', 'It costs more in fees'], 'The less you know the seller, the more you want a payment you can reverse.'),
+  q(19, 'You have just received your first card. What do you do before spending anything?', 'Set autopay to the full statement balance', ['Ask for a higher limit', 'Spend up to the limit to build history faster'], 'It removes the single most expensive mistake — and a balance near the limit hurts a new file rather than helping it.')
 ];
-
-let qi = 0, score = 0;
-
-function renderQ() {
-  if (qi >= QS.length) { showDiploma(); return; }
-  const q = QS[qi];
-  const stage = document.getElementById('test-stage');
-  stage.innerHTML = `
-    <div class="test-progress">
-      <div class="test-q-num">Question ${qi + 1} of ${QS.length}</div>
-      <div class="test-score">Correct so far: <strong>${score} / ${qi}</strong></div>
-    </div>
-    <div class="test-q-tag">${q.tag}</div>
-    <div class="test-q-text">${q.q}</div>
-    <div class="test-options">
-      ${q.opts.map((o, i) => `<button class="test-opt" onclick="answerQ(${i})" data-i="${i}">${o.t}</button>`).join('')}
-    </div>
-    <div class="test-explain" id="test-explain"></div>`;
+function diploma(s, n, again) {
+  const done = chapters.filter(c => isDone(c.n)).length, missed = QS.filter((x, i) => marks[i] === false), name = store.get('name', '');
+  const line = s === n ? 'A perfect paper. You understand how this works better than most people who have carried a card for twenty years.' : s >= n * .75 ? 'A strong pass. You have a working command of the mechanics, the costs and the traps.' : s >= n * .5 ? 'A pass. The foundations are in place; the chapters below are worth another visit.' : 'Not this time — and that is fine. The chapters below are where to go back to. It sticks better the second time.';
+  $('#game').innerHTML = `<div class="dip"><div class="eyebrow c-gold">${s >= n * .5 ? 'Certified' : 'Attended'}</div><h2>Diploma in <em>Card Literacy</em></h2><p class="muted">awarded to</p>
+    <input id="nm" placeholder="type your name" value="${name.replace(/"/g, '&quot;')}" aria-label="Your name" maxlength="40">
+    <p class="muted" style="margin-top:16px">${R.flag} ${R.name} edition</p><div class="score">${s} / ${n}</div><p style="max-width:48ch;margin:12px auto 0">${line}</p>
+    <div class="seal">DECODING · CREDIT CARDS · ${new Date().toLocaleDateString(R.locale, { month: 'long', year: 'numeric' }).toUpperCase()}</div>
+    <p class="small faint" style="margin-top:14px">${done} of ${chapters.length} chapters completed on this device</p>
+    <div class="row no-print" style="justify-content:center;margin-top:20px"><button class="btn btn--primary" id="print">Print or save as PDF</button><button class="btn btn--outline" id="again">↻ Retake</button><a class="btn btn--ghost" href="../index.html#chapters">All chapters</a></div></div>
+    ${missed.length ? `<div class="review no-print" style="margin-top:28px"><div class="eyebrow">Worth another look</div>${[...new Map(missed.map(x => [x.ch, x])).values()].map(x => `<a href="${chapters[x.ch - 1].slug}.html"><b>${chapters[x.ch - 1].roman}. ${chapters[x.ch - 1].title}</b><span>→</span></a>`).join('')}</div>` : ''}`;
+  $('#nm').addEventListener('input', e => store.set('name', e.target.value));
+  $('#print').onclick = () => print(); $('#again').onclick = () => { marks.length = 0; again(); };
+  DCC.markDone(); DCC.playSuccess();
+  if (s >= n * .75) [0, 300, 600].forEach((ms, i) => setTimeout(() => DCC.burstConfetti(innerWidth * (i + 1) / 4, 220), ms));
 }
-
-function answerQ(idx) {
-  if (qi >= QS.length) return;
-  const q = QS[qi];
-  const opt = q.opts[idx];
-  if (opt.ok) { score++; DCC.playSuccess(); } else { DCC.playClick(); }
-  q.opts.forEach((o, i) => {
-    const btn = document.querySelector(`.test-opt[data-i="${i}"]`);
-    btn.style.pointerEvents = 'none';
-    if (o.ok) btn.classList.add('right');
-    else if (i === idx) btn.classList.add('wrong');
-    else btn.classList.add('dim');
-  });
-  const explain = document.getElementById('test-explain');
-  explain.classList.add('show');
-  explain.innerHTML = `
-    <h4>${opt.ok ? '✓ Correct' : '✗ Not quite'}</h4>
-    <p>${opt.why}</p>
-    <div style="margin-top:14px;display:flex;justify-content:flex-end;">
-      <button class="btn btn--primary" onclick="qi++;renderQ();">${qi < QS.length - 1 ? 'Next question →' : 'See your diploma →'}</button>
-    </div>`;
-  document.querySelector('.test-score').innerHTML = `Correct so far: <strong>${score} / ${qi + 1}</strong>`;
+const marks = [];
+DCC.quiz($('#game'), { items: QS, shuffle: true, label: 'Question', nextLabel: 'Next question →', endLabel: 'See my diploma →', onAnswer: (x, o, i) => { marks[i] = !!o.ok; }, onEnd: diploma });
 }
-
-function showDiploma() {
-  document.getElementById('test-stage').style.display = 'none';
-  const dip = document.getElementById('diploma');
-  dip.classList.add('show');
-  document.getElementById('dip-score').textContent = `${score} / 10`;
-  let body = '';
-  if (score === 10) {
-    body = 'A perfect run. You didn\'t just read this guide — you understood it. <strong>You now know more about credit cards than the vast majority of people who actually own them.</strong> Carry that knowledge with confidence.';
-  } else if (score >= 8) {
-    body = `You scored ${score}/10 — strong work. <strong>You have a working command of credit card mechanics, fees, and traps.</strong> The few you missed are worth revisiting in those specific chapters, but you\'re better-equipped than most.`;
-  } else if (score >= 5) {
-    body = `You scored ${score}/10 — a solid foundation. <strong>The mechanics are landing</strong>, but a few of the trickier concepts (DCC, minimum payment math, the chargeback flow) might be worth a second pass. The chapters are still here.`;
-  } else {
-    body = `You scored ${score}/10. <strong>The good news:</strong> recognizing what you don\'t know is half the battle, and you\'ve already read more about cards than the average cardholder. Re-run the chapters that gave you trouble — this stuff sticks better the second time.`;
-  }
-  document.getElementById('dip-body').innerHTML = body;
-  if (score >= 8) {
-    setTimeout(() => DCC.burstConfetti(window.innerWidth/2, 200), 300);
-    setTimeout(() => DCC.burstConfetti(window.innerWidth/4, 250), 600);
-    setTimeout(() => DCC.burstConfetti(3*window.innerWidth/4, 250), 900);
-  }
-  DCC.playSuccess();
-  window.scrollTo({ top: dip.offsetTop - 100, behavior: 'smooth' });
-}
-
-function resetTest() {
-  qi = 0; score = 0;
-  document.getElementById('diploma').classList.remove('show');
-  document.getElementById('test-stage').style.display = 'block';
-  renderQ();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-renderQ();
 </script>
-</body></html>
+</body>
+</html>
