@@ -1,159 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
 <title>V. The Billing Cycle — Decoding Credit Cards</title>
-  <!-- Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://parth8.github.io/credit/chapters/05-the-billing-cycle.html">
-  <meta property="og:title" content="V. The Billing Cycle — Decoding Credit Cards">
-  <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:site_name" content="Decoding Credit Cards">
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="V. The Billing Cycle — Decoding Credit Cards">
-  <meta name="twitter:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta name="twitter:image" content="https://parth8.github.io/credit/og-image.png">
-  
-
+<meta name="description" content="Statement date, due date, grace period. Buy something on any day of the month and watch how long the bank lends you that money for free.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/05-the-billing-cycle.html">
+<meta property="og:title" content="V. The Billing Cycle — Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
 <link rel="stylesheet" href="../css/global.css">
 <style>
-.chapter-shell{min-height:100vh;padding-top:80px}
-.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
-.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
-.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
-.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
-.chapter-h1 em{font-style:italic;font-weight:300;color:var(--electric)}
-.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
-.stage{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-lg);padding:40px;box-shadow:0 1px 3px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.04);margin:32px 0}
-.cyc-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:32px}
-.cal-day{aspect-ratio:1;border:2px solid var(--border);background:white;color:var(--ink-soft);border-radius:8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:12px;font-weight:600;transition:transform .2s}
-.cal-day:hover{transform:scale(1.05)}
-.cal-day.statement{border-color:var(--electric);background:var(--electric-soft);color:var(--electric)}
-.cal-day.fresh{border-color:var(--success);background:var(--success-soft);color:var(--success)}
-.cal-day.reminder{border-color:var(--warm);background:var(--warm-soft);color:var(--warm)}
-.cal-day.due{border-color:var(--gold);background:rgba(180,83,9,.08);color:var(--gold)}
-.cal-day.late{border-color:var(--danger);background:var(--danger-soft);color:var(--danger)}
-.info-box{padding:20px 24px;background:var(--paper);border-radius:var(--radius-md);border-left:3px solid var(--electric);margin:16px 0}
-.info-box strong{color:var(--electric);font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase}
-.info-box p{margin:6px 0 0;font-size:14px;color:var(--ink-soft);line-height:1.5}
-.checkpoint{padding:80px 0;text-align:center}
-.checkpoint-card{background:white;border:2px dashed var(--electric);border-radius:var(--radius-lg);padding:48px 32px;max-width:640px;margin:0 auto}
-.checkpoint-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
-.checkpoint-title em{font-style:italic;font-weight:300;color:var(--electric)}
-.checkpoint-body{font-size:15px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px}
-.checkpoint-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
-.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
-.chapter-nav-link:hover{transform:translateX(-4px)}
-.chapter-nav-link.next{align-items:flex-end}
-.chapter-nav-link.next:hover{transform:translateX(4px)}
-.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
-.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
-@media(max-width:768px){.cyc-grid{grid-template-columns:1fr}.stage{padding:24px}}
-</style></head><body>
-<nav class="site-nav">
-<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>※</span></a>
-<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="06-the-trap.html">Next →</a></li></ul>
-</nav>
-<div class="chapter-shell"><div class="container">
-<div class="chapter-header">
-<div class="chapter-header-row"><div class="chapter-roman">Chapter V</div><div class="chapter-progress-text">5 of 22 · ~7 min</div></div>
-<h1 class="chapter-h1">The <em>Billing Cycle</em></h1>
-<p class="chapter-intro">Statement date. Due date. Grace period. Click any day on the calendar to see what happens — the entire 30-day cycle, demystified.</p>
-</div>
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: clamp(3px, .8vw, 6px); }
+.cal-h { font: 400 .65rem var(--font-mono); color: var(--ink-faint); text-align: center; }
+.day { aspect-ratio: 1; border-radius: 8px; border: 1.5px solid var(--border); background: var(--white); font: 600 clamp(.7rem, 2.4vw, .85rem) var(--font-mono); display: grid; place-items: center; position: relative; transition: transform .2s var(--ease-spring), background .25s, border-color .25s, color .25s; }
+button.day:hover { transform: scale(1.1); border-color: var(--electric); z-index: 1; }
+.day.free { background: var(--success-soft); border-color: transparent; color: var(--success); }
+.day.stmt { background: var(--electric); border-color: var(--electric); color: #fff; }
+.day.due { background: var(--gold); border-color: var(--gold); color: #fff; }
+.day.late { background: var(--danger-soft); border-color: var(--danger); color: var(--danger); }
+.day.buy { background: var(--ink); border-color: var(--ink); color: #fff; transform: scale(1.12); z-index: 2; }
+.day.buy::after { content: '🛍️'; position: absolute; top: -12px; right: -8px; font-size: .9rem; }
+.month-name { font: italic 500 1.05rem var(--font-display); margin-block: 0 8px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font: 400 .72rem var(--font-mono); color: var(--ink-muted); margin-top: 16px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+.big { font: 800 clamp(3.4rem, 12vw, 5.5rem)/.95 var(--font-display); letter-spacing: -.04em; color: var(--success); font-variant-numeric: tabular-nums; }
+@media (max-width: 899px) { .stage.split > .sticky { order: -1; } .big { font-size: 3rem; } }
+</style>
+</head>
+<body data-ch="5">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>The <em>Billing Cycle</em></h1>
+  <p>Statement date, due date, grace period. Buy something on any day of the month and watch how long the bank lends you that money for free.</p>
+</header>
 
-<section style="padding:32px 0;">
-<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;">Click any day to see what happens</div>
-<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;">A typical <em style="font-style:italic;font-weight:300;color:var(--electric);">monthly cycle.</em></h2>
-
-<div class="stage">
-<div class="cyc-grid">
-<div>
-<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:16px;">
-<div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);text-align:center;letter-spacing:.06em;">M</div>
-<div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);text-align:center;letter-spacing:.06em;">T</div>
-<div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);text-align:center;letter-spacing:.06em;">W</div>
-<div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);text-align:center;letter-spacing:.06em;">T</div>
-<div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);text-align:center;letter-spacing:.06em;">F</div>
-<div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);text-align:center;letter-spacing:.06em;">S</div>
-<div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);text-align:center;letter-spacing:.06em;">S</div>
-</div>
-<div id="cal-days" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;"></div>
-<div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:24px;font-family:var(--font-mono);font-size:11px;color:var(--ink-muted);">
-<span><span style="display:inline-block;width:10px;height:10px;background:var(--electric);border-radius:2px;margin-right:6px;vertical-align:middle;"></span>Statement</span>
-<span><span style="display:inline-block;width:10px;height:10px;background:var(--success);border-radius:2px;margin-right:6px;vertical-align:middle;"></span>Fresh cycle</span>
-<span><span style="display:inline-block;width:10px;height:10px;background:var(--warm);border-radius:2px;margin-right:6px;vertical-align:middle;"></span>Reminder</span>
-<span><span style="display:inline-block;width:10px;height:10px;background:var(--gold);border-radius:2px;margin-right:6px;vertical-align:middle;"></span>Due</span>
-<span><span style="display:inline-block;width:10px;height:10px;background:var(--danger);border-radius:2px;margin-right:6px;vertical-align:middle;"></span>Late</span>
-</div>
-</div>
-<div>
-<div id="cyc-detail" style="position:sticky;top:100px;">
-<div style="font-family:var(--font-mono);font-size:11px;color:var(--electric);letter-spacing:.06em;margin-bottom:8px;">DAY 5 · STATEMENT CLOSES</div>
-<div style="font-family:var(--font-display);font-size:26px;font-weight:700;margin-bottom:12px;letter-spacing:-.02em;">Statement closes</div>
-<p style="font-size:14px;color:var(--ink-muted);line-height:1.7;">Your statement is generated. <strong>Every transaction in the past 30 days</strong> is summed up. The bill arrives via email/SMS. Your reported credit utilization is calculated at this exact moment.</p>
-</div>
-</div>
-</div>
-</div>
-
-<div class="info-box"><strong>The hidden gift</strong>
-<p>If your statement closes on the 5th and your due date is the 25th, a purchase made on the 6th gets <strong>~52 days of interest-free credit</strong>: 30 days until next statement + 22 days till due date. <em>Time your big purchases right after your statement closes.</em></p></div>
+<section class="sec">
+  <div class="eyebrow">Tap a day to buy a {$phone} phone</div>
+  <h2 class="h2">Same phone, same price. <em>Different day.</em></h2>
+  <p class="lede">Your statement closes on the 5th. Payment is due {graceDays} days later. Tap different days and watch the green stretch.</p>
+  <div class="stage split split--l">
+    <div class="grid" style="--min:230px;--gap:24px">
+      <div><div class="month-name">This month</div><div class="cal" id="m0"></div></div>
+      <div><div class="month-name">Next month</div><div class="cal" id="m1"></div></div>
+      <div class="legend" style="grid-column:1/-1"><span><i style="background:var(--ink)"></i>You buy</span><span><i style="background:var(--success-soft);outline:1px solid var(--success)"></i>Interest-free</span><span><i style="background:var(--electric)"></i>Statement closes</span><span><i style="background:var(--gold)"></i>Payment due</span><span><i style="background:var(--danger)"></i>Late</span></div>
+    </div>
+    <div class="sticky" aria-live="polite">
+      <div class="eyebrow">Interest-free days on this purchase</div>
+      <div class="big" id="days">0</div>
+      <div class="meter" style="margin-block:14px"><i id="bar" style="background:var(--success)"></i></div>
+      <p id="story"></p>
+      <div class="callout is-success" style="margin-top:16px"><b>The quiet trick</b>Buy the day <em>after</em> your statement closes and you get the longest free loan the card offers — up to about <span id="maxd"></span> days. Buy the day before and you get the shortest. Same card, same price.</div>
+    </div>
+  </div>
 </section>
 
-<section class="checkpoint">
-<div class="checkpoint-card">
-<div style="font-size:56px;margin-bottom:12px;">※</div>
-<h3 class="checkpoint-title">You now read your <em>cycle</em>.</h3>
-<p class="checkpoint-body">Up next — the most important chapter on this site. The minimum payment trap, with a live debt simulator.</p>
-<div class="checkpoint-cta-row">
-<a href="../index.html" class="btn btn--ghost">← all chapters</a>
-<a href="06-the-trap.html" class="btn btn--primary btn--lg">Chapter VI: The Trap →</a>
-</div></div></section>
+<section class="sec">
+  <div class="eyebrow">Now the due date arrives</div>
+  <h2 class="h2">Three ways to pay. <em>Three different months.</em></h2>
+  <p class="lede">The statement says you owe {$debt}. Choose what you do.</p>
+  <div class="stage">
+    <div class="seg" id="pay"><button data-v="full" class="on">Pay in full</button><button data-v="min">Pay the minimum</button><button data-v="late">Miss the date</button></div>
+    <div id="pay-out" style="margin-top:22px" aria-live="polite"></div>
+  </div>
+</section>
 
-<div class="chapter-nav-bottom">
-<a href="04-types-of-cards.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">Types of Cards</span></a>
-<a href="06-the-trap.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Next →</span><span class="chapter-nav-name">The Trap</span></a>
-</div>
-</div></div>
+<section class="sec">
+  <div class="eyebrow">The four dates that matter</div>
+  <h2 class="h2">Read your <em>statement</em> like a pro.</h2>
+  <div style="margin-top:22px" id="dates"></div>
+</section>
 
+<aside class="checkpoint">
+  <h3>You can read your <em>cycle</em>.</h3>
+  <p>The interest-free period is real, but it exists only while you clear the statement in full. Next: what happens when you do not — the most important chapter here.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
 <script src="../js/global.js"></script>
 <script>
-const KEY_DAYS = {
-  5: { type: 'statement', icon: '📅', title: 'Statement closes', body: 'Your statement is generated. <strong>Every transaction in the past 30 days</strong> is summed up. The bill arrives via email/SMS. Your reported credit utilization is calculated at this exact moment.' },
-  6: { type: 'fresh', icon: '✨', title: 'Fresh cycle begins', body: 'New transactions from today onwards count toward <strong>next month\'s statement</strong>. A purchase made today gets ~52 days of interest-free credit (until next due date).' },
-  18: { type: 'reminder', icon: '🔔', title: 'Reminder window', body: 'Most banks start sending reminders 7 days before due date. <strong>Set up auto-pay before this</strong> if you tend to forget.' },
-  25: { type: 'due', icon: '💳', title: 'Payment due', body: '<strong>Pay the FULL amount today</strong> to keep your interest-free period intact. Pay only the minimum and interest gets charged from <em>each purchase\'s original date</em> — not from today.' },
-  26: { type: 'late', icon: '⚠️', title: 'Late zone (if unpaid)', body: 'Late fee + interest starts accruing immediately. After 30 days late, this gets reported to credit bureaus and <strong>can drop your score 50-100 points</strong>.' }
-};
-
-const COLORS = { statement: 'electric', fresh: 'success', reminder: 'warm', due: 'gold', late: 'danger' };
-const cal = document.getElementById('cal-days');
-let h = '';
-for (let i = 0; i < 2; i++) h += '<div></div>';
-for (let d = 1; d <= 30; d++) {
-  const k = KEY_DAYS[d];
-  const cls = k ? k.type : '';
-  const icon = k ? k.icon : '';
-  h += `<button class="cal-day ${cls}" onclick="pickDay(${d})">${icon ? `<div style="font-size:14px;">${icon}</div>` : ''}<div>${d}</div></button>`;
+{
+const { $, $$, R, money, t, pick } = DCC;
+const S = 5, g = R.graceDays, dueDay = S + g, maxFree = 30 - (S + 1) + S + g;
+$('#maxd').textContent = maxFree;
+['m0', 'm1'].forEach((id, m) => {
+  $('#' + id).innerHTML = 'MTWTFSS'.split('').map(d => `<div class="cal-h">${d}</div>`).join('') + '<div></div>'.repeat(m ? 4 : 2) +
+    Array.from({ length: 30 }, (_, i) => m ? `<div class="day" data-m="1" data-d="${i + 1}">${i + 1}</div>` : `<button class="day" data-m="0" data-d="${i + 1}" aria-label="Buy on day ${i + 1}">${i + 1}</button>`).join('');
+});
+const abs = (m, d) => m * 30 + d;
+function buy(d) {
+  const stmt = d <= S ? abs(0, S) : abs(1, S), due = stmt + g, free = due - d;
+  $$('.day').forEach(el => { const a = abs(+el.dataset.m, +el.dataset.d);
+    el.className = 'day' + (a === d ? ' buy' : a === stmt ? ' stmt' : a === due ? ' due' : a > d && a < due ? ' free' : a > due && a <= due + 3 ? ' late' : ''); });
+  DCC.animateNumber($('#days'), free, { from: +$('#days').textContent || 0, dur: 500 });
+  $('#bar').style.width = (free / maxFree * 100) + '%';
+  const dm = n => n > 30 ? `the ${n - 30}${ord(n - 30)} of next month` : `the ${n}${ord(n)}`;
+  $('#story').innerHTML = `Bought on <strong>${dm(d)}</strong>. It lands on the statement that closes on <strong>${dm(stmt)}</strong>, and that statement is due on <strong>${dm(due)}</strong>. Pay it in full by then and the ${money(R.a.phone)} cost you nothing extra for <strong>${free} days</strong>.`;
 }
-cal.innerHTML = h;
+const ord = n => n % 10 === 1 && n !== 11 ? 'st' : n % 10 === 2 && n !== 12 ? 'nd' : n % 10 === 3 && n !== 13 ? 'rd' : 'th';
+$('#m0').addEventListener('click', e => { const b = e.target.closest('button.day'); if (b) { buy(+b.dataset.d); DCC.playClick(); } });
+buy(12);
 
-function pickDay(d) {
-  const k = KEY_DAYS[d];
-  const detail = document.getElementById('cyc-detail');
-  if (k) {
-    detail.innerHTML = `<div style="font-family:var(--font-mono);font-size:11px;color:var(--${COLORS[k.type]});letter-spacing:.06em;margin-bottom:8px;">DAY ${d} · ${k.title.toUpperCase()}</div><div style="font-family:var(--font-display);font-size:26px;font-weight:700;margin-bottom:12px;letter-spacing:-.02em;">${k.title}</div><p style="font-size:14px;color:var(--ink-muted);line-height:1.7;">${k.body}</p>`;
-  } else {
-    detail.innerHTML = `<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;">DAY ${d}</div><div style="font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:12px;">A regular day</div><p style="font-size:14px;color:var(--ink-muted);line-height:1.6;">Spend freely — every purchase gets added to your current cycle balance. Just remember: this all comes due on the 25th.</p>`;
-  }
-  DCC.playClick();
+const debt = R.a.debt, mr = R.apr / 1200, minPay = Math.max(R.minFloor, DCC.rid === 'au' ? debt * R.minPct / 100 : debt * R.minPct / 100 + debt * mr * (1 + R.feeTax));
+const PAY = {
+  full: ['is-success', 'You owe nothing more', [['Paid', money(debt)], ['Interest', money(0)], ['Next month’s purchases', 'interest-free again']],
+    'This is the whole game. Clear the statement balance by the due date and the bank has lent you its money for up to ' + maxFree + ' days at 0%. Set autopay to “full statement balance” and you never have to think about it.'],
+  min: ['is-warm', 'You kept the account in good standing — and lost the free period', [['Paid', money(minPay)], ['Carried forward', money(debt - minPay)], ['Interest next statement, roughly', money((debt - minPay) * mr * (1 + R.feeTax)), 1]],
+    pick({
+      in: 'Paying less than the full amount cancels the interest-free period. Interest (about ' + R.apr + '% a year, plus 18% GST) is charged on <strong>each purchase from the day you made it</strong>, and every new purchase starts accruing immediately until the whole balance is cleared.',
+      us: 'Pay less than the full statement balance and you lose the grace period. Interest accrues daily on the average daily balance, <strong>new purchases start accruing from the day you make them</strong>, and you need to pay in full — often two months running — to get the grace period back. That lingering charge is called trailing interest.',
+      uk: 'Pay less than the full balance and interest is charged on the whole statement, usually backdated to each transaction date, and new purchases accrue from day one. On a 0% promotional deal, the minimum is fine — but missing even one payment usually ends the 0% rate.',
+      au: 'Pay less than the closing balance and you lose your interest-free days: interest is charged on purchases back to the day you made them, and new purchases accrue immediately until you pay a statement in full.' })],
+  late: ['is-danger', 'Now it gets expensive', [['Late fee', pick({ in: 'up to ' + money(1300) + ' + 18% GST', us: 'about ' + money(32), uk: money(12), au: 'about ' + money(25) }), 1], ['Interest', 'on the whole balance', 1], ['Credit report', pick({ in: 'if more than 3 days late', us: 'once 30 days late', uk: 'missed payment marker', au: 'once 14 days late' }), 1]],
+    pick({
+      in: 'RBI rules give you a three-day buffer: the bank can charge a late fee and report you to the bureaus only if the payment is <strong>more than three days</strong> past the due date — and the fee is charged on the unpaid amount, not the total. After that the fee, interest and a mark on your CIBIL report all arrive together.',
+      us: 'The late fee is charged straight away. At 30 days late the issuer reports it to the bureaus, where it stays for <strong>seven years</strong>. At 60 days late the issuer may impose a <strong>penalty APR</strong> near 30% on your balance.',
+      uk: 'A £12 default fee, interest on everything, and a missed-payment marker that stays on your credit file for <strong>six years</strong>. You usually lose any 0% promotional rate as well. Miss several and the account is registered as a default.',
+      au: 'A late fee is added and your interest-free days go. If the payment is more than 14 days overdue, your repayment history for that month is recorded as late, where lenders can see it for <strong>two years</strong>. Sixty days overdue on $150 or more can be listed as a default for five years.' })]
+};
+function pay(v) { const [cls, head, rows, text] = PAY[v];
+  $$('#pay button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  $('#pay-out').innerHTML = `<div class="split"><div><h3 class="h3">${head}</h3><div class="kv" style="margin-top:14px">${rows.map(r => `<div class="${r[2] ? 'is-fee' : ''}"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('')}</div></div><div class="callout ${cls}">${text}</div></div>`; }
+$('#pay').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { pay(b.dataset.v); b.dataset.v === 'full' ? DCC.playSuccess() : b.dataset.v === 'late' ? DCC.playError() : DCC.playClick(); } });
+pay('full');
+
+$('#dates').innerHTML = [
+  ['Statement (closing) date', 'The day the bank adds up the cycle and issues the bill. The balance on this day is normally what gets reported to the credit bureaus — so it, not your payment record, drives your utilisation.'],
+  ['Payment due date', pick({ in: 'Usually 18–20 days after the statement. You can ask the bank to change your billing cycle at least once to suit your salary date.', us: 'By law at least 21 days after the statement is sent, and it must fall on the same date each month. You can ask to move it.', uk: 'Typically 25 days after the statement; cards advertise “up to 56 days interest-free”. Set a direct debit for the full balance.', au: 'Typically 14–25 days after the statement; cards advertise “up to 44” or “up to 55 days interest-free”.' })],
+  ['Minimum payment due', `The least you can pay to stay out of arrears — here, ${R.minRule}. It keeps your record clean. It does not stop interest. Chapter VI shows what it really costs.`],
+  ['Total / statement balance', 'The only figure that matters. Pay this and the card costs you nothing. “Current balance” may be higher because it includes purchases since the statement closed — those are not due yet.']
+].map(([h, p]) => `<details class="fold"><summary><span class="h4">${h}</span></summary><div class="fold-body"><p>${p}</p></div></details>`).join('');
 }
 </script>
-</body></html>
+</body>
+</html>

@@ -16,7 +16,7 @@ window.DCC_REGIONS = {
     regulator: 'RBI', ombudsman: 'the RBI Integrated Ombudsman (cms.rbi.org.in)', ombWait: '30 days',
     instant: 'UPI', tax: 'GST', feeTax: 0.18, id_doc: 'PAN and Aadhaar', incomeDoc: 'salary slips or ITR',
     apr: 42, aprLow: 18, aprHigh: 52, aprTypical: '36–45%', aprCash: 45,
-    minPct: 5, minFloor: 200, minRule: '5% of the balance',
+    minPct: 5, minFloor: 200, minRule: '5% of the balance plus that month’s interest, fees and GST',
     lateFee: 950, lateRule: 'tiered by balance, roughly ₹500–₹1,300', graceDays: 20, freeDays: 50,
     fx: 3.5, cashFeePct: 2.5, cashFeeMin: 500, btFee: null,
     contactless: '₹5,000', homeCur: 'INR', bankSite: 'hdfcbank.bank.in', fakeSite: 'hdfc-secure-verify.in',

@@ -290,6 +290,7 @@ details.fold .fold-body > * + * { margin-top: 12px; }
 .checkpoint h3 { font: 800 var(--step-2)/1.15 var(--font-display); letter-spacing: -.02em; margin-bottom: 10px; text-wrap: balance; }
 .checkpoint p { color: var(--ink-muted); margin-bottom: 22px; }
 .checkpoint .row { justify-content: center; }
+.checkpoint .btn { white-space: normal; text-align: center; max-width: 100%; line-height: 1.25; }
 .ch-nav { display: flex; justify-content: space-between; gap: 16px; padding-block: 28px 56px; border-top: 1px dashed var(--border-strong); }
 .ch-nav a { display: flex; flex-direction: column; gap: 2px; text-decoration: none; color: inherit; transition: transform .3s var(--ease-out); max-width: 46%; }
 .ch-nav a:last-child { text-align: right; margin-left: auto; }
