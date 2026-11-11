@@ -58,7 +58,7 @@
   let rid = REG[urlR] ? urlR : REG[stored] ? stored : (guessed = true, guessRegion());
   if (REG[urlR]) store.set('region', urlR);
   const R = REG[rid];
-  document.documentElement.dataset.region = rid;
+  document.documentElement.dataset.edition = rid;
 
   const nf = new Intl.NumberFormat(R.locale, { maximumFractionDigits: 0 });
   const nf2 = new Intl.NumberFormat(R.locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -194,7 +194,7 @@
     drawer = sheet('drawer', 'All chapters', tocHtml());
 
     document.addEventListener('click', e => {
-      const b = e.target.closest('[data-open],[data-close],[data-region],[data-mute]');
+      const b = e.target.closest('[data-open],[data-close],button[data-region],[data-mute]');
       if (e.target === scrim) return closeSheets();
       if (!b) return;
       if (b.dataset.open === 'regions') openRegions();

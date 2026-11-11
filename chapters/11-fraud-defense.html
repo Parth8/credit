@@ -1,155 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
 <title>XI. Your Defense System — Decoding Credit Cards</title>
-  <!-- Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://parth8.github.io/credit/chapters/11-fraud-defense.html">
-  <meta property="og:title" content="XI. Your Defense System — Decoding Credit Cards">
-  <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:site_name" content="Decoding Credit Cards">
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="XI. Your Defense System — Decoding Credit Cards">
-  <meta name="twitter:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta name="twitter:image" content="https://parth8.github.io/credit/og-image.png">
-  
-
+<meta name="description" content="Six layers sit between a thief and your money. Launch five different attacks and watch which layer stops each one — and find the one attack nothing stops.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/11-fraud-defense.html">
+<meta property="og:title" content="XI. Your Defense System — Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
 <link rel="stylesheet" href="../css/global.css">
 <style>
-.chapter-shell{min-height:100vh;padding-top:80px}
-.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
-.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
-.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
-.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
-.chapter-h1 em{font-style:italic;font-weight:300;color:var(--success)}
-.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
-.layers-stage{padding:48px 0}
-.layers-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:32px}
-.layer-tile{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:24px 16px;cursor:pointer;transition:all .3s var(--ease-out);text-align:center;position:relative;overflow:hidden}
-.layer-tile:hover,.layer-tile.active{transform:translateY(-3px);border-color:var(--success);box-shadow:0 8px 24px rgba(22,163,74,.1)}
-.layer-tile.active{background:var(--success-soft)}
-.layer-tile::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--success);transform:scaleX(0);transition:transform .3s ease}
-.layer-tile:hover::before,.layer-tile.active::before{transform:scaleX(1)}
-.layer-icon{font-size:36px;margin-bottom:12px}
-.layer-name{font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
-.layer-tag{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint);letter-spacing:.04em;text-transform:uppercase}
-.layer-detail{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-lg);padding:36px 40px;box-shadow:0 1px 3px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.04);min-height:200px}
-.layer-detail.empty{text-align:center;color:var(--ink-faint);font-style:italic;font-family:var(--font-display);font-size:18px;padding:48px}
-.layer-detail-title{font-family:var(--font-display);font-size:32px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
-.layer-detail-title em{font-style:italic;font-weight:300;color:var(--success)}
-.layer-detail-tag{font-family:var(--font-mono);font-size:11px;color:var(--success);letter-spacing:.06em;margin-bottom:16px}
-.layer-detail-body{font-size:15px;line-height:1.7;color:var(--ink-soft);margin-bottom:20px}
-.layer-detail-body strong{color:var(--ink)}
-.layer-detail-body em{font-style:italic;color:var(--success)}
-.layer-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
-.layer-stat{padding:16px;background:var(--paper);border-radius:8px}
-.layer-stat-label{font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
-.layer-stat-val{font-family:var(--font-display);font-size:18px;font-weight:700;letter-spacing:-.01em}
-.checkpoint{padding:80px 0;text-align:center}
-.checkpoint-card{background:white;border:2px dashed var(--electric);border-radius:var(--radius-lg);padding:48px 32px;max-width:640px;margin:0 auto}
-.checkpoint-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
-.checkpoint-title em{font-style:italic;font-weight:300;color:var(--electric)}
-.checkpoint-body{font-size:15px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px}
-.checkpoint-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
-.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
-.chapter-nav-link:hover{transform:translateX(-4px)}
-.chapter-nav-link.next{align-items:flex-end}
-.chapter-nav-link.next:hover{transform:translateX(4px)}
-.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
-.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
-@media(max-width:768px){.layers-grid{grid-template-columns:repeat(2,1fr)}.layer-detail{padding:24px}}
-</style></head><body>
-<nav class="site-nav">
-<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>※</span></a>
-<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="12-disputes.html">Next →</a></li></ul>
-</nav>
+.layer { display: grid; grid-template-columns: 40px 1fr auto; gap: 12px; align-items: center; padding: 12px 14px; border-radius: var(--r-md); background: var(--paper); border-left: 4px solid var(--ink-ghost); transition: background .4s, border-color .4s, transform .4s var(--ease-out), opacity .4s; }
+.layer + .layer { margin-top: 8px; }
+.layer .ic { font-size: 1.5rem; text-align: center; }
+.layer b { display: block; line-height: 1.25; } .layer small { color: var(--ink-muted); font-size: .84rem; line-height: 1.4; display: block; }
+.layer .tag { font: 700 .7rem var(--font-mono); text-transform: uppercase; letter-spacing: .05em; white-space: nowrap; }
+.layer.stops { background: var(--success-soft); border-color: var(--success); transform: scale(1.02); } .layer.stops .tag { color: var(--success); }
+.layer.helps { background: var(--gold-soft); border-color: var(--gold); } .layer.helps .tag { color: var(--gold); }
+.layer.no { opacity: .45; }
+.layer.fail { background: var(--danger-soft); border-color: var(--danger); } .layer.fail .tag { color: var(--danger); }
+.sw { display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; width: 100%; padding: 14px 16px; border-radius: var(--r-md); background: var(--white); border: 1.5px solid var(--border-strong); transition: background .25s, border-color .25s; }
+.sw + .sw { margin-top: 10px; }
+.sw i { width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--ink-ghost); display: grid; place-items: center; font-style: normal; color: transparent; font-weight: 700; transition: all .25s var(--ease-spring); }
+.sw.on { background: var(--success-soft); border-color: var(--success); } .sw.on i { background: var(--success); border-color: var(--success); color: #fff; transform: scale(1.1); }
+.sw small { display: block; color: var(--ink-muted); font-size: .86rem; }
+</style>
+</head>
+<body data-ch="11">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>Your <em>Defense System</em></h1>
+  <p>Six layers sit between a thief and your money. Launch five different attacks and watch which layer stops each one — and find the one attack nothing stops.</p>
+</header>
 
-<div class="chapter-shell"><div class="container">
-<div class="chapter-header">
-<div class="chapter-header-row"><div class="chapter-roman">Chapter XI</div><div class="chapter-progress-text">11 of 22 · ~6 min</div></div>
-<h1 class="chapter-h1">Your <em>Defense System</em></h1>
-<p class="chapter-intro">Behind every transaction sits an invisible stack of security layers — most people don't even know they exist. Tap each one. Learn what it does for you.</p>
-</div>
-
-<section class="layers-stage">
-<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;">Five layers, all working in real time</div>
-<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;margin-bottom:32px;">The <em style="font-style:italic;font-weight:300;color:var(--success);">invisible armor</em>.</h2>
-
-<div class="layers-grid" id="layers-grid"></div>
-<div class="layer-detail empty" id="layer-detail">Tap any layer above to see what it does →</div>
+<section class="sec">
+  <div class="eyebrow">Attack simulator</div>
+  <h2 class="h2">Pick an attack. <em>See what stops it.</em></h2>
+  <div class="grid" id="attacks" style="--min:170px;margin-top:22px"></div>
+  <div class="stage split">
+    <div id="stack"></div>
+    <div class="sticky" id="verdict" aria-live="polite"><span class="hand">choose an attack above ↑</span></div>
+  </div>
 </section>
 
-<section class="checkpoint">
-<div class="checkpoint-card">
-<div style="font-size:56px;margin-bottom:12px;">🛡</div>
-<h3 class="checkpoint-title">You now know <em>what's protecting you</em>.</h3>
-<p class="checkpoint-body">Up next: when these defenses fail, you have one nuclear option — the chargeback. Walk through filing one.</p>
-<div class="checkpoint-cta-row">
-<a href="../index.html" class="btn btn--ghost">← all chapters</a>
-<a href="12-disputes.html" class="btn btn--primary btn--lg">Chapter XII: Disputes →</a>
-</div></div></section>
+<section class="sec">
+  <div class="eyebrow">The layer that is yours</div>
+  <h2 class="h2">Six switches. <em>Flip them tonight.</em></h2>
+  <p class="lede">Open your banking app in another tab and tick each one off as you do it. This list is saved on this device.</p>
+  <div style="margin-top:22px" id="switches"></div>
+  <p class="mono faint" id="sw-count" style="margin-top:14px"></p>
+</section>
 
-<div class="chapter-nav-bottom">
-<a href="10-fraud.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">Spot the Fraud</span></a>
-<a href="12-disputes.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Next →</span><span class="chapter-nav-name">Disputes & Chargebacks</span></a>
-</div>
-</div></div>
-
+<aside class="checkpoint" data-icon="🛡">
+  <h3>You know where the <em>armour</em> is — and where it is not.</h3>
+  <p>The system protects you from almost everything except being talked into approving a payment yourself. When something still gets through, you dispute it. That is next.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
 <script src="../js/global.js"></script>
 <script>
-const LAYERS = [
-  { icon: '🔒', name: 'EMV Chip', tag: 'Hardware-level', title: 'EMV <em>chip authentication</em>',
-    desc: `That gold square on your card is a cryptographic computer. <strong>Every transaction generates a unique one-time code</strong> that\'s mathematically impossible to reuse. Even if a thief copies the data from one transaction, the next one needs a brand-new code that only the chip can generate.`,
-    stats: [{ l: 'Adopted globally', v: '~2014–2018' }, { l: 'Fraud reduction', v: '~76%' }],
-    em: `Why it works: <em>each transaction is a fresh handshake</em>, not a static password.` },
-  { icon: '🎭', name: 'Tokenization', tag: 'Data-layer', title: '<em>Tokenization</em>',
-    desc: `When you save your card on Amazon or use Google Pay, your real card number is never actually stored or transmitted. Instead, a <strong>random "token"</strong> — a meaningless string — is generated and used in its place. <strong>Even if Amazon gets hacked, the leaked tokens are useless</strong> outside that one merchant.`,
-    stats: [{ l: 'Token validity', v: 'Per merchant' }, { l: 'Reusable elsewhere', v: 'Never' }],
-    em: `Why it works: <em>the secret never travels through systems that can leak it</em>.` },
-  { icon: '🏛', name: 'PCI DSS', tag: 'Industry-wide', title: '<em>PCI DSS</em>',
-    desc: `Payment Card Industry Data Security Standard. A massive <strong>set of rules every merchant who accepts cards must follow</strong> — covering encryption, network security, access controls, and audits. <strong>Storing your CVV — even briefly — is illegal under PCI DSS.</strong> Violating merchants face crushing fines, including being banned from accepting cards.`,
-    stats: [{ l: 'Levels', v: '4 (size-based)' }, { l: 'Audited', v: 'Annually' }],
-    em: `Why it works: <em>compliance is enforced by the networks themselves</em>, not voluntary.` },
-  { icon: '🔑', name: '2-Factor Auth', tag: 'Per-transaction', title: '<em>2-Factor Authentication</em>',
-    desc: `In India, RBI mandates 2FA on most online card transactions — typically OTP via SMS or in-app. <strong>The card number alone isn\'t enough to charge you</strong>; the second factor is a real-time code only you can receive. India is among the strictest countries on this — many countries don\'t require 2FA at all, which is why our card fraud rates are dramatically lower.`,
-    stats: [{ l: 'India OTP threshold', v: '₹0+' }, { l: 'Fraud reduction', v: 'Up to 80%' }],
-    em: `Why it works: <em>even a stolen card needs your phone</em>.` },
-  { icon: '🌐', name: 'AVS & Monitoring', tag: 'Real-time AI', title: '<em>AVS + Real-time monitoring</em>',
-    desc: `Address Verification System cross-checks the billing address you enter with what the bank has on file. Beyond that, <strong>your bank runs ML models on your spending patterns 24/7</strong> — flagging transactions that deviate from your usual location, amount, merchant type, or time. <strong>This is why your card sometimes gets blocked when you travel</strong> — the system is doing its job.`,
-    stats: [{ l: 'Decision time', v: '<200ms' }, { l: 'False positives', v: '~5–10%' }],
-    em: `Why it works: <em>the system learns YOU</em>, then catches anything that\'s not you.` }
+{
+const { $, $$, R, rid, t, pick, store } = DCC;
+const twoFA = pick({
+  in: ['Two-factor authentication', 'RBI requires a second factor on almost every online card payment in India. Since April 2026 banks may use app approval, biometrics or passkeys as well as SMS OTP.'],
+  us: ['3-D Secure and address checks', 'The US has no legal two-factor requirement. Merchants lean on the security code, the address verification service (AVS) and optional 3-D Secure challenges.'],
+  uk: ['Strong customer authentication', 'UK and EU law require two of: something you know, have, or are — usually an approval in your banking app — for most online payments.'],
+  au: ['3-D Secure challenges', 'Australian issuers challenge riskier online payments with an app approval or code, under an industry framework rather than a blanket law.'] });
+const L = [
+  ['🔒', 'EMV chip', 'A fresh cryptogram for every payment; copied data cannot be replayed.'],
+  ['🎭', 'Tokenisation', pick({ in: 'Shops and wallets hold a stand-in token, not your number — mandatory for saved cards in India since 2022.', us: 'Wallets and many shops hold a stand-in token, not your real card number.' })],
+  ['🔑', twoFA[0], twoFA[1]],
+  ['🏛', 'PCI DSS', 'The card industry’s security standard. Merchants may not keep your security code after a payment, and must encrypt the rest.'],
+  ['🧠', 'Real-time monitoring', 'Your issuer scores every payment in milliseconds against how you normally behave.'],
+  ['👤', 'You', 'Alerts, card lock, limits — and whether you approve what you are asked to approve.']
 ];
+const weak = rid === 'us';
+const AT = [
+  ['🧲', 'Skimmed stripe', 'A device on a fuel pump copies your magnetic stripe and a clone is made.', ['stops', 'no', 'no', 'no', 'helps', 'helps'],
+    'The clone has no chip, so it cannot produce the cryptogram a chip terminal demands. It only works where terminals still accept a swipe — which is why fraudsters ship cloned cards to the places that do. Monitoring catches most of the rest.', 'Stopped'],
+  ['💾', 'Shop gets hacked', 'An online retailer you used last year suffers a data breach.', ['no', 'stops', 'helps', 'stops', 'helps', 'no'],
+    'If the shop stored a token, the thieves have something that works only at that shop. If it stored the real number, PCI rules mean it does not have your security code — and anything they try still meets ' + (weak ? 'the issuer’s fraud model.' : 'a second-factor challenge.'), 'Stopped'],
+  ['🌐', 'Card number used online', 'Someone has your number, expiry and security code and goes shopping.', ['no', 'no', weak ? 'helps' : 'stops', 'no', 'helps', 'helps'],
+    weak ? 'This is the soft spot in the US: without mandatory two-factor checks, card-not-present fraud is the largest category. Monitoring stops much of it, alerts tell you about the rest, and the law makes the loss the bank’s, not yours.' : 'The payment triggers a challenge that only your phone or app can answer. Without it, the purchase fails. Some low-value or “trusted merchant” payments are exempt, which is where monitoring takes over.', weak ? 'Mostly stopped' : 'Stopped'],
+  ['👜', 'Wallet stolen', 'Your physical card is taken and tapped until it stops working.', ['no', 'no', 'no', 'no', 'helps', 'stops'],
+    `Contactless is limited (${R.contactless}) and issuers force a PIN after a few taps in a row. The damage ends the moment you lock the card in the app. ${R.lostRule}.`, 'Limited, then stopped by you'],
+  ['🎣', 'You are talked into it', 'A caller persuades you to read out a code or approve a payment in your app.', ['no', 'no', 'fail', 'no', 'helps', 'fail'],
+    'Every technical layer works perfectly — and that is the problem. The second factor was satisfied, by you. To the bank it looks like a payment you made, so refunds are harder and may be refused. <strong>No bank ever needs a code it has just sent you.</strong>', 'Gets through']
+];
+$('#attacks').innerHTML = AT.map((a, i) => `<button class="tile" data-i="${i}"><span class="tile-icon">${a[0]}</span><span class="tile-name">${a[1]}</span><span class="tile-sub">${a[2]}</span></button>`).join('');
+const drawStack = v => $('#stack').innerHTML = L.map((l, i) => `<div class="layer ${v ? v[i] : ''}" style="transition-delay:${i * 70}ms"><span class="ic">${l[0]}</span><div><b>${l[1]}</b><small>${l[2]}</small></div><span class="tag">${v ? { stops: 'stops it', helps: 'helps', no: '—', fail: 'bypassed' }[v[i]] : ''}</span></div>`).join('');
+drawStack();
+const seen = new Set();
+$('#attacks').addEventListener('click', e => { const b = e.target.closest('.tile'); if (!b) return; const i = +b.dataset.i, a = AT[i];
+  $$('#attacks .tile').forEach((x, k) => x.classList.toggle('on', k === i)); b.classList.add('done'); seen.add(i);
+  drawStack(); requestAnimationFrame(() => requestAnimationFrame(() => $$('.layer').forEach((el, k) => el.classList.add(a[3][k]))));
+  const bad = i === 4;
+  $('#verdict').innerHTML = `<span class="chip ${bad ? 'is-danger' : 'is-success'}">${a[5]}</span><h3 class="h3" style="margin-block:10px">${a[1]}</h3><p>${a[4]}</p>${bad ? '<div class="callout is-danger" style="margin-top:16px"><b>The gap</b>Security has moved from the card to the person holding it. That is why chapter X exists.</div>' : ''}`;
+  bad ? DCC.playError() : DCC.playSuccess(); if (seen.size === AT.length) DCC.markDone();
+  if (matchMedia('(max-width: 899px)').matches) $('#stack').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 
-const grid = document.getElementById('layers-grid');
-grid.innerHTML = LAYERS.map((l, i) => `
-  <button class="layer-tile" onclick="pickLayer(${i})" data-idx="${i}">
-    <div class="layer-icon">${l.icon}</div>
-    <div class="layer-name">${l.name}</div>
-    <div class="layer-tag">${l.tag}</div>
-  </button>`).join('');
-
-function pickLayer(idx) {
-  document.querySelectorAll('.layer-tile').forEach((t, i) => t.classList.toggle('active', i === idx));
-  const l = LAYERS[idx];
-  const detail = document.getElementById('layer-detail');
-  detail.classList.remove('empty');
-  detail.innerHTML = `
-    <div class="layer-detail-tag">LAYER ${idx + 1} OF 5 · ${l.tag.toUpperCase()}</div>
-    <div class="layer-detail-title">${l.title}</div>
-    <div class="layer-detail-body">${l.desc}</div>
-    <div style="padding:14px 18px;background:var(--success-soft);border-left:3px solid var(--success);border-radius:0 8px 8px 0;font-size:14px;color:var(--ink);line-height:1.5;">${l.em}</div>
-    <div class="layer-stat-row">
-      ${l.stats.map(s => `<div class="layer-stat"><div class="layer-stat-label">${s.l}</div><div class="layer-stat-val">${s.v}</div></div>`).join('')}
-    </div>`;
-  DCC.playClick();
+const SW = [
+  ['Turn on instant alerts for every transaction', 'Push notifications, not just email. It is how you find out in seconds rather than at statement time.'],
+  ['Find the card lock', 'Every major app has a freeze switch. Know where it is before you need it.'],
+  [pick({ in: 'Switch off international and contactless use until you need them', us: 'Set a per-transaction or daily limit if your issuer offers one', uk: 'Set your own contactless limit, or switch contactless off', au: 'Lock international and online payments unless you are using them' }), pick({ in: 'RBI requires every card to have these switches, and your own limits for online, POS and ATM use.', us: 'Many issuers let you cap transaction size or block categories.', uk: 'Since March 2026 UK banks can let you choose your own contactless limit.', au: 'Most bank apps have per-channel locks: online, overseas, ATM, contactless.' })],
+  ['Put the card in your phone’s wallet', 'Apple Pay and Google Pay send a token and need your face or fingerprint. Safer than the plastic.'],
+  ['Use a virtual or one-off card number for unfamiliar sites', 'Many issuers generate one in the app. If that shop is breached, the number is already dead.'],
+  ['Save the lost-card number in your contacts', pick({ in: 'And the cyber-fraud helpline: 1930.', us: 'It is on the back of the card — which is no help once the card is gone.', uk: 'And remember 159, which routes you to your bank’s real fraud team.', au: 'It is on the back of the card — which is no help once the card is gone.' })]
+];
+const on = new Set(store.get('switches', []));
+const drawSw = () => { $('#switches').innerHTML = SW.map((s, i) => `<button class="sw ${on.has(i) ? 'on' : ''}" data-i="${i}" aria-pressed="${on.has(i)}"><i>✓</i><span><b>${s[0]}</b><small>${s[1]}</small></span></button>`).join(''); $('#sw-count').textContent = `${on.size} of ${SW.length} done`; };
+$('#switches').addEventListener('click', e => { const b = e.target.closest('.sw'); if (!b) return; const i = +b.dataset.i; on.has(i) ? on.delete(i) : on.add(i); store.set('switches', [...on]); drawSw();
+  if (on.size === SW.length) { DCC.playSuccess(); DCC.burstConfetti(); } else DCC.playClick(); });
+drawSw();
 }
 </script>
-</body></html>
+</body>
+</html>
