@@ -244,8 +244,9 @@
 
   // ---------- shared quiz runner ----------
   // items: [{ kicker, title, body, opts:[{t, ok, why}], explain }]
-  function quiz(el, { items, label = 'Round', nextLabel = 'Next →', endLabel = 'See result →', onEnd }) {
+  function quiz(el, { items, label = 'Round', nextLabel = 'Next →', endLabel = 'See result →', onEnd, onAnswer, shuffle }) {
     let i = 0, score = 0; const marks = [];
+    if (shuffle) items.forEach(q => { for (let k = q.opts.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [q.opts[k], q.opts[j]] = [q.opts[j], q.opts[k]]; } });
     const show = () => {
       if (i >= items.length) return onEnd(score, items.length, () => { i = 0; score = 0; marks.length = 0; show(); });
       const q = items[i];
@@ -263,6 +264,7 @@
       const q = items[i], k = +b.dataset.k, o = q.opts[k];
       $$('.opt', el).forEach((x, j) => { x.classList.add('locked'); x.classList.add(q.opts[j].ok ? 'right' : j === k ? 'wrong' : 'dim'); });
       marks[i] = !!o.ok; if (o.ok) { score++; playSuccess(); } else playError();
+      onAnswer && onAnswer(q, o, i);
       $('.quiz-fb', el).innerHTML = `<div class="fb ${o.ok ? 'good' : 'bad'}"><div class="fb-title">${o.ok ? '✓ ' + (q.yes || 'Right.') : '✗ ' + (q.no || 'Not quite.')}</div>
         ${o.why ? `<p>${o.why}</p>` : ''}${q.explain ? `<div class="quiz-explain">${q.explain}</div>` : ''}
         <div class="row"><button class="btn btn--primary" data-next>${i < items.length - 1 ? nextLabel : endLabel}</button></div></div>`;

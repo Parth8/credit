@@ -1,1084 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>X. Spot the Fraud — Decoding Credit Cards</title>
-  <!-- Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://parth8.github.io/credit/chapters/10-fraud.html">
-  <meta property="og:title" content="X. Spot the Fraud — Decoding Credit Cards">
-  <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:site_name" content="Decoding Credit Cards">
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="X. Spot the Fraud — Decoding Credit Cards">
-  <meta name="twitter:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta name="twitter:image" content="https://parth8.github.io/credit/og-image.png">
-  
-
-  <link rel="stylesheet" href="../css/global.css">
-  <style>
-    .chapter-shell { min-height: 100vh; padding-top: 80px; }
-    .chapter-header { padding: 32px 0; border-bottom: 1px dashed var(--border-strong); margin-bottom: 32px; }
-    .chapter-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .chapter-roman { font-family: var(--font-display); font-size: 14px; font-style: italic; color: var(--electric); letter-spacing: 0.04em; }
-    .chapter-progress-text { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; }
-    .chapter-h1 { font-family: var(--font-display); font-size: clamp(48px, 6vw, 80px); font-weight: 800; line-height: 1; letter-spacing: -0.03em; margin-bottom: 16px; }
-    .chapter-h1 em { font-style: italic; font-weight: 300; color: var(--danger); }
-    .chapter-intro { font-size: 18px; color: var(--ink-muted); max-width: 600px; line-height: 1.6; }
-
-    /* SCORE TRACKER */
-    .score-bar {
-      padding: 20px 28px;
-      background: white;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-lg);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 32px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    }
-
-    .score-label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-faint);
-      letter-spacing: 0.06em;
-    }
-
-    .score-counter {
-      font-family: var(--font-display);
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-
-    .score-counter span { color: var(--success); }
-
-    .scenario-pips {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .scenario-pip {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: var(--parchment);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--ink-faint);
-      transition: all 0.3s ease;
-    }
-
-    .scenario-pip.current {
-      background: var(--electric);
-      color: white;
-      transform: scale(1.15);
-    }
-
-    .scenario-pip.correct {
-      background: var(--success);
-      color: white;
-    }
-
-    .scenario-pip.wrong {
-      background: var(--danger);
-      color: white;
-    }
-
-    /* SCENARIO STAGE */
-    .scenario-stage {
-      background: white;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.04);
-      margin-bottom: 64px;
-    }
-
-    .scenario-meta {
-      padding: 20px 32px;
-      background: var(--paper);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .scenario-icon {
-      font-size: 28px;
-    }
-
-    .scenario-title-block {
-      flex: 1;
-    }
-
-    .scenario-num {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-faint);
-      letter-spacing: 0.06em;
-      margin-bottom: 2px;
-    }
-
-    .scenario-name {
-      font-family: var(--font-display);
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      line-height: 1.1;
-    }
-
-    /* THE STORY */
-    .scenario-story {
-      padding: 40px 48px;
-      background: var(--cream);
-      border-bottom: 1px solid var(--border);
-      position: relative;
-    }
-
-    .story-setting {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-faint);
-      letter-spacing: 0.06em;
-      margin-bottom: 12px;
-    }
-
-    .story-text {
-      font-family: var(--font-display);
-      font-size: 19px;
-      line-height: 1.55;
-      color: var(--ink);
-      font-weight: 500;
-    }
-
-    .story-text em {
-      font-style: italic;
-      color: var(--electric);
-    }
-
-    /* VISUAL MOCKUP — Phone/SMS/email */
-    .mockup-wrap {
-      margin-top: 24px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .mockup-phone {
-      width: 320px;
-      background: #1a1a18;
-      border-radius: 28px;
-      padding: 40px 16px 16px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.2), 0 2px 8px rgba(0,0,0,0.1);
-      position: relative;
-    }
-
-    .mockup-phone::before {
-      content: '';
-      position: absolute;
-      top: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 6px;
-      background: #000;
-      border-radius: 3px;
-    }
-
-    .mockup-screen {
-      background: white;
-      border-radius: 16px;
-      padding: 16px;
-      min-height: 280px;
-      font-family: var(--font-body);
-    }
-
-    .mockup-bubble {
-      background: var(--paper);
-      border-radius: 16px 16px 16px 4px;
-      padding: 14px 16px;
-      margin-bottom: 12px;
-      max-width: 85%;
-      font-size: 13px;
-      line-height: 1.5;
-      color: var(--ink);
-      position: relative;
-    }
-
-    .mockup-bubble strong {
-      font-weight: 700;
-    }
-
-    .mockup-sender {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--ink-faint);
-      letter-spacing: 0.04em;
-      margin-bottom: 6px;
-    }
-
-    .mockup-link {
-      color: var(--electric);
-      text-decoration: underline;
-      word-break: break-all;
-    }
-
-    .mockup-email {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px;
-      font-family: var(--font-body);
-      font-size: 13px;
-    }
-
-    .mockup-email-header {
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 12px;
-    }
-
-    .mockup-email-from {
-      font-weight: 700;
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
-
-    .mockup-email-to {
-      font-size: 11px;
-      color: var(--ink-faint);
-      font-family: var(--font-mono);
-    }
-
-    .mockup-email-subject {
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .mockup-email-body {
-      font-size: 12px;
-      color: var(--ink-soft);
-      line-height: 1.6;
-    }
-
-    /* ATM/Terminal scene */
-    .scene-card {
-      background: white;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-md);
-      padding: 32px;
-      max-width: 420px;
-      margin: 0 auto;
-      text-align: center;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-    }
-
-    .scene-icon {
-      font-size: 56px;
-      margin-bottom: 16px;
-    }
-
-    .scene-card h4 {
-      font-family: var(--font-display);
-      font-size: 22px;
-      margin-bottom: 8px;
-    }
-
-    .scene-card p {
-      font-size: 14px;
-      color: var(--ink-muted);
-      line-height: 1.5;
-    }
-
-    .clue-list {
-      margin-top: 20px;
-      text-align: left;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      padding: 16px;
-      background: var(--paper);
-      border-radius: 8px;
-    }
-
-    .clue-list li {
-      list-style: none;
-      font-size: 13px;
-      color: var(--ink-soft);
-      padding-left: 20px;
-      position: relative;
-      line-height: 1.5;
-    }
-
-    .clue-list li::before {
-      content: '•';
-      position: absolute;
-      left: 6px;
-      color: var(--ink-faint);
-    }
-
-    /* THE QUESTION */
-    .scenario-question {
-      padding: 32px 48px;
-      background: white;
-    }
-
-    .question-prompt {
-      font-family: var(--font-display);
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      margin-bottom: 24px;
-      line-height: 1.3;
-    }
-
-    .question-prompt em {
-      font-style: italic;
-      font-weight: 300;
-      color: var(--electric);
-    }
-
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .option-btn {
-      padding: 18px 24px;
-      background: white;
-      border: 1.5px solid var(--border-strong);
-      border-radius: var(--radius-md);
-      font-family: var(--font-body);
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--ink);
-      cursor: pointer;
-      transition: all 0.25s var(--ease-out);
-      text-align: left;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      line-height: 1.4;
-    }
-
-    .option-btn:hover:not(.disabled) {
-      border-color: var(--electric);
-      transform: translateX(4px);
-      box-shadow: 0 4px 16px rgba(37,99,235,0.06);
-    }
-
-    .option-letter {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--paper);
-      color: var(--ink-muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      font-weight: 700;
-      flex-shrink: 0;
-      transition: all 0.25s ease;
-    }
-
-    .option-btn:hover .option-letter {
-      background: var(--electric);
-      color: white;
-    }
-
-    .option-btn.correct {
-      border-color: var(--success);
-      background: var(--success-soft);
-      color: var(--ink);
-    }
-
-    .option-btn.correct .option-letter {
-      background: var(--success);
-      color: white;
-    }
-
-    .option-btn.wrong {
-      border-color: var(--danger);
-      background: var(--danger-soft);
-      color: var(--ink);
-    }
-
-    .option-btn.wrong .option-letter {
-      background: var(--danger);
-      color: white;
-    }
-
-    .option-btn.disabled {
-      cursor: default;
-      opacity: 0.6;
-    }
-
-    /* REVEAL */
-    .reveal-panel {
-      padding: 36px 48px;
-      background: var(--paper);
-      border-top: 1px solid var(--border);
-      display: none;
-    }
-
-    .reveal-panel.visible {
-      display: block;
-      animation: reveal-slide 0.5s var(--ease-out);
-    }
-
-    @keyframes reveal-slide {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .reveal-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .reveal-badge {
-      padding: 4px 12px;
-      border-radius: 999px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .reveal-badge.correct {
-      background: var(--success);
-      color: white;
-    }
-
-    .reveal-badge.wrong {
-      background: var(--danger);
-      color: white;
-    }
-
-    .reveal-title {
-      font-family: var(--font-display);
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-
-    .reveal-explanation {
-      font-size: 15px;
-      line-height: 1.6;
-      color: var(--ink-soft);
-      margin-bottom: 16px;
-    }
-
-    .reveal-explanation strong { color: var(--ink); }
-
-    .red-flags {
-      margin-top: 20px;
-    }
-
-    .red-flags h5 {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--danger);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .red-flag-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .red-flag-item {
-      padding: 12px 16px;
-      background: var(--danger-soft);
-      border-left: 3px solid var(--danger);
-      border-radius: 0 8px 8px 0;
-      font-size: 14px;
-      line-height: 1.5;
-      color: var(--ink);
-    }
-
-    .red-flag-item strong { color: var(--danger); }
-
-    .reveal-cta {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 24px;
-    }
-
-    /* FINAL RESULT */
-    .final-result {
-      padding: 80px 0;
-      text-align: center;
-      display: none;
-    }
-
-    .final-result.visible {
-      display: block;
-    }
-
-    .result-grade {
-      font-family: var(--font-display);
-      font-size: clamp(80px, 12vw, 160px);
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: -0.05em;
-      margin-bottom: 16px;
-    }
-
-    .result-grade.A { color: var(--success); }
-    .result-grade.B { color: var(--gold); }
-    .result-grade.C { color: var(--warm); }
-    .result-grade.D { color: var(--danger); }
-
-    .result-summary {
-      font-family: var(--font-display);
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
-    }
-
-    .result-summary em { font-style: italic; color: var(--electric); }
-
-    .result-context {
-      font-size: 16px;
-      color: var(--ink-muted);
-      max-width: 540px;
-      margin: 0 auto 32px;
-      line-height: 1.6;
-    }
-
-    .result-cta {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    /* CHAPTER NAV */
-    .chapter-nav-bottom { padding: 40px 0 80px; display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-strong); }
-    .chapter-nav-link { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: inherit; transition: transform 0.3s ease; }
-    .chapter-nav-link:hover { transform: translateX(-4px); }
-    .chapter-nav-link.next { align-items: flex-end; }
-    .chapter-nav-link.next:hover { transform: translateX(4px); }
-    .chapter-nav-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; }
-    .chapter-nav-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
-
-    @media (max-width: 768px) {
-      .scenario-story { padding: 28px 24px; }
-      .scenario-question { padding: 24px; }
-      .reveal-panel { padding: 24px; }
-      .score-bar { flex-wrap: wrap; gap: 12px; padding: 16px 20px; }
-      .mockup-phone { width: 280px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>X. Spot the Fraud — Decoding Credit Cards</title>
+<meta name="description" content="Six scams that are running in {name} right now. Each one looks ordinary. Decide what you would do before you see the answer — that is how the instinct gets built.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/10-fraud.html">
+<meta property="og:title" content="X. Spot the Fraud — Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.mock { margin: 18px auto 0; max-width: 420px; }
+.phone { background: #111; border-radius: 28px; padding: 12px; box-shadow: var(--shadow-lift); }
+.phone-in { background: #f2f2f7; border-radius: 18px; padding: 16px 14px; min-height: 150px; }
+.sender { text-align: center; font: 400 .7rem var(--font-mono); color: #777; margin-bottom: 10px; }
+.bubble { background: #e5e5ea; color: #111; border-radius: 18px 18px 18px 4px; padding: 12px 14px; font-size: .9rem; line-height: 1.45; }
+.bubble u, .site u { color: #0a58ca; word-break: break-all; }
+.callcard { background: var(--ink); color: var(--cream); border-radius: var(--r-lg); padding: 20px; }
+.callcard .who { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; }
+.callcard .who span { font-size: 2rem; animation: pulse 1.2s ease infinite; }
+.callcard p { font-size: .92rem; line-height: 1.5; } .callcard p + p { margin-top: 10px; } .callcard b { color: #F7B87A; }
+.site { background: var(--white); border: 1px solid var(--border-strong); border-radius: var(--r-md); overflow: hidden; box-shadow: var(--shadow); }
+.site-url { background: var(--paper); padding: 8px 12px; font: 400 .72rem var(--font-mono); overflow-wrap: anywhere; }
+.site-body { padding: 16px; } .site-body .price { font: 800 1.8rem var(--font-display); color: var(--danger); } .site-body s { color: var(--ink-faint); margin-left: 8px; }
+.flags { display: grid; gap: 8px; margin-top: 12px; }
+.flags div { background: var(--white); border-radius: 10px; padding: 10px 12px; font-size: .9rem; border-left: 3px solid var(--danger); }
+.grade { font: italic 300 clamp(4rem, 14vw, 7rem)/1 var(--font-display); color: var(--electric); }
+</style>
 </head>
-<body>
+<body data-ch="10">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>Spot the <em>Fraud</em></h1>
+  <p>Six scams that are running in {name} right now. Each one looks ordinary. Decide what you would do before you see the answer — that is how the instinct gets built.</p>
+</header>
 
-  <nav class="site-nav">
-    <a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>※</span></a>
-    <ul class="nav-links">
-      <li><a href="../index.html#chapters">All Chapters</a></li>
-      <li><a href="11-fraud-defense.html">Next →</a></li>
-    </ul>
-  </nav>
+<section class="sec">
+  <div class="stage" id="game" style="margin-top:0"></div>
+</section>
 
-  <div class="chapter-shell">
-    <div class="container">
-
-      <div class="chapter-header">
-        <div class="chapter-header-row">
-          <div class="chapter-roman">Chapter X</div>
-          <div class="chapter-progress-text">10 of 22 · ~8 min</div>
-        </div>
-        <h1 class="chapter-h1">Spot the <em>Fraud</em></h1>
-        <p class="chapter-intro">
-          Six scenarios. Each one looks normal at first. Some are. Some aren't. Train your eye to see the trap before it sees you.
-        </p>
-      </div>
-
-      <!-- SCORE TRACKER -->
-      <div class="score-bar">
-        <div>
-          <div class="score-label">Your score</div>
-          <div class="score-counter"><span id="correct-count">0</span> / 6</div>
-        </div>
-        <div class="scenario-pips" id="scenario-pips">
-          <!-- populated by JS -->
-        </div>
-      </div>
-
-      <!-- SCENARIO STAGE -->
-      <div class="scenario-stage" id="scenario-stage">
-        <!-- populated by JS -->
-      </div>
-
-      <!-- FINAL RESULT -->
-      <section class="final-result" id="final-result">
-        <div id="result-grade" class="result-grade">A</div>
-        <h2 class="result-summary" id="result-summary">You spotted <em>all six</em>.</h2>
-        <p class="result-context" id="result-context">Your fraud radar is sharp. You're harder to scam than 95% of cardholders. Up next: the systems your bank uses to back you up.</p>
-        <div class="result-cta">
-          <button class="btn btn--ghost" onclick="resetGame()">↻ Play again</button>
-          <a href="11-fraud-defense.html" class="btn btn--primary btn--lg">Chapter XI: Your Defense System →</a>
-        </div>
-      </section>
-
-      <div class="chapter-nav-bottom">
-        <a href="09-rewards.html" class="chapter-nav-link">
-          <span class="chapter-nav-meta">← Previous</span>
-          <span class="chapter-nav-name">The Rewards Game</span>
-        </a>
-        <a href="11-fraud-defense.html" class="chapter-nav-link next">
-          <span class="chapter-nav-meta">Next →</span>
-          <span class="chapter-nav-name">Your Defense System</span>
-        </a>
-      </div>
-    </div>
+<section class="sec">
+  <div class="eyebrow">The pattern behind all six</div>
+  <h2 class="h2">Every scam needs <em>three things</em>.</h2>
+  <div class="grid" style="--min:230px;margin-top:22px">
+    <div class="panel reveal"><div class="hand">1.</div><h3 class="h4">A borrowed identity</h3><p class="small muted">Your bank, the police, a courier, your child. Sender names, caller ID and voices can all be faked.</p></div>
+    <div class="panel reveal" style="--i:1"><div class="hand">2.</div><h3 class="h4">A clock</h3><p class="small muted">“Within 24 hours.” “Before the account is frozen.” Urgency exists to stop you checking.</p></div>
+    <div class="panel reveal" style="--i:2"><div class="hand">3.</div><h3 class="h4">You doing the work</h3><p class="small muted">Tapping the link, reading out the code, moving the money. Modern fraud rarely breaks in — it asks you to open the door.</p></div>
   </div>
+  <div class="callout is-success" style="margin-top:22px"><b>One rule beats all of them</b>Stop. End the conversation. Contact the organisation yourself, using a number or address you already trust — the back of your card, the official app. A real problem will still be there in ten minutes. A scam will not.</div>
+</section>
 
-  <script src="../js/global.js"></script>
-  <script>
-    const SCENARIOS = [
-      {
-        icon: '📱',
-        name: 'The "HDFC" SMS',
-        type: 'phishing',
-        setting: 'Friday afternoon · A text message arrives',
-        story: `Your phone buzzes. The sender shows up as <em>HDFCBK</em>, just like every other bank message you've gotten. The message looks urgent.`,
-        mockup: `
-          <div class="mockup-wrap">
-            <div class="mockup-phone">
-              <div class="mockup-screen">
-                <div class="mockup-sender">HDFCBK · 2 min ago</div>
-                <div class="mockup-bubble">
-                  Dear Customer, your HDFC card ending <strong>7821</strong> has been temporarily blocked due to suspicious activity. To re-activate immediately, verify your identity here:
-                  <br><br>
-                  <span class="mockup-link">https://hdfc-secure-verify.in/unlock</span>
-                  <br><br>
-                  - HDFC Bank Security
-                </div>
-              </div>
-            </div>
-          </div>`,
-        question: `What do you do?`,
-        options: [
-          { letter: 'A', text: 'Click the link and verify quickly — better safe than sorry', correct: false },
-          { letter: 'B', text: 'Call HDFC using the number on the back of your physical card', correct: true },
-          { letter: 'C', text: 'Reply STOP to opt out', correct: false },
-          { letter: 'D', text: 'Forward the message to a friend to confirm if it\'s real', correct: false }
-        ],
-        revealTitle: 'Classic phishing SMS.',
-        explanation: `Banks <strong>never</strong> send SMS links asking you to verify identity. They'll either lock the card and ask you to call, or just decline the suspicious transaction. The right move is always: <strong>call the number on the back of your card.</strong> Never the number in the message. Never the link.`,
-        redFlags: [
-          { flag: 'Suspicious URL', text: '<strong>hdfc-secure-verify.in</strong> — real HDFC links are on hdfcbank.com. Scammers register lookalike domains.' },
-          { flag: 'Urgency', text: 'Words like "immediately" and "temporarily blocked" create panic. Panic makes you skip thinking.' },
-          { flag: 'Generic greeting', text: '"Dear Customer" — banks know your name. Real messages start with "Dear [Your Name]".' },
-          { flag: 'Asking you to verify via link', text: 'No legitimate bank does this. Ever.' }
-        ]
-      },
-      {
-        icon: '🏧',
-        name: 'The Modified ATM',
-        type: 'skimming',
-        setting: 'Saturday night · ATM in a quiet area',
-        story: `You stop at an ATM near a metro station. It's late. Something feels slightly off about the machine, but you can't quite place it.`,
-        mockup: `
-          <div class="mockup-wrap">
-            <div class="scene-card">
-              <div class="scene-icon">🏧</div>
-              <h4>Things you noticed:</h4>
-              <ul class="clue-list">
-                <li>The card slot looks slightly raised / bulkier than other ATMs you've used</li>
-                <li>There's a small plastic strip near the keypad that doesn't quite match the metal finish</li>
-                <li>Above the keypad, a tiny pinhole — could just be a screw, or maybe a camera</li>
-                <li>The bank's logo sticker is peeling at the corners</li>
-                <li>The ATM is in a poorly-lit area, no security guard visible</li>
-              </ul>
-            </div>
-          </div>`,
-        question: `What's your move?`,
-        options: [
-          { letter: 'A', text: 'Wiggle the card slot before inserting — if it moves, leave', correct: false },
-          { letter: 'B', text: 'Cover the keypad with your hand while typing PIN — should be safe', correct: false },
-          { letter: 'C', text: 'Walk away. Use a different ATM. Report this one to the bank.', correct: true },
-          { letter: 'D', text: 'Go ahead but use the smallest withdrawal amount possible', correct: false }
-        ],
-        revealTitle: 'Skimmer suspected. Walk away.',
-        explanation: `When something feels off about an ATM — <strong>trust the feeling</strong>. Skimmers are physical devices placed over the card slot to clone your card data. Combined with a hidden camera filming your PIN, they get everything they need. Even covering the keypad doesn't protect you if the device captures your card. The cost of using the wrong ATM is your entire account drained. The cost of using a different ATM is 5 minutes.`,
-        redFlags: [
-          { flag: 'Bulky card slot', text: 'Skimmers attach over the original slot. Real card readers are flush with the machine.' },
-          { flag: 'Misaligned plastic strip', text: 'Often a camera or PIN-capture device. Real ATMs have factory-clean finishes.' },
-          { flag: 'Pinhole near keypad', text: 'A tiny hidden camera, positioned to film your PIN entry from above.' },
-          { flag: 'Isolated location', text: 'Skimmers are placed where there\'s no foot traffic, no guard, no camera. By design.' }
-        ]
-      },
-      {
-        icon: '☎️',
-        name: 'The Call from "Bank"',
-        type: 'vishing',
-        setting: 'Monday morning · Your phone rings',
-        story: `An unknown number calls. The caller knows your name and the last 4 digits of your card. They sound official.`,
-        mockup: `
-          <div class="mockup-wrap">
-            <div class="scene-card" style="text-align: left; max-width: 460px;">
-              <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-                <div style="font-size: 36px;">📞</div>
-                <div>
-                  <div style="font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em;">INCOMING CALL · 9:17 AM</div>
-                  <div style="font-family: var(--font-display); font-size: 18px; font-weight: 700;">+91 11 4567 8920</div>
-                </div>
-              </div>
-              <div style="background: var(--paper); padding: 16px; border-radius: 8px; font-size: 13px; line-height: 1.6; color: var(--ink-soft);">
-                <strong>Caller:</strong> "Hello, am I speaking with Ravi? This is Anjali from HDFC Bank fraud team. We've detected an attempted ₹45,000 transaction on your card ending 7821 from Mumbai. Did you authorize this?"
-                <br><br>
-                <strong>You:</strong> "No, I didn't!"
-                <br><br>
-                <strong>Caller:</strong> "I understand. Don't worry, we can block it. To verify it's really you, I just need to send you an OTP. Can you read it back to me when you receive it?"
-              </div>
-            </div>
-          </div>`,
-        question: `What do you do next?`,
-        options: [
-          { letter: 'A', text: 'Read the OTP back — it\'s the bank confirming your identity', correct: false },
-          { letter: 'B', text: 'Hang up. Call the bank using the number on your card.', correct: true },
-          { letter: 'C', text: 'Ask them to call back from a verified number', correct: false },
-          { letter: 'D', text: 'Give them the last 4 digits to confirm you\'re the real you', correct: false }
-        ],
-        revealTitle: 'Vishing in action.',
-        explanation: `<strong>No bank will ever ask you for an OTP.</strong> Ever. The OTP isn't a verification code <em>for the bank</em> — it's a verification code <em>for you</em>. Reading it out loud to a "fraud agent" is literally giving them permission to complete a transaction they're trying to make. The fact that they knew your name and last 4 digits proves nothing — that data is widely leaked from various breaches.`,
-        redFlags: [
-          { flag: 'They called you', text: 'Banks rarely call about fraud. They block the card and let YOU call them.' },
-          { flag: 'Asking for OTP', text: 'Hard rule: bank employees never need your OTP. If they ask, they\'re not bank employees.' },
-          { flag: 'Manufactured urgency', text: '"₹45,000 attempted transaction" creates panic. They want you reacting, not thinking.' },
-          { flag: 'Knowing partial info isn\'t proof', text: 'Last 4 digits and your name are leaked everywhere. They prove nothing about who\'s calling.' }
-        ]
-      },
-      {
-        icon: '🛒',
-        name: 'The "Too Good" Deal',
-        type: 'fake-website',
-        setting: 'Sunday browsing · A great deal pops up',
-        story: `An Instagram ad shows a brand-name laptop you've been wanting. Same model that retails for ₹85,000 — listed at ₹39,990. Limited time offer, only 7 left. You click.`,
-        mockup: `
-          <div class="mockup-wrap">
-            <div class="scene-card" style="text-align: left; max-width: 460px;">
-              <div style="font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); margin-bottom: 8px; letter-spacing: 0.04em;">https://amaaz0n-deals-india.shop/macbook-pro</div>
-              <div style="background: white; border: 1px solid var(--border); border-radius: 8px; padding: 16px;">
-                <div style="background: var(--ink); color: white; padding: 8px 12px; border-radius: 4px; font-size: 11px; margin-bottom: 12px; display: inline-block; font-family: var(--font-mono);">⚡ FLASH SALE — 53% OFF</div>
-                <div style="font-family: var(--font-display); font-size: 18px; font-weight: 700; margin-bottom: 4px;">MacBook Pro 14" M3</div>
-                <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px;">
-                  <div style="font-family: var(--font-display); font-size: 24px; font-weight: 800; color: var(--danger);">₹39,990</div>
-                  <div style="text-decoration: line-through; color: var(--ink-faint); font-size: 14px;">₹84,990</div>
-                </div>
-                <div style="font-size: 11px; color: var(--danger); margin-bottom: 12px;">⏰ Only 7 left! Sale ends in 04:23:18</div>
-                <div style="font-size: 11px; color: var(--ink-muted); line-height: 1.5;">Free Shipping. COD not available. Card payment only. <strong style="color: var(--ink);">Click "Buy Now" to enter card details.</strong></div>
-              </div>
-              <div style="margin-top: 12px; font-size: 11px; color: var(--ink-faint);">
-                ⭐⭐⭐⭐⭐ "Got mine in 3 days! Real product!" — Anonymous
-              </div>
-            </div>
-          </div>`,
-        question: `What do you do?`,
-        options: [
-          { letter: 'A', text: 'Buy it — even if fake, your card has fraud protection', correct: false },
-          { letter: 'B', text: 'Order it via cash on delivery to be safe', correct: false },
-          { letter: 'C', text: 'Close the page. Find the same product on the official Apple/Amazon site.', correct: true },
-          { letter: 'D', text: 'Use a virtual card with low limit just in case', correct: false }
-        ],
-        revealTitle: 'Fake e-commerce site.',
-        explanation: `Sites like this exist purely to <strong>capture card details</strong>. The "product" never ships. Even if your card has fraud protection, you've now given the scammer your card number, expiry, CVV, and possibly OTP — which they'll use for many transactions before you notice. Fraud protection helps, but disputing 15 transactions across multiple platforms is a multi-week ordeal. <strong>Better outcome: don't engage.</strong>`,
-        redFlags: [
-          { flag: 'Misspelled domain', text: '<strong>amaaz0n-deals-india.shop</strong> — extra "a", "0" instead of "o", and ".shop" TLD. Real Amazon is amazon.in.' },
-          { flag: 'Discount too steep', text: 'No legitimate retailer sells current-gen Apple products at 53% off. Period.' },
-          { flag: 'COD blocked', text: 'Scammers force card payment because COD doesn\'t give them card data.' },
-          { flag: 'Fake urgency', text: 'Countdown timers and "only 7 left" are pressure tactics to bypass your judgment.' }
-        ]
-      },
-      {
-        icon: '🌐',
-        name: 'The Dynamic Currency Trap',
-        type: 'dcc',
-        setting: 'Bali vacation · Paying for dinner',
-        story: `You're paying ₹4,000 worth in IDR at a restaurant. The waiter brings the card machine. The screen offers: <em>"Pay in INR ₹4,165 (your home currency, locked rate) OR pay in IDR 760,000 (local currency)?"</em>`,
-        mockup: `
-          <div class="mockup-wrap">
-            <div class="scene-card" style="text-align: left; max-width: 420px;">
-              <div style="background: #0a2e14; color: #4ade80; padding: 20px; border-radius: 8px; font-family: var(--font-mono); font-size: 13px; line-height: 1.6;">
-                <div style="opacity: 0.6; font-size: 10px; margin-bottom: 8px;">─── CHOOSE PAYMENT ───</div>
-                <div style="margin-bottom: 12px;">
-                  <div style="background: rgba(74,222,128,0.2); padding: 12px; border-radius: 4px; border: 1px solid #4ade80;">
-                    <div style="font-size: 11px; opacity: 0.8;">Pay in your home currency</div>
-                    <div style="font-size: 20px; font-weight: 700;">INR ₹4,165</div>
-                    <div style="font-size: 10px; opacity: 0.7; margin-top: 4px;">Rate locked · No surprises</div>
-                  </div>
-                </div>
-                <div>
-                  <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1);">
-                    <div style="font-size: 11px; opacity: 0.6;">Pay in local currency</div>
-                    <div style="font-size: 20px; font-weight: 700;">IDR 760,000</div>
-                    <div style="font-size: 10px; opacity: 0.5; margin-top: 4px;">Rate determined by your bank</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>`,
-        question: `Which option do you pick?`,
-        options: [
-          { letter: 'A', text: 'INR — locked rate, no surprises, sounds safe', correct: false },
-          { letter: 'B', text: 'IDR — let my bank do the conversion', correct: true },
-          { letter: 'C', text: 'Doesn\'t matter, both end up the same', correct: false },
-          { letter: 'D', text: 'Whichever is highlighted in green', correct: false }
-        ],
-        revealTitle: 'Dynamic Currency Conversion (DCC).',
-        explanation: `This is the most common rip-off in international travel — and it's <em>technically not even fraud</em>, just a legal scam. When the merchant offers to convert to your home currency, they apply a <strong>terrible exchange rate (typically 5-7% worse than your bank's rate)</strong>, plus often a fixed conversion fee. The "rate locked" framing makes it sound safer, but you're paying for that "safety." <strong>Always pay in local currency.</strong> Your bank will convert at their rate, plus the standard forex markup of 1-3.5% — almost always cheaper than DCC.`,
-        redFlags: [
-          { flag: 'Highlighted "home currency" option', text: 'The trap is dressed up as the obvious safe choice — that\'s how it makes its money.' },
-          { flag: '"Rate locked" framing', text: 'Sounds reassuring. Means the merchant\'s rate is fixed at <em>their</em> markup, not the market rate.' },
-          { flag: 'Default selection', text: 'Often the home-currency option is pre-selected. They\'re hoping you tap "OK" without thinking.' },
-          { flag: 'Higher net cost', text: 'You\'ll see ₹4,165 today, but compare it to your card\'s normal forex rate — typically ₹4,140. The ₹25 is their cut.' }
-        ]
-      },
-      {
-        icon: '🎁',
-        name: 'The "Welcome Gift" Email',
-        type: 'phishing-email',
-        setting: 'Tuesday inbox · A reward-looking email',
-        story: `An email lands in your inbox claiming to be from the "Reserve Bank of India - Reward Distribution Unit". You scroll through it.`,
-        mockup: `
-          <div class="mockup-wrap" style="max-width: 480px; margin-left: auto; margin-right: auto;">
-            <div class="mockup-email">
-              <div class="mockup-email-header">
-                <div class="mockup-email-from">RBI Rewards <em style="font-style: normal; color: var(--ink-faint); font-weight: normal; font-size: 11px;">&lt;rewards@rbi-india-online.org&gt;</em></div>
-                <div class="mockup-email-to">to: you@email.com · 8:42 AM</div>
-              </div>
-              <div class="mockup-email-subject">🎉 Congratulations! You've been selected for ₹15,000 RBI Festive Reward</div>
-              <div class="mockup-email-body">
-                Dear Valued Customer,<br><br>
-                Reserve Bank of India is pleased to inform you that you have been randomly selected from active credit card holders for our annual Festive Reward of <strong>₹15,000</strong>, deposited directly to your card.<br><br>
-                To claim, please confirm your card details (number, expiry, CVV) and submit a one-time processing fee of ₹499 via the link below within 24 hours:<br><br>
-                <a href="#" class="mockup-link">https://rbi-rewards-claim.org/festive2026</a><br><br>
-                <em>This offer expires in 24 hours. Reward will be forfeited if not claimed.</em><br><br>
-                Regards,<br>
-                RBI Reward Distribution Unit
-              </div>
-            </div>
-          </div>`,
-        question: `What do you do?`,
-        options: [
-          { letter: 'A', text: 'Pay the ₹499 fee — ₹15,000 minus ₹499 is still a great deal', correct: false },
-          { letter: 'B', text: 'Click the link to verify the offer first', correct: false },
-          { letter: 'C', text: 'Delete the email. Mark as spam. Move on.', correct: true },
-          { letter: 'D', text: 'Forward to friends in case they got selected too', correct: false }
-        ],
-        revealTitle: 'Advance fee fraud.',
-        explanation: `The <strong>RBI does not give reward money to citizens</strong>. It's a regulator — not a benefits department. This is a classic "advance fee" scam: the scammer asks for a small payment (₹499) to release a much larger fictitious payout (₹15,000). Once they have your card details + ₹499, they'll quickly run unauthorized transactions before you cancel. The math is rigged: pay ₹499, get charged ₹50,000 in fraud. <strong>Government bodies in India never email citizens about reward payouts.</strong>`,
-        redFlags: [
-          { flag: 'Domain mismatch', text: '<strong>rbi-india-online.org</strong> — actual RBI is at rbi.org.in. Scammers register lookalike domains.' },
-          { flag: 'Asking for card details', text: 'No legitimate organization asks for full card number + CVV via email.' },
-          { flag: 'Fee to claim a "free" reward', text: 'The classic advance-fee tell. Real prizes never require an upfront payment.' },
-          { flag: 'Artificial deadline', text: '24-hour expiry creates panic. Real benefits don\'t evaporate this fast.' },
-          { flag: 'RBI doesn\'t do this', text: 'India\'s central bank doesn\'t directly distribute money to consumers. Period.' }
-        ]
-      }
-    ];
+<section class="sec">
+  <div class="eyebrow">If it has already happened</div>
+  <h2 class="h2">The first <em>hour</em> matters most.</h2>
+  <div id="after" style="margin-top:22px"></div>
+</section>
 
-    let currentScenario = 0;
-    let correctCount = 0;
-    let answers = []; // 'correct', 'wrong', or null
-    let answered = false;
+<aside class="checkpoint" data-icon="🛡">
+  <h3>Your <em>radar</em> is switched on.</h3>
+  <p>You will not catch every scam, and nobody does — which is why the system has its own defences. Those are next.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
+<script src="../js/global.js"></script>
+<script>
+{
+const { $, R, rid, money, t, pick } = DCC;
+const sms = (from, body) => `<div class="mock phone"><div class="phone-in"><div class="sender">${from} · now</div><div class="bubble">${body}</div></div></div>`;
+const call = (num, lines) => `<div class="mock callcard"><div class="who"><span>📞</span><div><div class="mono" style="opacity:.6">INCOMING CALL</div><b style="font-size:1.1rem">${num}</b></div></div>${lines.map(l => `<p>${l}</p>`).join('')}</div>`;
+const site = (url, body) => `<div class="mock site"><div class="site-url">🔒 ${url}</div><div class="site-body">${body}</div></div>`;
+const flags = a => `<div class="eyebrow" style="margin-top:14px">🚩 Red flags to remember</div><div class="flags">${a.map(([h, x]) => `<div><strong>${h}.</strong> ${x}</div>`).join('')}</div>`;
+const big = money(R.a.big / 2);
+const pu = o => pick({ ...o, uk: o.uk || o.us, au: o.au || o.us });
 
-    function renderPips() {
-      const pips = document.getElementById('scenario-pips');
-      pips.innerHTML = SCENARIOS.map((_, i) => {
-        let cls = '';
-        if (i === currentScenario && !answers[i]) cls = 'current';
-        else if (answers[i] === 'correct') cls = 'correct';
-        else if (answers[i] === 'wrong') cls = 'wrong';
-        return `<div class="scenario-pip ${cls}">${i + 1}</div>`;
-      }).join('');
-    }
+const local4 = pick({
+  in: { title: 'The “digital arrest”', kicker: 'Wednesday, 11 am · a video call', body: call('WhatsApp video · “CBI Mumbai”', ['<b>Officer in uniform:</b> “A parcel in your name containing illegal items has been seized. Your Aadhaar is linked to a money-laundering case.”', '<b>Officer:</b> “You are under digital arrest. Do not disconnect or tell anyone. To verify your funds, transfer them to this RBI supervised account — they will be returned after verification.”']),
+    opts: ['Stay on the call and cooperate — it is the police', 'Transfer a small amount first to see whether it comes back', 'Hang up. No such thing exists. Report it on 1930', 'Ask them to email the arrest warrant'], ok: 2,
+    explain: 'There is no such thing as a “digital arrest” in Indian law. No police force, the CBI, the ED or the RBI will ever interrogate you on a video call or ask you to move money “for verification”. Victims have lost life savings over several days of being kept on camera.',
+    flags: [['Isolation', '“Do not tell anyone” is the tell. Real officials never forbid you a lawyer or family.'], ['A government “safe account”', 'The RBI holds no accounts for individuals.'], ['Fear plus video', 'Uniforms, logos and a studio backdrop are cheap props.']] },
+  us: { title: 'The unpaid toll', kicker: 'Wednesday · a text from an unknown number', body: sms('+63 9XX XXX 2291', 'E-ZPass final reminder: you have an outstanding toll of $6.99. To avoid a $50 late fee and suspension of your vehicle registration, pay within 12 hours:<br><br><u>https://ezpass-tollservices.com-pay.xyz</u><br><br>Reply Y if the link does not open.'),
+    opts: ['Pay it — $6.99 is not worth the hassle', 'Reply Y so the link works', 'Delete it. Check your toll account in the official app if in doubt', 'Click through just to see whether your plate is listed'], ok: 2,
+    explain: 'Toll-road texts became the most-reported smishing scam in the US. The $6.99 is not the goal — the page harvests your card number, expiry and security code, and often adds the card to a criminal’s mobile wallet. “Reply Y” exists because iPhones disable links from unknown senders until you reply.',
+    flags: [['An overseas number', 'A US toll agency does not text from another country’s number.'], ['Small amount, big threat', 'A trivial sum makes paying feel easier than checking.'], ['A domain that only looks right', 'Read from the right: the real site is whatever comes just before the first single slash.']] },
+  uk: { title: 'The missed parcel', kicker: 'Wednesday · a text message', body: sms('Evri', 'We attempted to deliver your parcel today but no one was in. To rebook delivery a redelivery fee of £1.45 applies:<br><br><u>https://evri-redelivery-fee.com/track</u>'),
+    opts: ['Pay £1.45 — you are expecting a parcel', 'Delete it and track the parcel in the retailer’s own email or app', 'Click to check which parcel it is', 'Reply asking for the tracking number'], ok: 1,
+    explain: 'Courier texts are the UK’s most common smishing lure because almost everyone is expecting something. The £1.45 page takes your card details; a day or two later a caller “from your bank’s fraud team” rings about suspicious payments — and uses what you typed to sound convincing. That second call is where the real money goes.',
+    flags: [['A fee to redeliver', 'Major couriers do not charge to rebook.'], ['A link in a text', 'Forward suspicious texts to <strong>7726</strong>, free.'], ['It is step one', 'The follow-up call is the scam. The text only sets it up.']] },
+  au: { title: 'The toll notice', kicker: 'Wednesday · a text message', body: sms('Linkt', 'Linkt: your toll invoice is overdue. To avoid a $85 administration fee, update your payment details today:<br><br><u>https://linkt-au.tollpay-secure.net</u>'),
+    opts: ['Update your details — you did use a toll road last week', 'Delete it and check your account in the Linkt app or by typing the address yourself', 'Click to see how much is owed', 'Reply STOP'], ok: 1,
+    explain: 'Toll, myGov and Australia Post texts are the most reported lures to Scamwatch. Scammers can make a text land in the same thread as genuine messages from that sender; the SMS Sender ID Register, mandatory from 2026, is designed to stop that, but treat any link in a text as untrusted.',
+    flags: [['A link to “update payment details”', 'Linkt and myGov do not send login links by text.'], ['A penalty with a deadline', 'Pressure to act today.'], ['A look-alike domain', 'The real site is linkt.com.au.']] }
+});
+const SC = [
+  { title: 'The bank text', kicker: 'Friday afternoon · a text arrives',
+    body: sms(R.sms, `Dear customer, your ${R.issuer} card ending 7821 has been temporarily blocked due to suspicious activity. Verify your identity to restore access:<br><br><u>https://${R.fakeSite}/unlock</u>`),
+    opts: ['Tap the link and verify quickly', 'Ignore the link. Open the bank’s app, or call the number on the back of the card', 'Reply STOP', 'Forward it to a friend to ask whether it looks real'], ok: 1,
+    explain: `Banks do not send links asking you to log in or “verify”. If a card really is blocked, the app will say so. The sender name proves nothing: sender IDs can be spoofed, so a fake can appear in the same thread as genuine messages.`,
+    flags: [['The address', `<strong>${R.fakeSite}</strong> is not <strong>${R.bankSite}</strong>.` + pick({ in: ' Since 2025 every Indian bank’s website must end in <strong>.bank.in</strong>.', us: '', uk: '', au: '' })], ['Urgency', '“Temporarily blocked” is designed to make you act before thinking.'], ['A link at all', 'Legitimate alerts tell you to contact the bank; they do not carry a login link.']] },
+  { title: 'The call from the “fraud team”', kicker: 'Monday, 9.17 am · your phone rings',
+    body: call(R.phone, [`<b>Caller:</b> “Am I speaking with ${R.you}? This is ${R.caller} from ${R.issuer} fraud prevention. We have stopped a payment of ${big} on your card ending 7821 in ${R.city}. Was that you?”`, '<b>You:</b> “No!”',
+      pick({ in: '<b>Caller:</b> “Don’t worry, I will cancel it. You will receive an OTP now — please read it out so I can confirm it is really you.”', us: '<b>Caller:</b> “I can reverse it. You’ll get a verification code by text — read it to me. Then, to protect your money, send it to yourself with Zelle using the details I give you.”', uk: '<b>Caller:</b> “Your account is compromised. I need you to move your money to a safe account while we investigate. I’ll stay on the line and tell you what to say if the app asks questions.”', au: '<b>Caller:</b> “Your account is compromised. I’ll text you a code to read back, then we will move your funds to a secure account while we investigate.”' })]),
+    opts: ['Do as asked — they already know your name and card number', 'Hang up. Call the number on the back of your card', 'Ask them to prove who they are by naming your last transaction', 'Give only the last four digits to confirm'], ok: 1,
+    explain: pick({
+      in: 'A one-time password approves a payment. Reading it out <em>is</em> the payment. No bank employee ever needs your OTP, PIN or security code. Genuine bank service calls now come from numbers beginning <strong>1600</strong>.',
+      us: 'The code you read out lets them into your account, and “send it to yourself” is a Zelle transfer to them. Zelle payments you make yourself are very hard to recover. A bank will never ask you to move money to protect it.',
+      uk: 'There is no such thing as a “safe account”. This is authorised push payment fraud, the UK’s biggest by value. Hang up and dial <strong>159</strong>, which connects you to your real bank. Since October 2024 banks must reimburse most victims, up to £85,000 — but not if you ignored clear warnings.',
+      au: 'Banks never ask you to move money to keep it safe, and never ask for a code they have just sent you. Hang up and call the number on your card. Australian banks now check the payee’s name against the account before a transfer — take any mismatch warning seriously.' }),
+    flags: [['They called you', 'You cannot verify an inbound call. Caller ID can be faked.'], ['Knowing your details proves nothing', 'Names, phone numbers and partial card numbers leak in data breaches all the time.'], ['Asking for a code or a transfer', 'This is the whole scam. Everything before it is theatre.']] },
+  { title: 'The deal that is too good', kicker: 'Sunday night · an advert in your feed',
+    body: site(`${R.marketplace.toLowerCase()}-warehouse-deals.shop/clearance`, `<span class="chip is-danger">⚡ FLASH SALE · 61% OFF</span><h3 class="h4" style="margin-block:8px">Laptop Pro 14" — brand new, sealed</h3><span class="price">${money(R.a.laptop * .39)}</span><s>${money(R.a.laptop)}</s><p class="small" style="margin-top:8px">⏰ Only 7 left · ends in 04:23:18<br>Card payment only. ⭐⭐⭐⭐⭐ “Arrived in 3 days!”</p>`),
+    opts: ['Buy — the card’s fraud protection covers it if it is fake', 'Close it. Search for the product on the retailer’s real site', 'Buy with a debit card to limit the risk', 'Message the seller to ask whether it is genuine'], ok: 1,
+    explain: 'The shop exists to collect card details, not to ship laptops. You might win a dispute for the one purchase, but the details will be used again elsewhere — and you will be cancelling a card and unpicking charges for weeks. A debit card is the worst choice: it is your own money that leaves.',
+    flags: [['The domain', 'A brand name inside a longer address ending in .shop, .top or .xyz is not the brand.'], ['The discount', 'Nobody sells current models at 61% off.'], ['Countdown and stock counter', 'Both are scripts that restart on every visit.'], ['Card only', 'No pay-on-delivery, no recognised wallet: they want the card number.']] },
+  { ...local4, body: local4.body },
+  { title: 'The QR code', kicker: pick({ in: 'Saturday · selling a sofa online', us: 'Saturday · a downtown parking meter', uk: 'Saturday · a station car park', au: 'Saturday · a council car park' }),
+    body: pick({
+      in: sms('Buyer · WhatsApp', 'I am sending the ₹8,000 advance now. Just scan this QR in your UPI app and enter your PIN to receive it. 🙏'),
+      us: site('parkmobile-pay-now.com/zone/4417', '<h3 class="h4">Pay for parking — Zone 4417</h3><p class="small">You scanned the QR sticker on the meter. Enter card number, expiry and CVV to start your session.</p>'),
+      uk: site('paybyphone-uk-parking.com/loc/88213', '<h3 class="h4">Pay for parking — Location 88213</h3><p class="small">You scanned the QR sticker on the machine. Enter card number, expiry and security code to start parking.</p>'),
+      au: site('easypark-au-pay.com/zone/3321', '<h3 class="h4">Pay for parking — Zone 3321</h3><p class="small">You scanned the QR sticker on the meter. Enter card number, expiry and CVV to start your session.</p>') }),
+    opts: pu({ in: ['Scan and enter the PIN — he is paying you', 'Refuse. You never scan a code or enter a PIN to <em>receive</em> money', 'Ask him to send ₹1 first as a test', 'Scan it but enter a wrong PIN to check'], us: ['Enter the card — the sticker was on the meter itself', 'Close the page. Pay at the meter or in the parking app you installed yourself', 'Pay, then check the statement later', 'Scan it again to make sure it loads the same page'] }),
+    ok: 1,
+    explain: pu({
+      in: 'Entering your UPI PIN always <strong>sends</strong> money. Receiving needs nothing from you. NPCI switched off person-to-person “collect” requests in October 2025 for exactly this reason, so scammers now push QR codes and screen-sharing apps instead.',
+      us: 'It is called quishing. A sticker with a fraudulent QR code is placed over or beside the real one. The page takes a small “parking fee” and your full card details, and you usually collect a parking ticket as well.' }),
+    flags: pu({ in: [['PIN to receive', 'There is no such thing. PIN means pay.'], ['A buyer in a hurry', 'Overpaying, urgency, or a “courier agent” are standard.'], ['Screen-share requests', 'Never install an app because a stranger asked you to.']],
+      us: [['A sticker', 'Anyone can print one. Check whether it sits on top of another code.'], ['The address bar', 'Read the domain before typing anything.'], ['Typing a full card number', 'A genuine parking app uses your stored wallet.']] }) },
+  { title: 'The voice you know', kicker: 'Thursday evening · a new number',
+    body: pick({
+      in: call('Unknown number', ['<b>Your cousin’s voice, crying:</b> “I’ve had an accident, I’m at the hospital and they will not admit me without a deposit. Please send ₹40,000 to this UPI ID right now. Don’t tell mum.”']),
+      us: call('Unknown number', ['<b>Your daughter’s voice, crying:</b> “Mom, I’ve been in an accident, they’re holding me. I need $2,000 for bail right now. Please don’t tell Dad.”', '<b>A man:</b> “Ma’am, I’m her attorney. You can pay by wire or gift cards.”']),
+      uk: sms('+44 7XXX 482910', 'Hi Mum, I dropped my phone down the loo 🙈 this is my new number. Can you do me a favour? I need to pay a bill today and my banking app isn’t set up yet — could you send £1,450? I’ll pay you back tomorrow x'),
+      au: sms('+61 4XX 482 910', 'Hi Mum, I dropped my phone in the sink 🙈 this is my new number. Can you help? I need to pay a bill today and my banking isn’t set up on this phone — can you transfer $2,400? Will pay you back tomorrow x') }),
+    opts: ['Send it — the voice or wording is unmistakably theirs', 'Hang up and call them on the number you already have', 'Ask for more details about what happened', 'Send half now and half when you have heard more'], ok: 1,
+    explain: 'A few seconds of audio from social media is enough to clone a voice, and “new number” messages need no technology at all. The only defence is to break the channel: call the person back on the number you have always had. Agree a family code word for emergencies.',
+    flags: [['A new number', 'The story always explains why the usual number does not work.'], ['Secrecy', '“Don’t tell” someone removes the person who would spot it.'], ['Unrecoverable payment', 'Instant transfer, wire, gift cards — never a method you could dispute.']] }
+];
+const items = SC.map(s => ({ kicker: s.kicker, title: s.title, body: s.body + '<p class="h4" style="margin-top:22px">What do you do?</p>', opts: s.opts.map((x, i) => ({ t: x, ok: i === s.ok })), yes: 'You spotted it.', no: 'That is the one they were hoping for.', explain: `<p>${s.explain}</p>${flags(s.flags)}` }));
+DCC.quiz($('#game'), { items, shuffle: true, label: 'Scam', nextLabel: 'Next scam →', endLabel: 'See my score →', onEnd(s, n, again) {
+  const msg = s === n ? 'Sharp. You are harder to fool than most — but stay humble; the next one will be better made.' : s >= n - 2 ? 'Good instincts. Re-read the ones that caught you: the same structure will turn up again in a different costume.' : 'These are built to beat careful people. Play it again and read the red flags on each — they repeat.';
+  $('#game').innerHTML = `<div style="text-align:center"><div class="grade">${DCC.grade(s, n)}</div><h3 class="h3">You caught <em>${s} of ${n}</em>.</h3><p class="lede" style="margin-inline:auto">${msg}</p><div class="row" style="justify-content:center;margin-top:18px"><button class="btn btn--outline" id="again">↻ Play again</button></div></div>`;
+  $('#again').onclick = again; if (s >= n - 1) DCC.burstConfetti(); DCC.playSuccess(); DCC.markDone();
+} });
 
-    function renderScenario() {
-      if (currentScenario >= SCENARIOS.length) {
-        showFinalResult();
-        return;
-      }
-
-      answered = false;
-      const s = SCENARIOS[currentScenario];
-      const stage = document.getElementById('scenario-stage');
-
-      stage.innerHTML = `
-        <div class="scenario-meta">
-          <div class="scenario-icon">${s.icon}</div>
-          <div class="scenario-title-block">
-            <div class="scenario-num">Scenario ${currentScenario + 1} of ${SCENARIOS.length}</div>
-            <div class="scenario-name">${s.name}</div>
-          </div>
-        </div>
-
-        <div class="scenario-story">
-          <div class="story-setting">${s.setting}</div>
-          <div class="story-text">${s.story}</div>
-          ${s.mockup}
-        </div>
-
-        <div class="scenario-question">
-          <div class="question-prompt">${s.question}</div>
-          <div class="options" id="options-${currentScenario}">
-            ${s.options.map((opt, i) => `
-              <button class="option-btn" onclick="answer(${i})" data-idx="${i}">
-                <div class="option-letter">${opt.letter}</div>
-                <div>${opt.text}</div>
-              </button>
-            `).join('')}
-          </div>
-        </div>
-
-        <div class="reveal-panel" id="reveal-panel">
-          <!-- populated on answer -->
-        </div>
-      `;
-      renderPips();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function answer(idx) {
-      if (answered) return;
-      answered = true;
-
-      const s = SCENARIOS[currentScenario];
-      const isCorrect = s.options[idx].correct;
-      const correctIdx = s.options.findIndex(o => o.correct);
-
-      // Mark buttons
-      document.querySelectorAll(`#options-${currentScenario} .option-btn`).forEach((b, i) => {
-        b.classList.add('disabled');
-        if (i === correctIdx) b.classList.add('correct');
-        if (i === idx && !isCorrect) b.classList.add('wrong');
-      });
-
-      if (isCorrect) {
-        correctCount++;
-        answers[currentScenario] = 'correct';
-        DCC.playSuccess();
-      } else {
-        answers[currentScenario] = 'wrong';
-        DCC.playClick();
-      }
-
-      document.getElementById('correct-count').textContent = correctCount;
-      renderPips();
-
-      // Show reveal panel
-      const panel = document.getElementById('reveal-panel');
-      panel.innerHTML = `
-        <div class="reveal-header">
-          <div class="reveal-badge ${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? '✓ Correct' : '✗ Got you'}</div>
-          <div class="reveal-title">${s.revealTitle}</div>
-        </div>
-        <div class="reveal-explanation">${s.explanation}</div>
-        <div class="red-flags">
-          <h5>🚩 Red flags you should now spot</h5>
-          <div class="red-flag-list">
-            ${s.redFlags.map(rf => `
-              <div class="red-flag-item">
-                <strong>${rf.flag}:</strong> ${rf.text}
-              </div>
-            `).join('')}
-          </div>
-        </div>
-        <div class="reveal-cta">
-          <button class="btn btn--primary" onclick="nextScenario()">${currentScenario < SCENARIOS.length - 1 ? 'Next scenario →' : 'See your final score →'}</button>
-        </div>
-      `;
-      panel.classList.add('visible');
-
-      setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
-    }
-
-    function nextScenario() {
-      currentScenario++;
-      renderScenario();
-    }
-
-    function showFinalResult() {
-      document.getElementById('scenario-stage').style.display = 'none';
-      document.querySelector('.score-bar').style.display = 'none';
-
-      const result = document.getElementById('final-result');
-      const grade = document.getElementById('result-grade');
-      const summary = document.getElementById('result-summary');
-      const context = document.getElementById('result-context');
-
-      let gradeChar, gradeClass, summaryText, contextText;
-      if (correctCount === 6) {
-        gradeChar = 'A+'; gradeClass = 'A';
-        summaryText = 'You spotted <em>all six</em>.';
-        contextText = `Your fraud radar is sharp. You're harder to scam than 95% of cardholders. Up next: the systems your bank uses to back you up.`;
-      } else if (correctCount === 5) {
-        gradeChar = 'A'; gradeClass = 'A';
-        summaryText = '<em>Five out of six.</em> Strong.';
-        contextText = `Solid instincts. One scenario got you — go back and review the red flags from that one. The patterns repeat in real life.`;
-      } else if (correctCount >= 3) {
-        gradeChar = 'B'; gradeClass = 'B';
-        summaryText = '<em>Above average.</em> Sharper than most.';
-        contextText = `You caught the obvious traps. Re-read the missed scenarios — those are the techniques scammers count on people not noticing.`;
-      } else if (correctCount >= 2) {
-        gradeChar = 'C'; gradeClass = 'C';
-        summaryText = '<em>Worth practicing.</em>';
-        contextText = `Most fraud relies on small signals you can train your eye to catch. Replay this and pay attention to the red flag breakdowns. Worth the time.`;
-      } else {
-        gradeChar = 'D'; gradeClass = 'D';
-        summaryText = '<em>Replay this one.</em>';
-        contextText = `Don't worry — most adults would fail this on a first try. The patterns are designed to bypass your judgment. Run it again, this time studying each red flag.`;
-      }
-
-      grade.textContent = gradeChar;
-      grade.className = 'result-grade ' + gradeClass;
-      summary.innerHTML = 'You scored ' + correctCount + ' / 6.';
-      // Use innerHTML for em
-      summary.innerHTML = summaryText;
-      context.textContent = contextText;
-      result.classList.add('visible');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function resetGame() {
-      currentScenario = 0;
-      correctCount = 0;
-      answers = [];
-      document.getElementById('correct-count').textContent = 0;
-      document.getElementById('final-result').classList.remove('visible');
-      document.getElementById('scenario-stage').style.display = 'block';
-      document.querySelector('.score-bar').style.display = 'flex';
-      renderScenario();
-    }
-
-    renderScenario();
-  </script>
+$('#after').innerHTML = pick({
+  in: [['Block the card — now', 'In the app, by SMS or by phone. It takes seconds and stops everything else.'], ['Call 1930 or file at cybercrime.gov.in', 'The national cyber-crime helpline can freeze money in the receiving account if you report within the first hours.'], ['Tell your bank within three working days', 'RBI rules give you <strong>zero liability</strong> for unauthorised transactions reported within three working days. From four to seven days your loss is capped; after that it depends on the bank’s policy.'], ['Keep the evidence', 'Screenshots, numbers, the complaint reference. If the bank does not resolve it in 30 days, escalate to the RBI Ombudsman.']],
+  us: [['Lock the card in the app, then call the issuer', 'Your liability for unauthorised credit-card charges is capped at $50 by law and is zero under every major network’s policy.'], ['Report it', 'reportfraud.ftc.gov for scams; identitytheft.gov if your details were taken — it generates a recovery plan.'], ['Freeze your credit', 'Free at Equifax, Experian and TransUnion. It stops new accounts being opened in your name.'], ['If you sent the money yourself', 'Tell the bank at once. Card payments can be disputed; Zelle, wires and gift cards usually cannot, which is why scammers ask for them.']],
+  uk: [['Ring your bank — dial 159', 'It connects you safely to your bank’s fraud team.'], ['Report it', 'To Report Fraud (the service that replaced Action Fraud), or Police Scotland on 101. Forward scam texts to 7726.'], ['Ask about reimbursement', 'For bank transfers you were tricked into making, banks must reimburse most victims within five working days, up to £85,000. For card payments you have chargeback and Section 75.'], ['Check your credit file', 'Look for searches and accounts you do not recognise; consider Cifas protective registration.']],
+  au: [['Lock the card in the app, then call the bank', 'Unauthorised transactions are the bank’s loss under the ePayments Code unless you contributed to it — for example by sharing a code.'], ['Report it', 'Scamwatch (scamwatch.gov.au) for the scam, ReportCyber for the crime.'], ['Call IDCARE if identity details were taken', 'A free national service that builds a response plan with you.'], ['Escalate', 'If the bank refuses to refund, complain to AFCA — free. The Scams Prevention Framework now puts legal duties on banks, telcos and platforms.']]
+}).map(([h, p], i) => `<details class="fold" ${i ? '' : 'open'}><summary><span class="mono faint">${i + 1} · </span><span class="h4">${h}</span></summary><div class="fold-body"><p>${p}</p></div></details>`).join('');
+DCC.observe();
+}
+</script>
 </body>
 </html>
