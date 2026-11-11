@@ -1,185 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>XX. Your Relationship with Money — Decoding Credit Cards</title>
-  <!-- Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://parth8.github.io/credit/chapters/20-relationship.html">
-  <meta property="og:title" content="XX. Your Relationship with Money — Decoding Credit Cards">
-  <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:site_name" content="Decoding Credit Cards">
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="XX. Your Relationship with Money — Decoding Credit Cards">
-  <meta name="twitter:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta name="twitter:image" content="https://parth8.github.io/credit/og-image.png">
-  
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>XX. Your Relationship With Money — Decoding Credit Cards</title>
+<meta name="description" content="A card changes how spending feels, and the people who design cards know it. Try one experiment on yourself, then meet six biases and the fix for each.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/20-relationship.html">
+<meta property="og:title" content="XX. Your Relationship With Money — Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
 <link rel="stylesheet" href="../css/global.css">
 <style>
-.chapter-shell{min-height:100vh;padding-top:80px}
-.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
-.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
-.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
-.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
-.chapter-h1 em{font-style:italic;font-weight:300;color:var(--warm)}
-.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
-.bias-card{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-md);padding:32px;margin-bottom:20px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
-.bias-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--warm);transform:scaleX(0);transition:transform .3s ease}
-.bias-card:hover::before{transform:scaleX(1)}
-.bias-card:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.06)}
-.bias-card.expanded{background:var(--warm-soft)}
-.bias-card.expanded::before{transform:scaleX(1)}
-.bias-num{position:absolute;top:24px;right:32px;font-family:var(--font-display);font-size:80px;font-weight:900;line-height:.8;color:var(--parchment);letter-spacing:-.04em;font-style:italic}
-.bias-card h3{font-family:var(--font-display);font-size:24px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px;position:relative}
-.bias-card h3 em{font-style:italic;font-weight:300;color:var(--warm)}
-.bias-tag{font-family:var(--font-mono);font-size:11px;color:var(--warm);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
-.bias-blurb{font-size:14px;color:var(--ink-muted);line-height:1.6;margin-bottom:0;position:relative}
-.bias-detail{display:none;padding-top:18px;margin-top:18px;border-top:1px dashed var(--border)}
-.bias-card.expanded .bias-detail{display:block}
-.bias-detail p{font-size:14px;line-height:1.7;color:var(--ink-soft);margin-bottom:14px}
-.bias-detail strong{color:var(--ink)}
-.bias-detail em{font-style:italic;color:var(--warm)}
-.bias-fix{padding:16px 20px;background:white;border-left:3px solid var(--success);border-radius:0 8px 8px 0;font-size:13px;line-height:1.6;color:var(--ink-soft)}
-.bias-fix strong{color:var(--success);font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:6px}
-.principle-box{margin-top:48px;padding:48px;background:var(--ink);color:white;border-radius:var(--radius-lg);text-align:center}
-.principle-box h3{font-family:var(--font-display);font-size:clamp(28px,3vw,40px);font-weight:800;letter-spacing:-.02em;margin-bottom:16px;color:white}
-.principle-box h3 em{font-style:italic;font-weight:300;color:#F7B87A}
-.principle-box p{font-size:16px;line-height:1.7;color:rgba(247,243,237,.85);max-width:620px;margin:0 auto 20px}
-.principle-box p strong{color:white}
-.principle-tag{font-family:var(--font-mono);font-size:11px;color:#F7B87A;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
-.checkpoint{padding:80px 0;text-align:center}
-.checkpoint-card{background:white;border:2px dashed var(--electric);border-radius:var(--radius-lg);padding:48px 32px;max-width:640px;margin:0 auto}
-.checkpoint-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
-.checkpoint-title em{font-style:italic;font-weight:300;color:var(--electric)}
-.checkpoint-body{font-size:15px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px}
-.checkpoint-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
-.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
-.chapter-nav-link:hover{transform:translateX(-4px)}
-.chapter-nav-link.next{align-items:flex-end}
-.chapter-nav-link.next:hover{transform:translateX(4px)}
-.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
-.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
-@media(max-width:768px){.bias-num{font-size:48px;top:18px;right:20px}.bias-card{padding:24px}.principle-box{padding:32px 24px}}
-</style></head><body>
-<nav class="site-nav">
-<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>※</span></a>
-<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="21-future.html">Next →</a></li></ul>
-</nav>
+.stmt { background: var(--white); border: 1px solid var(--border-strong); border-radius: var(--r-md); padding: 20px; font-family: var(--font-mono); box-shadow: var(--shadow); max-width: 380px; margin-inline: auto; }
+.stmt .top { font-size: .7rem; letter-spacing: .08em; color: var(--ink-faint); border-bottom: 1px dashed var(--border-strong); padding-bottom: 10px; margin-bottom: 14px; }
+.stmt .l { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 6px 0; transition: all .5s var(--ease-out); }
+.stmt .l span { font-size: .75rem; color: var(--ink-muted); } .stmt .l b { font-size: .9rem; }
+.stmt .l.hero { background: var(--electric-soft); margin-inline: -10px; padding: 12px 10px; border-radius: 10px; }
+.stmt .l.hero span { color: var(--electric); font-weight: 700; } .stmt .l.hero b { font: 800 1.9rem var(--font-display); color: var(--electric); }
+.stmt .btn { width: 100%; margin-top: 14px; }
+.bias summary { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; }
+.bias .num { font: italic 300 2rem/1 var(--font-display); color: var(--electric); grid-row: span 2; }
+.bias .tag { font: 400 .68rem var(--font-mono); letter-spacing: .08em; color: var(--ink-faint); }
+.principle { background: var(--ink); color: var(--cream); border-radius: var(--r-lg); padding: clamp(24px, 5vw, 48px); text-align: center; }
+.principle h3 em { color: #F7B87A; }
+</style>
+</head>
+<body data-ch="20">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>Your Relationship With <em>Money</em></h1>
+  <p>A card changes how spending feels, and the people who design cards know it. Try one experiment on yourself, then meet six biases and the fix for each.</p>
+</header>
 
-<div class="chapter-shell"><div class="container">
-<div class="chapter-header">
-<div class="chapter-header-row"><div class="chapter-roman">Chapter XX</div><div class="chapter-progress-text">20 of 22 · ~7 min</div></div>
-<h1 class="chapter-h1">Your Relationship with <em>Money</em></h1>
-<p class="chapter-intro">Credit cards aren\'t just a tool — they\'re psychological. They shape how you experience spending, debt, and even self-worth. Tap each bias to see how it\'s affecting you.</p>
-</div>
-
-<section style="padding:32px 0;">
-<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;">Six psychological biases at work</div>
-<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;margin-bottom:32px;">The mind games <em style="font-style:italic;font-weight:300;color:var(--warm);">cards play with you</em>.</h2>
-
-<div class="bias-card" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="bias-num">01</div>
-<div class="bias-tag">PAYMENT DECOUPLING</div>
-<h3>The <em>"future me"</em> problem</h3>
-<p class="bias-blurb">Cards separate the joy of buying from the pain of paying. Both happen at different times — and your brain treats "future me" almost like a stranger.</p>
-<div class="bias-detail">
-<p>When you pay cash, your brain registers a small loss aversion signal — that\'s why physical cash feels harder to spend. Cards remove that signal entirely. <strong>Studies consistently show people spend 12-18% more when paying by card</strong> versus cash for identical items.</p>
-<p>Worse: when the bill arrives 30 days later, the dopamine from the purchase has faded. <em>You\'re paying the cost without feeling the benefit.</em> Future-you ends up resentful of past-you.</p>
-<div class="bias-fix"><strong>The fix</strong>Mental "cash translation": for purchases over a threshold (say ₹2,000), pause and ask "would I take this much physical cash from an ATM and hand it over?" If the answer is no, it\'s a card-only purchase — don\'t make it.</div>
-</div>
-</div>
-
-<div class="bias-card" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="bias-num">02</div>
-<div class="bias-tag">CREDIT LIMIT AS WEALTH</div>
-<h3>"I have <em>₹3 lakhs</em> in credit"</h3>
-<p class="bias-blurb">Your credit limit isn\'t money. But your brain — especially without active discipline — files it next to your bank balance.</p>
-<div class="bias-detail">
-<p>This is one of the most insidious distortions. <strong>A ₹3 lakh credit limit is not ₹3 lakh in resources</strong> — it\'s the maximum amount of debt the bank will let you take on. But because it shows up in the same app where you check your bank balance, the brain conflates them.</p>
-<p>The real-world result: people with high credit limits spend more, even on things they could have paid for in cash. <em>Wealth feels more available than it is.</em></p>
-<div class="bias-fix"><strong>The fix</strong>Hide your credit limit from your phone\'s home screen widgets. Mentally label it as "the bank\'s money I\'m allowed to borrow," not "my money." When evaluating whether you can afford something, look at your bank balance only.</div>
-</div>
-</div>
-
-<div class="bias-card" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="bias-num">03</div>
-<div class="bias-tag">REWARDS FRAMING</div>
-<h3>"It was <em>practically free</em>"</h3>
-<p class="bias-blurb">The 1-2% reward feels like a discount but reframes spending in dangerous ways. ₹50,000 spent for ₹500 cashback is still ₹50,000 spent.</p>
-<div class="bias-detail">
-<p>Card companies didn\'t invent rewards out of generosity — they invented them because <strong>rewards make you spend more</strong>. The framing of "I\'m saving 2%" obscures the fact that you\'re also spending 100%.</p>
-<p>The deepest version: people will go out of their way to spend ON the card just to "use the rewards" — buying things they wouldn\'t otherwise have bought, in pursuit of cashback that totals less than what they spent. <em>The tail wags the dog.</em></p>
-<div class="bias-fix"><strong>The fix</strong>Rewards are a kicker, not a reason. Use the card on spending you\'d already do. Never spend more to "earn more rewards" — by definition, you\'ll always come out behind.</div>
-</div>
-</div>
-
-<div class="bias-card" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="bias-num">04</div>
-<div class="bias-tag">MINIMUM PAYMENT ANCHORING</div>
-<h3>The <em>"₹2,300 due"</em> trick</h3>
-<p class="bias-blurb">When the bill says "minimum due ₹2,300" in big text and "total due ₹46,000" in small text, your brain remembers the first number.</p>
-<div class="bias-detail">
-<p>Statement design is intentional. The minimum due is highlighted in bigger fonts, often appears first, and is presented as the "amount required to keep your account in good standing." <strong>This is anchoring at scale — millions of people pay just that.</strong></p>
-<p>The cost: ₹46,000 paid down at minimum due (with ongoing modest spending) takes ~30 years to fully clear and costs ~₹70,000 in interest over time. <em>The bill design is the trap, not your willpower.</em></p>
-<div class="bias-fix"><strong>The fix</strong>The only number on your statement that exists is the total balance. Set up auto-pay for "full balance" so the minimum due never even enters your decision tree. Pre-commit, eliminate the choice.</div>
-</div>
-</div>
-
-<div class="bias-card" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="bias-num">05</div>
-<div class="bias-tag">STATUS GAMIFICATION</div>
-<h3>The <em>premium card</em> trap</h3>
-<p class="bias-blurb">Tier names like "Platinum," "Sapphire," "Infinia," "Black" are deliberately gamified. They\'re not better — they\'re higher-fee.</p>
-<div class="bias-detail">
-<p>Banks have engineered a status hierarchy among credit cards. <strong>Higher tiers come with more features, but also significantly higher annual fees</strong> (₹2,500 to ₹50,000+). For most people, the math doesn\'t work — they don\'t use the lounge enough, redeem enough rewards, or value the perks enough to justify the fee.</p>
-<p>But the language ("Black," "Reserve," "Infinia") and the visual design (metal cards, embossed names) trigger status-seeking behaviors. <em>People upgrade because of how the card feels, not because of math.</em></p>
-<div class="bias-fix"><strong>The fix</strong>Before any upgrade, do the actual math: annual fee ÷ months I\'ll use this perk. If you\'re paying ₹10,000 for "free lounge access" and you fly twice a year, you\'re paying ₹2,500/lounge visit. Skip it.</div>
-</div>
-</div>
-
-<div class="bias-card" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="bias-num">06</div>
-<div class="bias-tag">DEBT SHAME</div>
-<h3>The <em>silence</em> tax</h3>
-<p class="bias-blurb">When card debt becomes a problem, shame stops people from talking about it — including with the bank, who could often help.</p>
-<div class="bias-detail">
-<p>The dirtiest secret in personal finance: <strong>most card debt that becomes a crisis was solvable 3-6 months earlier</strong>, but the cardholder didn\'t talk to anyone because of shame. Banks have hardship programs, EMI conversions, and settlement options — but they require you to ASK.</p>
-<p>By the time someone calls the bank from a crisis, options have shrunk. <em>Early disclosure preserves choices.</em> Late disclosure means accepting whatever the bank offers.</p>
-<div class="bias-fix"><strong>The fix</strong>Reframe: a credit card is a relationship, not a moral obligation. If you\'re struggling, the bank is the FIRST call, not the last. They\'d rather help you restructure than chase you. Asking for help when you need it is the financial maturity, not the failure.</div>
-</div>
-</div>
-
-<div class="principle-box">
-<div class="principle-tag">THE PRINCIPLE</div>
-<h3>The card is a <em>mirror</em>, not a master.</h3>
-<p>Your credit card statement is the most honest financial document about you that exists. It shows where your money actually goes — not where you wished it went. <strong>The first step toward a healthy relationship with credit is looking at it without flinching.</strong></p>
-<p style="font-style:italic;font-family:var(--font-display);">If your card is making you uncomfortable, the card isn\'t the problem. It\'s reflecting one.</p>
-</div>
+<section class="sec">
+  <div class="eyebrow">An experiment on you</div>
+  <h2 class="h2">Your statement arrives. <em>How much do you pay?</em></h2>
+  <p class="lede">Look at it the way you would on your phone, half-distracted. Then press what you would press.</p>
+  <div class="stage split">
+    <div>
+      <div class="stmt" id="stmt"></div>
+      <div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn--ghost btn--sm" id="swap" hidden>⇄ Show the honest design</button></div>
+    </div>
+    <div id="exp" aria-live="polite"><span class="hand">← press a button on the statement</span></div>
+  </div>
 </section>
 
-<section class="checkpoint">
-<div class="checkpoint-card">
-<div style="font-size:56px;margin-bottom:12px;">🪞</div>
-<h3 class="checkpoint-title">You can <em>see clearly</em> now.</h3>
-<p class="checkpoint-body">Up next: the future of money. Tap-to-pay, virtual cards, embedded finance — what\'s coming, and how it changes the game.</p>
-<div class="checkpoint-cta-row">
-<a href="../index.html" class="btn btn--ghost">← all chapters</a>
-<a href="21-future.html" class="btn btn--primary btn--lg">Chapter XXI: What\'s Coming Next →</a>
-</div></div></section>
+<section class="sec">
+  <div class="eyebrow">Six mind games</div>
+  <h2 class="h2">What cards do to <em>your judgement</em>.</h2>
+  <div class="bias" id="biases" style="margin-top:22px"></div>
+</section>
 
-<div class="chapter-nav-bottom">
-<a href="19-students.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">Your First Card</span></a>
-<a href="21-future.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Next →</span><span class="chapter-nav-name">What\'s Coming Next</span></a>
-</div>
-</div></div>
+<section class="sec">
+  <div class="eyebrow">If it has stopped being a game</div>
+  <h2 class="h2">Help that is <em>free</em> in {name}.</h2>
+  <div class="callout is-success" id="help" style="margin-top:20px"></div>
+</section>
 
+<section class="sec">
+  <div class="principle reveal">
+    <div class="eyebrow" style="color:#F7B87A">The principle</div>
+    <h3 class="h2">The card is a <em>mirror</em>, not a master.</h3>
+    <p style="max-width:56ch;margin:14px auto 0;opacity:.85">Your statement is the most honest financial document about you that exists: where the money went, not where you meant it to go. If the card makes you uncomfortable, it is showing you something. Look at it without flinching.</p>
+  </div>
+</section>
+
+<aside class="checkpoint" data-icon="🪞">
+  <h3>You can see the <em>strings</em>.</h3>
+  <p>Knowing a bias exists does not switch it off — which is why every fix here is a rule you set in advance, not willpower in the moment. Next: where payments are going.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
 <script src="../js/global.js"></script>
-</body></html>
+<script>
+{
+const { $, $$, R, rid, money, t, pick } = DCC;
+const debt = R.a.debt, r = R.apr / 1200, tax = 1 + R.feeTax;
+const minP = Math.max(R.minFloor, rid === 'au' ? debt * R.minPct / 100 : debt * R.minPct / 100 + debt * r * tax);
+let honest = false;
+function stmt() {
+  $('#stmt').innerHTML = `<div class="top">${R.issuer.toUpperCase()} · YOUR STATEMENT IS READY</div>` + (honest
+    ? `<div class="l hero"><span>PAY THIS TO OWE NO INTEREST</span><b>${money(debt)}</b></div><div class="l"><span>Least you can pay (interest will apply)</span><b>${money(minP)}</b></div><button class="btn btn--primary" data-p="full">Pay ${money(debt)}</button><button class="btn btn--ghost btn--sm" data-p="min">Pay minimum</button>`
+    : `<div class="l hero"><span>MINIMUM DUE</span><b>${money(minP)}</b></div><div class="l"><span>Total amount due</span><b>${money(debt)}</b></div><div class="l"><span>Due date</span><b>25th</b></div><button class="btn btn--primary" data-p="min">Pay ${money(minP)} now</button><button class="btn btn--ghost btn--sm" data-p="full">Other amount</button>`);
+}
+stmt();
+$('#stmt').addEventListener('click', e => { const b = e.target.closest('[data-p]'); if (!b) return; const min = b.dataset.p === 'min';
+  $('#exp').innerHTML = `<span class="chip ${min ? 'is-danger' : 'is-success'}">${min ? 'You took the anchor' : 'You resisted it'}</span><h3 class="h3" style="margin-block:10px">${honest ? 'Same numbers. <em>Different design.</em>' : 'Look at what the layout did.'}</h3>
+    <p>${honest ? 'Here the full balance is the big number and the primary button. Nothing about your debt changed — only which figure was made easy.' : `The smallest number was the largest type and the main button. The real bill was a grey line, and paying it meant choosing “other amount”. That is <strong>anchoring</strong>: the first, most prominent figure becomes the reference for what feels reasonable.`}</p>
+    <div class="kv" style="margin-top:14px"><div class="is-fee"><span>Interest next month if you pay ${money(minP)}</span><span>${money((debt - minP) * r * tax)}</span></div><div><span>Interest if you pay ${money(debt)}</span><span>${money(0)}</span></div></div>
+    <p class="small muted" style="margin-top:12px">Research on real statements finds that simply showing a minimum figure pulls payments down towards it. ${min ? 'You are in large company.' : 'Most people do not resist.'} The fix is not willpower: set autopay to the full balance so you never see the choice.</p>`;
+  $('#swap').hidden = false; min ? DCC.playError() : DCC.playSuccess(); });
+$('#swap').onclick = () => { honest = !honest; stmt(); $('#swap').textContent = honest ? '⇄ Show the bank’s design' : '⇄ Show the honest design'; DCC.playClick(); };
+
+const big = money(Math.round(R.a.limit * 3)), thr = money(pick({ in: 2000, us: 50, uk: 40, au: 75 }));
+$('#biases').innerHTML = [
+  ['PAYMENT DECOUPLING', 'The <em>“future me”</em> problem', 'A card separates the pleasure of buying from the pain of paying — by weeks.', 'Handing over cash stings a little, and that sting is a brake. A tap removes it. Experiments repeatedly find people will pay more for the same thing by card than in cash. When the bill comes, the pleasure is long gone and only the cost remains.', `For anything over ${thr}, ask: would I take this out of a cash machine and hand it over? If not, it is a card-only purchase. Skip it.`],
+  ['LIMIT AS WEALTH', `“I have <em>${big}</em> available”`, 'A credit limit is not money. Your brain files it next to your bank balance anyway.', 'It appears in the same app, in the same typeface, as your actual balance. People given higher limits spend more — including on things they could have paid for outright.', 'Call it what it is: the most the bank will let you owe. When deciding whether you can afford something, look at your bank balance only.'],
+  ['REWARDS FRAMING', '“It was <em>practically free</em>”', 'Earning 2% back means spending the other 98%.', 'Rewards exist because they make people spend more, and more often on the card. The clearest symptom is buying something to “use the offer” or to reach a bonus threshold.', 'Rewards are a by-product of spending you were going to do. Never the reason for it.'],
+  ['ANCHORING', 'The <em>minimum due</em>', 'The figure shown first and largest becomes the figure that feels normal.', 'You just experienced it. The minimum is presented as the amount required; the total is presented as optional.', 'Autopay the full balance. The minimum should never reach your eyes as a choice.'],
+  ['STATUS', 'The <em>metal card</em>', 'Platinum, Black, Reserve. The names are doing a job.', 'Tiers are a ladder built to be climbed. Higher fees buy perks most holders do not use enough to break even — but the card feels like an achievement.', 'Annual fee divided by the times you really used the perk last year. If a lounge visit works out dearer than buying lunch, hand it back.'],
+  ['SHAME', 'The <em>silence</em> tax', 'When debt becomes a problem, embarrassment stops people asking for help while help is still cheap.', 'Most card debt that turns into a crisis was fixable months earlier. Lenders have hardship arrangements; free advisers exist. Both work best before the first missed payment.', 'Treat it as an administrative problem, not a moral one. The first call is the hardest and the most valuable.']
+].map((b, i) => `<details class="fold"><summary><span class="num">0${i + 1}</span><span class="tag">${b[0]}</span><span><span class="h4">${b[1]}</span><br><span class="small muted">${b[2]}</span></span></summary><div class="fold-body"><p>${b[3]}</p><div class="callout is-success"><b>The fix</b>${b[4]}</div></div></details>`).join('');
+
+$('#help').innerHTML = '<b>You are not the first</b>' + pick({
+  in: 'Speak to your bank before you miss a payment and ask about restructuring into EMIs. If a recovery agent harasses you, that breaches RBI’s code — complain to the bank and then to the RBI Ombudsman (cms.rbi.org.in). Non-profit credit counselling centres run by banks and bodies such as DISHA offer free guidance. If the stress is affecting you, Tele-MANAS is on 14416.',
+  us: 'Call your issuer and ask for a hardship programme. For a full plan, use a non-profit credit counselling agency affiliated with the NFCC (nfcc.org) — the first session is free. If debt is affecting your mental health, call or text 988.',
+  uk: 'StepChange (0800 138 1111), National Debtline and Citizens Advice are free and independent. MoneyHelper has a debt-advice locator. Breathing Space gives 60 days’ legal protection while you get advice. Samaritans are on 116 123, day or night.',
+  au: 'The National Debt Helpline — 1800 007 007 — offers free, confidential financial counselling. You have a legal right to ask your lender for a hardship variation. Lifeline is on 13 11 14. In New Zealand: MoneyTalks, 0800 345 123.' });
+DCC.observe();
+}
+</script>
+</body>
+</html>

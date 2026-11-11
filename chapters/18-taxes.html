@@ -1,219 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>XVIII. Taxes & TCS — Decoding Credit Cards</title>
-  <!-- Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://parth8.github.io/credit/chapters/18-taxes.html">
-  <meta property="og:title" content="XVIII. Taxes & TCS — Decoding Credit Cards">
-  <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:site_name" content="Decoding Credit Cards">
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="XVIII. Taxes & TCS — Decoding Credit Cards">
-  <meta name="twitter:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta name="twitter:image" content="https://parth8.github.io/credit/og-image.png">
-  
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>XVIII. Taxes &amp; Your Card — Decoding Credit Cards</title>
+<meta name="description" content="Using a credit card is almost never taxable — but tax touches it in a few places, and there are some stubborn myths. Sort the true from the false.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/18-taxes.html">
+<meta property="og:title" content="XVIII. Taxes &amp; Your Card — Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
 <link rel="stylesheet" href="../css/global.css">
 <style>
-.chapter-shell{min-height:100vh;padding-top:80px}
-.chapter-header{padding:32px 0;border-bottom:1px dashed var(--border-strong);margin-bottom:32px}
-.chapter-header-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.chapter-roman{font-family:var(--font-display);font-size:14px;font-style:italic;color:var(--electric);letter-spacing:.04em}
-.chapter-progress-text{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
-.chapter-h1{font-family:var(--font-display);font-size:clamp(48px,6vw,80px);font-weight:800;line-height:1;letter-spacing:-.03em;margin-bottom:16px}
-.chapter-h1 em{font-style:italic;font-weight:300;color:var(--gold)}
-.chapter-intro{font-size:18px;color:var(--ink-muted);max-width:600px;line-height:1.6}
-.threshold-stage{background:white;border:1px solid var(--border-strong);border-radius:var(--radius-lg);padding:40px;box-shadow:0 1px 3px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.04);margin:32px 0}
-.threshold-vis{position:relative;height:80px;background:var(--paper);border-radius:8px;overflow:hidden;margin:32px 0}
-.threshold-fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,var(--success) 0%,var(--gold) 70%,var(--danger) 100%);transition:width .4s ease;border-radius:8px}
-.threshold-marker{position:absolute;top:-8px;bottom:-8px;width:2px;background:var(--ink);left:70%}
-.threshold-marker::before{content:'₹7L';position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:11px;font-weight:700;background:var(--ink);color:white;padding:3px 8px;border-radius:4px}
-.spend-display{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
-.spend-amt{font-family:var(--font-display);font-size:36px;font-weight:800;letter-spacing:-.02em}
-.tcs-result{padding:24px;background:var(--paper);border-radius:var(--radius-md);margin-top:24px}
-.tcs-result.taxable{background:rgba(180,83,9,.08);border-left:4px solid var(--gold)}
-.tcs-result.safe{background:var(--success-soft);border-left:4px solid var(--success)}
-.fact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:32px}
-.fact-card{padding:24px;background:white;border:1px solid var(--border-strong);border-radius:var(--radius-md);cursor:pointer;transition:all .3s;text-align:left}
-.fact-card:hover{transform:translateY(-3px);border-color:var(--gold);box-shadow:0 8px 24px rgba(180,83,9,.08)}
-.fact-card.expanded{border-color:var(--gold);background:rgba(180,83,9,.04)}
-.fact-icon{font-size:28px;margin-bottom:8px}
-.fact-card h4{font-family:var(--font-display);font-size:17px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
-.fact-card h4 em{font-style:italic;font-weight:300;color:var(--gold)}
-.fact-blurb{font-size:13px;color:var(--ink-muted);line-height:1.5}
-.fact-detail{display:none;padding-top:14px;margin-top:14px;border-top:1px dashed var(--border)}
-.fact-card.expanded .fact-detail{display:block}
-.fact-detail p{font-size:13px;color:var(--ink-soft);line-height:1.6}
-.fact-detail strong{color:var(--ink)}
-input[type=range]{width:100%;-webkit-appearance:none;appearance:none;background:transparent;cursor:pointer;outline:none;padding:8px 0}
-input[type=range]::-webkit-slider-runnable-track{width:100%;height:4px;background:var(--parchment);border-radius:2px}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;height:22px;width:22px;border-radius:50%;background:var(--gold);border:3px solid white;box-shadow:0 2px 8px rgba(180,83,9,.3);margin-top:-9px;cursor:pointer}
-.checkpoint{padding:80px 0;text-align:center}
-.checkpoint-card{background:white;border:2px dashed var(--electric);border-radius:var(--radius-lg);padding:48px 32px;max-width:640px;margin:0 auto}
-.checkpoint-title{font-family:var(--font-display);font-size:32px;font-weight:800;letter-spacing:-.02em;margin-bottom:12px}
-.checkpoint-title em{font-style:italic;font-weight:300;color:var(--electric)}
-.checkpoint-body{font-size:15px;color:var(--ink-muted);line-height:1.6;margin-bottom:28px}
-.checkpoint-cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.chapter-nav-bottom{padding:40px 0 80px;display:flex;justify-content:space-between;align-items:center;border-top:1px dashed var(--border-strong)}
-.chapter-nav-link{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:inherit;transition:transform .3s ease}
-.chapter-nav-link:hover{transform:translateX(-4px)}
-.chapter-nav-link.next{align-items:flex-end}
-.chapter-nav-link.next:hover{transform:translateX(4px)}
-.chapter-nav-meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.04em}
-.chapter-nav-name{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
-@media(max-width:768px){.fact-grid{grid-template-columns:1fr}.threshold-stage{padding:24px}}
-</style></head><body>
-<nav class="site-nav">
-<a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>※</span></a>
-<ul class="nav-links"><li><a href="../index.html#chapters">All Chapters</a></li><li><a href="19-students.html">Next →</a></li></ul>
-</nav>
+.tcs-vis { position: relative; height: 22px; background: var(--parchment); border-radius: 11px; overflow: hidden; margin-block: 18px 6px; }
+.tcs-vis i { position: absolute; inset: 0 auto 0 0; background: var(--success); transition: width .4s var(--ease-out), background .3s; }
+.tcs-vis b { position: absolute; top: 0; bottom: 0; width: 3px; background: var(--ink); }
+.bigv { font: 800 var(--step-3)/1 var(--font-display); font-variant-numeric: tabular-nums; letter-spacing: -.03em; }
+</style>
+</head>
+<body data-ch="18">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>Taxes &amp; <em>Your Card</em></h1>
+  <p>Using a credit card is almost never taxable — but tax touches it in a few places, and there are some stubborn myths. Sort the true from the false.</p>
+</header>
 
-<div class="chapter-shell"><div class="container">
-<div class="chapter-header">
-<div class="chapter-header-row"><div class="chapter-roman">Chapter XVIII</div><div class="chapter-progress-text">18 of 22 · ~6 min</div></div>
-<h1 class="chapter-h1">Taxes <em>&amp; TCS</em></h1>
-<p class="chapter-intro">Most credit card spending is tax-invisible. But cross certain lines — international spending, big-ticket buys — and you suddenly owe TCS, GST, or have to declare it. Drag the slider to see when.</p>
-</div>
-
-<section style="padding:32px 0;">
-<div style="font-family:var(--font-mono);font-size:11px;color:var(--gold);letter-spacing:.06em;margin-bottom:8px;">THE ₹7 LAKH LINE · INTERNATIONAL SPENDING</div>
-<h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:700;letter-spacing:-.02em;">When does your card spending <em style="font-style:italic;font-weight:300;color:var(--gold);">become taxable</em>?</h2>
-
-<div class="threshold-stage">
-<div class="spend-display">
-<div>
-<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:4px;">YOUR INTERNATIONAL SPEND THIS FY</div>
-<div class="spend-amt" id="intl-amt">₹4,00,000</div>
-</div>
-<div style="text-align:right;">
-<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:4px;">TCS LIABILITY</div>
-<div class="spend-amt" id="tcs-amt" style="color:var(--success);">₹0</div>
-</div>
-</div>
-
-<div class="threshold-vis">
-<div class="threshold-fill" id="threshold-fill" style="width:40%;"></div>
-<div class="threshold-marker"></div>
-</div>
-
-<input type="range" id="intl-slider" min="0" max="2000000" step="50000" value="400000" oninput="updateTCS()">
-<div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--ink-faint);">
-<span>₹0</span><span>₹10L</span><span>₹20L</span>
-</div>
-
-<div class="tcs-result safe" id="tcs-result">
-<div style="font-family:var(--font-mono);font-size:11px;color:var(--success);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;">UNDER THRESHOLD</div>
-<p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0;">You\'re under the ₹7 lakh annual limit on international card spending. <strong>Zero TCS.</strong> Spend without worry — just keep tracking the cumulative number across the financial year (April–March).</p>
-</div>
-</div>
-
-<div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-faint);letter-spacing:.06em;margin-bottom:8px;margin-top:40px;">OTHER TAX TOUCHPOINTS</div>
-<h3 style="font-family:var(--font-display);font-size:clamp(24px,2.6vw,32px);font-weight:700;letter-spacing:-.01em;">The five places <em style="font-style:italic;font-weight:300;color:var(--gold);">tax intersects with your card</em>.</h3>
-
-<div class="fact-grid">
-<div class="fact-card" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="fact-icon">🌍</div>
-<h4>The <em>₹7 lakh</em> rule (LRS / TCS)</h4>
-<div class="fact-blurb">International card spending up to ₹7L/year: no TCS. Above it: 20% TCS on the excess.</div>
-<div class="fact-detail">
-<p>Under the Liberalised Remittance Scheme (LRS), residents can spend up to <strong>₹7 lakh on international transactions per financial year</strong> without triggering TCS. Cross that threshold and the bank deducts <strong>20% TCS on the excess</strong>. <strong>Important:</strong> The TCS isn\'t a tax — it\'s a deposit. You can claim it back when filing your ITR. But it does create a cash-flow drag, and you have to track it.</p>
-</div>
-</div>
-
-<div class="fact-card" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="fact-icon">💸</div>
-<h4>GST on card <em>fees & interest</em></h4>
-<div class="fact-blurb">Every fee on your card statement (annual, late, forex, interest) gets 18% GST added.</div>
-<div class="fact-detail">
-<p>That ₹500 annual fee? You\'re actually paying ₹590. The 18% GST is a separate line item but it adds up: <strong>on ₹10,000 of fees over a year, you pay ₹1,800 of GST</strong>. <strong>The good news:</strong> if a bank reverses a fee (after a customer service call), they should also reverse the GST on it. Many forget — always specifically ask for both to be reversed.</p>
-</div>
-</div>
-
-<div class="fact-card" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="fact-icon">🛒</div>
-<h4>Big-ticket <em>purchase reporting</em></h4>
-<div class="fact-blurb">Card spends over ₹2L on a single transaction get reported to the IT department.</div>
-<div class="fact-detail">
-<p>Banks file an <strong>Annual Information Return (AIR)</strong> with the income tax department for any single card transaction over ₹2 lakh. <strong>This isn\'t a tax</strong> — it\'s reporting. But it means a luxury purchase you put on the card shows up on your IT department\'s radar. <strong>Implication:</strong> if your declared income is ₹6L/year and you put ₹3L on a card in one transaction, expect a notice asking to explain the source of funds.</p>
-</div>
-</div>
-
-<div class="fact-card" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="fact-icon">🎁</div>
-<h4>Reward points are <em>not income</em></h4>
-<div class="fact-blurb">Cashback, points, miles — none of these are taxable for individual cardholders.</div>
-<div class="fact-detail">
-<p>The income tax department classifies card rewards as <strong>"discounts on purchases" — not income</strong>. Whether you redeem for a flight, voucher, or statement credit, it\'s tax-free. <strong>Exception:</strong> if you\'re running a business and using a corporate card whose rewards accrue to the business, it can get complex — speak to a CA. For personal use: cashback is yours, no taxes.</p>
-</div>
-</div>
-
-<div class="fact-card" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="fact-icon">📋</div>
-<h4>Why your <em>card history matters</em> at tax time</h4>
-<div class="fact-blurb">Card statements are a goldmine for finding deductible business expenses you forgot.</div>
-<div class="fact-detail">
-<p>If you\'re self-employed, freelancing, or running a side hustle, your card statement is the cleanest record of business expenses you have — work meals, travel, subscriptions, software. <strong>Many people forget ₹50K–₹2L of legitimate deductions per year</strong> simply because they don\'t reconcile statements. <strong>Pro tip:</strong> use a separate card for business expenses if you have any. Makes tax season trivial.</p>
-</div>
-</div>
-
-<div class="fact-card" onclick="this.classList.toggle('expanded');DCC.playClick();">
-<div class="fact-icon">🏛</div>
-<h4>Form 26AS / <em>AIS shows your TCS</em></h4>
-<div class="fact-blurb">Any TCS paid via card spends shows up automatically in your tax records.</div>
-<div class="fact-detail">
-<p>The 20% TCS deducted on international card spending above ₹7L gets credited to your PAN. It shows up in <strong>Form 26AS and the new Annual Information Statement (AIS)</strong>. When you file your ITR, this amount is automatically adjustable against your total tax liability — you don\'t need to do anything special, but you DO need to file an ITR to claim it back. <strong>Skip ITR filing and the TCS just disappears.</strong></p>
-</div>
-</div>
-</div>
+<section class="sec">
+  <div class="eyebrow">True or false in {name}</div>
+  <h2 class="h2">Five statements. <em>Which are real?</em></h2>
+  <div class="stage" id="game"></div>
 </section>
 
-<section class="checkpoint">
-<div class="checkpoint-card">
-<div style="font-size:56px;margin-bottom:12px;">📊</div>
-<h3 class="checkpoint-title">Your card and the <em>tax man</em> — sorted.</h3>
-<p class="checkpoint-body">Up next: a chapter just for first-time cardholders — how to start right and avoid the traps that take years to escape.</p>
-<div class="checkpoint-cta-row">
-<a href="../index.html" class="btn btn--ghost">← all chapters</a>
-<a href="19-students.html" class="btn btn--primary btn--lg">Chapter XIX: Your First Card →</a>
-</div></div></section>
+<section class="sec" data-r="in">
+  <div class="eyebrow">The one India-specific calculator</div>
+  <h2 class="h2">Money sent abroad: <em>when TCS applies</em>.</h2>
+  <p class="lede">Tax collected at source applies to remittances under the Liberalised Remittance Scheme. The surprise is what counts — and what does not.</p>
+  <div class="stage split">
+    <div>
+      <div class="field"><label>How are you paying abroad?</label><div class="seg" id="how" style="margin-top:6px"><button data-v="cc" class="on">Credit card</button><button data-v="lrs">Debit / forex card / wire</button></div></div>
+      <div class="field"><label>For what?</label><div class="seg" id="what" style="margin-top:6px"><button data-v="other" class="on">Travel &amp; other</button><button data-v="edu">Education / medical</button></div></div>
+      <div class="field"><div class="field-top"><label for="amt">Sent or spent abroad this financial year</label><span class="val" id="amt-v"></span></div><input type="range" id="amt" min="0" max="3000000" step="50000" value="1400000"><div class="field-ends"><span>₹0</span><span>₹10L threshold</span><span>₹30L</span></div></div>
+    </div>
+    <div class="sticky" aria-live="polite">
+      <div class="eyebrow">TCS collected by the bank</div>
+      <div class="bigv" id="tcs"></div>
+      <div class="tcs-vis"><i id="tcs-fill"></i><b style="left:33.33%"></b></div>
+      <div class="callout" id="tcs-note" style="margin-top:14px"></div>
+      <p class="small faint" style="margin-top:12px">Rules for FY 2026–27 as understood in November 2026: ₹10 lakh threshold per person per year; 20% above it for most purposes, 2% for education and medical treatment, nil for education funded by a loan. Overseas tour packages have their own rate. Confirm with your bank before a large remittance.</p>
+    </div>
+  </div>
+</section>
 
-<div class="chapter-nav-bottom">
-<a href="17-alternatives.html" class="chapter-nav-link"><span class="chapter-nav-meta">← Previous</span><span class="chapter-nav-name">UPI, Wallets & The Rest</span></a>
-<a href="19-students.html" class="chapter-nav-link next"><span class="chapter-nav-meta">Next →</span><span class="chapter-nav-name">Your First Card</span></a>
-</div>
-</div></div>
+<section class="sec">
+  <div class="eyebrow">Where tax really meets the card</div>
+  <h2 class="h2">The <em>short list</em>.</h2>
+  <div id="facts" style="margin-top:22px"></div>
+  <p class="small faint" style="margin-top:18px">General information, not tax advice. Tax rules change every year — check the current position or ask a qualified adviser.</p>
+</section>
 
+<aside class="checkpoint" data-icon="🧾">
+  <h3>You can tell the <em>myths from the rules</em>.</h3>
+  <p>Rewards are not income, fees carry tax in some places, and big spending is visible to the tax office. Next: getting a first card right.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
 <script src="../js/global.js"></script>
 <script>
-function fmt(n) { return '₹' + n.toLocaleString('en-IN'); }
-function updateTCS() {
-  const spend = parseInt(document.getElementById('intl-slider').value);
-  const threshold = 700000;
-  document.getElementById('intl-amt').textContent = fmt(spend);
-  const fillPct = Math.min(100, (spend / 1000000) * 70); // 70% of bar = 7L
-  document.getElementById('threshold-fill').style.width = fillPct + '%';
+{
+const { $, $$, R, rid, money, t, pick } = DCC;
+const Q = pick({
+  in: [['Spending more than ₹10 lakh abroad on a credit card triggers 20% TCS.', false, 'International <strong>credit card</strong> spending is currently outside the LRS limit, so no TCS is collected. A 2023 plan to include it was deferred and has not been brought back. Debit cards, forex cards and wire transfers <em>do</em> count.'],
+       ['Every fee on my card statement carries 18% GST.', true, 'Annual fee, late fee, interest, forex markup, EMI processing — all attract 18% GST. If a fee is reversed, ask for the GST on it to be reversed too.'],
+       ['Cashback and reward points are taxable income.', false, 'For personal cards they are treated as a discount on what you bought, not income. (Rewards earned on business spending that you claimed as an expense are a question for your CA.)'],
+       ['The income-tax department can see large card payments.', true, 'Banks report card bill payments of ₹10 lakh or more in a year (₹1 lakh or more in cash) in the Statement of Financial Transactions. It appears in your AIS. It is reporting, not a tax — but it should be explainable by your income.'],
+       ['TCS that has been collected is money lost.', false, 'It is an advance tax credit against your PAN. It shows in Form 26AS and is adjusted or refunded when you file your return. You lose it only if you do not file.']],
+  us: [['Cashback from spending on my card is taxable income.', false, 'The IRS treats rewards earned by spending as a rebate — a reduction in the price you paid — not income.'],
+       ['A bank bonus I get without having to spend anything can be taxable.', true, 'A reward that is not tied to a purchase — a bonus for opening an account, or a referral bonus — is income, and the issuer may send a 1099-INT or 1099-MISC.'],
+       ['I can deduct the interest on my personal credit card.', false, 'Personal credit-card interest has not been deductible since the 1980s. Interest on genuine business expenses is.'],
+       ['Paying my federal taxes by credit card is free.', false, 'Payment processors charge about 1.75–2.9%. It is only worth it if a sign-up bonus or reward outweighs the fee — and you clear the balance.'],
+       ['If a card company forgives $600 or more of my debt, I may owe tax on it.', true, 'Cancelled debt of $600 or more is reported on Form 1099-C and generally counts as income, unless you were insolvent at the time.']],
+  uk: [['Cashback on my personal credit card is taxable.', false, 'HMRC treats it as a discount on your purchases, not income.'],
+       ['Interest on a personal credit card can be offset against my income tax.', false, 'Not for personal spending. If you are self-employed, interest and charges on genuine business purchases can be an allowable expense.'],
+       ['There is VAT on my card’s annual fee and interest.', false, 'Credit is an exempt financial service, so fees and interest carry no VAT.'],
+       ['If I pay a business expense on a personal card, I can still claim it.', true, 'What matters is that the cost was wholly and exclusively for the business — keep the receipt. A separate card for business spending makes self-assessment far easier.'],
+       ['I can pay HMRC with a personal credit card.', false, 'HMRC stopped accepting personal credit cards in 2018. Debit cards and corporate credit cards (for a fee) are accepted.']],
+  au: [['Reward points from my personal card are taxable.', false, 'The ATO does not treat points from personal spending as income.'],
+       ['Points earned on business spending can never have tax consequences.', false, 'Usually they do not — but the ATO has said points received under an arrangement tied to business activity, in large volumes, can be assessable or attract FBT. Unusual, but real.'],
+       ['Card interest can be deductible if the card was used for investment or business costs.', true, 'Interest is deductible to the extent the borrowing paid for income-producing expenses. Mixed personal and business use on one card makes the apportionment painful — keep them separate.'],
+       ['There is GST on my card’s interest and annual fee.', false, 'Credit is an input-taxed financial supply: no GST on interest or the annual fee.'],
+       ['Paying the ATO by credit card costs extra.', true, 'A card payment fee applies (under 1% for Visa and Mastercard, more for Amex). It can be deductible for a business.']]
+});
+DCC.quiz($('#game'), { label: 'Statement', items: Q.map(([q, ok, why]) => ({ title: `“${q}”`, opts: [{ t: 'True', ok, why }, { t: 'False', ok: !ok, why }], yes: 'Correct.', no: 'The other one.' })),
+  onEnd(s, n, again) { $('#game').innerHTML = `<div style="text-align:center"><h3 class="h3">${s} of ${n} <em>correct</em>.</h3><p class="lede" style="margin-inline:auto">${s === n ? 'You know more about this than most people who give advice on it.' : 'These catch nearly everyone — the myths are repeated far more often than the rules.'}</p><div class="row" style="justify-content:center;margin-top:16px"><button class="btn btn--outline" id="again">↻ Again</button></div></div>`; $('#again').onclick = again; DCC.playSuccess(); DCC.markDone(); } });
 
-  const tcs = spend > threshold ? Math.round((spend - threshold) * 0.2) : 0;
-  document.getElementById('tcs-amt').textContent = fmt(tcs);
-  document.getElementById('tcs-amt').style.color = tcs > 0 ? 'var(--gold)' : 'var(--success)';
-
-  const result = document.getElementById('tcs-result');
-  if (spend <= threshold) {
-    result.className = 'tcs-result safe';
-    result.innerHTML = `<div style="font-family:var(--font-mono);font-size:11px;color:var(--success);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;">UNDER THRESHOLD</div><p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0;">You\'re under the ₹7 lakh annual limit on international card spending. <strong>Zero TCS.</strong> Spend without worry — just keep tracking the cumulative number across the financial year (April–March).</p>`;
-  } else {
-    result.className = 'tcs-result taxable';
-    const excess = spend - threshold;
-    result.innerHTML = `<div style="font-family:var(--font-mono);font-size:11px;color:var(--gold);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px;">TCS APPLIES</div><p style="font-size:14px;color:var(--ink-soft);line-height:1.6;margin:0;">You\'ve crossed the ₹7L threshold by <strong>${fmt(excess)}</strong>. The bank will deduct <strong>20% TCS = ${fmt(tcs)}</strong> automatically. <strong>This is reclaimable</strong> when you file your ITR — it\'s a deposit, not a tax. But it\'s a cash-flow hit you should plan for.</p>`;
-  }
+if (rid === 'in') {
+  const st = { how: 'cc', what: 'other' }, amt = $('#amt');
+  const calc = () => { const v = +amt.value, th = 1000000, rate = st.what === 'edu' ? .02 : .2, tcs = st.how === 'cc' ? 0 : Math.max(0, v - th) * rate;
+    $('#amt-v').textContent = money(v); $('#tcs').textContent = money(tcs); $('#tcs').style.color = tcs ? 'var(--gold)' : 'var(--success)';
+    $('#tcs-fill').style.width = (v / 3000000 * 100) + '%'; $('#tcs-fill').style.background = tcs ? 'var(--gold)' : 'var(--success)';
+    const n = $('#tcs-note');
+    if (st.how === 'cc') { n.className = 'callout is-success'; n.innerHTML = '<b>No TCS</b>Credit card spending abroad is not counted under LRS at present, whatever the amount. It is still visible to the tax department, and the forex markup and GST still apply.'; }
+    else if (!tcs) { n.className = 'callout is-success'; n.innerHTML = `<b>Under the threshold</b>${money(th - v)} of headroom left this financial year (April to March), counted per PAN across all your banks.`; }
+    else { n.className = 'callout is-warm'; n.innerHTML = `<b>TCS at ${rate * 100}% on the excess</b>${money(v - th)} is above the threshold. ${money(tcs)} is collected up front — a cash-flow cost, not a tax: it comes back as a credit when you file your return.`; } };
+  amt.addEventListener('input', calc);
+  ['how', 'what'].forEach(k => $('#' + k).addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st[k] = b.dataset.v; $$('#' + k + ' button').forEach(x => x.classList.toggle('on', x === b)); DCC.playClick(); calc(); }));
+  calc();
 }
-updateTCS();
+
+$('#facts').innerHTML = pick({
+  in: [['GST on everything the bank charges', 'A ₹1,500 annual fee is ₹1,770. Interest of ₹1,000 is ₹1,180. It is the reason carrying a balance in India costs noticeably more than the headline rate.'], ['Reporting, not taxing', 'Card payments of ₹10 lakh or more a year are reported by the bank and appear in your Annual Information Statement. Spending far beyond your declared income invites a query.'], ['Paying other people’s bills', 'Letting friends use your card for points makes their spending look like yours in the tax records. Repayments to you can look like unexplained income.'], ['Business use', 'If you freelance or run a business, card statements are your cleanest expense record — and GST input credit needs a proper tax invoice in the business’s name, not just a card slip. Use a separate card.']],
+  us: [['Sales tax is part of the purchase', 'It is charged by the merchant and simply included in what goes on the card. Rewards are earned on the full amount including tax.'], ['Business cards and deductions', 'Interest, annual fees and purchases for a business are deductible business expenses. Keep business and personal spending on separate cards; mixed statements are what audits pick apart.'], ['Forgiven debt', 'A settlement that writes off $600 or more usually produces a 1099-C. Budget for the tax before agreeing a settlement.'], ['HSA and FSA cards', 'These debit cards spend pre-tax money and only on eligible medical costs. Keep receipts — the administrator can ask you to substantiate.']],
+  uk: [['Almost nothing to declare', 'For an employee using a personal card, there is no tax angle at all: no VAT on fees, no tax on cashback, no relief on interest.'], ['Self-employed', 'Business purchases on a card are allowable expenses when they are wholly and exclusively for the business; so are the interest and fees on them. Making Tax Digital now requires digital records — a separate card helps.'], ['VAT on what you buy', 'VAT is in the price of the goods, not a card matter. A VAT-registered business needs a VAT invoice to reclaim it; a card receipt alone is not enough above £25.'], ['Elsewhere in EMEA', 'The pattern is similar across the EU: credit is VAT-exempt and personal rewards are untaxed. In the UAE, 5% VAT does apply to card fees.']],
+  au: [['No GST on credit', 'Interest and annual fees are input-taxed, so there is no GST in them and nothing to claim back.'], ['Deductible interest', 'Card interest is deductible only to the extent the card paid for income-producing costs. One card for work, one for everything else.'], ['Salary-packaged and corporate cards', 'Personal spending on an employer’s card can create a fringe-benefits-tax issue for the employer, and points earned may belong to them under company policy.'], ['Receipts', 'The ATO accepts card statements as evidence of payment, but you still need a record showing what was bought. myDeductions in the ATO app does the job.']]
+}).map(([h, p]) => `<details class="fold"><summary><span class="h4">${h}</span></summary><div class="fold-body"><p>${p}</p></div></details>`).join('');
+}
 </script>
-</body></html>
+</body>
+</html>
