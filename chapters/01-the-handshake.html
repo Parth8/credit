@@ -1,2191 +1,274 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>I. The Handshake — Decoding Credit Cards</title>
-  <!-- Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://parth8.github.io/credit/chapters/01-the-handshake.html">
-  <meta property="og:title" content="I. The Handshake — Decoding Credit Cards">
-  <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:site_name" content="Decoding Credit Cards">
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="I. The Handshake — Decoding Credit Cards">
-  <meta name="twitter:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta name="twitter:image" content="https://parth8.github.io/credit/og-image.png">
-  
-
-  <link rel="stylesheet" href="../css/global.css">
-  <style>
-    /* CHAPTER LAYOUT */
-    .chapter-shell {
-      min-height: 100vh;
-      padding-top: 80px;
-    }
-
-    .chapter-header {
-      padding: 32px 0;
-      border-bottom: 1px dashed var(--border-strong);
-      margin-bottom: 32px;
-    }
-
-    .chapter-header-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .chapter-roman {
-      font-family: var(--font-display);
-      font-size: 14px;
-      font-style: italic;
-      color: var(--electric);
-      letter-spacing: 0.04em;
-    }
-
-    .chapter-progress-text {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-faint);
-      letter-spacing: 0.04em;
-    }
-
-    .chapter-h1 {
-      font-family: var(--font-display);
-      font-size: clamp(48px, 6vw, 80px);
-      font-weight: 800;
-      line-height: 1;
-      letter-spacing: -0.03em;
-      margin-bottom: 16px;
-    }
-
-    .chapter-h1 em {
-      font-style: italic;
-      font-weight: 300;
-      color: var(--electric);
-    }
-
-    .chapter-intro {
-      font-size: 18px;
-      color: var(--ink-muted);
-      max-width: 600px;
-      line-height: 1.6;
-    }
-
-    /* SCENE 1 — TAP TO BEGIN */
-    .scene {
-      padding: 64px 0;
-      border-bottom: 1px dashed var(--border-strong);
-    }
-
-    .scene-label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-faint);
-      letter-spacing: 0.06em;
-      margin-bottom: 12px;
-    }
-
-    .scene-title {
-      font-family: var(--font-display);
-      font-size: clamp(28px, 3.5vw, 44px);
-      font-weight: 700;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
-    }
-
-    .scene-title em {
-      font-style: italic;
-      font-weight: 300;
-      color: var(--electric);
-    }
-
-    .scene-prompt {
-      font-size: 16px;
-      color: var(--ink-muted);
-      margin-bottom: 32px;
-      max-width: 520px;
-    }
-
-    /* THE INTERACTIVE TAP STAGE */
-    .tap-stage {
-      background: white;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-strong);
-      padding: 60px 40px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.04);
-      position: relative;
-      overflow: hidden;
-      min-height: 520px;
-    }
-
-    .tap-stage-bg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 20% 30%, rgba(37,99,235,0.04) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(234,88,12,0.03) 0%, transparent 50%);
-      pointer-events: none;
-    }
-
-    .tap-arena {
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      gap: 60px;
-      position: relative;
-      z-index: 2;
-      margin-bottom: 32px;
-      flex-wrap: wrap;
-    }
-
-    .tap-card-wrap {
-      position: relative;
-      cursor: pointer;
-      transition: transform 0.4s var(--ease-out);
-    }
-
-    .tap-card-wrap.swiping {
-      animation: card-swipe 1s var(--ease-out) forwards;
-    }
-
-    @keyframes card-swipe {
-      0% { transform: translateX(0) rotate(0); }
-      40% { transform: translateX(60px) translateY(20px) rotate(-3deg) scale(0.95); }
-      70% { transform: translateX(80px) translateY(40px) rotate(-5deg) scale(0.9); }
-      100% { transform: translateX(0) translateY(0) rotate(0) scale(1); }
-    }
-
-    .tap-card-wrap:hover:not(.swiping):not(.disabled) {
-      transform: translateY(-6px) rotate(-1deg);
-    }
-
-    .tap-card-wrap.disabled {
-      cursor: default;
-    }
-
-    .tap-hint {
-      position: absolute;
-      bottom: -50px;
-      left: 50%;
-      transform: translateX(-50%) rotate(-3deg);
-      white-space: nowrap;
-      animation: hint-bounce 2s ease-in-out infinite;
-    }
-
-    @keyframes hint-bounce {
-      0%, 100% { transform: translateX(-50%) rotate(-3deg) translateY(0); }
-      50% { transform: translateX(-50%) rotate(-3deg) translateY(-4px); }
-    }
-
-    .tap-hint .annotation {
-      font-size: 22px;
-      color: var(--electric);
-    }
-
-    .tap-arrow-doodle {
-      position: absolute;
-      top: -20px;
-      left: 50%;
-      transform: translateX(50%);
-    }
-
-    .pos-wrap {
-      position: relative;
-    }
-
-    .pos-terminal {
-      width: 240px;
-      background: linear-gradient(180deg, #2D2D28 0%, #1a1a18 100%);
-      border-radius: 16px 16px 12px 12px;
-      padding: 16px;
-      color: white;
-      font-family: var(--font-mono);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1);
-      position: relative;
-    }
-
-    .pos-screen {
-      background: #0a2e14;
-      border-radius: 8px;
-      padding: 20px 16px;
-      margin-bottom: 12px;
-      font-size: 11px;
-      line-height: 1.5;
-      color: #4ade80;
-      min-height: 100px;
-      border: 1px solid #052e16;
-      transition: all 0.3s ease;
-    }
-
-    .pos-screen.thinking {
-      animation: screen-flicker 0.5s ease infinite alternate;
-    }
-
-    @keyframes screen-flicker {
-      from { background: #0a2e14; }
-      to { background: #0d3a1a; }
-    }
-
-    .pos-screen.success {
-      background: #052e16;
-      color: #86efac;
-    }
-
-    .pos-screen.failure {
-      background: #2e0a14;
-      color: #fca5a5;
-    }
-
-    .pos-amount {
-      font-size: 32px;
-      font-weight: 700;
-      font-family: var(--font-display);
-      color: #f0fdf4;
-      margin-bottom: 4px;
-    }
-
-    .pos-label {
-      font-size: 9px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      opacity: 0.7;
-    }
-
-    .pos-status {
-      font-size: 12px;
-      margin-top: 8px;
-      opacity: 0.9;
-    }
-
-    .pos-keys {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 4px;
-    }
-
-    .pos-key {
-      background: #1a1a18;
-      padding: 8px 0;
-      border-radius: 4px;
-      text-align: center;
-      font-size: 10px;
-      color: #6b6b60;
-    }
-
-    /* PARTICIPANTS PANEL */
-    .participants-panel {
-      margin-top: 60px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .participants-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      position: relative;
-      margin-bottom: 24px;
-    }
-
-    .participant {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      flex: 1;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-      position: relative;
-      z-index: 2;
-    }
-
-    .participant:hover {
-      transform: translateY(-2px);
-    }
-
-    .participant-circle {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: white;
-      border: 2px solid var(--border-strong);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      transition: all 0.4s var(--ease-out);
-      position: relative;
-    }
-
-    .participant.lit .participant-circle {
-      border-color: var(--electric);
-      background: var(--electric-soft);
-      transform: scale(1.1);
-      box-shadow: 0 0 0 6px rgba(37,99,235,0.1);
-    }
-
-    .participant.lit .participant-circle::before {
-      content: '';
-      position: absolute;
-      inset: -8px;
-      border-radius: 50%;
-      border: 2px solid var(--electric);
-      opacity: 0;
-      animation: ring-pulse 1.5s ease infinite;
-    }
-
-    @keyframes ring-pulse {
-      0% { opacity: 1; transform: scale(0.8); }
-      100% { opacity: 0; transform: scale(1.3); }
-    }
-
-    .participant.done .participant-circle {
-      border-color: var(--success);
-      background: var(--success-soft);
-    }
-
-    .participant-name {
-      font-family: var(--font-body);
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--ink);
-      text-align: center;
-    }
-
-    .participant-role {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--ink-faint);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .participant-line {
-      position: absolute;
-      top: 28px;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: var(--parchment);
-      z-index: 1;
-      margin: 0 28px;
-      border-radius: 1px;
-    }
-
-    .participant-line-fill {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 0;
-      background: var(--electric);
-      border-radius: 1px;
-      transition: width 1s var(--ease-out);
-    }
-
-    .money-traveler {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 24px;
-      height: 24px;
-      background: var(--electric);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      color: white;
-      box-shadow: 0 4px 12px var(--electric-glow);
-      opacity: 0;
-      z-index: 3;
-      pointer-events: none;
-    }
-
-    .money-traveler.return {
-      background: var(--success);
-      box-shadow: 0 4px 12px rgba(22,163,74,0.4);
-    }
-
-    /* INFO PANEL */
-    .info-panel {
-      background: var(--paper);
-      border-radius: var(--radius-md);
-      padding: 20px 24px;
-      margin-top: 24px;
-      min-height: 80px;
-      transition: all 0.4s var(--ease-out);
-      border: 1px solid var(--border);
-    }
-
-    .info-panel-empty {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--ink-faint);
-      font-size: 14px;
-      font-style: italic;
-    }
-
-    .info-panel-step {
-      animation: info-fade 0.4s var(--ease-out);
-    }
-
-    @keyframes info-fade {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .info-step-label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
-    }
-
-    .info-step-num {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: var(--electric);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .info-step-name {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .info-step-time {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--ink-faint);
-      margin-left: auto;
-      letter-spacing: 0.04em;
-    }
-
-    .info-step-body {
-      font-size: 14px;
-      line-height: 1.6;
-      color: var(--ink-muted);
-    }
-
-    .info-step-body strong {
-      color: var(--ink);
-    }
-
-    /* CONTROLS */
-    .stage-controls {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 24px;
-      padding-top: 24px;
-      border-top: 1px dashed var(--border);
-    }
-
-    .step-counter {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--ink-faint);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .step-dots {
-      display: flex;
-      gap: 6px;
-    }
-
-    .step-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--parchment);
-      transition: all 0.3s ease;
-    }
-
-    .step-dot.active {
-      background: var(--electric);
-      transform: scale(1.3);
-    }
-
-    .step-dot.done {
-      background: var(--electric);
-      opacity: 0.4;
-    }
-
-    /* SCENE 2 — MEET THE PLAYERS */
-    .meet-section {
-      padding: 80px 0;
-      border-bottom: 1px dashed var(--border-strong);
-    }
-
-    .meet-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
-      margin-top: 40px;
-    }
-
-    .meet-card {
-      background: white;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-md);
-      padding: 24px 20px;
-      cursor: pointer;
-      transition: all 0.3s var(--ease-out);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .meet-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--electric);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s var(--ease-out);
-    }
-
-    .meet-card:hover, .meet-card.selected {
-      border-color: var(--electric);
-      transform: translateY(-4px);
-      box-shadow: 0 8px 24px rgba(37,99,235,0.08);
-    }
-
-    .meet-card:hover::before, .meet-card.selected::before {
-      transform: scaleX(1);
-    }
-
-    .meet-icon {
-      font-size: 36px;
-      margin-bottom: 12px;
-    }
-
-    .meet-name {
-      font-family: var(--font-display);
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .meet-role {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--ink-faint);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    /* DETAIL DRAWER */
-    .detail-drawer {
-      margin-top: 32px;
-      background: white;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-strong);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height 0.5s var(--ease-out);
-    }
-
-    .detail-drawer.open {
-      max-height: 800px;
-    }
-
-    .detail-content {
-      padding: 36px 40px;
-      display: grid;
-      grid-template-columns: 80px 1fr 1fr;
-      gap: 32px;
-    }
-
-    .detail-icon-big {
-      font-size: 56px;
-      align-self: flex-start;
-    }
-
-    .detail-main h3 {
-      font-family: var(--font-display);
-      font-size: 32px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 4px;
-    }
-
-    .detail-main h3 em {
-      font-style: italic;
-      font-weight: 300;
-      color: var(--electric);
-    }
-
-    .detail-tag {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--electric);
-      letter-spacing: 0.04em;
-      margin-bottom: 16px;
-    }
-
-    .detail-desc {
-      font-size: 15px;
-      line-height: 1.65;
-      color: var(--ink-muted);
-    }
-
-    .detail-desc strong { color: var(--ink); }
-
-    .detail-side h4 {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-faint);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .detail-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .detail-list li {
-      font-size: 14px;
-      color: var(--ink-muted);
-      padding-left: 20px;
-      position: relative;
-      line-height: 1.5;
-    }
-
-    .detail-list li::before {
-      content: '→';
-      position: absolute;
-      left: 0;
-      color: var(--electric);
-      font-family: var(--font-mono);
-    }
-
-    .detail-profit {
-      margin-top: 20px;
-      padding: 16px;
-      background: var(--warm-soft);
-      border-left: 3px solid var(--warm);
-      border-radius: 0 8px 8px 0;
-      font-size: 13px;
-      color: var(--ink-soft);
-      line-height: 1.5;
-    }
-
-    .detail-profit strong {
-      color: var(--warm);
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    /* CHECKPOINT */
-    .checkpoint {
-      padding: 80px 0;
-      text-align: center;
-    }
-
-    .checkpoint-card {
-      background: white;
-      border: 2px dashed var(--electric);
-      border-radius: var(--radius-lg);
-      padding: 48px 32px;
-      max-width: 600px;
-      margin: 0 auto;
-      position: relative;
-    }
-
-    .checkpoint-icon {
-      font-size: 48px;
-      margin-bottom: 16px;
-    }
-
-    .checkpoint-title {
-      font-family: var(--font-display);
-      font-size: 32px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
-    }
-
-    .checkpoint-title em {
-      font-style: italic;
-      font-weight: 300;
-      color: var(--electric);
-    }
-
-    .checkpoint-body {
-      font-size: 15px;
-      color: var(--ink-muted);
-      line-height: 1.6;
-      margin-bottom: 28px;
-    }
-
-    .checkpoint-cta-row {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    /* CHAPTER NAV */
-    .chapter-nav-bottom {
-      padding: 40px 0 80px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-top: 1px dashed var(--border-strong);
-    }
-
-    /* ============================================================
-       LIFECYCLE — phases strip + panels
-       ============================================================ */
-    .lifecycle-section {
-      padding: 80px 0 48px;
-      border-top: 1px dashed var(--border-strong);
-    }
-
-    .lifecycle-header {
-      margin-bottom: 48px;
-    }
-
-    .lifecycle-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--electric);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    .lifecycle-title {
-      font-family: var(--font-display);
-      font-size: clamp(36px, 5vw, 56px);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.05;
-      margin-bottom: 12px;
-    }
-
-    .lifecycle-title em {
-      font-style: italic;
-      font-weight: 300;
-      color: var(--electric);
-    }
-
-    .lifecycle-sub {
-      font-size: 17px;
-      color: var(--ink-muted);
-      max-width: 640px;
-      line-height: 1.6;
-    }
-
-    /* Phase selector strip */
-    .phase-strip {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 32px;
-      flex-wrap: wrap;
-    }
-
-    .phase-arrow {
-      color: var(--ink-ghost);
-      font-size: 20px;
-    }
-
-    .phase-item {
-      background: white;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-md);
-      padding: 16px 24px;
-      cursor: pointer;
-      transition: all 0.25s var(--ease-out);
-      min-width: 140px;
-    }
-
-    .phase-item:hover {
-      border-color: var(--electric);
-      transform: translateY(-2px);
-    }
-
-    .phase-item.active {
-      background: var(--electric);
-      border-color: var(--electric);
-      color: white;
-    }
-
-    .phase-time {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.06em;
-      opacity: 0.7;
-      margin-bottom: 4px;
-    }
-
-    .phase-name {
-      font-family: var(--font-display);
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-
-    .phase-tag {
-      font-size: 11px;
-      opacity: 0.6;
-      margin-top: 2px;
-    }
-
-    /* Phase content panels */
-    .phase-panel {
-      display: none;
-      background: white;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-lg);
-      padding: 40px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      animation: fade-up 0.4s var(--ease-out) both;
-    }
-
-    .phase-panel.active {
-      display: block;
-    }
-
-    .phase-panel-inner {
-      display: flex;
-      gap: 28px;
-      align-items: flex-start;
-    }
-
-    .phase-panel-icon {
-      font-size: 40px;
-      flex-shrink: 0;
-      margin-top: 4px;
-    }
-
-    .phase-panel-body h3 {
-      font-family: var(--font-display);
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      margin-bottom: 12px;
-    }
-
-    .phase-panel-body p {
-      font-size: 15px;
-      color: var(--ink-muted);
-      line-height: 1.7;
-      margin-bottom: 12px;
-    }
-
-    .phase-callout {
-      background: var(--electric-soft);
-      border-left: 3px solid var(--electric);
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-      padding: 14px 18px;
-      font-size: 14px;
-      color: var(--ink-soft);
-      line-height: 1.6;
-      margin-top: 16px;
-    }
-
-    /* ============================================================
-       MDR SPLIT
-       ============================================================ */
-    .mdr-section {
-      padding: 80px 0 48px;
-      border-top: 1px dashed var(--border-strong);
-    }
-
-    .mdr-header {
-      margin-bottom: 48px;
-    }
-
-    .mdr-calc {
-      background: white;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-lg);
-      padding: 32px 40px;
-      margin-bottom: 32px;
-    }
-
-    .mdr-input-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-
-    .mdr-label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-    }
-
-    .mdr-amount-display {
-      font-family: var(--font-display);
-      font-size: 36px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--ink);
-    }
-
-    .mdr-slider {
-      width: 100%;
-      margin-bottom: 8px;
-    }
-
-    .mdr-range-labels {
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-faint);
-    }
-
-    /* MDR pipe and recipients */
-    .mdr-flow {
-      display: grid;
-      grid-template-columns: 180px 1fr;
-      gap: 24px;
-      align-items: start;
-    }
-
-    .mdr-pipe-wrap {
-      background: var(--electric);
-      border-radius: var(--radius-md);
-      padding: 24px 20px;
-      color: white;
-      text-align: center;
-      position: relative;
-    }
-
-    .mdr-pipe-label {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.06em;
-      opacity: 0.8;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-    }
-
-    .mdr-pipe-amount {
-      font-family: var(--font-display);
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-
-    .mdr-pipe-line {
-      position: absolute;
-      right: -24px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 24px;
-      height: 2px;
-      background: var(--border-strong);
-    }
-
-    .mdr-recipients {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-    }
-
-    .mdr-recipient {
-      background: white;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-md);
-      padding: 20px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      transition: transform 0.2s ease;
-    }
-
-    .mdr-recipient:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-    }
-
-    .mdr-recipient.merchant {
-      border-color: var(--electric);
-      background: var(--electric-soft);
-    }
-
-    .mdr-recipient-icon {
-      font-size: 24px;
-    }
-
-    .mdr-recipient-name {
-      font-family: var(--font-display);
-      font-size: 15px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-
-    .mdr-recipient-name span {
-      font-weight: 400;
-      font-size: 12px;
-      color: var(--ink-muted);
-    }
-
-    .mdr-recipient-pct {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--ink-faint);
-      letter-spacing: 0.04em;
-    }
-
-    .mdr-recipient-amt {
-      font-family: var(--font-display);
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--ink-muted);
-      letter-spacing: -0.01em;
-      margin-top: 4px;
-    }
-
-    .mdr-recipient-amt.merchant-amt {
-      color: var(--electric);
-      font-size: 28px;
-    }
-
-    .mdr-recipient-why {
-      font-size: 12px;
-      color: var(--ink-ghost);
-      line-height: 1.5;
-      margin-top: 4px;
-    }
-
-    .mdr-note {
-      margin-top: 24px;
-      background: var(--cream);
-      border-radius: var(--radius-md);
-      padding: 18px 24px;
-      font-size: 14px;
-      line-height: 1.6;
-      color: var(--ink-muted);
-    }
-
-    /* ============================================================
-       SHOWROOM SCENARIO
-       ============================================================ */
-    .showroom-section {
-      padding: 80px 0 48px;
-      border-top: 1px dashed var(--border-strong);
-    }
-
-    .showroom-scenario {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .showroom-scene {
-      background: white;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-lg);
-      padding: 36px 40px;
-    }
-
-    .showroom-scene-label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--electric);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .showroom-scene p {
-      font-size: 16px;
-      color: var(--ink-muted);
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-
-    .showroom-quote {
-      font-family: var(--font-display);
-      font-size: 26px;
-      font-weight: 700;
-      font-style: italic;
-      color: var(--warm);
-      letter-spacing: -0.01em;
-      padding: 20px 28px;
-      background: rgba(234,88,12,0.06);
-      border-left: 4px solid var(--warm);
-      border-radius: 0 var(--radius-md) var(--radius-md) 0;
-    }
-
-    .showroom-breakdown {
-      background: white;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-    }
-
-    .showroom-calc-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 32px;
-      border-bottom: 1px solid var(--border);
-      font-size: 15px;
-      color: var(--ink-muted);
-    }
-
-    .showroom-calc-row:last-child {
-      border-bottom: none;
-    }
-
-    .showroom-calc-row.highlight {
-      background: rgba(234,88,12,0.05);
-    }
-
-    .showroom-num {
-      font-family: var(--font-display);
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .showroom-num.muted {
-      color: var(--ink-muted);
-    }
-
-    .showroom-num.warm {
-      color: var(--warm);
-    }
-
-    .showroom-truth {
-      background: white;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-md);
-      padding: 32px 40px;
-    }
-
-    .showroom-truth-title {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      margin-bottom: 12px;
-    }
-
-    .showroom-truth p {
-      font-size: 15px;
-      color: var(--ink-muted);
-      line-height: 1.7;
-      margin-bottom: 10px;
-    }
-
-    .showroom-truth p:last-child {
-      margin-bottom: 0;
-    }
-
-    .showroom-moves {
-      background: white;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-lg);
-      padding: 36px 40px;
-    }
-
-    .showroom-moves-title {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      margin-bottom: 24px;
-    }
-
-    .showroom-move-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-
-    .showroom-move {
-      background: var(--cream);
-      border-radius: var(--radius-md);
-      padding: 24px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .showroom-move-icon {
-      font-size: 28px;
-    }
-
-    .showroom-move-label {
-      font-family: var(--font-display);
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-
-    .showroom-move-desc {
-      font-size: 13px;
-      color: var(--ink-muted);
-      line-height: 1.6;
-    }
-
-    /* Mobile responsive for new sections */
-    @media (max-width: 768px) {
-      /* Phase tabs — shrink text and adjust padding so labels don't overflow */
-      .phase-strip { gap: 8px; }
-      .phase-arrow { display: none; }
-      .phase-item { min-width: 0; flex: 1; padding: 12px 10px; min-width: 0; overflow: hidden; }
-      .phase-item .phase-name { font-size: 14px; line-height: 1.1; word-break: break-word; }
-      .phase-item .phase-time { font-size: 9px; }
-      .phase-item .phase-tag { font-size: 10px; line-height: 1.2; }
-      .phase-panel { padding: 24px 20px; }
-      .phase-panel-inner { flex-direction: column; gap: 16px; }
-      /* MDR */
-      .mdr-flow { grid-template-columns: 1fr; }
-      .mdr-pipe-wrap { text-align: left; display: flex; justify-content: space-between; align-items: center; }
-      .mdr-pipe-line { display: none; }
-      .mdr-recipients { grid-template-columns: repeat(2, 1fr); }
-      .mdr-calc { padding: 24px 20px; }
-      /* Showroom — stack label above value, align right value cleanly */
-      .showroom-calc-row {
-        padding: 14px 20px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 6px;
-      }
-      .showroom-calc-row .showroom-num {
-        font-size: 18px;
-        align-self: flex-end;
-      }
-      .showroom-scene { padding: 24px 20px; }
-      .showroom-quote { font-size: 19px; padding: 16px 20px; }
-      .showroom-truth { padding: 24px 20px; }
-      .showroom-moves { padding: 24px 20px; }
-      .showroom-move-grid { grid-template-columns: 1fr; }
-    }
-
-    /* END new lifecycle/MDR/showroom styles */
-
-    .chapter-nav-link {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      text-decoration: none;
-      color: inherit;
-      transition: transform 0.3s ease;
-    }
-
-    .chapter-nav-link:hover {
-      transform: translateX(-4px);
-    }
-
-    .chapter-nav-link.next {
-      align-items: flex-end;
-    }
-
-    .chapter-nav-link.next:hover {
-      transform: translateX(4px);
-    }
-
-    .chapter-nav-meta {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-faint);
-      letter-spacing: 0.04em;
-    }
-
-    .chapter-nav-name {
-      font-family: var(--font-display);
-      font-size: 22px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      transition: color 0.2s ease;
-    }
-
-    .chapter-nav-link:hover .chapter-nav-name {
-      color: var(--electric);
-    }
-
-    @media (max-width: 768px) {
-      .chapter-shell { padding-top: 60px; }
-      .tap-stage { padding: 32px 20px; }
-      .tap-arena { gap: 24px; flex-direction: column; }
-      .pos-terminal { width: 200px; }
-      .meet-grid { grid-template-columns: repeat(2, 1fr); }
-      .detail-content { grid-template-columns: 1fr; gap: 20px; }
-      .detail-icon-big { font-size: 36px; }
-      .participant-name { font-size: 9px; }
-      .participant-role { display: none; }
-      .participant-circle { width: 40px; height: 40px; font-size: 18px; }
-      .participant-line { top: 20px; margin: 0 20px; }
-      .stage-controls { flex-direction: column; gap: 16px; align-items: stretch; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>I. The Handshake — Decoding Credit Cards</title>
+<meta name="description" content="Every card payment is a five-way handshake that finishes in under two seconds. Tap the card, watch it unfold, and meet everyone who takes a cut.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/01-the-handshake.html">
+<meta property="og:title" content="I. The Handshake — Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.arena { display: grid; grid-template-columns: 1fr auto; gap: clamp(12px, 4vw, 56px); align-items: center; justify-items: center; padding: clamp(8px, 2vw, 24px) 0 48px; --cc-w: 300px; }
+.tapcard { position: relative; width: min(100%, var(--cc-w)); cursor: pointer; transition: transform .7s var(--ease-out); }
+.tapcard.go { transform: translateX(clamp(30px, 12vw, 140px)) rotate(-6deg) scale(.92); }
+.tapcard.used { cursor: default; opacity: .75; }
+.tapcard .hand { position: absolute; left: 8%; bottom: -34px; }
+.pos { width: clamp(118px, 26vw, 190px); background: var(--ink-soft); border-radius: 16px 16px 10px 10px; padding: 12px; color: #fff; font-family: var(--font-mono); box-shadow: var(--shadow-lift); }
+.pos-screen { background: #0a2e14; color: #4ade80; border-radius: 8px; padding: 10px; font-size: .68rem; line-height: 1.5; min-height: 86px; transition: background .3s; }
+.pos-screen b { display: block; font: 700 1.25rem var(--font-display); }
+.pos-screen.wait { background: #2e2a0a; color: #facc15; } .pos-screen.ok { background: #14532d; color: #fff; }
+.pos-keys { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 10px; }
+.pos-keys i { height: 10px; border-radius: 3px; background: #45453e; }
+.players { display: grid; grid-template-columns: repeat(5, 1fr); position: relative; padding-top: 6px; }
+.players::before { content: ''; position: absolute; left: 10%; right: 10%; top: calc(6px + var(--d) / 2); height: 2px; background: var(--parchment); }
+.players { --d: clamp(40px, 9vw, 64px); }
+.rail { position: absolute; left: 10%; top: calc(6px + var(--d) / 2); height: 2px; background: var(--electric); width: 0; transition: width .8s var(--ease-out); }
+.coin { position: absolute; top: calc(6px + var(--d) / 2 - 12px); left: 10%; width: 24px; height: 24px; margin-left: -12px; border-radius: 50%; background: var(--electric); color: #fff; display: grid; place-items: center; font-size: .7rem; font-weight: 700; opacity: 0; transition: left .8s var(--ease-out), opacity .3s; z-index: 2; box-shadow: 0 2px 10px var(--electric-glow); }
+.coin.back { background: var(--success); }
+.player { text-align: center; position: relative; z-index: 1; }
+.player i { width: var(--d); height: var(--d); margin: 0 auto 6px; border-radius: 50%; background: var(--white); border: 2px solid var(--border-strong); display: grid; place-items: center; font-style: normal; font-size: calc(var(--d) * .45); transition: all .45s var(--ease-spring); }
+.player.lit i { border-color: var(--electric); background: #e8effd; transform: scale(1.14); box-shadow: 0 0 0 6px var(--electric-soft); }
+.player.done i { border-color: var(--success); background: #e7f6ec; }
+.player b { display: block; font-size: clamp(.62rem, 2.2vw, .85rem); line-height: 1.2; overflow-wrap: anywhere; }
+.player small { display: block; font: 400 clamp(.5rem, 1.7vw, .66rem) var(--font-mono); color: var(--ink-faint); text-transform: uppercase; letter-spacing: .04em; }
+.narr { margin-top: 22px; min-height: 150px; }
+.narr-top { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 8px; }
+.narr-top i { width: 30px; height: 30px; border-radius: 50%; background: var(--electric); color: #fff; display: grid; place-items: center; font: 700 .85rem var(--font-mono); font-style: normal; }
+.narr-top b { font: 700 var(--step-1) var(--font-display); }
+.recips { --min: 200px; margin-top: 24px; }
+.recip { border-top: 4px solid var(--c, var(--electric)); background: var(--paper); border-radius: 0 0 var(--r-md) var(--r-md); padding: 16px; }
+.recip .amt { font: 700 var(--step-2)/1.1 var(--font-display); color: var(--c, var(--electric)); font-variant-numeric: tabular-nums; margin-block: 4px; }
+.moves { --min: 210px; }
+.quote-big { font: italic 500 var(--step-2)/1.25 var(--font-display); padding: 18px 22px; background: var(--warm-soft); border-left: 4px solid var(--warm); border-radius: 0 var(--r-md) var(--r-md) 0; }
+</style>
 </head>
-<body>
+<body data-ch="1">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>The <em>Handshake</em></h1>
+  <p>Every card payment is a five-way handshake that finishes in under two seconds. Tap the card, watch it unfold, and meet everyone who takes a cut.</p>
+</header>
 
-  <!-- NAV -->
-  <nav class="site-nav">
-    <a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>※</span></a>
-    <ul class="nav-links">
-      <li><a href="../index.html#chapters">All Chapters</a></li>
-      <li><a href="02-getting-a-card.html">Next →</a></li>
-    </ul>
-  </nav>
-
-  <div class="chapter-shell">
-    <div class="container">
-
-      <!-- CHAPTER HEADER -->
-      <div class="chapter-header">
-        <div class="chapter-header-row">
-          <div class="chapter-roman">Chapter I</div>
-          <div class="chapter-progress-text">1 of 22 · ~5 min</div>
-        </div>
-        <h1 class="chapter-h1">The <em>Handshake</em></h1>
-        <p class="chapter-intro">
-          Every credit card transaction is a five-way handshake that happens in under two seconds. Tap the card. Watch it unfold. Meet everyone in the room.
-        </p>
+<section class="sec">
+  <div class="eyebrow">Scene 1 · The tap</div>
+  <h2 class="h2">First — <em>tap your card</em> on the terminal.</h2>
+  <p class="lede">You are buying {$meal} of coffee and cake at {merchant}. Tap the card, then step through what happens.</p>
+  <div class="stage">
+    <div class="arena">
+      <div class="tapcard" id="tapcard" role="button" tabindex="0" aria-label="Tap the card on the terminal">
+        <div class="cc" data-tilt><div class="cc-chip"></div><div class="cc-num">4539 1234 5678 7821</div><div class="cc-foot"><span class="cc-name">Your name</span><span class="cc-net">VISA</span></div></div>
+        <span class="hand" id="hint">tap me 👆</span>
       </div>
-
-      <!-- SCENE 1 — TAP TO BEGIN -->
-      <section class="scene">
-        <div class="scene-label">Scene 1 · The Tap</div>
-        <h2 class="scene-title">First — <em>tap your card</em> on the terminal.</h2>
-        <p class="scene-prompt">No reading required. Just touch the card to start the transaction. Everything else will happen on its own. (You can replay any time.)</p>
-
-        <div class="tap-stage">
-          <div class="tap-stage-bg"></div>
-
-          <div class="tap-arena">
-            <!-- THE CARD -->
-            <div class="tap-card-wrap" id="tap-card" onclick="initiateSwipe()">
-              <div class="cc-visual">
-                <div class="cc-chip"></div>
-                <svg class="cc-contactless" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M5 13a10 10 0 0114 0M8 16a6 6 0 018 0M11 19a2 2 0 012 0"/>
-                </svg>
-                <div class="cc-number">4539 1234 5678 7821</div>
-                <div class="cc-bottom">
-                  <div class="cc-name">Your Name</div>
-                  <div class="cc-network">VISA</div>
-                </div>
-              </div>
-              <div class="tap-hint" id="tap-hint">
-                <span class="annotation">tap me 👆</span>
-              </div>
-            </div>
-
-            <!-- THE POS TERMINAL -->
-            <div class="pos-wrap">
-              <div class="pos-terminal">
-                <div class="pos-screen" id="pos-screen">
-                  <div class="pos-label">Total amount</div>
-                  <div class="pos-amount">₹4,200</div>
-                  <div class="pos-status" id="pos-status">Waiting for card...</div>
-                </div>
-                <div class="pos-keys">
-                  <div class="pos-key">1</div><div class="pos-key">2</div><div class="pos-key">3</div>
-                  <div class="pos-key">4</div><div class="pos-key">5</div><div class="pos-key">6</div>
-                  <div class="pos-key">7</div><div class="pos-key">8</div><div class="pos-key">9</div>
-                </div>
-              </div>
-              <div style="font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint); text-align: center; margin-top: 12px; letter-spacing: 0.04em;">SWIGGY POS · ₹4,200</div>
-            </div>
-          </div>
-
-          <!-- THE PARTICIPANTS ROW -->
-          <div class="participants-panel">
-            <div class="participants-row" id="participants-row">
-              <div class="participant-line">
-                <div class="participant-line-fill" id="line-fill-1" style="left: 0; width: 0;"></div>
-              </div>
-              <div class="money-traveler" id="traveler-1"></div>
-
-              <div class="participant" data-step="0">
-                <div class="participant-circle">💳</div>
-                <div class="participant-name">You</div>
-                <div class="participant-role">Cardholder</div>
-              </div>
-
-              <div class="participant" data-step="1">
-                <div class="participant-circle">🏪</div>
-                <div class="participant-name">Swiggy</div>
-                <div class="participant-role">Merchant</div>
-              </div>
-
-              <div class="participant" data-step="2">
-                <div class="participant-circle">⚙️</div>
-                <div class="participant-name">Razorpay</div>
-                <div class="participant-role">Gateway / Acquirer</div>
-              </div>
-
-              <div class="participant" data-step="3">
-                <div class="participant-circle">🌐</div>
-                <div class="participant-name">VISA</div>
-                <div class="participant-role">Network</div>
-              </div>
-
-              <div class="participant" data-step="4">
-                <div class="participant-circle">🏛️</div>
-                <div class="participant-name">HDFC</div>
-                <div class="participant-role">Issuer</div>
-              </div>
-            </div>
-
-            <!-- INFO PANEL -->
-            <div class="info-panel" id="info-panel">
-              <div class="info-panel-empty">tap the card to begin →</div>
-            </div>
-
-            <!-- CONTROLS -->
-            <div class="stage-controls">
-              <div class="step-counter">
-                <span id="step-text">Ready</span>
-                <div class="step-dots">
-                  <div class="step-dot" id="dot-0"></div>
-                  <div class="step-dot" id="dot-1"></div>
-                  <div class="step-dot" id="dot-2"></div>
-                  <div class="step-dot" id="dot-3"></div>
-                  <div class="step-dot" id="dot-4"></div>
-                  <div class="step-dot" id="dot-5"></div>
-                </div>
-              </div>
-              <div style="display: flex; gap: 8px;">
-                <button class="btn btn--ghost" id="prev-btn" onclick="prevStep()" disabled>← back</button>
-                <button class="btn btn--outline" id="reset-btn" onclick="resetSwipe()" style="display: none;">↻ replay</button>
-                <button class="btn btn--primary" id="next-btn" onclick="nextStep()" style="display: none;">next step →</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SCENE 2 — MEET THE PLAYERS -->
-      <section class="meet-section">
-        <div class="scene-label">Scene 2 · The Cast</div>
-        <h2 class="scene-title">Click each player to learn <em>who they are</em> and <em>how they profit</em>.</h2>
-        <p class="scene-prompt">All five of these players were just involved in your transaction. They each have a job. They each get paid.</p>
-
-        <div class="meet-grid">
-          <div class="meet-card" onclick="selectPlayer(0)" id="meet-0">
-            <div class="meet-icon">💳</div>
-            <div class="meet-name">You</div>
-            <div class="meet-role">Cardholder</div>
-          </div>
-          <div class="meet-card" onclick="selectPlayer(1)" id="meet-1">
-            <div class="meet-icon">🏪</div>
-            <div class="meet-name">Merchant</div>
-            <div class="meet-role">The Seller</div>
-          </div>
-          <div class="meet-card" onclick="selectPlayer(2)" id="meet-2">
-            <div class="meet-icon">⚙️</div>
-            <div class="meet-name">Acquirer</div>
-            <div class="meet-role">Gateway & Bank</div>
-          </div>
-          <div class="meet-card" onclick="selectPlayer(3)" id="meet-3">
-            <div class="meet-icon">🌐</div>
-            <div class="meet-name">Network</div>
-            <div class="meet-role">The Rails</div>
-          </div>
-          <div class="meet-card" onclick="selectPlayer(4)" id="meet-4">
-            <div class="meet-icon">🏛️</div>
-            <div class="meet-name">Issuer</div>
-            <div class="meet-role">Your Bank</div>
-          </div>
-        </div>
-
-        <div class="detail-drawer" id="detail-drawer">
-          <div class="detail-content" id="detail-content"></div>
-        </div>
-      </section>
-
-      <!-- CHECKPOINT -->
-      <section class="checkpoint">
-        <div class="checkpoint-card reveal">
-          <div class="checkpoint-icon">⚡</div>
-          <h3 class="checkpoint-title">That was <em>1.4 seconds</em>.</h3>
-          <p class="checkpoint-body">
-            The authorization — the bit you just experienced — is the fast part. But the transaction isn't actually done. Money hasn't moved yet. What happens over the next 3 days is where it gets interesting.
-          </p>
-          <div class="checkpoint-cta-row">
-            <a href="#lifecycle" class="btn btn--primary btn--lg">See the full lifecycle ↓</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============================================================
-           SCENE 3 — CLEARING
-           ============================================================ -->
-      <section class="lifecycle-section" id="lifecycle">
-        <div class="lifecycle-header">
-          <div class="lifecycle-eyebrow">The Full Picture · 3 phases</div>
-          <h2 class="lifecycle-title">Authorization was just <em>phase one.</em></h2>
-          <p class="lifecycle-sub">Money hasn't moved yet. Here's what happens next — over the next 72 hours, invisibly.</p>
-        </div>
-
-        <!-- PHASE TIMELINE STRIP -->
-        <div class="phase-strip">
-          <div class="phase-item active" id="phase-0" onclick="setPhase(0)">
-            <div class="phase-time">~1.4 sec</div>
-            <div class="phase-name">Authorization</div>
-            <div class="phase-tag">Done ✓</div>
-          </div>
-          <div class="phase-arrow">→</div>
-          <div class="phase-item" id="phase-1" onclick="setPhase(1)">
-            <div class="phase-time">End of day</div>
-            <div class="phase-name">Clearing</div>
-            <div class="phase-tag">Tap to explore</div>
-          </div>
-          <div class="phase-arrow">→</div>
-          <div class="phase-item" id="phase-2" onclick="setPhase(2)">
-            <div class="phase-time">1-3 days</div>
-            <div class="phase-name">Settlement</div>
-            <div class="phase-tag">Tap to explore</div>
-          </div>
-        </div>
-
-        <!-- PHASE CONTENT PANELS -->
-        <div class="phase-panel active" id="panel-0">
-          <div class="phase-panel-inner">
-            <div class="phase-panel-icon">⚡</div>
-            <div class="phase-panel-body">
-              <h3>Authorization — you just saw this.</h3>
-              <p>Your card gets approved in ~1.4 seconds. HDFC puts a <strong>hold</strong> on ₹4,200 of your credit limit. <em>No money has actually moved.</em> Swiggy hasn't received anything yet — they just got a "yes, good for it."</p>
-              <div class="phase-callout">Think of it like a hotel blocking your card for the room rate at check-in. The charge isn't final — it's a reservation of funds.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="phase-panel" id="panel-1">
-          <div class="phase-panel-inner">
-            <div class="phase-panel-icon">📦</div>
-            <div class="phase-panel-body">
-              <h3>Clearing — end of business day</h3>
-              <p>At the end of each day, Swiggy's system batches up every transaction from the day and submits them to Razorpay (their gateway). Razorpay packages these into a <strong>clearing file</strong> and sends it through Visa to each issuing bank.</p>
-              <p>This is when HDFC gets the actual transaction details — exactly what was bought, when, and for how much. They match it against the authorization hold from earlier.</p>
-              <div class="phase-callout">This is also why your statement sometimes shows a transaction one day but it clears your available balance a day earlier — the hold and the clear are two different events.</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="phase-panel" id="panel-2">
-          <div class="phase-panel-inner">
-            <div class="phase-panel-icon">🏦</div>
-            <div class="phase-panel-body">
-              <h3>Settlement — 1 to 3 days later</h3>
-              <p>Now the money actually moves. HDFC transfers funds to Visa's settlement bank. Visa nets out all the transactions between banks and moves the right amounts to each acquirer. Razorpay deposits the net amount into Swiggy's account.</p>
-              <p>But here's the part that changes the number: <strong>the Merchant Discount Rate</strong>. Swiggy doesn't get ₹4,200. They get slightly less.</p>
-              <div class="phase-callout">Scroll down to see exactly where each rupee goes.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============================================================
-           SCENE 4 — MDR SPLIT (live calculator)
-           ============================================================ -->
-      <section class="mdr-section">
-        <div class="mdr-header">
-          <div class="lifecycle-eyebrow">The MDR · Merchant Discount Rate</div>
-          <h2 class="lifecycle-title">Every transaction is a <em>four-way split.</em></h2>
-          <p class="lifecycle-sub">When you pay ₹4,200, Swiggy doesn't receive ₹4,200. The MDR — roughly 1.5–2% — is taken out before the merchant sees a rupee. Here's who gets what.</p>
-        </div>
-
-        <div class="mdr-calc">
-          <div class="mdr-input-row">
-            <label class="mdr-label">Transaction amount</label>
-            <div class="mdr-amount-display" id="mdr-display">₹4,200</div>
-          </div>
-          <input type="range" class="mdr-slider" id="mdr-slider" min="500" max="100000" step="100" value="4200" oninput="updateMDR()">
-          <div class="mdr-range-labels"><span>₹500</span><span>₹1,00,000</span></div>
-        </div>
-
-        <div class="mdr-flow">
-          <!-- The pipe visual -->
-          <div class="mdr-pipe-wrap">
-            <div class="mdr-pipe-label">You pay</div>
-            <div class="mdr-pipe-amount" id="mdr-total">₹4,200</div>
-            <div class="mdr-pipe-line">
-              <div class="mdr-pipe-fill"></div>
-            </div>
-          </div>
-
-          <!-- The four recipients -->
-          <div class="mdr-recipients">
-            <div class="mdr-recipient issuer">
-              <div class="mdr-recipient-icon">🏛️</div>
-              <div class="mdr-recipient-name">HDFC <span>(Issuer)</span></div>
-              <div class="mdr-recipient-pct">~1.1% interchange</div>
-              <div class="mdr-recipient-amt" id="mdr-issuer">₹46</div>
-              <div class="mdr-recipient-why">Largest cut — they took the credit risk and fund the rewards you earn</div>
-            </div>
-            <div class="mdr-recipient network">
-              <div class="mdr-recipient-icon">🌐</div>
-              <div class="mdr-recipient-name">Visa <span>(Network)</span></div>
-              <div class="mdr-recipient-pct">~0.1% network fee</div>
-              <div class="mdr-recipient-amt" id="mdr-network">₹4</div>
-              <div class="mdr-recipient-why">Smallest cut — they provide the rails, fraud detection, and settlement infrastructure</div>
-            </div>
-            <div class="mdr-recipient gateway">
-              <div class="mdr-recipient-icon">⚙️</div>
-              <div class="mdr-recipient-name">Razorpay <span>(Gateway)</span></div>
-              <div class="mdr-recipient-pct">~0.3% gateway fee</div>
-              <div class="mdr-recipient-amt" id="mdr-gateway">₹13</div>
-              <div class="mdr-recipient-why">For routing, encryption, fraud tools, and the Razorpay dashboard Swiggy uses</div>
-            </div>
-            <div class="mdr-recipient merchant">
-              <div class="mdr-recipient-icon">🏪</div>
-              <div class="mdr-recipient-name">Swiggy <span>(Merchant)</span></div>
-              <div class="mdr-recipient-pct">Gets the rest</div>
-              <div class="mdr-recipient-amt merchant-amt" id="mdr-merchant">₹4,137</div>
-              <div class="mdr-recipient-why">Net settlement — the actual amount that hits Swiggy's bank account 1-3 days later</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="mdr-note">
-          <strong>Note:</strong> Actual MDR rates vary by card type, merchant category, and contract. Premium/rewards cards carry higher interchange (~1.5–2%) because the issuer funds your cashback from it. UPI transactions carry 0% MDR — which is why your local grocery store sometimes has a "no credit card" sign but accepts UPI without hesitation.
-        </div>
-      </section>
-
-      <!-- ============================================================
-           SCENE 5 — THE SHOWROOM MOMENT
-           ============================================================ -->
-      <section class="showroom-section">
-        <div class="mdr-header">
-          <div class="lifecycle-eyebrow">The Real World · What this means for you</div>
-          <h2 class="lifecycle-title">The <em>"3% credit card charge"</em> explained.</h2>
-          <p class="lifecycle-sub">You've seen how MDR works. Now here's where it shows up in your life — and what you can do about it.</p>
-        </div>
-
-        <div class="showroom-scenario">
-          <div class="showroom-scene">
-            <div class="showroom-scene-label">The scenario</div>
-            <p>You're at an electronics showroom. ₹80,000 TV. You pull out your credit card. The salesperson says:</p>
-            <div class="showroom-quote">"Sir, credit card pe 3% extra lagega."</div>
-          </div>
-
-          <div class="showroom-breakdown">
-            <div class="showroom-calc-row">
-              <span>TV price</span>
-              <span class="showroom-num">₹80,000</span>
-            </div>
-            <div class="showroom-calc-row">
-              <span>Their actual MDR (cost to merchant)</span>
-              <span class="showroom-num muted">~₹1,200–1,600</span>
-            </div>
-            <div class="showroom-calc-row highlight">
-              <span>What they're charging you (3%)</span>
-              <span class="showroom-num warm">₹2,400</span>
-            </div>
-            <div class="showroom-calc-row">
-              <span>The gap (their markup on the charge)</span>
-              <span class="showroom-num warm">₹800–1,200</span>
-            </div>
-          </div>
-
-          <div class="showroom-truth">
-            <div class="showroom-truth-title">What's actually happening</div>
-            <p>The MDR is a contract between the merchant and their bank — <strong>you are not party to it.</strong> The merchant chose to accept cards. The 3% surcharge isn't a fee you legally owe; it's the merchant passing their cost of acceptance onto you — and often marking it up.</p>
-            <p>This is a grey zone. RBI guidelines discourage surcharging, but enforcement is weak. It happens constantly on big-ticket purchases — jewellery, electronics, car accessories.</p>
-          </div>
-
-          <div class="showroom-moves">
-            <div class="showroom-moves-title">Your three moves</div>
-            <div class="showroom-move-grid">
-              <div class="showroom-move">
-                <div class="showroom-move-icon">💳</div>
-                <div class="showroom-move-label">Pay UPI</div>
-                <div class="showroom-move-desc">0% MDR. Zero surcharge. Instant. The merchant actually prefers this — no fee, no 3-day wait for settlement.</div>
-              </div>
-              <div class="showroom-move">
-                <div class="showroom-move-icon">🤝</div>
-                <div class="showroom-move-label">Negotiate</div>
-                <div class="showroom-move-desc">MDR is their cost, not yours. Ask them to split the 3% — or waive it. On ₹80,000, they're motivated. "Aap 1.5% lo, main 1.5% deta hoon" is a reasonable ask.</div>
-              </div>
-              <div class="showroom-move">
-                <div class="showroom-move-icon">📊</div>
-                <div class="showroom-move-label">Do the math first</div>
-                <div class="showroom-move-desc">If your card gives 5% cashback on electronics, paying the 3% surcharge still nets you 2% back. Run the numbers before deciding. Sometimes the surcharge is worth it.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- FINAL CHECKPOINT -->
-      <section class="checkpoint">
-        <div class="checkpoint-card reveal">
-          <div class="checkpoint-icon">※</div>
-          <h3 class="checkpoint-title">You now see the <em>full picture.</em></h3>
-          <p class="checkpoint-body">
-            Authorization → Clearing → Settlement. The MDR split. The showroom surcharge. You understand more about what happens when you tap your card than most people who've been using one for years. Up next: getting one.
-          </p>
-          <div class="checkpoint-cta-row">
-            <a href="../index.html" class="btn btn--ghost">← all chapters</a>
-            <a href="02-getting-a-card.html" class="btn btn--primary btn--lg">Chapter II: Getting a Card →</a>
-          </div>
-        </div>
-      </section>
-
-      <!-- BOTTOM NAV -->
-      <div class="chapter-nav-bottom">
-        <a href="../index.html" class="chapter-nav-link">
-          <span class="chapter-nav-meta">← Back</span>
-          <span class="chapter-nav-name">Home</span>
-        </a>
-        <a href="02-getting-a-card.html" class="chapter-nav-link next">
-          <span class="chapter-nav-meta">Next chapter →</span>
-          <span class="chapter-nav-name">Getting a Card</span>
-        </a>
-      </div>
-
+      <div class="pos"><div class="pos-screen" id="screen">Total<b>{$meal}</b><span id="status">Waiting for card…</span></div><div class="pos-keys"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    </div>
+    <div class="players" id="players">
+      <div class="rail" id="rail"></div><div class="coin" id="coin"></div>
+      <div class="player"><i>💳</i><b>You</b><small>Cardholder</small></div>
+      <div class="player"><i>🏪</i><b>{merchant}</b><small>Merchant</small></div>
+      <div class="player"><i>⚙️</i><b>{gateway}</b><small>Acquirer</small></div>
+      <div class="player"><i>🌐</i><b>{network}</b><small>Network</small></div>
+      <div class="player"><i>🏛️</i><b>{issuer}</b><small>Issuer</small></div>
+    </div>
+    <div class="narr panel" id="narr" aria-live="polite"><span class="hand">tap the card to begin →</span></div>
+    <div class="row row--between" style="margin-top:16px">
+      <div class="dots" id="dots"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="row"><button class="btn btn--ghost" id="back" disabled>← back</button><button class="btn btn--outline" id="replay" hidden>↻ replay</button><button class="btn btn--primary" id="next" hidden>next step →</button></div>
     </div>
   </div>
+</section>
 
-  <script src="../js/global.js"></script>
-  <script>
-    // ====================================================
-    // CHAPTER 1 — THE HANDSHAKE
-    // ====================================================
+<section class="sec">
+  <div class="eyebrow">Scene 2 · The cast</div>
+  <h2 class="h2">Who are they, and <em>how do they get paid</em>?</h2>
+  <p class="lede">All five were just involved in your coffee. Each has a job. Four of them earn from it.</p>
+  <div class="grid" id="cast" style="--min:150px;margin-top:24px"></div>
+  <div class="stage" id="cast-detail" aria-live="polite" hidden></div>
+</section>
 
-    const PLAYERS = [
-      {
-        icon: '💳',
-        name: 'You',
-        role: 'Cardholder',
-        emTitle: 'You',
-        tag: 'The Borrower',
-        desc: `You hold the card. You make the purchase. You owe the money. The cardholder is the only player who doesn't get paid in this dance — instead, you pay (sometimes interest, sometimes fees) for the privilege of using credit. <strong>What you do get</strong>: the convenience of buying now, paying later, plus rewards if you play it right.`,
-        responsibilities: [
-          'Spend within your credit limit',
-          'Pay at least the minimum due, on time',
-          'Watch your credit utilization (under 30%)',
-          'Report unauthorized transactions immediately',
-          'Read the fine print — APR, fees, penalties'
-        ],
-        profit: `You don't earn from the transaction itself — your "earnings" come from rewards, cashback, and building a credit history that unlocks loans and bigger limits later.`
-      },
-      {
-        icon: '🏪',
-        name: 'Merchant',
-        role: 'The Seller',
-        emTitle: 'Merchant',
-        tag: 'Where you spend',
-        desc: `The shop, restaurant, app, or website where you spend. Merchants accept cards because the alternative — losing the sale — is worse, even though they pay 1.5–3% per transaction in fees (called the Merchant Discount Rate). This is why some small shops have a "₹500 minimum" for card payments.`,
-        responsibilities: [
-          'Accept card payments via certified terminals',
-          'Pay the Merchant Discount Rate per transaction',
-          'Honor valid chargeback claims',
-          'Never store your CVV (it\'s actually illegal)',
-          'Display accepted card networks visibly'
-        ],
-        profit: `Merchants <em>lose</em> 1.5–3% on every card transaction — but they accept this because cards drive 30–40% more spending than cash. Examples: Swiggy, Amazon, Reliance Retail.`
-      },
-      {
-        icon: '⚙️',
-        name: 'Acquirer',
-        role: 'Merchant\'s Bank',
-        emTitle: 'Acquirer & Payment Gateway',
-        tag: 'The merchant\'s payment stack',
-        desc: `Two players work together on the merchant's side. The <strong>payment gateway</strong> (Razorpay, PayU, CCAvenue) is the software layer that captures your card data, encrypts it, and sends it onward — Razorpay is technically a payment aggregator, not an acquirer itself. The <strong>acquirer</strong> is the actual bank behind it (often Yes Bank or ICICI Bank in Razorpay's case) that holds the merchant's account and has the license to receive funds. In everyday conversation, people say "Razorpay is the acquirer" — now you know the precise distinction.`,
-        responsibilities: [
-          'Gateway encrypts and forwards the card data',
-          'Acquirer routes auth requests to the card network',
-          'Acquirer collects settled funds from issuers',
-          'Deposits net amounts into the merchant\'s bank account',
-          'Handles chargeback disputes on the merchant\'s behalf'
-        ],
-        profit: `Acquirers + gateways together earn ~0.3–0.5% per transaction as their slice of the Merchant Discount Rate. On millions of daily transactions, this is a quiet but enormous business.`
-      },
-      {
-        icon: '🌐',
-        name: 'Network',
-        role: 'The Rails',
-        emTitle: 'Card Network',
-        tag: 'The infrastructure',
-        desc: `Visa, Mastercard, RuPay. These companies don't issue cards or hold money — they're the secure pipes connecting acquirers to issuers. They route every transaction, set the rules, fight fraud, and handle the daily settlement between banks. Their logo is on your card because they own the rails.`,
-        responsibilities: [
-          'Route auth requests between banks',
-          'Set interchange fees and transaction rules',
-          'Provide global fraud detection systems',
-          'Handle daily clearing and settlement',
-          'License their brand to issuing banks'
-        ],
-        profit: `Networks earn small fees — typically 0.1–0.3% per transaction — but at scale (Visa processes ~700 million transactions <em>per day</em>), it's one of the most profitable businesses on earth.`
-      },
-      {
-        icon: '🏛️',
-        name: 'Issuer',
-        role: 'Your Bank',
-        emTitle: 'Issuer',
-        tag: 'The bank that gave you the card',
-        desc: `Your issuer is the bank that approved your application, set your credit limit, sends you the statement, and decides whether to approve each transaction. When you call about your card, you're calling them. HDFC, ICICI, SBI, Axis, AmEx — these are issuers. They're the ones with the most to gain (and lose) from how you use your card.`,
-        responsibilities: [
-          'Evaluate creditworthiness, approve applications',
-          'Set credit limits and interest rates',
-          'Send statements and process payments',
-          'Approve or decline each transaction',
-          'Investigate fraud and disputes',
-          'Report your behavior to credit bureaus'
-        ],
-        profit: `Issuers make money five ways: (1) interchange fees on every purchase, (2) interest on revolving balances, (3) annual fees, (4) late fees, (5) cash advance fees. They want you to use the card a lot — and pay a little late.`
-      }
-    ];
+<section class="sec" id="lifecycle">
+  <div class="eyebrow">Scene 3 · The full picture</div>
+  <h2 class="h2">Approval was only <em>phase one</em>.</h2>
+  <p class="lede">The beep took 1.4 seconds. The money takes days. Tap each phase.</p>
+  <div class="stage">
+    <div class="seg" id="phases"></div>
+    <div id="phase-body" style="margin-top:22px" aria-live="polite"></div>
+  </div>
+</section>
 
-    // ====================================================
-    // SCENE 1 — TRANSACTION ANIMATION
-    // ====================================================
+<section class="sec">
+  <div class="eyebrow">Scene 4 · The split</div>
+  <h2 class="h2">Every payment is a <em>four-way split</em>.</h2>
+  <p class="lede">The shop never receives the full price. A slice — the merchant fee — is shared out before the money lands. Drag the amount.</p>
+  <div class="stage">
+    <div class="field"><div class="field-top"><label for="amt">You pay</label><span class="val" id="amt-val"></span></div><input type="range" id="amt"><div class="field-ends"><span id="amt-min"></span><span id="amt-max"></span></div></div>
+    <div class="grid recips" id="recips"></div>
+    <div class="callout" id="split-note" style="margin-top:22px"></div>
+  </div>
+</section>
 
-    const STEPS = [
-      {
-        num: 1,
-        name: 'Card tapped',
-        time: 'T+0ms',
-        body: `You tap your card on the POS terminal. The chip transmits encrypted data — your card number, a one-time cryptogram — to the merchant's machine. <strong>Nothing has been charged yet.</strong> This is just the opening signal.`,
-        litNodes: [0, 1],
-        lineFill: 0,
-        traveler: { from: 0, to: 1, type: 'out' },
-        screen: { status: 'Reading card...', class: 'thinking' }
-      },
-      {
-        num: 2,
-        name: 'Merchant asks for permission',
-        time: 'T+200ms',
-        body: `The merchant's terminal packages your card data into an authorization request and sends it to their payment gateway — in our case, Razorpay. Razorpay encrypts it and forwards it to the acquirer bank behind it (Yes Bank), whose job is to route this to whoever issued the card.`,
-        litNodes: [1, 2],
-        lineFill: 1,
-        traveler: { from: 1, to: 2, type: 'out' },
-        screen: { status: 'Sending request...', class: 'thinking' }
-      },
-      {
-        num: 3,
-        name: 'Network finds your bank',
-        time: 'T+400ms',
-        body: `Razorpay (the gateway) forwards the request to the card network — VISA. The network looks at the first 6 digits of your card number (the BIN) to figure out which bank issued it. It's basically a phone book for banks.`,
-        litNodes: [2, 3],
-        lineFill: 2,
-        traveler: { from: 2, to: 3, type: 'out' },
-        screen: { status: 'Routing through network...', class: 'thinking' }
-      },
-      {
-        num: 4,
-        name: 'Your bank decides',
-        time: 'T+800ms',
-        body: `HDFC receives the request. In milliseconds, it checks: Do you have ₹4,200 of available credit? Is this transaction suspicious? Is the cryptogram valid? Is the card reported stolen? <strong>If everything checks out, it approves.</strong>`,
-        litNodes: [3, 4],
-        lineFill: 3,
-        traveler: { from: 3, to: 4, type: 'out' },
-        screen: { status: 'Verifying with bank...', class: 'thinking' }
-      },
-      {
-        num: 5,
-        name: 'Approval flies back',
-        time: 'T+1.4s',
-        body: `The "yes" travels all the way back: HDFC → VISA → Razorpay (gateway) → terminal. The whole round trip took about 1.4 seconds. The terminal beeps. The merchant sees APPROVED. <strong>But — and this matters — no money has actually moved yet.</strong> Your available credit just dropped. Real settlement happens days later.`,
-        litNodes: [0, 1, 2, 3, 4],
-        lineFill: -1, // all lit
-        traveler: { from: 4, to: 0, type: 'in' },
-        screen: { status: '✓ APPROVED', class: 'success', amount: '₹4,200' }
-      }
-    ];
+<section class="sec">
+  <div class="eyebrow">Scene 5 · Where you meet this in real life</div>
+  <h2 class="h2" id="sur-title"></h2>
+  <div class="stage stack" id="sur" style="--gap:22px"></div>
+</section>
 
-    let currentStep = -1; // -1 = not started
-    let isAnimating = false;
+<aside class="checkpoint">
+  <h3>You now see the <em>whole machine</em>.</h3>
+  <p>Authorisation, clearing, settlement, and who takes what. That is more than most people learn in a lifetime of tapping. Next: how you get a card in the first place.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
+<script src="../js/global.js"></script>
+<script>
+{
+const { $, $$, R, rid, money, t, pick } = DCC;
 
-    function initiateSwipe() {
-      if (isAnimating || currentStep >= 0) return;
-      const card = document.getElementById('tap-card');
-      const hint = document.getElementById('tap-hint');
-      hint.style.display = 'none';
-      card.classList.add('swiping');
-      DCC.playClick();
+// ---------- Scene 1 ----------
+const STEPS = [
+  { name: 'Card tapped', time: 'T+0 ms', lit: [0, 1], to: 1, status: 'Reading card…',
+    body: 'The chip sends your card number and a one-time cryptogram to the terminal. <strong>Nothing has been charged.</strong> This is only the opening signal.' },
+  { name: 'The shop asks permission', time: 'T+200 ms', lit: [1, 2], to: 2, status: 'Sending request…',
+    body: 'The terminal wraps the details into an authorisation request and hands it to {gateway}, the payment company {merchant} uses. Behind it sits an acquiring bank ({acqBank}) that is licensed to collect card money for shops.' },
+  { name: 'The network finds your bank', time: 'T+400 ms', lit: [2, 3], to: 3, status: 'Routing…',
+    body: '{network} reads the first 6–8 digits of the card number (the BIN) to work out who issued it. Think of it as a phone book for banks.' },
+  { name: 'Your bank decides', time: 'T+800 ms', lit: [3, 4], to: 4, status: 'Checking with bank…',
+    body: '{issuer} checks in milliseconds: is there {$meal} of credit left? Does the cryptogram match? Is the card blocked? Does this look like you? <strong>If all four pass, it says yes.</strong>' },
+  { name: 'Approval flies back', time: 'T+1.4 s', lit: [0, 1, 2, 3, 4], to: 0, back: true, status: '✓ APPROVED',
+    body: 'The yes retraces the route: {issuer} → {network} → {gateway} → terminal. Beep. <strong>But no money has moved.</strong> Your available credit dropped by {$meal}; the real transfer happens over the next days.' }
+];
+let step = -1;
+const players = $$('.player'), coin = $('#coin'), rail = $('#rail');
+const pos = i => 10 + i * 20 + '%';
+function apply(i) {
+  step = i; const s = STEPS[i];
+  players.forEach((p, k) => { p.classList.toggle('lit', s.lit.includes(k)); p.classList.toggle('done', !s.lit.includes(k) && k <= Math.max(...s.lit)); });
+  rail.style.width = (s.back ? 80 : s.to * 20) + '%';
+  coin.classList.toggle('back', !!s.back); coin.textContent = s.back ? '✓' : R.cur;
+  coin.style.transition = 'none'; coin.style.left = pos(s.back ? 4 : s.to - 1); coin.style.opacity = 1;
+  requestAnimationFrame(() => requestAnimationFrame(() => { coin.style.transition = ''; coin.style.left = pos(s.to); }));
+  $('#narr').innerHTML = `<div class="narr-top"><i>${i + 1}</i><b>${s.name}</b><span class="chip">${s.time}</span></div><p>${t(s.body)}</p>`;
+  $('#status').textContent = s.status;
+  $('#screen').className = 'pos-screen ' + (s.back ? 'ok' : 'wait');
+  $$('#dots i').forEach((d, k) => d.className = k < i ? 'done' : k === i ? 'on' : '');
+  $('#back').disabled = i === 0;
+  $('#next').hidden = i === STEPS.length - 1;
+  if (s.back) { DCC.playSuccess(); setTimeout(() => players.forEach(p => { p.classList.remove('lit'); p.classList.add('done'); }), 1000); } else DCC.playClick();
+}
+function start() {
+  if (step >= 0) return;
+  const c = $('#tapcard'); $('#hint').hidden = true; c.classList.add('go'); DCC.playClick();
+  setTimeout(() => { c.classList.remove('go'); c.classList.add('used'); apply(0); $('#next').hidden = false; $('#replay').hidden = false; }, 750);
+}
+$('#tapcard').addEventListener('click', start);
+$('#tapcard').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); start(); } });
+$('#next').onclick = () => apply(Math.min(step + 1, STEPS.length - 1));
+$('#back').onclick = () => apply(Math.max(step - 1, 0));
+$('#replay').onclick = () => {
+  step = -1; $('#tapcard').classList.remove('used'); $('#hint').hidden = false;
+  players.forEach(p => p.classList.remove('lit', 'done')); rail.style.width = 0; coin.style.opacity = 0;
+  $$('#dots i').forEach(d => d.className = ''); $('#narr').innerHTML = '<span class="hand">tap the card to begin →</span>';
+  $('#status').textContent = 'Waiting for card…'; $('#screen').className = 'pos-screen';
+  $('#next').hidden = $('#replay').hidden = true; $('#back').disabled = true;
+};
 
-      setTimeout(() => {
-        card.classList.remove('swiping');
-        card.classList.add('disabled');
-        currentStep = 0;
-        applyStep(0);
-        document.getElementById('next-btn').style.display = 'inline-flex';
-        document.getElementById('reset-btn').style.display = 'inline-flex';
-      }, 800);
-    }
+// ---------- Scene 2 ----------
+const CAST = [
+  { icon: '💳', name: 'You', role: 'Cardholder', desc: 'You make the purchase and you owe the money. You are the only player who is not paid by the transaction — you pay for it, in interest and fees, whenever you slip.',
+    jobs: ['Stay inside your credit limit', 'Pay the statement in full and on time', 'Report anything you did not authorise, fast', 'Read the pricing: APR, fees, penalties'],
+    profit: 'Nothing from the payment itself. Your return is the interest-free float, rewards, protection, and a credit history that unlocks cheaper loans later.' },
+  { icon: '🏪', name: 'Merchant', role: 'The seller', desc: 'The shop, app or site where you spend. Shops accept cards because losing the sale costs more than the fee — even though that fee comes straight out of their margin.',
+    jobs: ['Take payment on certified terminals', 'Pay the merchant fee on every sale', 'Honour valid refunds and chargebacks', 'Never store your security code (card-industry rules forbid it)'],
+    profit: 'Merchants <em>lose</em> a slice of every card sale. They accept it for speed, bigger baskets and not handling cash.' },
+  { icon: '⚙️', name: 'Acquirer', role: 'The shop’s payment stack', desc: 'Two layers on the shop’s side. The <strong>gateway or processor</strong> ({gateway}) captures and encrypts the card data. The <strong>acquiring bank</strong> ({acqBank}) holds the licence to collect card money and pays the shop.',
+    jobs: ['Encrypt and forward the request', 'Route it to the right network', 'Collect settled funds from issuers', 'Pay the shop, net of fees', 'Fight chargebacks for the shop'],
+    profit: 'A margin on top of interchange and network fees — a fraction of a percent, multiplied by millions of payments a day.' },
+  { icon: '🌐', name: 'Network', role: 'The rails', desc: '{networks}. Networks do not lend money or hold your account. They connect every acquirer to every issuer, set the rulebook, and run clearing and settlement between banks.',
+    jobs: ['Route requests between banks', 'Set interchange and operating rules', 'Run global fraud screening', 'Net and settle between banks daily', 'License the brand to issuers'],
+    profit: 'A tiny fee per transaction and per unit of volume. Visa alone handles roughly 700 million transactions a day, which makes tiny fees enormous.' },
+  { icon: '🏛️', name: 'Issuer', role: 'Your bank', desc: 'The lender that approved you, set your limit, sends the statement and says yes or no to every payment. {issuers} are issuers. They have the most to gain — and lose — from how you use the card.',
+    jobs: ['Assess applications, set limits and rates', 'Approve or decline each payment', 'Bill you and collect', 'Investigate fraud and disputes', 'Report your behaviour to credit bureaus'],
+    profit: 'Five streams: interchange on every purchase, interest on unpaid balances, annual fees, penalty fees, and cash-advance and foreign-currency fees. Interest is the big one.' }
+];
+let open = -1;
+$('#cast').innerHTML = CAST.map((p, i) => `<button class="tile" data-i="${i}" aria-expanded="false"><span class="tile-icon">${p.icon}</span><span class="tile-name">${p.name}</span><span class="tile-sub">${p.role}</span></button>`).join('');
+$('#cast').addEventListener('click', e => {
+  const b = e.target.closest('.tile'); if (!b) return;
+  const i = +b.dataset.i, d = $('#cast-detail');
+  $$('#cast .tile').forEach((x, k) => { x.classList.toggle('on', k === i && open !== i); x.setAttribute('aria-expanded', k === i && open !== i); });
+  if (open === i) { open = -1; d.hidden = true; return; }
+  open = i; const p = CAST[i]; b.classList.add('done'); d.hidden = false;
+  d.innerHTML = t(`<div class="split split--l"><div><div class="eyebrow">${p.role}</div><h3 class="h3">${i ? 'The <em>' + p.name + '</em>' : '<em>You</em>'}</h3><p style="margin-top:12px">${p.desc}</p>
+    <div class="callout is-success" style="margin-top:18px"><b>How they profit</b>${p.profit}</div></div>
+    <div class="panel"><div class="eyebrow">Their job</div><ul class="ticks">${p.jobs.map(j => `<li>${j}</li>`).join('')}</ul></div></div>`);
+  DCC.playClick();
+});
 
-    function applyStep(idx) {
-      if (idx < 0 || idx >= STEPS.length) return;
-      currentStep = idx;
-      const step = STEPS[idx];
-      isAnimating = true;
+// ---------- Scene 3 ----------
+const PHASES = [
+  { tab: 'Authorisation', when: '~1.4 seconds', icon: '⚡', body: '<p>You just watched this. {issuer} places a <strong>hold</strong> on {$meal} of your limit. No money has moved, and {merchant} has only a promise.</p>', note: 'It is the same thing a hotel does at check-in: a reservation of funds, not a charge. A hold that is never completed simply drops off after a few days.' },
+  { tab: 'Clearing', when: 'End of day', icon: '📦', body: '<p>At close of business {merchant} batches the day’s sales and sends them through {gateway} and {network} to every issuer. Now {issuer} receives the final amount and matches it to the hold.</p>', note: 'This is why a payment sits as “pending” first, and why a tip or a fuel pump pre-authorisation can change the amount before it posts.' },
+  { tab: 'Settlement', when: pick({ in: 'T+1 working day', us: '1–3 days', uk: '1–3 days', au: 'next working day' }), icon: '🏦', body: '<p>Money finally moves. {issuer} pays {network}’s settlement bank, the network nets every bank against every other, and {acqBank} pays {merchant} — minus the merchant fee.</p>', note: 'You, meanwhile, pay nothing until your statement falls due. That gap is your interest-free period — chapter V.' }
+];
+$('#phases').innerHTML = PHASES.map((p, i) => `<button data-i="${i}" class="${i ? '' : 'on'}">${p.tab}<br><small class="mono">${p.when}</small></button>`).join('');
+const phase = i => { const p = PHASES[i]; $$('#phases button').forEach((b, k) => b.classList.toggle('on', k === i));
+  $('#phase-body').innerHTML = t(`<div class="row" style="align-items:flex-start;flex-wrap:nowrap;--gap:18px"><span style="font-size:2.4rem;line-height:1">${p.icon}</span><div class="stack"><h3 class="h4">${p.tab} · ${p.when}</h3>${p.body}<div class="callout">${p.note}</div></div></div>`); };
+$('#phases').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { phase(+b.dataset.i); DCC.playClick(); } });
+phase(0);
 
-      // Update participants
-      document.querySelectorAll('.participant').forEach((p, i) => {
-        p.classList.remove('lit', 'done');
-        if (idx > 0) {
-          // mark previous steps as done
-          STEPS.slice(0, idx).forEach(prev => {
-            (prev.litNodes || []).forEach(li => {
-              if (li === i) p.classList.add('done');
-            });
-          });
-        }
-        if (step.litNodes.includes(i)) {
-          p.classList.remove('done');
-          p.classList.add('lit');
-        }
-      });
+// ---------- Scene 4 ----------
+const SPLIT = pick({
+  in: { ic: 1.1, net: 0.1, acq: 0.3, name: 'MDR (merchant discount rate)', note: '<b>In India</b>Typical credit-card MDR is 1.5–2%, more on premium and rewards cards because the issuer funds your points from interchange. A UPI payment from a bank account carries <strong>zero MDR</strong>, which is why the corner shop waves away your card but happily shows a QR code. (RuPay credit cards on UPI do carry MDR on payments above ₹2,000.)' },
+  us: { ic: 1.8, net: 0.14, acq: 0.4, name: 'swipe fee', note: '<b>In the USA</b>Credit interchange is not capped and runs about 1.5–2.5%, higher on premium rewards cards. That is why American rewards are the richest in the world — shops fund them. Debit is different: the Durbin rule caps large banks’ debit interchange at roughly 21¢ plus 0.05%.' },
+  uk: { ic: 0.3, net: 0.12, acq: 0.4, name: 'merchant service charge', note: '<b>In the UK and EU</b>Law caps consumer credit interchange at <strong>0.3%</strong> (0.2% on debit). It is the main reason European reward cards are thin compared with American ones. American Express runs its own model outside the cap, so it costs shops more and some refuse it.' },
+  au: { ic: 0.3, net: 0.1, acq: 0.4, name: 'merchant service fee', note: '<b>In Australia</b>From 1 October 2026 the RBA cut the cap on consumer credit interchange to <strong>0.3%</strong> (it used to average about 0.5%, up to 0.8%) and banned surcharges on Visa, Mastercard and eftpos. Shops save; points programmes are getting thinner. New Zealand capped credit interchange at 0.8% in 2022 and is cutting further.' }
+});
+const a = R.a.meal, big = R.a.big, amt = $('#amt');
+amt.min = Math.round(a / 2); amt.max = big * 1.25; amt.step = Math.max(1, Math.round(a / 20)); amt.value = a * 5;
+$('#amt-min').textContent = money(+amt.min); $('#amt-max').textContent = money(+amt.max);
+const PARTS = [['🏛️', '{issuer}', 'Issuer · interchange', 'ic', 'Carries the credit risk and funds your rewards', 'var(--electric)'], ['🌐', '{network}', 'Network fee', 'net', 'Rails, rules, fraud screening, settlement', 'var(--gold)'], ['⚙️', '{gateway}', 'Acquirer margin', 'acq', 'Terminal, processing, paying the shop', 'var(--warm)'], ['🏪', '{merchant}', 'Gets the rest', null, 'What actually lands in the shop’s account', 'var(--success)']];
+function split() {
+  const v = +amt.value; $('#amt-val').textContent = money(v);
+  const fee = SPLIT.ic + SPLIT.net + SPLIT.acq;
+  $('#recips').innerHTML = t(PARTS.map(([ic, n, l, k, why, c]) => { const p = k ? SPLIT[k] : 100 - fee; return `<div class="recip" style="--c:${c}"><div class="mono faint">${ic} ${l}${k ? ' · ~' + p + '%' : ''}</div><div class="amt">${money(v * p / 100, v * p / 100 < 100)}</div><b>${n}</b><p class="small muted">${why}</p></div>`; }).join(''));
+}
+amt.addEventListener('input', split); split();
+$('#split-note').innerHTML = SPLIT.note + ` <span class="faint">Illustrative split of a ~${(SPLIT.ic + SPLIT.net + SPLIT.acq).toFixed(1)}% ${SPLIT.name}; real rates vary by card, sector and contract.</span>`;
 
-      // Animate connector lines
-      const lineFillEl = document.getElementById('line-fill-1');
-      if (step.lineFill === -1) {
-        lineFillEl.style.width = '100%';
-      } else if (step.lineFill === 0) {
-        lineFillEl.style.width = '20%';
-      } else {
-        lineFillEl.style.width = `${(step.lineFill + 1) * 20}%`;
-      }
-
-      // Animate money packet
-      animateTraveler(step.traveler);
-
-      // Update info panel
-      const panel = document.getElementById('info-panel');
-      panel.innerHTML = `
-        <div class="info-panel-step">
-          <div class="info-step-label">
-            <div class="info-step-num">${step.num}</div>
-            <div class="info-step-name">${step.name}</div>
-            <div class="info-step-time">${step.time}</div>
-          </div>
-          <div class="info-step-body">${step.body}</div>
-        </div>
-      `;
-
-      // Update POS screen
-      const screen = document.getElementById('pos-screen');
-      const status = document.getElementById('pos-status');
-      screen.classList.remove('thinking', 'success', 'failure');
-      if (step.screen.class) screen.classList.add(step.screen.class);
-      status.textContent = step.screen.status;
-
-      // Update step dots
-      document.querySelectorAll('.step-dot').forEach((d, i) => {
-        d.classList.remove('active', 'done');
-        if (i < idx) d.classList.add('done');
-        if (i === idx) d.classList.add('active');
-      });
-
-      document.getElementById('step-text').textContent = `Step ${idx + 1} of ${STEPS.length}`;
-      document.getElementById('prev-btn').disabled = idx === 0;
-      document.getElementById('next-btn').textContent = idx === STEPS.length - 1 ? 'Finish ✓' : 'next step →';
-
-      DCC.playClick();
-      isAnimating = false;
-
-      // If final step
-      if (idx === STEPS.length - 1) {
-        setTimeout(() => {
-          DCC.playSuccess();
-          document.getElementById('next-btn').style.display = 'none';
-          // Mark last dot done
-          document.getElementById('dot-5').classList.add('done');
-          // Trigger participants done state
-          document.querySelectorAll('.participant').forEach(p => {
-            p.classList.remove('lit');
-            p.classList.add('done');
-          });
-        }, 1000);
-      }
-    }
-
-    function animateTraveler(t) {
-      const traveler = document.getElementById('traveler-1');
-      const participants = document.querySelectorAll('.participant');
-      if (!t || t.from === undefined) return;
-
-      const fromEl = participants[t.from];
-      const toEl = participants[t.to];
-      const fromRect = fromEl.getBoundingClientRect();
-      const toRect = toEl.getBoundingClientRect();
-      const containerRect = document.getElementById('participants-row').getBoundingClientRect();
-
-      const startX = fromRect.left + fromRect.width / 2 - containerRect.left - 12;
-      const endX = toRect.left + toRect.width / 2 - containerRect.left - 12;
-
-      traveler.classList.remove('return');
-      if (t.type === 'in') traveler.classList.add('return');
-
-      traveler.style.left = startX + 'px';
-      traveler.style.opacity = '1';
-      traveler.textContent = t.type === 'in' ? '✓' : '₹';
-
-      requestAnimationFrame(() => {
-        traveler.style.transition = 'left 0.8s cubic-bezier(0.4,0,0.2,1)';
-        traveler.style.left = endX + 'px';
-      });
-
-      setTimeout(() => {
-        traveler.style.transition = 'opacity 0.3s';
-        traveler.style.opacity = '0';
-      }, 900);
-    }
-
-    function nextStep() {
-      if (currentStep < STEPS.length - 1) {
-        applyStep(currentStep + 1);
-      }
-    }
-
-    function prevStep() {
-      if (currentStep > 0) {
-        applyStep(currentStep - 1);
-      }
-    }
-
-    function resetSwipe() {
-      currentStep = -1;
-      const card = document.getElementById('tap-card');
-      card.classList.remove('disabled');
-      document.getElementById('tap-hint').style.display = 'block';
-
-      document.querySelectorAll('.participant').forEach(p => p.classList.remove('lit', 'done'));
-      document.getElementById('line-fill-1').style.width = '0';
-      document.querySelectorAll('.step-dot').forEach(d => d.classList.remove('active', 'done'));
-      document.getElementById('info-panel').innerHTML = '<div class="info-panel-empty">tap the card to begin →</div>';
-      document.getElementById('step-text').textContent = 'Ready';
-      document.getElementById('next-btn').style.display = 'none';
-      document.getElementById('reset-btn').style.display = 'none';
-
-      const screen = document.getElementById('pos-screen');
-      screen.classList.remove('thinking', 'success', 'failure');
-      document.getElementById('pos-status').textContent = 'Waiting for card...';
-    }
-
-    // ====================================================
-    // SCENE 2 — MEET THE PLAYERS
-    // ====================================================
-
-    let selectedPlayer = -1;
-
-    function selectPlayer(idx) {
-      const drawer = document.getElementById('detail-drawer');
-      const content = document.getElementById('detail-content');
-
-      document.querySelectorAll('.meet-card').forEach((c, i) => {
-        c.classList.toggle('selected', i === idx);
-      });
-
-      // If clicking same one again, close
-      if (selectedPlayer === idx) {
-        drawer.classList.remove('open');
-        document.querySelectorAll('.meet-card').forEach(c => c.classList.remove('selected'));
-        selectedPlayer = -1;
-        return;
-      }
-
-      const p = PLAYERS[idx];
-      content.innerHTML = `
-        <div class="detail-icon-big">${p.icon}</div>
-        <div class="detail-main">
-          <h3>${p.name === 'You' ? 'You' : 'The <em>' + p.emTitle + '</em>'}</h3>
-          <div class="detail-tag">${p.tag}</div>
-          <p class="detail-desc">${p.desc}</p>
-          <div class="detail-profit">
-            <strong>How they profit ·</strong> ${p.profit}
-          </div>
-        </div>
-        <div class="detail-side">
-          <h4>Their Job</h4>
-          <ul class="detail-list">
-            ${p.responsibilities.map(r => `<li>${r}</li>`).join('')}
-          </ul>
-        </div>
-      `;
-      drawer.classList.add('open');
-      selectedPlayer = idx;
-      DCC.playClick();
-    }
-
-    // ============================================================
-    // PHASE SWITCHER (Clearing/Settlement tabs)
-    // ============================================================
-    function setPhase(idx) {
-      document.querySelectorAll('.phase-item').forEach((el, i) => {
-        el.classList.toggle('active', i === idx);
-      });
-      document.querySelectorAll('.phase-panel').forEach((el, i) => {
-        el.classList.toggle('active', i === idx);
-      });
-      DCC.playClick();
-    }
-
-    // ============================================================
-    // MDR CALCULATOR
-    // ============================================================
-    function fmt(n) {
-      return '₹' + Math.round(n).toLocaleString('en-IN');
-    }
-
-    function updateMDR() {
-      const amount = parseInt(document.getElementById('mdr-slider').value);
-      document.getElementById('mdr-display').textContent = fmt(amount);
-      document.getElementById('mdr-total').textContent = fmt(amount);
-
-      // MDR split rates (approximate, typical Indian CC MDR ~1.5%)
-      const issuerPct   = 0.011;  // ~1.1% interchange
-      const networkPct  = 0.001;  // ~0.1% network
-      const gatewayPct  = 0.003;  // ~0.3% gateway
-      // Merchant gets the rest
-
-      const issuerAmt   = amount * issuerPct;
-      const networkAmt  = amount * networkPct;
-      const gatewayAmt  = amount * gatewayPct;
-      const merchantAmt = amount - issuerAmt - networkAmt - gatewayAmt;
-
-      document.getElementById('mdr-issuer').textContent  = fmt(issuerAmt);
-      document.getElementById('mdr-network').textContent = fmt(networkAmt);
-      document.getElementById('mdr-gateway').textContent = fmt(gatewayAmt);
-      document.getElementById('mdr-merchant').textContent = fmt(merchantAmt);
-    }
-
-    // Init MDR on load
-    updateMDR();
-  </script>
+// ---------- Scene 5 ----------
+const SUR = pick({
+  in: { title: 'The <em>“2% extra on credit card”</em> moment.', scene: `You are buying a ${money(big)} TV at an electronics showroom. You take out your credit card and the salesperson says:`, quote: '“Sir, credit card pe 2% extra lagega.”',
+    rows: [['TV price', money(big)], ['Their real card cost (MDR)', '~' + money(big * .015) + '–' + money(big * .02)], ['What they want from you (2%)', money(big * .02), 1]],
+    truth: 'MDR is a contract between the shop and its bank — <strong>you are not a party to it</strong>. Card-network rules and RBI guidance say merchants should not pass it on, but enforcement is thin and it happens constantly on jewellery, electronics and school fees.',
+    moves: [['📲', 'Pay by UPI', 'Zero MDR for the shop, no surcharge for you. You give up the card’s float, rewards and chargeback rights.'], ['🤝', 'Negotiate', 'It is their cost of doing business. On a big ticket they would rather drop the surcharge than lose the sale.'], ['🧮', 'Do the sum', 'If the card earns you more than 2% on this purchase, or you need the protection, paying the surcharge can still be the better deal.']] },
+  us: { title: 'The <em>“3% card fee”</em> line on the bill.', scene: `Dinner for four comes to ${money(180)}. At the bottom of the check, in small print:`, quote: '“A 3% surcharge is applied to all credit card payments.”',
+    rows: [['The meal', money(180)], ['Restaurant’s real card cost', '~' + money(180 * .023, 1) + '–' + money(180 * .03, 1)], ['Surcharge added (3%)', money(5.4, 1), 1]],
+    truth: 'Surcharging credit cards is legal in most US states, but there are rules: it must be <strong>disclosed before you pay</strong>, it cannot exceed the shop’s actual cost (Visa caps it at 3%), and it may <strong>never be applied to debit cards</strong>. A “cash discount” is the same idea turned around.',
+    moves: [['💵', 'Pay debit or cash', 'No surcharge is allowed on debit. You give up credit-card rewards and the stronger dispute rights.'], ['🔎', 'Check the disclosure', 'No sign at the door or on the menu? It is a rule violation — say so, and it usually disappears.'], ['🧮', 'Do the sum', 'A 2% cashback card against a 3% surcharge loses 1%. A 4% dining card wins 1%. Know your card.']] },
+  uk: { title: 'The <em>“50p card charge”</em> that is not allowed.', scene: 'A corner shop has a handwritten sign by the till:', quote: '“Card payments under £5 — 50p charge.”',
+    rows: [['Your purchase', '£3.80'], ['Shop’s real card cost', 'a few pence'], ['Charge demanded', '£0.50', 1]],
+    truth: 'Since January 2018, surcharging consumer debit and credit cards has been <strong>banned across the UK and EU</strong>. A shop may set a minimum card spend, or refuse cards altogether — but it cannot add a fee for paying by Visa or Mastercard. (Business cards and, in some cases, Amex are outside the ban.)',
+    moves: [['🗣️', 'Say it is not allowed', 'Politely. Most small shops simply have not caught up, and the charge comes off.'], ['👛', 'Pay another way', 'Cash or a bigger basket to clear a legitimate minimum spend.'], ['📮', 'Report repeat offenders', 'Trading Standards enforces the ban (via Citizens Advice). You are entitled to the surcharge back.']] },
+  au: { title: 'The <em>surcharge</em> that just became illegal.', scene: 'For years the last line on almost every Australian café receipt read:', quote: '“1.5% card surcharge applies.”',
+    rows: [['Brunch', money(48)], ['Old surcharge (1.5%)', money(.72, 1), 1], ['From 1 Oct 2026 on Visa, Mastercard, eftpos', money(0)]],
+    truth: 'The Reserve Bank’s payments review ended surcharging on <strong>eftpos, Visa and Mastercard — debit and credit — from 1 October 2026</strong>, and cut interchange so shops pay less to accept cards. American Express is outside the ban and can still be surcharged. Expect some of the cost to move quietly into shelf prices.',
+    moves: [['🧾', 'Check the receipt', 'A surcharge on Visa, Mastercard or eftpos is no longer permitted. Ask for it to be removed.'], ['📮', 'Report it', 'The ACCC polices surcharging. Repeat offenders are worth a report.'], ['🧮', 'Amex maths', 'If a shop surcharges Amex at 1.5% and your points are worth 1%, you are losing. Switch cards at that till.']] }
+});
+$('#sur-title').innerHTML = SUR.title;
+$('#sur').innerHTML = `<div><p>${SUR.scene}</p><div class="quote-big" style="margin-top:12px">${SUR.quote}</div></div>
+  <div class="kv">${SUR.rows.map(r => `<div class="${r[2] ? 'is-fee' : ''}"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('')}</div>
+  <div class="callout is-warm"><b>What is actually going on</b>${SUR.truth}</div>
+  <div><div class="eyebrow">Your three moves</div><div class="grid moves">${SUR.moves.map(m => `<div class="panel"><div class="tile-icon">${m[0]}</div><h4 class="h4" style="margin-block:6px 4px">${m[1]}</h4><p class="small muted">${m[2]}</p></div>`).join('')}</div></div>`;
+}
+</script>
 </body>
 </html>

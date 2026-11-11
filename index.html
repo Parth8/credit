@@ -2,1055 +2,211 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="format-detection" content="telephone=no">
+  <meta name="theme-color" content="#F7F3ED">
   <title>Decoding Credit Cards — An interactive guide</title>
-  <meta name="description" content="Learn credit cards by playing with them. Free. Forever. No card recommendations.">
-  
-  <!-- Open Graph (Facebook, LinkedIn, WhatsApp, iMessage, Slack) -->
+  <meta name="description" content="Learn credit cards by playing with them. 22 interactive chapters, tailored to India, the USA, UK &amp; Europe, and Australia &amp; NZ. Free forever. No card recommendations.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://parth8.github.io/credit/">
   <meta property="og:title" content="Decoding Credit Cards — An interactive guide">
   <meta property="og:description" content="Learn credit cards by playing with them. 22 chapters. Free forever. No affiliate links.">
   <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:site_name" content="Decoding Credit Cards">
-  
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Decoding Credit Cards — An interactive guide">
-  <meta name="twitter:description" content="Learn credit cards by playing with them. 22 chapters. Free forever. No affiliate links.">
-  <meta name="twitter:image" content="https://parth8.github.io/credit/og-image.png">
-  
+  <script>document.documentElement.className = 'js'</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
   <link rel="stylesheet" href="css/global.css">
   <style>
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      padding: 140px 0 80px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 80px;
-      align-items: center;
-    }
-
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      background: var(--electric-soft);
-      border-radius: 999px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--electric);
-      letter-spacing: 0.04em;
-      margin-bottom: 32px;
-      animation: fade-up 0.7s var(--ease-out) 0.1s both;
-    }
-
-    .hero-eyebrow .pulse-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--electric);
-      border-radius: 50%;
-      animation: pulse-dot 1.5s ease infinite;
-    }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.3; transform: scale(1.4); }
-    }
-
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: clamp(56px, 8vw, 104px);
-      font-weight: 900;
-      line-height: 0.95;
-      letter-spacing: -0.04em;
-      color: var(--ink);
-      margin-bottom: 28px;
-      animation: fade-up 0.9s var(--ease-out) 0.25s both;
-    }
-
-    .hero-title em {
-      font-style: italic;
-      font-weight: 300;
-      color: var(--electric);
-      font-family: var(--font-display);
-    }
-
-    .hero-title-annotation {
-      font-family: var(--font-hand);
-      color: var(--warm);
-      font-size: 32px;
-      font-weight: 500;
-      transform: rotate(-2deg);
-      display: inline-block;
-      margin: -8px 0 28px 4px;
-      animation: fade-up 0.9s var(--ease-out) 0.5s both;
-    }
-
-    .hero-sub {
-      font-size: 19px;
-      line-height: 1.6;
-      color: var(--ink-muted);
-      max-width: 540px;
-      margin-bottom: 40px;
-      animation: fade-up 0.9s var(--ease-out) 0.4s both;
-    }
-
-    .hero-sub strong {
-      color: var(--ink);
-      font-weight: 600;
-    }
-
-    .hero-cta-row {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      flex-wrap: wrap;
-      animation: fade-up 0.9s var(--ease-out) 0.55s both;
-    }
-
-    @keyframes fade-up {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* HERO VISUAL — Live demo card */
-    .hero-visual {
-      position: relative;
-      animation: fade-up 1s var(--ease-out) 0.7s both;
-    }
-
-    .demo-stack {
-      position: relative;
-      perspective: 1000px;
-      height: 320px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .demo-card {
-      position: absolute;
-      transition: transform 0.6s var(--ease-out);
-      transform-style: preserve-3d;
-    }
-
-    .demo-card-1 {
-      animation: float-1 6s ease-in-out infinite;
-    }
-
-    .demo-card-2 {
-      transform: translate(-30px, -40px) rotate(-8deg);
-      opacity: 0.9;
-      animation: float-2 7s ease-in-out infinite;
-    }
-
-    .demo-card-3 {
-      transform: translate(40px, 30px) rotate(6deg);
-      opacity: 0.7;
-      animation: float-3 8s ease-in-out infinite;
-    }
-
-    @keyframes float-1 {
-      0%, 100% { transform: translate(0, 0) rotate(2deg); }
-      50% { transform: translate(0, -10px) rotate(-1deg); }
-    }
-    @keyframes float-2 {
-      0%, 100% { transform: translate(-30px, -40px) rotate(-8deg); }
-      50% { transform: translate(-35px, -50px) rotate(-10deg); }
-    }
-    @keyframes float-3 {
-      0%, 100% { transform: translate(40px, 30px) rotate(6deg); }
-      50% { transform: translate(45px, 40px) rotate(8deg); }
-    }
-
-    .demo-card .cc-visual {
-      width: 280px;
-      height: 175px;
-    }
-
-    .demo-card-2 .cc-visual {
-      background: linear-gradient(135deg, #831843 0%, #be185d 50%, #831843 100%);
-    }
-
-    .demo-card-3 .cc-visual {
-      background: linear-gradient(135deg, #14532d 0%, #166534 50%, #14532d 100%);
-    }
-
-    .hero-visual-annotation {
-      position: absolute;
-      top: 20px;
-      right: -30px;
-      max-width: 180px;
-      transform: rotate(8deg);
-    }
-
-    .hero-visual-annotation .annotation {
-      font-size: 22px;
-      line-height: 1.2;
-      display: inline-block;
-    }
-
-    .hero-visual-annotation .arrow-doodle {
-      display: block;
-      margin-top: 4px;
-    }
-
-    /* TRUST STRIP */
-    .trust-strip {
-      padding: 32px 0;
-      border-top: 1px dashed var(--border-strong);
-      margin-top: 80px;
-    }
-
-    .trust-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 32px;
-      flex-wrap: wrap;
-    }
-
-    .trust-item {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .trust-num {
-      font-family: var(--font-display);
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--ink);
-      line-height: 1;
-    }
-
-    .trust-label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-faint);
-      letter-spacing: 0.04em;
-    }
-
-    /* WHY SECTION */
-    .why-section {
-      padding: 120px 0;
-      position: relative;
-    }
-
-    .why-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-
-    .why-headline {
-      font-family: var(--font-display);
-      font-size: clamp(36px, 4.5vw, 60px);
-      font-weight: 700;
-      line-height: 1.05;
-      letter-spacing: -0.02em;
-    }
-
-    .why-headline em {
-      font-style: italic;
-      font-weight: 300;
-      color: var(--electric);
-    }
-
-    .why-body {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      font-size: 18px;
-      line-height: 1.7;
-      color: var(--ink-muted);
-      padding-top: 16px;
-    }
-
-    .why-body strong {
-      color: var(--ink);
-      font-weight: 600;
-    }
-
-    .why-quote {
-      padding: 28px 32px;
-      background: var(--paper);
-      border-left: 4px solid var(--electric);
-      border-radius: 0 var(--radius-md) var(--radius-md) 0;
-      margin-top: 16px;
-      font-family: var(--font-display);
-      font-size: 20px;
-      font-style: italic;
-      font-weight: 500;
-      color: var(--ink);
-      line-height: 1.5;
-    }
-
-    /* CHAPTER MAP */
-    .chapters-section {
-      padding: 100px 0 120px;
-      background: var(--paper);
-      position: relative;
-    }
-
-    .chapters-section::before, .chapters-section::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 24px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 24'%3E%3Cpath d='M0 0L40 24L80 0Z' fill='%23F7F3ED'/%3E%3C/svg%3E");
-      background-size: 80px 24px;
-      background-repeat: repeat-x;
-    }
-
-    .chapters-section::before {
-      top: 0;
-      transform: scaleY(-1);
-    }
-
-    .chapters-section::after {
-      bottom: 0;
-    }
-
-    .chapters-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 64px;
-      flex-wrap: wrap;
-      gap: 32px;
-    }
-
-    .chapters-title {
-      font-family: var(--font-display);
-      font-size: clamp(36px, 5vw, 64px);
-      font-weight: 800;
-      line-height: 1;
-      letter-spacing: -0.03em;
-    }
-
-    .chapters-title em {
-      font-style: italic;
-      font-weight: 300;
-      color: var(--electric);
-    }
-
-    .chapters-subtitle {
-      font-size: 16px;
-      color: var(--ink-muted);
-      max-width: 360px;
-    }
-
-    /* Chapter list — book-like */
-    .chapter-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      background: white;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      border: 1px solid var(--border-strong);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
-    }
-
-    .chapter-item {
-      display: grid;
-      grid-template-columns: 80px 1fr auto;
-      gap: 24px;
-      padding: 28px 36px;
-      align-items: center;
-      text-decoration: none;
-      color: inherit;
-      border-bottom: 1px solid var(--border);
-      transition: all 0.3s var(--ease-out);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .chapter-item:last-child { border-bottom: none; }
-
-    .chapter-item::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 4px;
-      background: var(--electric);
-      transform: scaleY(0);
-      transform-origin: center;
-      transition: transform 0.3s var(--ease-out);
-    }
-
-    .chapter-item:hover {
-      background: var(--cream);
-    }
-    
-    .chapter-item:hover .chapter-content {
-      transform: translateX(8px);
-    }
-
-    .chapter-item:hover::before {
-      transform: scaleY(1);
-    }
-
-    .chapter-num {
-      font-family: var(--font-display);
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--ink-ghost);
-      font-style: italic;
-      transition: color 0.3s ease;
-    }
-
-    .chapter-item:hover .chapter-num {
-      color: var(--electric);
-    }
-
-    .chapter-content {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      transition: transform 0.3s var(--ease-out);
-    }
-
-    .chapter-name {
-      font-family: var(--font-display);
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      line-height: 1.2;
-    }
-
-    .chapter-desc {
-      font-size: 14px;
-      color: var(--ink-muted);
-      line-height: 1.5;
-    }
-
-    .chapter-meta {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 6px;
-    }
-
-    .chapter-time {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-faint);
-      letter-spacing: 0.04em;
-    }
-
-    .chapter-arrow {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--paper);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--ink-faint);
-      transition: all 0.3s var(--ease-spring);
-    }
-
-    .chapter-item:hover .chapter-arrow {
-      background: var(--electric);
-      color: white;
-      transform: translateX(4px);
-    }
-
-    /* MANIFESTO */
-    .manifesto-section {
-      padding: 120px 0;
-      text-align: center;
-      background: var(--ink);
-      color: var(--cream);
-      position: relative;
-    }
-
-    .manifesto-text {
-      font-family: var(--font-display);
-      font-size: clamp(32px, 4.5vw, 56px);
-      font-weight: 500;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .manifesto-text em {
-      font-style: italic;
-      color: #F7B87A;
-      font-weight: 300;
-    }
-
-    .manifesto-text strong {
-      color: white;
-      font-weight: 700;
-    }
-
-    /* FOOTER */
-    .site-footer {
-      padding: 64px 32px 32px;
-      border-top: 1px solid var(--border);
-      text-align: center;
-    }
-
-    .footer-brand {
-      font-family: var(--font-display);
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
-    }
-
-    .footer-brand em { font-style: italic; font-weight: 300; color: var(--electric); }
-
-    .footer-tagline {
-      font-size: 13px;
-      color: var(--ink-faint);
-      margin-bottom: 32px;
-    }
-
-    .footer-meta {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-ghost);
-      letter-spacing: 0.04em;
-    }
-
-    .footer-signature {
-      padding-top: 24px;
-      border-top: 1px dashed var(--border);
-      max-width: 480px;
-      margin: 24px auto 0;
-    }
-
-    .footer-by {
-      font-family: var(--font-hand);
-      font-size: 22px;
-      color: var(--ink-muted);
-      margin-bottom: 8px;
-      transform: rotate(-1deg);
-      display: inline-block;
-    }
-
-    .footer-name {
-      color: var(--electric);
-      text-decoration: none;
-      font-weight: 700;
-      transition: color 0.2s ease;
-    }
-
-    .footer-name:hover {
-      color: var(--warm);
-    }
-
-    .footer-links {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 0.04em;
-      color: var(--ink-faint);
-    }
-
-    .footer-links a {
-      color: var(--ink-muted);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-
-    .footer-links a:hover {
-      color: var(--electric);
-    }
-
-    .footer-link-sep {
-      margin: 0 12px;
-      color: var(--ink-ghost);
-    }
-
-    @media (max-width: 768px) {
-      .hero { padding: 100px 0 60px; }
-      .hero-grid { grid-template-columns: 1fr; gap: 48px; }
-      .hero-visual-annotation { display: none; }
-      .demo-stack { height: 240px; }
-      .demo-card .cc-visual { width: 240px; height: 150px; }
-      .why-grid { grid-template-columns: 1fr; gap: 32px; }
-      .chapter-item { grid-template-columns: 50px 1fr; padding: 20px 24px; gap: 16px; }
-      .chapter-meta { display: none; }
-      .chapter-num { font-size: 24px; }
-      .chapter-name { font-size: 18px; }
-      .trust-row { gap: 16px; }
-      .trust-num { font-size: 22px; }
-    }
+    .hero { min-height: 100svh; padding-top: calc(var(--nav-h) + clamp(20px, 5vw, 60px)); padding-bottom: 32px; display: flex; flex-direction: column; justify-content: center; }
+    .hero-grid { display: grid; gap: clamp(28px, 5vw, 72px); align-items: center; }
+    @media (min-width: 900px) { .hero-grid { grid-template-columns: 1.15fr 1fr; } }
+    .hero h1 { font: 900 clamp(2.6rem, 1.5rem + 5.6vw, 5.4rem)/.95 var(--font-display); letter-spacing: -.045em; margin-block: 18px 6px; }
+    .hero h1 em { font-style: italic; font-weight: 300; color: var(--electric); }
+    .hero .lede { font-size: var(--step-1); margin-block: 14px 26px; }
+    .hero > .wrap > * , .hero-copy > * { animation: rise .9s var(--ease-out) both; animation-delay: calc(var(--i, 0) * 110ms); }
+    .live { display: inline-flex; align-items: center; gap: 8px; }
+    .live::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--electric); animation: blink 1.5s ease infinite; }
+    @keyframes blink { 50% { opacity: .25; transform: scale(1.5); } }
+
+    .edition { margin-top: 28px; }
+    .edition .seg { max-width: 520px; }
+    .edition .seg button { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 6px; }
+    .edition .seg span { font-size: 1.35rem; line-height: 1; }
+
+    .deck { position: relative; height: clamp(250px, 44vw, 380px); display: grid; place-items: center; --cc-w: clamp(230px, 34vw, 340px); }
+    .deck .cc { position: absolute; }
+    .deck .c2 { translate: -12% -22%; rotate: -9deg; opacity: .92; animation: bob 7s ease-in-out infinite; }
+    .deck .c3 { translate: 13% 20%; rotate: 7deg; opacity: .8; animation: bob 8s ease-in-out -2s infinite; }
+    .deck .c1 { cursor: pointer; animation: bob 6s ease-in-out -1s infinite; z-index: 2; }
+    .deck .c1.paid { animation: paid .9s var(--ease-spring); }
+    @keyframes bob { 50% { translate: var(--bx, 0) calc(var(--by, 0%) - 10px); } }
+    .deck .c2 { --bx: -12%; --by: -22%; } .deck .c3 { --bx: 13%; --by: 20%; }
+    @keyframes paid { 40% { scale: .9; } 70% { scale: 1.06; } }
+    .deck-note { position: absolute; right: 0; top: 0; text-align: right; max-width: 170px; z-index: 3; }
+    .deck-pill { position: absolute; bottom: 4%; left: 50%; translate: -50% 0; z-index: 3; background: var(--ink); color: var(--cream); padding: 10px 18px; border-radius: var(--r-pill); font: 400 .8rem var(--font-mono); white-space: nowrap; opacity: 0; transition: opacity .3s, translate .5s var(--ease-spring); }
+    .deck-pill.show { opacity: 1; translate: -50% -14px; }
+    @media (max-width: 899px) { .deck-note { display: none; } }
+
+    .trust { margin-top: clamp(28px, 5vw, 64px); padding-top: 24px; border-top: 1px dashed var(--border-strong); --min: 130px; }
+    .trust b { display: block; font: 700 var(--step-2)/1 var(--font-display); }
+    .trust span { font: 400 var(--step--1) var(--font-mono); color: var(--ink-faint); }
+
+    .why { padding-block: clamp(56px, 9vw, 120px); }
+    .why .stack { --gap: 18px; font-size: var(--step-1); line-height: 1.6; color: var(--ink-muted); }
+    .why strong { color: var(--ink); }
+    .quote { padding: 22px 26px; background: var(--paper); border-left: 4px solid var(--electric); border-radius: 0 var(--r-md) var(--r-md) 0; font: italic 500 var(--step-1)/1.45 var(--font-display); color: var(--ink); }
+
+    .how { --min: 240px; margin-top: 32px; }
+    .how .panel { background: var(--white); border: 1px solid var(--border-strong); }
+    .how .n { font: italic 300 2.4rem/1 var(--font-display); color: var(--electric); }
+
+    .chapters { background: var(--paper); padding-block: clamp(56px, 8vw, 110px); }
+    .chapters-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px; margin-bottom: clamp(24px, 4vw, 48px); }
+    .journey { min-width: min(100%, 300px); }
+    .journey .meter { margin-top: 8px; background: var(--white); }
+    .list { background: var(--white); border: 1px solid var(--border-strong); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow); }
+    .item { display: grid; grid-template-columns: 44px 1fr; gap: 6px 14px; align-items: center; padding: 18px 18px; color: inherit; text-decoration: none; border-bottom: 1px solid var(--border); position: relative; transition: background .25s; }
+    .item:last-child { border-bottom: 0; }
+    .item::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--electric); transform: scaleY(0); transition: transform .3s var(--ease-out); }
+    .item .n { font: italic 700 1.4rem var(--font-display); color: var(--ink-ghost); transition: color .25s; }
+    .item .name { font: 700 var(--step-1)/1.2 var(--font-display); letter-spacing: -.01em; }
+    .item .desc { font-size: .9rem; color: var(--ink-muted); line-height: 1.45; margin-top: 2px; }
+    .item .meta { display: none; }
+    .item .tick { display: none; }
+    .item.done .n { color: var(--success); }
+    .item.done .name::after { content: ' ✓'; color: var(--success); font-size: .8em; }
+    .item.next { background: var(--electric-soft); } .item.next::before { transform: none; }
+    @media (min-width: 700px) {
+      .item { grid-template-columns: 70px 1fr auto; padding: 24px 32px; gap: 20px; }
+      .item .n { font-size: 1.9rem; }
+      .item .meta { display: flex; align-items: center; gap: 14px; font: 400 var(--step--1) var(--font-mono); color: var(--ink-faint); }
+      .item .arrow { width: 38px; height: 38px; border-radius: 50%; background: var(--paper); display: grid; place-items: center; transition: all .3s var(--ease-spring); }
+    }
+    @media (hover: hover) {
+      .item:hover { background: var(--cream); } .item:hover::before { transform: none; } .item:hover .n { color: var(--electric); }
+      .item:hover .arrow { background: var(--electric); color: #fff; transform: translateX(5px); }
+    }
+
+    .manifesto { background: var(--ink); color: var(--cream); text-align: center; padding-block: clamp(64px, 10vw, 130px); }
+    .manifesto p { font: 500 var(--step-3)/1.2 var(--font-display); letter-spacing: -.02em; max-width: 22em; margin-inline: auto; text-wrap: balance; }
+    .manifesto em { font-style: italic; font-weight: 300; color: #F7B87A; }
+    .manifesto strong { color: #fff; font-weight: 700; }
   </style>
 </head>
 <body>
-
-  <!-- NAV -->
-  <nav class="site-nav">
-    <a href="index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>※</span></a>
-    <ul class="nav-links">
-      <li><a href="#chapters">Chapters</a></li>
-      <li><a href="#why">Why</a></li>
-      <li><a href="chapters/01-the-handshake.html" class="btn btn--primary" style="padding: 8px 16px; font-size: 13px;">Start →</a></li>
-    </ul>
-  </nav>
-
-  <!-- HERO -->
+<main>
   <section class="hero">
-    <div class="container container--wide">
+    <div class="wrap">
       <div class="hero-grid">
-        <div>
-          <div class="hero-eyebrow">
-            <span class="pulse-dot"></span>
-            An interactive guide · 22 chapters
-          </div>
-          <h1 class="hero-title">
-            Credit cards,<br>
-            <em>finally</em> explained.
-          </h1>
-          <div class="hero-title-annotation">by playing with one →</div>
-          <p class="hero-sub">
-            Most credit card guides are written for people who already understand them. This one is built for everyone else. <strong>You'll learn by tapping cards, swiping terminals, watching money move</strong> — not by reading paragraphs.
-          </p>
-          <div class="hero-cta-row">
-            <a href="chapters/01-the-handshake.html" class="btn btn--primary btn--lg">
-              Start Chapter 1
-              <span style="font-size: 18px;">→</span>
-            </a>
+        <div class="hero-copy">
+          <div class="chip is-accent live" style="--i:0">An interactive guide · 22 chapters · 4 regions</div>
+          <h1 style="--i:1">Credit cards,<br><em>finally</em> explained.</h1>
+          <div class="hand" style="--i:2">by playing with one →</div>
+          <p class="lede" style="--i:3">Most credit card guides are written for people who already understand them. This one is built for everyone else. <strong>You learn by tapping cards, dragging sliders and making the decisions yourself</strong> — then seeing what they cost.</p>
+          <div class="row" style="--i:4">
+            <a id="cta" href="chapters/01-the-handshake.html" class="btn btn--primary btn--lg">Start Chapter I →</a>
             <a href="#why" class="btn btn--ghost">Why this exists</a>
           </div>
+          <div class="edition" style="--i:5">
+            <div class="eyebrow">Teach me how it works in</div>
+            <div class="seg" id="edition" role="group" aria-label="Choose your region"></div>
+          </div>
         </div>
-
-        <div class="hero-visual">
-          <div class="demo-stack">
-            <div class="demo-card demo-card-2">
-              <div class="cc-visual" style="cursor: default;">
-                <div class="cc-chip"></div>
-                <div class="cc-number">5412 ·· ·· 9924</div>
-                <div class="cc-bottom">
-                  <div class="cc-name">Friend</div>
-                  <div class="cc-network">·M·</div>
-                </div>
-              </div>
-            </div>
-            <div class="demo-card demo-card-3">
-              <div class="cc-visual" style="cursor: default;">
-                <div class="cc-chip"></div>
-                <div class="cc-number">3782 ·· ·· 1005</div>
-                <div class="cc-bottom">
-                  <div class="cc-name">Family</div>
-                  <div class="cc-network">AmEx</div>
-                </div>
-              </div>
-            </div>
-            <div class="demo-card demo-card-1">
-              <div class="cc-visual" style="cursor: default;">
-                <div class="cc-chip"></div>
-                <div class="cc-number">4539 ·· ·· 7821</div>
-                <div class="cc-bottom">
-                  <div class="cc-name">You</div>
-                  <div class="cc-network">VISA</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="hero-visual-annotation">
-            <span class="annotation annotation--warm">click anything,<br>everything moves</span>
-            <svg class="arrow-doodle" width="60" height="40" viewBox="0 0 60 40" fill="none">
-              <path d="M55 5 Q 30 25 5 35" stroke="#EA580C" stroke-width="2" stroke-linecap="round" fill="none" stroke-dasharray="2 4"/>
-              <path d="M5 35 L 12 30 M5 35 L 10 28" stroke="#EA580C" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
+        <div class="deck" style="--i:3">
+          <div class="cc cc--rose c2"><div class="cc-chip"></div><div class="cc-num">5412 ·· ·· 9924</div><div class="cc-foot"><span class="cc-name">Friend</span><span class="cc-net">mc</span></div></div>
+          <div class="cc cc--green c3"><div class="cc-chip"></div><div class="cc-num">3782 ·· ·· 1005</div><div class="cc-foot"><span class="cc-name">Family</span><span class="cc-net">AmEx</span></div></div>
+          <button class="cc c1" id="demo" data-tilt aria-label="Tap the card to pay"><div class="cc-chip"></div><div class="cc-num">4539 ·· ·· 7821</div><div class="cc-foot"><span class="cc-name">You</span><span class="cc-net">VISA</span></div></button>
+          <div class="deck-note"><span class="hand">tap the card,<br>something happens</span></div>
+          <div class="deck-pill" id="pill" role="status"></div>
         </div>
       </div>
-
-      <!-- TRUST STRIP -->
-      <div class="trust-strip">
-        <div class="trust-row">
-          <div class="trust-item">
-            <div class="trust-num"><span data-target="22" data-suffix="">0</span></div>
-            <div class="trust-label">chapters of depth</div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-num"><span data-target="0" data-suffix="">0</span></div>
-            <div class="trust-label">card recommendations</div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-num"><span data-target="0" data-suffix="">0</span></div>
-            <div class="trust-label">affiliate links, ever</div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-num">∞</div>
-            <div class="trust-label">free, forever</div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-num"><span data-target="100" data-suffix="%">0</span></div>
-            <div class="trust-label">interaction-based</div>
-          </div>
-        </div>
+      <div class="trust grid" style="--i:6">
+        <div><b>22</b><span>chapters of depth</span></div>
+        <div><b>4</b><span>regional editions</span></div>
+        <div><b>0</b><span>card recommendations</span></div>
+        <div><b>0</b><span>affiliate links, ever</span></div>
+        <div><b>∞</b><span>free, forever</span></div>
       </div>
     </div>
   </section>
 
-  <!-- WHY -->
-  <section class="why-section" id="why">
-    <div class="container">
-      <div class="why-grid">
+  <section class="why" id="why">
+    <div class="wrap">
+      <div class="split">
         <div class="reveal">
-          <div class="section-label">Why this exists</div>
-          <h2 class="why-headline">
-            I spent <em>months</em> looking<br>
-            for one good source.<br>
-            I never found it.
-          </h2>
+          <div class="eyebrow">Why this exists</div>
+          <h2 class="h2">I spent <em>months</em> looking for one good source. I never found it.</h2>
         </div>
-
-        <div class="why-body reveal" data-delay="100">
-          <p>Search "credit cards explained" and you'll find a parade of YouTubers recommending which card to sign up for, blogs full of affiliate links, and bank pages written like legal documents.</p>
-          <p>What I wanted was simple — <strong>just tell me how the thing actually works</strong>. The participants. The fees. What "credit utilization" really means. Why minimum payments are a trap. What happens during a swipe.</p>
-          <p>So I figured it out myself, wrote it all down, and turned it into this.</p>
-          <div class="why-quote">
-            "Knowledge about money shouldn't be gatekept behind sales pitches. If you understand the mechanics, you stop being the one who pays for everyone else's rewards."
-          </div>
+        <div class="stack reveal" style="--i:1">
+          <p>Search “credit cards explained” and you find creators recommending which card to sign up for, blogs full of affiliate links, and bank pages written like legal documents.</p>
+          <p>What I wanted was simple — <strong>just tell me how the thing actually works</strong>. Who gets paid. What each fee is. What “utilisation” really means. Why minimum payments are a trap.</p>
+          <p>So I figured it out, wrote it down, and turned it into this.</p>
+          <div class="quote">“If you understand the mechanics, you stop being the one who pays for everyone else’s rewards.”</div>
         </div>
+      </div>
+      <div class="how grid">
+        <div class="panel reveal"><div class="n">i.</div><h3 class="h4">Do, then read</h3><p class="small muted">Every chapter opens with something to tap, drag or decide. The explanation comes after you have seen the result.</p></div>
+        <div class="panel reveal" style="--i:1"><div class="n">ii.</div><h3 class="h4">Your country’s rules</h3><p class="small muted">A late fee in Mumbai, Miami, Manchester and Melbourne are four different things. Pick an edition and every number, law and example changes.</p></div>
+        <div class="panel reveal" style="--i:2"><div class="n">iii.</div><h3 class="h4">It remembers you</h3><p class="small muted">Progress is saved on this device only — nothing is sent anywhere. Come back and pick up where you stopped.</p></div>
       </div>
     </div>
   </section>
 
-  <!-- CHAPTERS -->
-  <section class="chapters-section" id="chapters">
-    <div class="container">
-      <div class="chapters-header">
-        <div>
-          <div class="section-label" style="color: var(--ink-muted);">The full curriculum</div>
-          <h2 class="chapters-title">
-            Twenty-two<br>
-            <em>interactive chapters.</em>
-          </h2>
-        </div>
-        <p class="chapters-subtitle reveal">
-          Every chapter is a small experience. Tap to begin. Swipe through transactions. Watch money move. Read short — interact a lot.
-        </p>
+  <section class="chapters" id="chapters">
+    <div class="wrap">
+      <div class="chapters-head">
+        <div><div class="eyebrow">The full curriculum</div><h2 class="h2">Twenty-two <em>interactive chapters.</em></h2></div>
+        <div class="journey"><div class="mono faint" id="journey-text">0 of 22 complete</div><div class="meter"><i id="journey-bar"></i></div></div>
       </div>
-
-      <div class="chapter-list reveal">
-        <a href="chapters/01-the-handshake.html" class="chapter-item">
-          <div class="chapter-num">I</div>
-          <div class="chapter-content">
-            <div class="chapter-name">The Handshake</div>
-            <div class="chapter-desc">Tap a card. Watch a transaction happen. Meet the five players who get involved every time.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~5 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/02-getting-a-card.html" class="chapter-item">
-          <div class="chapter-num">II</div>
-          <div class="chapter-content">
-            <div class="chapter-name">Getting a Card</div>
-            <div class="chapter-desc">Application, eligibility, creditworthiness. Fill out a real-feeling form and watch the bank decide.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~6 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/03-the-anatomy.html" class="chapter-item">
-          <div class="chapter-num">III</div>
-          <div class="chapter-content">
-            <div class="chapter-name">The Anatomy of a Card</div>
-            <div class="chapter-desc">Hover over every chip, hologram, and digit. Learn what each part actually does and why it's there.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~5 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/04-types-of-cards.html" class="chapter-item">
-          <div class="chapter-num">IV</div>
-          <div class="chapter-content">
-            <div class="chapter-name">Types of Cards</div>
-            <div class="chapter-desc">Secured, unsecured, charge, prepaid, co-branded, business. A sorting game teaches you which is which.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~6 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/05-the-billing-cycle.html" class="chapter-item">
-          <div class="chapter-num">V</div>
-          <div class="chapter-content">
-            <div class="chapter-name">The Billing Cycle</div>
-            <div class="chapter-desc">Drag purchases onto a calendar. See exactly when the statement closes, when payment is due, and when interest starts.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~7 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/06-the-trap.html" class="chapter-item">
-          <div class="chapter-num">VI</div>
-          <div class="chapter-content">
-            <div class="chapter-name">The Minimum Payment Trap</div>
-            <div class="chapter-desc">A live calculator with sliders. Watch your debt grow in real time when you only pay the minimum.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~6 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/07-fees.html" class="chapter-item">
-          <div class="chapter-num">VII</div>
-          <div class="chapter-content">
-            <div class="chapter-name">Every Fee Explained</div>
-            <div class="chapter-desc">Each fee triggers its own animated transaction. Annual fee, late fee, cash advance, forex markup — see exactly when and how you get charged.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~9 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/08-the-score.html" class="chapter-item">
-          <div class="chapter-num">VIII</div>
-          <div class="chapter-content">
-            <div class="chapter-name">Your Credit Score</div>
-            <div class="chapter-desc">Drag your spending, watch your CIBIL/credit score react. Understand the five factors that actually move it.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~7 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/09-rewards.html" class="chapter-item">
-          <div class="chapter-num">IX</div>
-          <div class="chapter-content">
-            <div class="chapter-name">The Rewards Game</div>
-            <div class="chapter-desc">Cashback, points, miles. A matching game teaches you which card wins for which kind of purchase.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~8 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/10-fraud.html" class="chapter-item">
-          <div class="chapter-num">X</div>
-          <div class="chapter-content">
-            <div class="chapter-name">Spot the Fraud</div>
-            <div class="chapter-desc">Six real fraud scenarios. Skimming, phishing, vishing, DCC, CNP. Train your eye to spot the trap.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~8 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/11-fraud-defense.html" class="chapter-item">
-          <div class="chapter-num">XI</div>
-          <div class="chapter-content">
-            <div class="chapter-name">Your Defense System</div>
-            <div class="chapter-desc">EMV chips, tokenization, PCI DSS, 2-factor auth, AVS. The invisible layers protecting every transaction.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~6 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/12-disputes.html" class="chapter-item">
-          <div class="chapter-num">XII</div>
-          <div class="chapter-content">
-            <div class="chapter-name">Disputes & Chargebacks</div>
-            <div class="chapter-desc">When something goes wrong, this is your nuclear option. Walk through filing a real chargeback, step by step.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~6 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/13-international.html" class="chapter-item">
-          <div class="chapter-num">XIII</div>
-          <div class="chapter-content">
-            <div class="chapter-name">Going International</div>
-            <div class="chapter-desc">Forex markup, dynamic currency conversion, the "pay in your home currency" trap. A trip simulator shows you the real cost.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~7 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/14-management.html" class="chapter-item">
-          <div class="chapter-num">XIV</div>
-          <div class="chapter-content">
-            <div class="chapter-name">Managing Like a Pro</div>
-            <div class="chapter-desc">A monthly simulation: bills come in, you decide what to pay, when, and from which card. See your score move.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~8 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/15-protections.html" class="chapter-item">
-          <div class="chapter-num">XV</div>
-          <div class="chapter-content">
-            <div class="chapter-name">Hidden Protections</div>
-            <div class="chapter-desc">Purchase protection, extended warranty, travel insurance. Most cardholders never use the benefits they're paying for.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~5 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/16-customer-service.html" class="chapter-item">
-          <div class="chapter-num">XVI</div>
-          <div class="chapter-content">
-            <div class="chapter-name">Talking to Your Bank</div>
-            <div class="chapter-desc">Lost card? Disputed charge? Limit increase? Practice real conversations with a simulated banking agent.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~5 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/17-alternatives.html" class="chapter-item">
-          <div class="chapter-num">XVII</div>
-          <div class="chapter-content">
-            <div class="chapter-name">UPI, Wallets & The Rest</div>
-            <div class="chapter-desc">How credit cards stack up against UPI, debit, BNPL, mobile wallets. When each one is the right tool.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~6 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/18-taxes.html" class="chapter-item">
-          <div class="chapter-num">XVIII</div>
-          <div class="chapter-content">
-            <div class="chapter-name">Taxes & TCS</div>
-            <div class="chapter-desc">When credit card spending becomes taxable. The 7-lakh international threshold. The forms you need.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~5 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/19-students.html" class="chapter-item">
-          <div class="chapter-num">XIX</div>
-          <div class="chapter-content">
-            <div class="chapter-name">First Card, Right</div>
-            <div class="chapter-desc">A guide for 18-22 year olds getting their first card. Build credit, avoid the traps, set up habits that last.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~6 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/20-relationship.html" class="chapter-item">
-          <div class="chapter-num">XX</div>
-          <div class="chapter-content">
-            <div class="chapter-name">Relationship With Money</div>
-            <div class="chapter-desc">Beyond mechanics — how credit cards shape your psychology around money. Worth thinking about.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~5 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/21-future.html" class="chapter-item">
-          <div class="chapter-num">XXI</div>
-          <div class="chapter-content">
-            <div class="chapter-name">What's Coming Next</div>
-            <div class="chapter-desc">Tap-to-pay, virtual cards, blockchain settlement, embedded finance. Where this is all heading.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~5 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-        <a href="chapters/22-graduation.html" class="chapter-item">
-          <div class="chapter-num">XXII</div>
-          <div class="chapter-content">
-            <div class="chapter-name">Graduation</div>
-            <div class="chapter-desc">A test of what you've learned. Every concept, one challenge. Earn your diploma in card literacy.</div>
-          </div>
-          <div class="chapter-meta">
-            <span class="chapter-time">~10 min</span>
-            <div class="chapter-arrow">→</div>
-          </div>
-        </a>
-
-      </div>
+      <div class="list reveal" id="list"></div>
     </div>
   </section>
 
-  <!-- MANIFESTO -->
-  <section class="manifesto-section">
-    <div class="container">
-      <div class="reveal">
-        <p class="manifesto-text">
-          Credit is just a tool. The people who 'teach' you about it usually<i>(read: definitely)</i> want you to <em>buy something</em>.<br><strong>This site sells nothing</strong>, and never will.<em> No affiliate links, no card pitches, no rewards for sending you somewhere.</em><strong><br>The mechanics are yours to learn</strong> - what you do with them is yours to decide.
-        </p>
-      </div>
+  <section class="manifesto">
+    <div class="wrap reveal">
+      <p>Credit is just a tool. The people who “teach” you about it usually want you to <em>buy something</em>. <strong>This site sells nothing</strong>, and never will. <em>No affiliate links, no card pitches.</em> <strong>The mechanics are yours to learn</strong> — what you do with them is yours to decide.</p>
     </div>
   </section>
+</main>
 
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="footer-brand">Decoding<em>·</em>Credit Cards <span style="color: var(--electric);">※</span></div>
-    <p class="footer-tagline">Built for the curious. Free for everyone.</p>
-    <div class="footer-meta" style="margin-bottom: 24px;">No tracking · No ads · No card recommendations</div>
-    
-    <div class="footer-signature">
-      <div class="footer-by">
-        Built with love, coffee (and Claude) by
-        <a href="https://parth8.github.io/portfolio/" target="_blank" rel="noopener" class="footer-name">Parth</a>
-      </div>
-      <div class="footer-links">
-        <a href="https://linkedin.com/in/aggarwalparth" target="_blank" rel="noopener">LinkedIn ↗</a>
-        <span class="footer-link-sep">·</span>
-        <a href="https://parth8.github.io/portfolio/" target="_blank" rel="noopener">Portfolio ↗</a>
-        <span class="footer-link-sep">·</span>
-        <a href="https://parthaggarwal8.medium.com/" target="_blank" rel="noopener">Medium.com ↗</a>
-      </div>
-    </div>
-  </footer>
+<script src="js/regions.js"></script>
+<script src="js/global.js"></script>
+<script>
+  const { $, chapters, isDone, regions, rid, R, money } = DCC;
 
-  <script src="js/global.js"></script>
+  // edition picker
+  $('#edition').innerHTML = Object.values(regions).map(r =>
+    `<button class="${r.id === rid ? 'on' : ''}" data-region="${r.id}" aria-pressed="${r.id === rid}"><span>${r.flag}</span>${r.label}</button>`).join('');
+
+  // chapter list + journey
+  const done = chapters.filter(c => isDone(c.n)).length;
+  const next = chapters.find(c => !isDone(c.n));
+  $('#list').innerHTML = chapters.map(c => `
+    <a class="item ${isDone(c.n) ? 'done' : ''} ${done && next && c.n === next.n ? 'next' : ''}" href="${DCC.href(c)}">
+      <div class="n">${c.roman}</div>
+      <div><div class="name">${c.title}</div><div class="desc">${c.desc}</div></div>
+      <div class="meta"><span>${done && next && c.n === next.n ? 'continue · ' : ''}~${c.mins} min</span><span class="arrow">→</span></div>
+    </a>`).join('');
+  $('#journey-text').textContent = `${done} of ${chapters.length} complete`;
+  setTimeout(() => $('#journey-bar').style.width = (done / chapters.length * 100) + '%', 400);
+  if (done && next) { const a = $('#cta'); a.href = DCC.href(next); a.textContent = `Continue · Chapter ${next.roman} →`; }
+  else if (done && !next) { const a = $('#cta'); a.href = '#chapters'; a.textContent = 'All 22 complete ✓ — revisit'; }
+
+  // hero demo: tap the card, get an approval
+  const demo = $('#demo'), pill = $('#pill');
+  let busy = false;
+  demo.addEventListener('click', () => {
+    if (busy) return; busy = true;
+    DCC.playClick(); demo.classList.add('paid');
+    pill.textContent = `${R.merchant} · ${money(R.a.meal)} · authorising…`; pill.classList.add('show');
+    setTimeout(() => {
+      pill.textContent = `✓ Approved in 1.4s — 5 companies just got involved`;
+      DCC.playSuccess(); const b = demo.getBoundingClientRect(); DCC.burstConfetti(b.left + b.width / 2, b.top + b.height / 2, 18);
+    }, 1400);
+    setTimeout(() => { pill.classList.remove('show'); demo.classList.remove('paid'); busy = false; }, 5200);
+  });
+</script>
 </body>
 </html>

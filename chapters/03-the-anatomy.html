@@ -1,736 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="format-detection" content="telephone=no">
-  <title>III. The Anatomy of a Card — Decoding Credit Cards</title>
-  <!-- Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="https://parth8.github.io/credit/chapters/03-the-anatomy.html">
-  <meta property="og:title" content="III. The Anatomy of a Card — Decoding Credit Cards">
-  <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:site_name" content="Decoding Credit Cards">
-  
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="III. The Anatomy of a Card — Decoding Credit Cards">
-  <meta name="twitter:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
-  <meta name="twitter:image" content="https://parth8.github.io/credit/og-image.png">
-  
-
-  <link rel="stylesheet" href="../css/global.css">
-  <style>
-    .chapter-shell { min-height: 100vh; padding-top: 80px; }
-    .chapter-header { padding: 32px 0; border-bottom: 1px dashed var(--border-strong); margin-bottom: 32px; }
-    .chapter-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .chapter-roman { font-family: var(--font-display); font-size: 14px; font-style: italic; color: var(--electric); letter-spacing: 0.04em; }
-    .chapter-progress-text { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; }
-    .chapter-h1 { font-family: var(--font-display); font-size: clamp(48px, 6vw, 80px); font-weight: 800; line-height: 1; letter-spacing: -0.03em; margin-bottom: 16px; }
-    .chapter-h1 em { font-style: italic; font-weight: 300; color: var(--electric); }
-    .chapter-intro { font-size: 18px; color: var(--ink-muted); max-width: 600px; line-height: 1.6; }
-
-    .anatomy-stage { padding: 80px 0; display: flex; flex-direction: column; align-items: center; gap: 64px; }
-
-    /* INTERACTIVE CARD */
-    .anatomy-card-wrap {
-      perspective: 1200px;
-      transition: transform 0.6s var(--ease-out);
-    }
-
-    .anatomy-card {
-      width: 480px;
-      height: 300px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #1e293b 100%);
-      position: relative;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.18), 0 4px 16px rgba(0,0,0,0.1);
-      transform-style: preserve-3d;
-      -webkit-transform-style: preserve-3d;
-      transition: transform 0.8s var(--ease-out);
-      will-change: transform;
-    }
-
-    .anatomy-card.flipped {
-      transform: rotateY(180deg);
-    }
-
-    .anatomy-face {
-      position: absolute;
-      inset: 0;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      padding: 32px;
-      color: white;
-      border-radius: 20px;
-      overflow: hidden;
-      transform: translateZ(0);
-      -webkit-transform: translateZ(0);
-    }
-
-    /* Disable pointer events on the hidden side — backface-visibility: hidden hides visuals but NOT clicks */
-    .anatomy-card:not(.flipped) .anatomy-face.back { pointer-events: none; }
-    .anatomy-card.flipped .anatomy-face:not(.back) { pointer-events: none; }
-
-    .anatomy-face::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.04) 50%, transparent 60%);
-      animation: cc-shine 4s ease infinite;
-      pointer-events: none;
-      border-radius: 20px;
-    }
-
-    .anatomy-face.back {
-      transform: rotateY(180deg) translateZ(1px);
-      -webkit-transform: rotateY(180deg) translateZ(1px);
-      background: linear-gradient(135deg, #1e293b 0%, #2d3a4f 50%, #1e293b 100%);
-    }
-
-    .magstripe {
-      position: absolute;
-      top: 32px;
-      left: 0;
-      right: 0;
-      height: 50px;
-      background: #000;
-    }
-
-    .signature-strip {
-      position: absolute;
-      top: 110px;
-      left: 32px;
-      right: 90px;
-      height: 36px;
-      background: white;
-      display: flex;
-      align-items: center;
-      padding: 0 12px;
-      font-family: 'Caveat', cursive;
-      font-size: 18px;
-      color: #333;
-    }
-
-    .cvv-box {
-      position: absolute;
-      top: 110px;
-      right: 32px;
-      width: 50px;
-      height: 36px;
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      color: #333;
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    /* CLICKABLE PARTS */
-    /* CLICKABLE PARTS — cursor only, no positioning here */
-    .part-hotspot {
-      cursor: pointer;
-      transition: opacity 0.3s ease;
-    }
-    
-    .part-hotspot:hover {
-      opacity: 0.9;
-    }
-
-    .part-hotspot::after {
-      content: '';
-      position: absolute;
-      inset: -4px;
-      border: 2px dashed transparent;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-      pointer-events: none;
-    }
-
-    .part-hotspot:hover::after {
-      border-color: rgba(255,255,255,0.5);
-    }
-
-    .part-hotspot.active::after {
-      border-color: var(--electric);
-      border-style: solid;
-      box-shadow: 0 0 0 4px rgba(37,99,235,0.3);
-    }
-
-    .part-pulse {
-      position: absolute;
-      width: 14px;
-      height: 14px;
-      background: var(--electric);
-      border-radius: 50%;
-      box-shadow: 0 0 0 0 rgba(37,99,235,0.6);
-      animation: hotspot-pulse 2s ease infinite;
-      pointer-events: none;
-    }
-
-    @keyframes hotspot-pulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.6), 0 0 12px rgba(37,99,235,0.4); }
-      50% { box-shadow: 0 0 0 8px rgba(37,99,235,0); }
-    }
-
-    /* FRONT FACE ELEMENTS — all absolutely positioned */
-    .anatomy-chip {
-      position: absolute;
-      top: 100px;
-      left: 32px;
-      width: 56px;
-      height: 44px;
-      background: linear-gradient(135deg, #d4a843 0%, #c9952e 50%, #e0bc5f 100%);
-      border-radius: 8px;
-    }
-
-    .anatomy-chip::after {
-      content: '';
-      position: absolute;
-      inset: 6px;
-      border: 1px solid rgba(0,0,0,0.2);
-      border-radius: 4px;
-    }
-
-    .anatomy-contactless {
-      position: absolute;
-      top: 50%;
-      right: 32px;
-      transform: translateY(-50%);
-      width: 36px;
-      height: 36px;
-      opacity: 0.7;
-    }
-
-    .anatomy-hologram {
-      position: absolute;
-      top: 110px;
-      left: 110px;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: 
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,0.5) 0%, transparent 50%),
-        conic-gradient(from 0deg, #c9a8ff, #ffd4a8, #a8e0ff, #ffa8d4, #c9a8ff);
-      opacity: 0.55;
-      mix-blend-mode: screen;
-      box-shadow: 0 0 8px rgba(255,255,255,0.2);
-    }
-
-    .anatomy-hologram::after {
-      content: '';
-      position: absolute;
-      inset: 4px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 60%);
-    }
-
-    .anatomy-number {
-      position: absolute;
-      bottom: 80px;
-      left: 32px;
-      font-family: var(--font-mono);
-      font-size: 22px;
-      letter-spacing: 0.12em;
-      color: white !important;
-      text-decoration: none !important;
-    }
-
-    .anatomy-issuer {
-      position: absolute;
-      top: 32px;
-      right: 32px;
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      color: white;
-      opacity: 0.95;
-      text-align: right;
-    }
-
-    .issuer-cobrand {
-      display: block;
-      font-family: var(--font-mono);
-      font-size: 9px;
-      font-weight: 400;
-      letter-spacing: 0.06em;
-      opacity: 0.6;
-      margin-top: 2px;
-      text-transform: uppercase;
-    }
-
-    /* BOTTOM ROW — absolutely positioned container, flex contents */
-    .anatomy-bottom {
-      position: absolute;
-      bottom: 32px;
-      left: 32px;
-      right: 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 24px;
-    }
-
-    .anatomy-bottom-left {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      min-width: 0;
-    }
-
-    .anatomy-name {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      opacity: 0.85;
-      color: white;
-    }
-
-    .anatomy-expiry {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      opacity: 0.7;
-      color: white;
-    }
-
-    .anatomy-network {
-      font-family: var(--font-body);
-      font-size: 22px;
-      font-weight: 700;
-      color: white;
-    }
-
-    /* BACK FACE ELEMENTS — all absolutely positioned */
-    .magstripe {
-      position: absolute;
-      top: 40px;
-      left: 0;
-      right: 0;
-      height: 56px;
-      background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
-    }
-
-    .signature-strip {
-      position: absolute;
-      top: 120px;
-      left: 32px;
-      right: 90px;
-      height: 40px;
-      background: linear-gradient(135deg, #f8f8f8 0%, #e0e0e0 100%);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      padding: 0 12px;
-      font-family: var(--font-hand);
-      font-size: 16px;
-      color: #333;
-      font-style: italic;
-    }
-
-    .cvv-box {
-      position: absolute;
-      top: 120px;
-      right: 32px;
-      width: 50px;
-      height: 40px;
-      background: white;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-mono);
-      font-size: 16px;
-      font-weight: 700;
-      color: #000;
-      font-style: italic;
-    }
-
-    /* FLIP BUTTON */
-    .flip-btn {
-      margin-top: 16px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--ink-muted);
-      background: white;
-      border: 1px solid var(--border-strong);
-      padding: 10px 20px;
-      border-radius: 999px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .flip-btn:hover {
-      border-color: var(--electric);
-      color: var(--electric);
-    }
-
-    /* DETAIL PANEL */
-    .detail-panel {
-      width: 100%;
-      max-width: 720px;
-      background: white;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-lg);
-      padding: 40px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 12px 40px rgba(0,0,0,0.04);
-      transition: all 0.4s ease;
-    }
-
-    .detail-panel.empty {
-      text-align: center;
-      color: var(--ink-faint);
-      font-style: italic;
-      font-family: var(--font-display);
-      font-size: 18px;
-      padding: 32px;
-    }
-
-    .detail-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--electric);
-      letter-spacing: 0.06em;
-      margin-bottom: 8px;
-    }
-
-    .detail-title {
-      font-family: var(--font-display);
-      font-size: 32px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 6px;
-    }
-
-    .detail-title em { font-style: italic; font-weight: 300; color: var(--electric); }
-
-    .detail-tag {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-faint);
-      letter-spacing: 0.04em;
-      margin-bottom: 20px;
-    }
-
-    .detail-text {
-      font-size: 15px;
-      line-height: 1.7;
-      color: var(--ink-soft);
-      margin-bottom: 20px;
-    }
-
-    .detail-text strong { color: var(--ink); }
-    .detail-text em { font-style: italic; color: var(--electric); }
-
-    .detail-tip {
-      padding: 16px 20px;
-      background: var(--electric-soft);
-      border-left: 3px solid var(--electric);
-      border-radius: 0 8px 8px 0;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .detail-tip strong {
-      color: var(--electric);
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    /* PROGRESS */
-    .anatomy-progress {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--ink-muted);
-    }
-
-    .progress-pips {
-      display: flex;
-      gap: 4px;
-    }
-
-    .pip {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--parchment);
-      transition: all 0.3s ease;
-    }
-
-    .pip.seen { background: var(--electric); }
-
-    /* CHECKPOINT */
-    .checkpoint { padding: 80px 0; text-align: center; }
-    .checkpoint-card { background: white; border: 2px dashed var(--electric); border-radius: var(--radius-lg); padding: 48px 32px; max-width: 640px; margin: 0 auto; }
-    .checkpoint-title { font-family: var(--font-display); font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
-    .checkpoint-title em { font-style: italic; font-weight: 300; color: var(--electric); }
-    .checkpoint-body { font-size: 15px; color: var(--ink-muted); line-height: 1.6; margin-bottom: 28px; }
-    .checkpoint-cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-
-    .chapter-nav-bottom { padding: 40px 0 80px; display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed var(--border-strong); }
-    .chapter-nav-link { display: flex; flex-direction: column; gap: 4px; text-decoration: none; color: inherit; transition: transform 0.3s ease; }
-    .chapter-nav-link:hover { transform: translateX(-4px); }
-    .chapter-nav-link.next { align-items: flex-end; }
-    .chapter-nav-link.next:hover { transform: translateX(4px); }
-    .chapter-nav-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.04em; }
-    .chapter-nav-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
-
-    @media (max-width: 768px) {
-      .anatomy-card { width: 320px; height: 200px; }
-      .anatomy-face { padding: 20px; }
-      
-      /* Front elements */
-      .anatomy-chip { width: 38px; height: 30px; top: 60px; left: 20px; }
-      .anatomy-contactless { width: 28px; height: 28px; top: 50%; right: 20px; transform: translateY(-50%); opacity: 0.75; }
-      .anatomy-hologram { width: 26px; height: 26px; top: 75px; left: 75px; }
-      .anatomy-issuer { top: 20px; right: 20px; font-size: 16px; }
-      .anatomy-number { font-size: 16px; bottom: 50px; left: 20px; }
-      .anatomy-bottom { left: 20px; right: 20px; bottom: 20px; gap: 16px; }
-      .anatomy-name { font-size: 11px; }
-      .anatomy-expiry { font-size: 10px; }
-      .anatomy-network { font-size: 20px; }
-      
-      /* Back elements */
-      .magstripe { top: 20px; height: 50px; }
-      .signature-strip { top: 90px; left: 20px; right: 70px; height: 36px; font-size: 14px; }
-      .cvv-box { top: 90px; right: 20px; width: 44px; height: 36px; font-size: 14px; }
-      
-      /* Detail panel */
-      .detail-panel { padding: 28px 20px; }
-      
-      /* Flip button */
-      .flip-btn { padding: 12px 24px; font-size: 14px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>III. The Anatomy of a Card — Decoding Credit Cards</title>
+<meta name="description" content="Twelve things are printed on that rectangle and each has a job. Tap every part, flip the card over, and find them all.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/03-the-anatomy.html">
+<meta property="og:title" content="III. The Anatomy of a Card — Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.flipwrap { perspective: 1400px; width: min(100%, 440px); margin-inline: auto; }
+.flip { position: relative; aspect-ratio: 1.586; transform-style: preserve-3d; transition: transform .9s var(--ease-out); container-type: inline-size; }
+.flip.flipped { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; border-radius: 4.5% / 7%; backface-visibility: hidden; -webkit-backface-visibility: hidden; color: #fff; font-family: var(--font-mono); background: linear-gradient(135deg, #1e293b, #334155 50%, #1e293b); box-shadow: var(--shadow-lift); overflow: hidden; }
+.face.back { transform: rotateY(180deg); background: linear-gradient(135deg, #334155, #1e293b); }
+.hot { position: absolute; cursor: pointer; border-radius: 6px; outline: 2px dashed rgba(255,255,255,.35); outline-offset: 3px; transition: outline-color .2s, box-shadow .2s, transform .2s; color: inherit; background: none; font: inherit; padding: 0; }
+.hot:hover, .hot:focus-visible { outline-color: #fff; transform: scale(1.04); }
+.hot.on { outline: 2px solid #7aa7ff; box-shadow: 0 0 0 6px rgba(122,167,255,.3); }
+.hot.seen:not(.on) { outline-color: rgba(74,222,128,.7); }
+.p-chip { left: 8%; top: 30%; width: 13%; aspect-ratio: 4/3; background: linear-gradient(135deg, #d4a843, #e0bc5f); }
+.p-nfc { left: 25%; top: 31%; width: 8%; aspect-ratio: 1; }
+.p-issuer { left: 8%; top: 9%; font: 700 5cqw var(--font-body); }
+.p-holo { right: 8%; top: 28%; width: 11%; aspect-ratio: 1; border-radius: 50%; background: conic-gradient(#f0f, #0ff, #ff0, #f0f); opacity: .75; }
+.p-num { left: 8%; top: 56%; font-size: 5.6cqw; letter-spacing: .1em; white-space: nowrap; }
+.p-name { left: 8%; bottom: 9%; font-size: 3.4cqw; letter-spacing: .1em; }
+.p-exp { left: 40%; bottom: 9%; font-size: 3.4cqw; }
+.p-net { right: 8%; bottom: 7%; font: italic 700 7cqw var(--font-body); }
+.p-mag { left: 0; right: 0; top: 11%; height: 19%; background: #0b0b0b; border-radius: 0; outline-offset: -4px; }
+.p-sig { left: 8%; top: 42%; width: 56%; height: 14%; background: repeating-linear-gradient(90deg, #f1f5f9 0 6px, #e2e8f0 6px 12px); color: #1e293b; font: 500 6cqw var(--font-hand); display: grid; place-items: center start; padding-left: 4%; }
+.p-cvv { right: 10%; top: 43%; background: #fff; color: #111; font-size: 4.6cqw; padding: 1.5% 3%; font-style: italic; }
+.p-fine { left: 8%; right: 8%; bottom: 8%; font-size: 2.3cqw; opacity: .7; line-height: 1.5; text-align: left; }
+.pips { display: flex; gap: 5px; flex-wrap: wrap; }
+.pips i { width: 16px; height: 6px; border-radius: 3px; background: var(--parchment); transition: background .3s; } .pips i.on { background: var(--success); }
+</style>
 </head>
-<body>
-  <nav class="site-nav">
-    <a href="../index.html" class="nav-brand">Decoding<em>·</em>Credit Cards <span>※</span></a>
-    <ul class="nav-links">
-      <li><a href="../index.html#chapters">All Chapters</a></li>
-      <li><a href="04-types-of-cards.html">Next →</a></li>
-    </ul>
-  </nav>
+<body data-ch="3">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>The <em>Anatomy</em> of a Card</h1>
+  <p>Twelve things are printed on that rectangle and each has a job. Tap every part, flip the card over, and find them all.</p>
+</header>
 
-  <div class="chapter-shell">
-    <div class="container">
-      <div class="chapter-header">
-        <div class="chapter-header-row">
-          <div class="chapter-roman">Chapter III</div>
-          <div class="chapter-progress-text">3 of 22 · ~5 min</div>
+<section class="sec">
+  <div class="split">
+    <div class="sticky stack" style="--gap:18px">
+      <div class="flipwrap"><div class="flip" id="flip">
+        <div class="face" id="front">
+          <button class="hot p-issuer" data-p="issuer">{issuer}</button>
+          <button class="hot p-chip" data-p="chip" aria-label="Chip"></button>
+          <button class="hot p-nfc" data-p="nfc" aria-label="Contactless symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6a10 10 0 010 12M10 8a6 6 0 010 8M14 10a2.5 2.5 0 010 4"/></svg></button>
+          <button class="hot p-holo" data-p="holo" aria-label="Hologram"></button>
+          <button class="hot p-num" data-p="num">4539 1234 5678 7821</button>
+          <button class="hot p-name" data-p="name">YOUR NAME</button>
+          <button class="hot p-exp" data-p="exp">THRU 12/30</button>
+          <button class="hot p-net" data-p="net">VISA</button>
         </div>
-        <h1 class="chapter-h1">The <em>Anatomy</em> of a Card</h1>
-        <p class="chapter-intro">Tap any part of the card. Learn what each piece does and why it's there. Flip it over to see the back.</p>
-      </div>
-
-      <section class="anatomy-stage">
-        <div class="anatomy-card-wrap">
-          <div class="anatomy-card" id="anatomy-card">
-
-            <!-- FRONT -->
-            <div class="anatomy-face">
-              <!-- CHIP -->
-              <div class="anatomy-chip part-hotspot" data-part="chip" onclick="selectPart('chip')"></div>
-
-              <!-- CONTACTLESS -->
-              <svg class="anatomy-contactless part-hotspot" data-part="contactless" onclick="selectPart('contactless')" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 13a10 10 0 0114 0M8 16a6 6 0 018 0M11 19a2 2 0 012 0"/>
-              </svg>
-
-              <!-- HOLOGRAM CIRCLE -->
-              <div class="anatomy-hologram part-hotspot" data-part="hologram" onclick="selectPart('hologram')"></div>
-
-              <!-- ISSUER (top-right) -->
-              <div class="anatomy-issuer part-hotspot" data-part="issuer" onclick="selectPart('issuer')">
-                HDFC
-                <span class="issuer-cobrand">× SmartBuy</span>
-              </div>
-
-              <!-- NUMBER -->
-              <div class="anatomy-number part-hotspot" data-part="number" onclick="selectPart('number')">4539 1234 5678 7821</div>
-
-              <!-- BOTTOM -->
-              <div class="anatomy-bottom">
-                <div class="anatomy-bottom-left">
-                  <div class="anatomy-name part-hotspot" data-part="name" onclick="selectPart('name')">YOUR NAME</div>
-                  <div class="anatomy-expiry part-hotspot" data-part="expiry" onclick="selectPart('expiry')">VALID THRU 12/29</div>
-                </div>
-                <div class="anatomy-network part-hotspot" data-part="network" onclick="selectPart('network')">VISA</div>
-              </div>
-            </div>
-
-            <!-- BACK -->
-            <div class="anatomy-face back">
-              <div class="magstripe part-hotspot" data-part="magstripe" onclick="selectPart('magstripe')"></div>
-              <div class="signature-strip part-hotspot" data-part="signature" onclick="selectPart('signature')">Your Name</div>
-              <div class="cvv-box part-hotspot" data-part="cvv" onclick="selectPart('cvv')">438</div>
-              <div style="position: absolute; bottom: 32px; left: 32px; right: 32px; font-family: var(--font-mono); font-size: 9px; opacity: 0.5; line-height: 1.4;">Customer Care: 1860-XXX-XXXX · Lost card: 1800-XXX-XXXX · This card is the property of HDFC Bank.</div>
-            </div>
-          </div>
+        <div class="face back" id="backface" inert>
+          <button class="hot p-mag" data-p="mag" aria-label="Magnetic stripe"></button>
+          <button class="hot p-sig" data-p="sig">Your Name</button>
+          <button class="hot p-cvv" data-p="cvv">438</button>
+          <button class="hot p-fine" data-p="fine">Lost or stolen? Call the number shown here, 24 hours. This card remains the property of {issuer}.</button>
         </div>
-
-        <button class="flip-btn" onclick="flipCard()">⟳ flip the card</button>
-
-        <div class="anatomy-progress">
-          <span id="parts-seen">0 of 10 parts explored</span>
-          <div class="progress-pips" id="parts-pips"></div>
-        </div>
-
-        <div class="detail-panel empty" id="detail-panel">
-          tap any part of the card to learn what it does →
-        </div>
-      </section>
-
-      <section class="checkpoint">
-        <div class="checkpoint-card">
-          <div style="font-size: 56px; margin-bottom: 12px;">※</div>
-          <h3 class="checkpoint-title">Now you know <em>every part</em>.</h3>
-          <p class="checkpoint-body">Up next: a sorting game where you'll learn the difference between secured, unsecured, charge, prepaid, and co-branded cards.</p>
-          <div class="checkpoint-cta-row">
-            <a href="../index.html" class="btn btn--ghost">← all chapters</a>
-            <a href="04-types-of-cards.html" class="btn btn--primary btn--lg">Chapter IV: Types of Cards →</a>
-          </div>
-        </div>
-      </section>
-
-      <div class="chapter-nav-bottom">
-        <a href="02-getting-a-card.html" class="chapter-nav-link">
-          <span class="chapter-nav-meta">← Previous</span>
-          <span class="chapter-nav-name">Getting a Card</span>
-        </a>
-        <a href="04-types-of-cards.html" class="chapter-nav-link next">
-          <span class="chapter-nav-meta">Next →</span>
-          <span class="chapter-nav-name">Types of Cards</span>
-        </a>
+      </div></div>
+      <div class="row row--between">
+        <button class="btn btn--outline" id="flipbtn">⟳ flip the card</button>
+        <div><div class="mono faint" id="count" style="margin-bottom:6px">0 of 12 found</div><div class="pips" id="pips"></div></div>
       </div>
     </div>
+    <div class="stage" id="detail" aria-live="polite" style="margin-top:0;min-height:320px"><span class="hand">tap any part of the card →</span></div>
   </div>
+</section>
 
-  <script src="../js/global.js"></script>
-  <script>
-    const PARTS = {
-      chip: {
-        title: 'The <em>EMV chip</em>',
-        tag: 'EuroPay-Mastercard-Visa standard',
-        text: `That gold square on the front is a tiny computer. <strong>Every transaction generates a unique cryptographic code</strong> that can only be used once — even if someone copies it, the code is useless next time. This is why chip cards killed magstripe fraud almost overnight.`,
-        tip: `<strong>Why it matters:</strong> Always insert/tap, never swipe (use magstripe) if you have the choice. Chip transactions are <em>orders of magnitude</em> safer than magnetic stripe.`
-      },
-      contactless: {
-        title: 'The <em>contactless</em> wave',
-        tag: 'NFC · 13.56 MHz',
-        text: `Three curved lines = your card supports tap-to-pay over NFC (Near Field Communication). The card has a tiny antenna inside that wakes up when held near a terminal. <strong>Range is only 4 cm</strong> — close enough to be intentional, far enough to be convenient.`,
-        tip: `<strong>Limit:</strong> In India, contactless transactions above ₹5,000 require PIN entry. Below that, just tap — no PIN. The cap exists to limit fraud exposure if your card is stolen.`
-      },
-      hologram: {
-        title: 'The <em>hologram</em>',
-        tag: 'Anti-counterfeiting feature',
-        text: `That iridescent shape (often a dove on Visa, a globe on Mastercard) is genuinely difficult to forge. It uses <strong>microscopic refraction patterns</strong> that change as you tilt the card. It's there entirely to make your card hard to fake.`,
-        tip: `<strong>Old-school:</strong> Cashiers used to be trained to verify the hologram before approving high-value purchases. Mostly obsolete now thanks to chip authentication, but it remains as a backup verification.`
-      },
-      number: {
-        title: 'The <em>card number</em>',
-        tag: '16 digits · PAN (Primary Account Number)',
-        text: `Not random. The first <strong>6 digits identify the issuing bank</strong> (the BIN — Bank Identification Number). The middle digits identify your specific account. The last digit is a <strong>checksum</strong> calculated using the Luhn algorithm — a rigged formula that lets systems instantly detect typos. Try mistyping a digit on any payment form — it'll reject before the bank even sees it.`,
-        tip: `<strong>Privacy:</strong> The first 6 and last 4 digits are considered safe to share (they're on every receipt). The middle digits are sensitive — never share them publicly.`
-      },
-      name: {
-        title: 'The <em>cardholder name</em>',
-        tag: 'Embossed or laser-printed',
-        text: `Your name as registered with the bank. Originally raised because old "knuckle-buster" machines (think mechanical paper-imprint machines from the 80s) needed embossed letters to make a carbon copy. Modern cards often use flat printing because terminals don't need impressions anymore.`,
-        tip: `<strong>Watch out:</strong> Name mismatches between card and ID can cause issues at airports, hotels, and rentals. Worth getting fixed if your bank has the wrong spelling.`
-      },
-      expiry: {
-        title: 'The <em>expiry date</em>',
-        tag: 'MM/YY format',
-        text: `Cards expire because <strong>cryptographic keys age</strong> — over time, security improves and the encryption on old chips becomes potentially vulnerable. The bank uses expiry as a forced upgrade cycle. They'll issue you a fresh card 30-60 days before expiry, with new chip, new CVV, but usually the same card number.`,
-        tip: `<strong>Heads up:</strong> Update any auto-pay subscriptions when you get a new card — the expiry change will break them. Some banks offer an "automatic update" service to merchants, but don't count on it.`
-      },
-      network: {
-        title: 'The <em>card network</em>',
-        tag: 'Visa / Mastercard / RuPay / AmEx',
-        text: `The network logo identifies which payment rails your card runs on. <strong>Visa</strong> and <strong>Mastercard</strong> dominate globally. <strong>RuPay</strong> is India's domestic network — works seamlessly within India and is rapidly expanding internationally. <strong>American Express</strong> operates its own network and acts as both issuer and network.`,
-        tip: `<strong>Travel tip:</strong> RuPay cards work in India, Singapore, UAE, and a few others — but for most international travel, you want Visa or Mastercard. Always check your card's acceptance before flying.`
-      },
-      issuer: {
-        title: 'The <em>issuer & co-brand</em>',
-        tag: 'Bank logo · sometimes paired with a partner brand',
-        text: `The bank logo (HDFC, ICICI, Axis, SBI, etc.) tells you who actually <strong>issued the card and is lending you the money</strong>. The issuer is who you call when something goes wrong, who reports to credit bureaus, and who decides your limit. <br><br>If there's a <em>second logo</em> next to it — like "HDFC × SmartBuy" or "Axis × Flipkart" or "ICICI × Amazon Pay" — that's a <strong>co-brand partnership</strong>. The bank still issues the card, but the partner brand pays for boosted rewards inside their ecosystem (e.g., 5% on Flipkart for the Axis × Flipkart card). <br><br>The card's behavior changes based on the co-brand: same network, same chip, same security — but radically different reward rates depending on where you spend.`,
-        tip: `<strong>How to read it:</strong> The bigger logo is your issuer (the lender). The smaller/secondary logo is the co-brand partner (the perks engine). Always know who your issuer is — that's the entity with legal claim if you default, and the one you'll be talking to for the next several years.`
-      },
-      magstripe: {
-        title: 'The <em>magnetic stripe</em>',
-        tag: 'Legacy authentication · Track 1 & 2',
-        text: `That black band stores your card data in two magnetic tracks. <strong>It's the oldest, weakest authentication method</strong> still on cards. Easy to clone with cheap "skimmer" devices. Most countries phased it out for in-person use, but it remains as a backup when chip readers fail.`,
-        tip: `<strong>Avoid using it:</strong> If a terminal asks you to swipe instead of insert/tap, that's a yellow flag. Try inserting the chip first. If they insist on swipe, consider it suspicious.`
-      },
-      signature: {
-        title: 'The <em>signature strip</em>',
-        tag: 'Mostly vestigial in 2026',
-        text: `You're meant to sign this strip when you receive the card, then merchants compare it to your signature on receipts. <strong>This is almost completely obsolete</strong> in India and most countries — chip + PIN replaced signature verification years ago. But it's still on the card because regulations haven't fully caught up.`,
-        tip: `<strong>Should you sign it?</strong> Yes, technically. An unsigned card can be rejected at some merchants and is technically not "valid" until signed. Use a permanent marker, not a pen — pens fade off the strip.`
-      },
-      cvv: {
-        title: 'The <em>CVV / CVV2</em>',
-        tag: '3-digit Card Verification Value',
-        text: `Three digits printed (not embossed) on the back. Used for <strong>Card-Not-Present transactions</strong> — online purchases, phone orders. The CVV exists separately from the magnetic stripe data, so a skimmed card alone can't make online purchases without it. <strong>It's actually illegal under PCI-DSS for any merchant to store your CVV</strong> — even temporarily — after authorization.`,
-        tip: `<strong>Critical:</strong> Never share your CVV verbally, never type it into anything that doesn't have HTTPS, and be suspicious of any "support" agent who asks for it. CVV requests are the most common phishing vector.`
-      }
-    };
+<section class="sec">
+  <div class="eyebrow">Where this is heading</div>
+  <h2 class="h2">The card is <em>losing its parts</em>.</h2>
+  <div class="grid" style="--min:240px;margin-top:22px">
+    <div class="panel reveal"><h3 class="h4">Numberless cards</h3><p class="small muted">Newer cards print no number, expiry or code at all — the details live in the app, where they can be hidden, frozen or regenerated.</p></div>
+    <div class="panel reveal" style="--i:1"><h3 class="h4">The stripe retires</h3><p class="small muted">Mastercard stopped requiring the magnetic stripe on new cards in Europe from 2024, the US follows from 2027, and it disappears from all new cards by 2033.</p></div>
+    <div class="panel reveal" style="--i:2"><h3 class="h4">The phone is the card</h3><p class="small muted">Apple Pay and Google Pay never transmit your real number — they send a one-off token. The plastic becomes the backup, not the main event.</p></div>
+  </div>
+</section>
 
-    let isFlipped = false;
-    let activePart = null;
-    let seenParts = new Set();
-
-    function flipCard() {
-      isFlipped = !isFlipped;
-      document.getElementById('anatomy-card').classList.toggle('flipped', isFlipped);
-      DCC.playClick();
-    }
-
-    function selectPart(key) {
-      const part = PARTS[key];
-      if (!part) return;
-      activePart = key;
-      seenParts.add(key);
-
-      document.querySelectorAll('.part-hotspot').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll(`[data-part="${key}"]`).forEach(el => el.classList.add('active'));
-
-      const panel = document.getElementById('detail-panel');
-      panel.classList.remove('empty');
-      panel.innerHTML = `
-        <div class="detail-eyebrow">PART · ${seenParts.size} of 10</div>
-        <div class="detail-title">${part.title}</div>
-        <div class="detail-tag">${part.tag}</div>
-        <div class="detail-text">${part.text}</div>
-        <div class="detail-tip">${part.tip}</div>
-      `;
-
-      // Update progress
-      document.getElementById('parts-seen').textContent = `${seenParts.size} of 10 parts explored`;
-      const pipsEl = document.getElementById('parts-pips');
-      pipsEl.innerHTML = Object.keys(PARTS).map(k => `<div class="pip ${seenParts.has(k) ? 'seen' : ''}"></div>`).join('');
-
-      DCC.playClick();
-      if (seenParts.size === 10) setTimeout(() => DCC.playSuccess(), 200);
-    }
-
-    // Init pips
-    document.getElementById('parts-pips').innerHTML = Object.keys(PARTS).map(() => '<div class="pip"></div>').join('');
-  </script>
+<aside class="checkpoint">
+  <h3>Now you know <em>every part</em>.</h3>
+  <p>And which ones protect you (chip, token, code) versus which are museum pieces (stripe, signature). Next: the different kinds of card.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
+<script src="../js/global.js"></script>
+<script>
+{
+const { $, $$, R, t, pick } = DCC;
+const P = {
+  issuer: ['The <em>issuer</em>', 'The lender', 'The logo top-left is the bank that lends you the money, sets your limit, sends the statement and reports to the credit bureaus. If a second brand sits beside it — an airline, a retailer — that is a <strong>co-brand</strong>: the bank still issues the card, the partner pays for richer rewards inside its own shop.', 'The issuer is who you ring when something goes wrong, and who has the legal claim if you do not pay. Always know who it is.'],
+  chip: ['The <em>EMV chip</em>', 'Europay · Mastercard · Visa standard', 'A tiny computer. For every payment it produces a <strong>one-time cryptogram</strong> that only this chip can generate, so copying the data from one transaction gets a thief nothing. Chip cards are why counterfeit-card fraud collapsed.', 'Insert or tap whenever you can. If a terminal insists on a swipe, treat it as a yellow flag.'],
+  nfc: ['The <em>contactless</em> mark', 'NFC · 13.56 MHz · range about 4 cm', 'Four curved lines mean an antenna runs round the edge of the card. Held near a reader it wakes up and performs the same cryptogram exchange as the chip — no contact, usually no PIN.', pick({
+    in: 'In India a tap works without a PIN up to <strong>₹5,000</strong>; above that you enter it. You can switch contactless on or off, and set your own limit, in the bank app.',
+    us: 'The US has no legal tap limit — the terminal and issuer decide, and many purchases need neither PIN nor signature.',
+    uk: 'The UK limit was £100 for years. Since 19 March 2026 banks may set their own, though most have kept £100. In the eurozone it is typically €50. Phone wallets have no cap because your face or fingerprint is the check.',
+    au: 'A tap needs no PIN up to $100 (some banks $200); New Zealand is typically NZ$200. Above that the terminal asks for it.' })],
+  holo: ['The <em>hologram</em>', 'Anti-counterfeit feature', 'A foil image — a dove on older Visa cards, interlocking globes on Mastercard — whose microscopic ridges shift as you tilt it. It is hard to print and was once the cashier’s way to spot a fake.', 'Now largely decorative: the chip does the authenticating. Many new cards drop it altogether.'],
+  num: ['The <em>card number</em>', 'PAN — primary account number', 'Not random. The first digit is the network (4 Visa, 5 or 2 Mastercard, 3 Amex). The first <strong>6 to 8 digits</strong> are the BIN, identifying the issuer. The last digit is a <strong>checksum</strong> from the Luhn formula — which is how a web form knows you mistyped before any bank is asked.', 'First 6 and last 4 are printed on receipts and are safe to share. Never post the full number.'],
+  name: ['The <em>cardholder name</em>', 'Embossed, printed — or absent', 'Raised lettering dates from the “knuckle-buster” imprinters that pressed your card onto carbon paper. Terminals stopped needing it decades ago, so modern cards print it flat or leave it off.', 'A name that does not match your ID can cause trouble at hotels, car hire desks and airport lounges. Get mistakes fixed.'],
+  exp: ['The <em>expiry date</em>', 'MM/YY', 'Cards expire so that worn plastic and ageing chip keys get replaced, and so a stolen number has a shelf life. The bank posts a new card a month or two early — usually the same number, a new expiry and a new security code.', 'Subscriptions can fail when the expiry changes. Networks run an “account updater” that fixes many automatically, but not all — check the ones that matter.'],
+  net: ['The <em>network</em>', '{networks}', 'The logo bottom-right tells a shop which rails the card runs on. The network does not lend you anything; it connects your bank to the shop’s bank and writes the rules both follow.', pick({
+    in: '<strong>RuPay</strong> is India’s own network, run by NPCI, and RuPay credit cards can be linked to UPI. For travel outside India, Visa or Mastercard still has the widest acceptance. Since 2024 issuers must let you <strong>choose your network</strong> when a card is issued or renewed.',
+    us: 'Visa and Mastercard are accepted almost everywhere. Amex and Discover are both the network <em>and</em> the lender, which is why some small shops and many places abroad do not take them.',
+    uk: 'Visa and Mastercard are near-universal. Amex acceptance is patchier because it costs shops more. In France many cards are co-badged with the domestic Cartes Bancaires network.',
+    au: 'Visa and Mastercard are universal. <strong>eftpos</strong> is the domestic debit network; many debit cards carry both, and “least-cost routing” lets a shop send your tap down the cheaper rail.' })],
+  mag: ['The <em>magnetic stripe</em>', 'Track 1 & 2 · 1960s technology', 'Your card number and expiry stored as static magnetic data. Static means copyable: a skimmer the size of a matchbox reads it in a swipe. It survives only as a fallback for places without chip readers.', 'It is being retired — new cards will stop carrying one over the next few years. You will not miss it.'],
+  sig: ['The <em>signature panel</em>', 'A relic', 'You were meant to sign it so that a cashier could compare signatures. The networks dropped signature checks in 2018 because chip and PIN — and now your phone’s biometrics — do the job far better.', 'Many new cards have no panel at all. Signing it does no harm; relying on it does nothing.'],
+  cvv: ['The <em>security code</em>', 'CVV2 / CVC2 · 3 digits (4 on the front of an Amex)', 'Printed, never embossed, and <strong>not stored on the stripe or chip</strong> — so a skimmed card cannot be used online without it. Card-industry rules (PCI DSS) forbid any merchant from storing it after a payment is authorised, which is why a saved card still asks for it now and then.', 'No genuine bank employee ever needs it. Anyone asking for your code on a call is a criminal. Some apps now show a <strong>dynamic code</strong> that changes every few hours.'],
+  fine: ['The <em>small print</em>', 'The line nobody reads', 'It carries the 24-hour number for lost and stolen cards and one legally important sentence: the card belongs to the issuer, not you. They can cancel or recall it at any time.', pick({
+    in: 'Save that number in your phone today. You can also block the card instantly in the app or by SMS; if money is taken, the cyber-fraud helpline is 1930.',
+    us: 'Save that number in your phone today. Every issuer also offers an instant lock in the app — use that first, then call.',
+    uk: 'Save that number in your phone. In the UK you can also dial <strong>159</strong> to reach your bank’s genuine fraud line through a trusted switchboard.',
+    au: 'Save that number in your phone. Every major bank offers an instant lock in the app — use that first, then call.' })]
+};
+const keys = Object.keys(P), seen = new Set();
+$('#pips').innerHTML = keys.map(() => '<i></i>').join('');
+function show(k) {
+  const [title, tag, text, tip] = P[k]; seen.add(k);
+  $$('.hot').forEach(h => { h.classList.toggle('on', h.dataset.p === k); if (seen.has(h.dataset.p)) h.classList.add('seen'); });
+  $('#detail').innerHTML = t(`<div class="eyebrow c-accent">Part ${keys.indexOf(k) + 1} of ${keys.length}</div><h2 class="h3">${title}</h2><div class="chip" style="margin-block:10px 14px">${tag}</div><p>${text}</p><div class="callout" style="margin-top:18px"><b>Worth knowing</b>${tip}</div>`);
+  $('#count').textContent = `${seen.size} of ${keys.length} found`;
+  $$('#pips i').forEach((p, i) => p.classList.toggle('on', seen.has(keys[i])));
+  if (seen.size === keys.length && !show.won) { show.won = true; DCC.playSuccess(); DCC.burstConfetti(); DCC.markDone(); } else DCC.playClick();
+  if (matchMedia('(max-width: 899px)').matches) $('#detail').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+$('#flip').addEventListener('click', e => { const h = e.target.closest('.hot'); if (h) show(h.dataset.p); });
+let flipped = false;
+$('#flipbtn').onclick = () => { flipped = !flipped; $('#flip').classList.toggle('flipped', flipped); $('#front').inert = flipped; $('#backface').inert = !flipped; DCC.playClick(); };
+}
+</script>
 </body>
 </html>
