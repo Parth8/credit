@@ -1,12 +1,36 @@
 # Decoding Credit Cards
 
-A free, interactive 31-chapter guide to credit cards — built for the mobile-native generation, in four regional editions.
+A free, open encyclopedia of cards and payments that you learn by doing.
 
-Every chapter is an interaction. No reading-and-scrolling. Tap, drag, simulate, decide.
+Hands-on **labs** you play, plain-language **guides** you read, a **glossary**, and **learning tracks** that combine them:
+from using a card well, to how issuers, networks, acquirers, fraud engines and bank rails such as ACH, UPI, SEPA and SWIFT
+actually work. Every page is tailored to India, the USA, UK and Europe, or Australia and New Zealand.
 
-## What's inside
+**Live:** https://parth8.github.io/credit/
 
-31 interactive chapters in two parts — how to use a card, and how the industry behind it works — in four regional editions.
+## Learning tracks
+
+| Track | For |
+|---|---|
+| Use a card well | Anyone with a card, or about to get one |
+| Credit and borrowing | How lenders judge you, and how debt behaves |
+| Every kind of card | Credit, debit, prepaid, charge, commercial |
+| Card payments, the full stack | Product, engineering and operations people |
+| Issuing and issuer processing | Building or running a card programme |
+| Acquiring and merchant payments | Accepting payments online or in a shop |
+| Bank payments: ACH to UPI | Everything that moves money without a card |
+| Fraud, risk and compliance | KYC, AML, sanctions, PCI DSS, fraud engines |
+| Banking and fintech architecture | Ledgers, core banking, BIAN, open banking, BaaS, stablecoins |
+
+## The library
+
+54 guides across eight shelves: cards and credit, networks and schemes, issuing, acquiring and merchants,
+bank payment rails, fraud risk and compliance, banking architecture, and what comes next. Browse or search at
+`library.html`; the glossary is at `glossary.html`.
+
+## The labs
+
+31 interactive chapters in two parts , how to use a card, and how the industry behind it works , in four regional editions.
 Pick **India, USA, UK & Europe, or Australia & NZ** and every amount, example, law, regulator
 and scam on the site switches to that market.
 
@@ -35,7 +59,7 @@ and scam on the site switches to that market.
 | XXI | What's Coming Next | Set guardrails for an AI shopping agent |
 | XXII | Graduation | Twelve questions and a printable diploma |
 
-**Part II · Inside the machine** — how the payments industry works
+**Part II · Inside the machine** , how the payments industry works
 
 | # | Chapter | What you do |
 |---|---------|-------------|
@@ -51,10 +75,10 @@ and scam on the site switches to that market.
 
 ## Stack
 
-- **Pure HTML/CSS/JS** — no build step, no frameworks, no dependencies
+- **Pure HTML/CSS/JS** , no build step, no frameworks, no dependencies
 - **Hosted on GitHub Pages**
-- **Mobile-first** — designed for phones, adapts to tablets and laptops
-- **Private** — progress and region are stored in your browser only; nothing is sent anywhere
+- **Mobile-first** , designed for phones, adapts to tablets and laptops
+- **Private** , progress and region are stored in your browser only; nothing is sent anywhere
 
 ## Deploy to GitHub Pages
 
@@ -90,10 +114,10 @@ For a custom domain, add a `CNAME` file containing your domain at the repo root.
 
 ## Updating content
 
-- **A rate, fee, threshold or institution name** — edit `js/regions.js`. Bump `asOf` after re-checking.
-- **A chapter title or description** — edit the `CH` list in `js/global.js`.
-- **Copy that differs by region** — use `DCC.pick({ in, us, uk, au })` in the chapter script, or `{tokens}` in the HTML.
-- **Accent colour** — `--electric` in `css/global.css`.
+- **A rate, fee, threshold or institution name** , edit `js/regions.js`. Bump `asOf` after re-checking.
+- **A chapter title or description** , edit the `CH` list in `js/global.js`.
+- **Copy that differs by region** , use `DCC.pick({ in, us, uk, au })` in the chapter script, or `{tokens}` in the HTML.
+- **Accent colour** , `--electric` in `css/global.css`.
 - Link straight to an edition with `?r=in`, `?r=us`, `?r=uk` or `?r=au`.
 
 ## Design system
@@ -102,6 +126,6 @@ Warm editorial zine: cream paper, one electric-blue accent, Fraunces / Instrumen
 
 ## Credits
 
-Built by [Parth](https://parth8.github.io/portfolio/) for anyone who wants to actually understand how their card works — not just have one.
+Built by [Parth](https://parth8.github.io/portfolio/) for anyone who wants to actually understand how their card works , not just have one.
 
 General education, not financial advice. Made with care, coffee, and Claude. Free to use, fork, and remix.

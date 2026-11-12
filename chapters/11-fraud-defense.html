@@ -73,7 +73,7 @@ const { $, $$, R, rid, t, pick, store } = DCC;
 const twoFA = pick({
   in: ['Two-factor authentication', 'RBI requires a second factor on almost every online card payment in India. Since April 2026 banks may use app approval, biometrics or passkeys as well as SMS OTP.'],
   us: ['3-D Secure and address checks', 'The US has no legal two-factor requirement. Merchants lean on the security code, the address verification service (AVS) and optional 3-D Secure challenges.'],
-  uk: ['Strong customer authentication', 'UK and EU law require two of: something you know, have, or are, usually an approval in your banking app, for most online payments.'],
+  uk: ['Strong customer authentication', 'UK and EU law require two of three things (something you know, have or are), usually an approval in your banking app, for most online payments.'],
   au: ['3-D Secure challenges', 'Australian issuers challenge riskier online payments with an app approval or code, under an industry framework rather than a blanket law.'] });
 const L = [
   ['🔒', 'EMV chip', 'A fresh cryptogram for every payment; copied data cannot be replayed.'],

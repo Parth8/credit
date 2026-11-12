@@ -166,7 +166,7 @@
       if (p < 1) requestAnimationFrame(tick);
     })(s);
   }
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } }), { threshold: .12 });
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } }), { threshold: 0, rootMargin: '0px 0px -10% 0px' });
   const observe = (root = document) => $$('.reveal:not(.visible)', root).forEach(el => io.observe(el));
   // slider fill + card tilt, delegated so injected markup works too
   const fill = el => el.style.setProperty('--fill', ((el.value - el.min) / (el.max - el.min) * 100) + '%');

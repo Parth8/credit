@@ -139,7 +139,7 @@ const SC = [
     body: pick({
       in: call('Unknown number', ['<b>Your cousin’s voice, crying:</b> “I’ve had an accident, I’m at the hospital and they will not admit me without a deposit. Please send ₹40,000 to this UPI ID right now. Don’t tell mum.”']),
       us: call('Unknown number', ['<b>Your daughter’s voice, crying:</b> “Mom, I’ve been in an accident, they’re holding me. I need $2,000 for bail right now. Please don’t tell Dad.”', '<b>A man:</b> “Ma’am, I’m her attorney. You can pay by wire or gift cards.”']),
-      uk: sms('+44 7XXX 482910', 'Hi Mum, I dropped my phone down the loo 🙈 this is my new number. Can you do me a favour? I need to pay a bill today and my banking app isn’t set up yet: could you send £1,450? I’ll pay you back tomorrow x'),
+      uk: sms('+44 7XXX 482910', 'Hi Mum, I dropped my phone down the loo 🙈 this is my new number. Can you do me a favour? I need to pay a bill today and my banking app isn’t set up yet. Could you send £1,450? I’ll pay you back tomorrow x'),
       au: sms('+61 4XX 482 910', 'Hi Mum, I dropped my phone in the sink 🙈 this is my new number. Can you help? I need to pay a bill today and my banking isn’t set up on this phone: can you transfer $2,400? Will pay you back tomorrow x') }),
     opts: ['Send it, the voice or wording is unmistakably theirs', 'Hang up and call them on the number you already have', 'Ask for more details about what happened', 'Send half now and half when you have heard more'], ok: 1,
     explain: 'A few seconds of audio from social media is enough to clone a voice, and “new number” messages need no technology at all. The only defence is to break the channel: call the person back on the number you have always had. Agree a family code word for emergencies.',

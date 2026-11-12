@@ -6,11 +6,11 @@
   <meta name="format-detection" content="telephone=no">
   <meta name="theme-color" content="#F7F3ED">
   <title>Decoding Credit Cards | An interactive guide</title>
-  <meta name="description" content="Learn credit cards by playing with them. 31 interactive chapters in two parts, how to use a card, and how the payments industry works, tailored to India, the USA, UK &amp; Europe, and Australia &amp; NZ. Free forever. No card recommendations.">
+  <meta name="description" content="A free, open encyclopedia of cards and payments you learn by doing: interactive labs, plain-language guides and learning tracks, from using a card well to how issuers, networks, acquirers and bank rails work, tailored to India, the USA, UK &amp; Europe, and Australia &amp; NZ. Free forever. No card recommendations.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://parth8.github.io/credit/">
   <meta property="og:title" content="Decoding Credit Cards | An interactive guide">
-  <meta property="og:description" content="Learn credit cards by playing with them. 31 chapters. Free forever. No affiliate links.">
+  <meta property="og:description" content="A free, open encyclopedia of cards and payments you learn by doing. Labs, guides and learning tracks. No affiliate links.">
   <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <script>document.documentElement.className = 'js'</script>
@@ -53,6 +53,14 @@
     .trust b { display: block; font: 700 var(--step-2)/1 var(--font-display); }
     .trust span { font: 400 var(--step--1) var(--font-mono); color: var(--ink-faint); }
 
+    .paths { padding-block: clamp(48px, 8vw, 100px) 0; }
+    .tgrid { --min: 290px; }
+    .tcard { display: flex; flex-direction: column; gap: 8px; padding: 20px; background: var(--white); border: 1.5px solid var(--border-strong); border-radius: var(--r-lg); color: inherit; text-decoration: none; transition: transform .3s var(--ease-out), border-color .2s, box-shadow .3s; }
+    .tcard:hover { transform: translateY(-4px); border-color: var(--electric); box-shadow: var(--shadow-lift); }
+    .tcard .ic { font-size: 1.8rem; } .tcard b { font: 700 var(--step-1)/1.2 var(--font-display); } .tcard small { color: var(--ink-muted); font-size: .9rem; line-height: 1.45; flex: 1; } .tcard .mono { color: var(--ink-faint); font-size: .7rem; }
+    .libbox { display: grid; gap: 12px; align-items: center; background: var(--white); border: 1px solid var(--border-strong); border-radius: var(--r-lg); padding: 18px 20px; margin-bottom: 22px; }
+    .libbox b { font: 700 var(--step-1) var(--font-display); margin-right: 6px; }
+    @media (min-width: 900px) { .libbox { grid-template-columns: 1fr 1.1fr; } }
     .why { padding-block: clamp(56px, 9vw, 120px); }
     .why .stack { --gap: 18px; font-size: var(--step-1); line-height: 1.6; color: var(--ink-muted); }
     .why strong { color: var(--ink); }
@@ -104,13 +112,13 @@
     <div class="wrap">
       <div class="hero-grid">
         <div class="hero-copy">
-          <div class="chip is-accent live" style="--i:0">An interactive guide · 31 chapters · 4 regions</div>
-          <h1 style="--i:1">Credit cards,<br><em>finally</em> explained.</h1>
+          <div class="chip is-accent live" style="--i:0" id="hero-chip">A free, open encyclopedia of cards and payments</div>
+          <h1 style="--i:1">Cards and payments,<br><em>finally</em> explained.</h1>
           <div class="hand" style="--i:2">by playing with one →</div>
-          <p class="lede" style="--i:3">Most credit card guides are written for people who already understand them. This one is built for everyone else. <strong>You learn by tapping cards, dragging sliders and making the decisions yourself</strong>, then seeing what they cost.</p>
+          <p class="lede" style="--i:3">How to use a card without paying for everyone else’s rewards. And how the whole machine works: issuers, networks, acquirers, fraud engines, UPI, ACH, SWIFT. Knowledge the industry kept to itself, <strong>learned by tapping, dragging and deciding</strong>, then explained in plain language.</p>
           <div class="row" style="--i:4">
             <a id="cta" href="chapters/01-the-handshake.html" class="btn btn--primary btn--lg">Start Chapter I →</a>
-            <a href="#why" class="btn btn--ghost">Why this exists</a>
+            <a href="#paths" class="btn btn--outline btn--lg">Choose a learning path</a>
           </div>
           <div class="edition" style="--i:5">
             <div class="eyebrow">Teach me how it works in</div>
@@ -125,13 +133,19 @@
           <div class="deck-pill" id="pill" role="status"></div>
         </div>
       </div>
-      <div class="trust grid" style="--i:6">
-        <div><b>31</b><span>chapters in two parts</span></div>
-        <div><b>4</b><span>regional editions</span></div>
-        <div><b>0</b><span>card recommendations</span></div>
-        <div><b>0</b><span>affiliate links, ever</span></div>
-        <div><b>∞</b><span>free, forever</span></div>
+      <div class="trust grid" style="--i:6" id="trust"></div>
+    </div>
+  </section>
+
+  <section class="paths" id="paths">
+    <div class="wrap">
+      <div class="chapters-head">
+        <div><div class="eyebrow">Learning tracks</div><h2 class="h2">Pick a path. <em>Skip what you know.</em></h2></div>
+        <p class="lede" style="max-width:40ch;margin:0">Each track is an ordered mix of hands-on labs and short guides. Do one in an afternoon, or work through the whole stack.</p>
       </div>
+      <div id="resume"></div>
+      <div class="grid tgrid" id="tracks"></div>
+      <div class="row" style="margin-top:22px"><a class="btn btn--ghost" href="tracks.html">All tracks, with full step lists →</a></div>
     </div>
   </section>
 
@@ -144,13 +158,13 @@
         </div>
         <div class="stack reveal" style="--i:1">
           <p>Search “credit cards explained” and you find creators recommending which card to sign up for, blogs full of affiliate links, and bank pages written like legal documents.</p>
-          <p>What I wanted was simple, <strong>just tell me how the thing actually works</strong>. Who gets paid. What each fee is. What “utilisation” really means. Why minimum payments are a trap.</p>
+          <p>What I wanted was simple: <strong>just tell me how the thing actually works</strong>. Who gets paid. What each fee is. What “utilisation” really means. Why minimum payments are a trap.</p>
           <p>So I figured it out, wrote it down, and turned it into this.</p>
           <div class="quote">“If you understand the mechanics, you stop being the one who pays for everyone else’s rewards.”</div>
         </div>
       </div>
       <div class="how grid">
-        <div class="panel reveal"><div class="n">i.</div><h3 class="h4">Do, then read</h3><p class="small muted">Every chapter opens with something to tap, drag or decide. The explanation comes after you have seen the result.</p></div>
+        <div class="panel reveal"><div class="n">i.</div><h3 class="h4">Labs, then guides</h3><p class="small muted">Labs are things you do: tap, drag, decide, and see the result. Guides are short, plain-language reading with a quick check at the end. Every track mixes both.</p></div>
         <div class="panel reveal" style="--i:1"><div class="n">ii.</div><h3 class="h4">Your country’s rules</h3><p class="small muted">A late fee in Mumbai, Miami, Manchester and Melbourne are four different things. Pick an edition and every number, law and example changes.</p></div>
         <div class="panel reveal" style="--i:2"><div class="n">iii.</div><h3 class="h4">It remembers you</h3><p class="small muted">Progress is saved on this device only: nothing is sent anywhere. Come back and pick up where you stopped.</p></div>
       </div>
@@ -160,9 +174,10 @@
   <section class="chapters" id="chapters">
     <div class="wrap">
       <div class="chapters-head">
-        <div><div class="eyebrow">The full curriculum</div><h2 class="h2">Two parts. <em>Thirty-one chapters.</em></h2></div>
-        <div class="journey"><div class="mono faint" id="journey-text">0 of 22 complete</div><div class="meter"><i id="journey-bar"></i></div></div>
+        <div><div class="eyebrow">The labs</div><h2 class="h2">Thirty-one labs. <em>Two parts.</em></h2></div>
+        <div class="journey"><div class="mono faint" id="journey-text"></div><div class="meter"><i id="journey-bar"></i></div></div>
       </div>
+      <form class="libbox" action="library.html" role="search"><div><b>📚 The library</b><span class="small muted" id="lib-count"></span></div><input class="search" name="q" type="search" placeholder="Search everything: interchange, UPI, BIAN…" aria-label="Search the library"></form>
       <div class="list reveal" id="list"></div>
     </div>
   </section>
@@ -196,7 +211,21 @@
   $('#journey-text').textContent = `${done} of ${chapters.length} complete`;
   setTimeout(() => $('#journey-bar').style.width = (done / chapters.length * 100) + '%', 400);
   if (done && next) { const a = $('#cta'); a.href = DCC.href(next); a.textContent = `Continue · Chapter ${next.roman} →`; }
-  else if (done && !next) { const a = $('#cta'); a.href = '#chapters'; a.textContent = `All ${chapters.length} complete ✓: revisit`; }
+  else if (done && !next) { const a = $('#cta'); a.href = '#chapters'; a.textContent = `All ${chapters.length} labs complete ✓`; }
+
+  // counts, tracks, resume
+  const items = DCC.allItems(), labs = items.filter(i => i.type === 'lab').length, guides = items.length - labs;
+  $('#hero-chip').textContent = `A free, open encyclopedia of cards and payments · ${labs} labs · ${guides} guides`;
+  $('#trust').innerHTML = [[labs, 'hands-on labs'], [guides, 'plain-language guides'], [Object.keys(DCC.catalog.tracks).length, 'learning tracks'], [Object.keys(regions).length, 'regional editions'], [0, 'affiliate links, ever']].map(([n, l]) => `<div><b>${n}</b><span>${l}</span></div>`).join('');
+  $('#lib-count').textContent = ` ${labs} labs and ${guides} guides across ${Object.keys(DCC.catalog.domains).length} subjects, plus a glossary.`;
+  const tr = Object.keys(DCC.catalog.tracks).map(DCC.track);
+  $('#tracks').innerHTML = tr.map((x, i) => { const d = x.items.filter(it => DCC.itemDone(it.id)).length, mins = x.items.reduce((a, it) => a + it.mins, 0);
+    return `<a class="tcard reveal" style="--i:${i % 3}" href="tracks.html?t=${x.id}"><span class="ic">${x.icon}</span><b>${x.title}</b><small>${x.who}</small><div class="meter"><i style="width:${d / x.items.length * 100}%"></i></div><span class="mono">${x.items.length} steps · ~${Math.round(mins / 6) / 10} h${d ? ' · ' + d + ' done' : ''}</span></a>`; }).join('');
+  const active = DCC.track(DCC.store.get('track', null));
+  if (active) { const nx = active.items.find(it => !DCC.itemDone(it.id));
+    $('#resume').innerHTML = `<div class="track-next" style="margin:0 0 22px"><div><span class="mono">${active.icon} YOUR TRACK · ${active.title.toUpperCase()}</span><div class="meter"><i style="width:${active.items.filter(it => DCC.itemDone(it.id)).length / active.items.length * 100}%"></i></div></div><div class="row">${nx ? `<a class="btn btn--primary" href="${nx.href}">Continue: ${nx.title} →</a>` : `<a class="btn btn--primary" href="tracks.html?t=${active.id}">Track complete ✓</a>`}</div></div>`;
+    if (nx) { const a = $('#cta'); a.href = nx.href; a.textContent = `Continue your track →`; } }
+  DCC.observe();
 
   // hero demo: tap the card, get an approval
   const demo = $('#demo'), pill = $('#pill');

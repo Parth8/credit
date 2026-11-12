@@ -1,28 +1,68 @@
-# Decoding Credit Cards — working memory
+# Decoding Credit Cards: working memory
 
 Free, interactive guide to credit cards. Live at https://parth8.github.io/credit/ (GitHub Pages, `main`, repo root).
-Author: Parth. Principle: **learning by doing** — every chapter is an interaction, not an article.
+Author: Parth. Principle: **learning by doing**: every chapter is an interaction, not an article.
 Promise on the landing page: no affiliate links, no card recommendations, no tracking, free forever. Keep it true:
-name institutions (issuers, networks, regulators, merchants) but **do not recommend card products** — use archetypes
+name institutions (issuers, networks, regulators, merchants) but **do not recommend card products**: use archetypes
 ("a 5% marketplace co-brand card").
 
 ## Stack and constraints
 
 - Pure static HTML/CSS/JS. No build step, no framework, no dependencies. Google Fonts is the only external request.
-- Must keep working from GitHub Pages under `/credit/` — relative paths only.
+- Must keep working from GitHub Pages under `/credit/`: relative paths only.
 - No test suite. Verify by serving the folder (`python3 -m http.server`) and driving it with Playwright
   at phone (360–390), tablet (820) and laptop (1280+) widths, in each region (`?r=in|us|uk|au`).
   Check: no page errors, `scrollWidth == clientWidth`, no `{token}` or `undefined` left in `main`, `body.ready` set.
-- State is `localStorage` only, keys prefixed `dcc.`: `region`, `done` (chapter numbers), `mute`, `switches`,
-  `audit`, `pledge`, `name`. Nothing leaves the device.
+- State is `localStorage` only, keys prefixed `dcc.`: `region`, `done` (lab numbers), `read` (guide ids), `track`,
+  `mute`, `switches`, `audit`, `pledge`, `name`. Nothing leaves the device.
+- Test scripts used so far: a sweep of every page per region and width (errors, overflow, raw tokens), a guide
+  checker that renders all 54 guides in 4 regions and validates every track, `see` and glossary link, and a
+  track walk-through. Recreate them with Playwright if the scratchpad is gone.
+
+## Information architecture (Nov 2026)
+
+The site is an open, gamified encyclopedia of cards and payments. Three content types, one catalog:
+
+- **Labs** (`chapters/NN-slug.html`, 31): interactive chapters. Things you *do*. Registered in `CH` in `js/global.js`.
+- **Guides** (`read.html?e=<id>`, 54): plain-language reading with a brief, sections, optional animated flow, quick
+  reference, regional note, common mistakes and a 2-question check. Things you *read*. Bodies in `kb/<domain>.js`.
+- **Glossary** (`glossary.html`, ~170 terms in `kb/glossary.js`), each term linked to its lab or guide.
+
+`js/catalog.js` (`window.DCC_CATALOG`) is the single source for the IA:
+`domains` (8 library shelves), `labDomain` (chapter to shelf), `guides` (id to title, domain, minutes, summary) and
+`tracks` (id to icon, title, audience, ordered item ids; labs are `ch<N>`). Pages:
+`index.html` (hero, tracks, why, labs list and library search) · `tracks.html` (all tracks, or `?t=<id>`) ·
+`library.html` (search and filters, `?d=<domain>`, `?q=`) · `read.html?e=<id>` · `glossary.html?q=`.
+Starting a track stores `dcc.track`; labs and guides then show a "next in track" bar (`DCC.trackNav`).
+Balance rule: every track mixes labs (games) and guides (reading); keep roughly one lab to one or two guides.
+
+### Guide schema (kb/<domain>.js)
+
+```js
+Object.assign(window.DCC_KB = window.DCC_KB || {}, { 'guide-id': {
+  brief: ['three one-line takeaways'],
+  sec: [['Heading', '<p>html</p>'], ...],            // required; {tokens} work, DCC is available at load
+  flow: { nodes: [[icon, name, role]], steps: [[from, to, tag, kind, title, body]] },  // optional, DCC.flow
+  facts: [['label', 'value']],                       // optional quick reference
+  reg: 'text' | { in, us, uk, au },                  // optional regional callout
+  myth: [['the myth', 'the truth']],                 // optional
+  quiz: [['question', ['correct first', 'wrong', ...], 'explanation']],  // options are shuffled
+  see: ['ids of labs (chN) or guides']               // "keep going" links
+}});
+```
+Wrap a file in `(() => { const { R, pick, money } = DCC; ... })();` when it computes regional values.
+Adding a guide means a catalog entry plus a body in the domain file; then run the link check below.
 
 ## Layout
 
 ```
 index.html              landing: hero + edition picker, why, chapter list (rendered from the registry), manifesto
 css/global.css          design system v3: tokens, layout utilities, shared components, chapter shell, motion
-js/regions.js           window.DCC_REGIONS — every fact, name and amount that differs by geography
-js/global.js            engine, window.DCC — region lens, progress, page chrome, effects, quiz runner
+js/regions.js           window.DCC_REGIONS: every fact, name and amount that differs by geography
+js/global.js            engine, window.DCC: region lens, progress, catalog helpers, page chrome, effects, quiz, flow
+js/catalog.js           window.DCC_CATALOG: domains, guide index cards, learning tracks
+kb/<domain>.js          guide bodies (cards, networks, issuing, acquiring, rails, risk, banking, future) + glossary.js
+read.html, library.html, tracks.html, glossary.html   reading and navigation pages
 chapters/NN-slug.html   31 chapters in two parts: shared <head>, a small <style> for unique visuals, markup, one inline <script>
 og-image.png / .svg     social card
 ```
@@ -43,21 +83,21 @@ og-image.png / .svg     social card
 `global.js` injects everything else from `data-ch`: nav (region chip, sound toggle, chapter drawer), the
 "Chapter V · 5 of 31" line, checkpoint icon and next-chapter button, prev/next footer, the phone thumb bar and
 the site footer. Never hand-write those. Chapter titles, blurbs and minutes live in the `CH` registry in `global.js`
-— adding or renaming a chapter means editing that list (and `<title>`), nothing else.
+- adding or renaming a chapter means editing that list (and `<title>`), nothing else.
 
 Chapter scripts are wrapped in `{ }` on purpose: they are classic scripts, and top-level `const top`, `name`, etc.
 collide with window globals.
 
 ### Region API (the thing to know)
 
-- `DCC.R` — current region object; `DCC.rid` — `'in' | 'us' | 'uk' | 'au'`.
+- `DCC.R`: current region object; `DCC.rid`: `'in' | 'us' | 'uk' | 'au'`.
 - `{token}` in static HTML is replaced at load: `{issuer}`, `{network}`, `{merchant}`, `{apr}`… any key of `R`;
   `{$key}` formats an amount from `R.a` (`{$debt}`, `{$meal}`, `{$phone}`).
 - `DCC.t(str)` does the same for strings built in JS. `DCC.money(n, withDecimals)` formats in the region's locale.
 - `DCC.pick({ in, us, uk, au })` returns the current region's value. Missing key: UK/AU fall back to `us`, then `in`.
 - `data-r="in"` on an element keeps it only in those regions (space-separated list).
 - Region resolution: `?r=` → saved choice → timezone guess (with a one-time "change" toast).
-- Do not put `data-region` on anything except the picker buttons — the click handler keys off it.
+- Do not put `data-region` on anything except the picker buttons: the click handler keys off it.
 
 ### Shared components (css/global.css)
 
@@ -129,7 +169,7 @@ Honours `prefers-reduced-motion`; all controls are real buttons with focus rings
 | 30 | 30-chargeback-machine | dispute flow; play the merchant through alert → chargeback → pre-arb → arbitration | fees, legal overlay |
 | 31 | 31-issuer-economics | per-account P&L with 5 customer presets; days-past-due slider; issuer stack | interchange, cost of funds, collections timeline |
 
-## History — what the May 2026 original got wrong (do not reintroduce)
+## History: what the May 2026 original got wrong (do not reintroduce)
 
 - UI: single 768px breakpoint, nav hidden on phones, fixed pixel widths, `overflow-x:hidden` breaking sticky,
   shell CSS duplicated in 22 files, no progress memory, clickable divs, no mute, custom cursor hiding the real one.
@@ -141,7 +181,7 @@ Honours `prefers-reduced-motion`; all controls are real buttons with focus rings
 - Score chapter showed FICO bands and weights as CIBIL.
 - Simulators must be tuned so the lesson is reachable: check best/worst paths by script (the fraud game shipped
   first with rules that could never beat the plain threshold).
-- Named card products with wrong or stale details. No product names — archetypes only.
+- Named card products with wrong or stale details. No product names: archetypes only.
 - "Storing CVV is illegal under PCI DSS": it is an industry standard, not law. BINs are 6–8 digits.
 - Apple Pay India launched 30 Sep 2026 (Axis credit cards first), not 2025. Agentic checkout is live, not "10+ years".
 
@@ -177,7 +217,9 @@ and the site should say "as of" where a figure is time-sensitive.
 
 ## Working agreements
 
-- Branch for this work: `claude/gifted-brown-c28xk1`. No PR unless asked.
+- Branch for this work: `claude/gifted-brown-c28xk1`, fast-forwarded into `main` after each verified batch. No PR unless asked.
 - Order agreed with Parth: (1) redesign and responsive behaviour, (2) content accuracy + regions, (3) code optimisation last.
 - Site copy uses British spelling in shared text (authorisation, utilisation); keep it consistent.
+- **No em dashes** in site copy (Parth's rule, Nov 2026). Use commas, colons or full stops; en dashes only for ranges.
+- Parth has authorised pushing and fast-forwarding `main` directly for this work (Nov 2026).
 - Time-sensitive facts carry `asOf` in `regions.js` and the footer shows it. Re-verify figures before bumping the date.
