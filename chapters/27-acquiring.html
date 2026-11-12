@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>XXVII. The Acquiring Stack — Decoding Credit Cards</title>
+<title>XXVII. The Acquiring Stack | Decoding Credit Cards</title>
 <meta name="description" content="“The acquirer” in chapter I is really a stack of companies: a checkout, a gateway, a processor, a licensed bank. Set up payments for three different businesses and see how the pieces get bundled.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/27-acquiring.html">
-<meta property="og:title" content="XXVII. The Acquiring Stack — Decoding Credit Cards">
+<meta property="og:title" content="XXVII. The Acquiring Stack | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -79,10 +79,11 @@
 
 <aside class="checkpoint" data-icon="🧱">
   <h3>You can draw the <em>merchant side</em>.</h3>
-  <p>One job list, bundled a dozen different ways. Next: what happens to the card number itself on the way through — tokens, wallets and 3-D Secure.</p>
+  <p>One job list, bundled a dozen different ways. Next: what happens to the card number itself on the way through, tokens, wallets and 3-D Secure.</p>
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
@@ -90,17 +91,17 @@ const { $, $$, R, rid, money, t, pick } = DCC;
 const PF = pick({ in: 'Razorpay / PhonePe', us: 'Square / Stripe', uk: 'SumUp / Stripe', au: 'Square / Tyro' }), ACQ = pick({ in: 'Axis / HDFC acquiring', us: 'Chase / Fiserv', uk: 'Worldpay / Barclaycard Payments', au: 'NAB / CommBank acquiring' });
 const JOBS = [['🖥️', 'Checkout / terminal', 'Captures the card details'], ['🚪', 'Gateway', 'Encrypts, tokenises and routes the request'], ['⚙️', 'Processor', 'Speaks ISO 8583 to the networks, runs clearing files'], ['🏦', 'Acquirer', 'Holds the network licence, carries the risk, pays the merchant'], ['🧾', 'Merchant account', 'The identity (MID) the money is settled under']];
 const MODELS = [
-  { name: 'All-in-one', who: [PF, PF, PF, PF + '’s partner bank', 'Shared — you are a sub-merchant'], cls: 'one', cmp: [['Live in', 'Minutes'], ['Pricing', 'Flat rate, highest'], ['Control', 'Low'], ['Risk of sudden freeze', 'Higher']],
-    d: 'A <strong>payment facilitator</strong> (or payment aggregator) signs you up under its own master merchant account. One contract, one dashboard, one flat price. In exchange it underwrites you lightly — and can hold funds or close you just as quickly if something looks wrong.' },
+  { name: 'All-in-one', who: [PF, PF, PF, PF + '’s partner bank', 'Shared: you are a sub-merchant'], cls: 'one', cmp: [['Live in', 'Minutes'], ['Pricing', 'Flat rate, highest'], ['Control', 'Low'], ['Risk of sudden freeze', 'Higher']],
+    d: 'A <strong>payment facilitator</strong> (or payment aggregator) signs you up under its own master merchant account. One contract, one dashboard, one flat price. In exchange it underwrites you lightly, and can hold funds or close you just as quickly if something looks wrong.' },
   { name: 'Merchant account', who: ['Your choice', 'Gateway provider', ACQ, ACQ, 'Your own MID'], cls: 'own', cmp: [['Live in', 'Days to weeks'], ['Pricing', 'Interchange++, lower'], ['Control', 'Medium'], ['Risk of sudden freeze', 'Lower']],
     d: 'You are underwritten properly and get your <strong>own merchant ID</strong> with an acquirer, often sold through a reseller. Cheaper per transaction once volume justifies the paperwork, and your relationship is with the bank that actually holds the licence.' },
   { name: 'Multi-acquirer', who: ['Your own build', 'Orchestration layer', 'Several, by region', 'Several, by region', 'MIDs in each market'], cls: 'own', cmp: [['Live in', 'Months'], ['Pricing', 'Negotiated, lowest'], ['Control', 'High'], ['Risk of sudden freeze', 'Spread']],
-    d: 'Large merchants connect to several acquirers and route each payment to whichever will approve it most cheaply — local acquiring in each country, automatic retry on a second acquirer after a decline. Approval rates rise by a few points, which at scale is worth millions.' }
+    d: 'Large merchants connect to several acquirers and route each payment to whichever will approve it most cheaply: local acquiring in each country, automatic retry on a second acquirer after a decline. Approval rates rise by a few points, which at scale is worth millions.' }
 ];
 const BIZ = [
   ['☕ A new café', 'One site, two staff, perhaps ' + money(R.a.income * 4) + ' a month in card sales, opening on Saturday.', 0, 'A flat rate costs a little more per sale, but there is nothing to negotiate at this size and the café is taking payments this week. The convenience is worth the premium.', 'Overkill for now. The paperwork and monthly fees outweigh the saving until volume is several times higher.'],
   ['🛍️ A growing online brand', 'Three years old, ' + money(R.a.income * 60) + ' a month online, thin margins, a few chargebacks.', 1, 'At this volume every tenth of a percent matters, and an own merchant account on cost-plus pricing typically saves a meaningful share of the fee. It also means the acquirer has underwritten the business properly, so a spike in sales is less likely to trigger a freeze.', 'Either paying too much per sale (all-in-one) or building more than the volume justifies (multi-acquirer).'],
-  ['✈️ An international airline', 'Sells in forty countries, huge tickets, sold months before the service is delivered.', 2, 'Cross-border payments are declined more often and cost more, so local acquiring in each market pays for itself. Airlines are also high-risk for acquirers — if one fails, every unflown ticket becomes a chargeback — so they spread exposure and are often asked for collateral.', 'A single provider would mean lower approval rates abroad, higher cross-border fees, and one company able to hold back the whole business’s cash.']
+  ['✈️ An international airline', 'Sells in forty countries, huge tickets, sold months before the service is delivered.', 2, 'Cross-border payments are declined more often and cost more, so local acquiring in each market pays for itself. Airlines are also high-risk for acquirers, if one fails, every unflown ticket becomes a chargeback, so they spread exposure and are often asked for collateral.', 'A single provider would mean lower approval rates abroad, higher cross-border fees, and one company able to hold back the whole business’s cash.']
 ];
 let bi = 0, mi = 0;
 $('#biz').innerHTML = BIZ.map((b, i) => `<button data-i="${i}" class="${i ? '' : 'on'}">${b[0]}</button>`).join('');
@@ -123,7 +124,7 @@ draw();
 
 const INT = [
   ['A handful', 'The customer leaves your site to pay on the provider’s page and comes back afterwards. Card data never touches your servers or your page. You attest to about thirty basic requirements once a year. The price is a checkout you cannot fully design.', [0, 1, 1, 1]],
-  ['Dozens', 'The card fields are small frames served by the provider, sitting inside your own page. It looks seamless and the numbers still never reach your servers — but because your page hosts those frames, you must now protect it against tampering scripts, a requirement that became mandatory in 2025.', [0, 1, 1, 1]],
+  ['Dozens', 'The card fields are small frames served by the provider, sitting inside your own page. It looks seamless and the numbers still never reach your servers, but because your page hosts those frames, you must now protect it against tampering scripts, a requirement that became mandatory in 2025.', [0, 1, 1, 1]],
   ['Hundreds', 'Your own form posts card numbers to your own server, which calls the processor. Full control, and the full standard: network segmentation, encryption, logging, quarterly scans, penetration tests and, above a certain volume, an external audit. Almost nobody should choose this.', [1, 1, 1, 1]]
 ];
 const PATH = [['🛒', 'Your website and servers'], ['🚪', 'Gateway'], ['⚙️', 'Processor and acquirer'], ['🌐', 'Card network']];
@@ -138,18 +139,18 @@ DCC.flow($('#onb'), { nodes: [['🏪', 'Merchant', 'applies'], ['🔎', 'Onboard
     { from: 1, to: 2, tag: 'checks', title: 'Screening', body: 'Sanctions lists, fraud databases, and the networks’ shared list of merchants terminated for cause (MATCH or VMAS). A business on that list will struggle to get an account anywhere for five years.' },
     { from: 2, to: 3, tag: 'risk', title: 'Underwriting the exposure', body: 'The acquirer is liable for chargebacks if the merchant cannot pay. So it asks: how long between payment and delivery? What is the refund rate? A café is low-risk; a travel agent selling trips six months out is not. The answer sets pricing, payout speed and whether a reserve is held back.' },
     { from: 3, to: 4, tag: 'MID + MCC', title: 'Registered with the network', body: 'The merchant gets a <strong>merchant ID</strong> and a four-digit <strong>category code</strong>. The code matters more than it looks: it decides the interchange rate, the cardholder’s reward category and which fraud rules apply. Deliberately choosing the wrong one is a serious breach.' },
-    { from: 3, to: 0, tag: 'live', kind: 'res', title: 'Live — and watched', body: 'Approval is not the end. The acquirer monitors sales patterns, refunds and chargeback ratios continuously. Breach the networks’ thresholds and the merchant enters a monitoring programme with fines; keep breaching and the account is closed.' }
+    { from: 3, to: 0, tag: 'live', kind: 'res', title: 'Live, and watched', body: 'Approval is not the end. The acquirer monitors sales patterns, refunds and chargeback ratios continuously. Breach the networks’ thresholds and the merchant enters a monitoring programme with fines; keep breaching and the account is closed.' }
   ] });
 
 $('#terms').innerHTML = [
-  ['Acquirer', 'The licensed institution — nearly always a bank — that is a member of the card networks, takes financial responsibility for the merchant’s transactions and settles funds to it.'],
+  ['Acquirer', 'The licensed institution, nearly always a bank, that is a member of the card networks, takes financial responsibility for the merchant’s transactions and settles funds to it.'],
   ['Processor', 'The technical operator that formats messages, connects to the networks and runs clearing. Sometimes the acquirer itself, often a specialist working on its behalf.'],
   ['Gateway', 'The front door for e-commerce: takes the payment from the checkout, tokenises the card, adds fraud tools and passes it to a processor. A gateway moves messages, not money.'],
   ['Payment facilitator / aggregator', 'A company that onboards many small merchants as sub-merchants under its own master account and pays them out. ' + pick({ in: 'In India this is a licensed category: payment aggregators are authorised and supervised by the RBI and must keep merchant funds in escrow.', us: 'It does so under an acquiring bank’s sponsorship and is liable for its sub-merchants.', uk: 'It needs FCA authorisation as a payment institution and must safeguard merchant funds.', au: 'It operates under an acquirer’s sponsorship; licensing for payment providers is being overhauled.' })],
   ['ISO / reseller', 'An independent sales organisation that sells an acquirer’s merchant accounts and often the terminal. It finds the merchant; the acquirer still holds the risk.'],
-  ['Orchestration', 'Software that sits above several gateways and acquirers and decides, payment by payment, where to send each one — and where to retry after a decline.'],
+  ['Orchestration', 'Software that sits above several gateways and acquirers and decides, payment by payment, where to send each one, and where to retry after a decline.'],
   ['Merchant of record', 'The legal seller in a transaction: the name on the statement, and the party liable for tax, refunds and chargebacks. Marketplaces and app stores are often the merchant of record for the sellers on them.'],
-  ['Rolling reserve', 'A share of each day’s sales held back for a set period — say 10% for 180 days — as security against future chargebacks. Common for new, fast-growing or delayed-delivery businesses.']
+  ['Rolling reserve', 'A share of each day’s sales held back for a set period, say 10% for 180 days, as security against future chargebacks. Common for new, fast-growing or delayed-delivery businesses.']
 ].map(([h, p]) => `<details class="fold"><summary><span class="h4">${h}</span></summary><div class="fold-body"><p>${p}</p></div></details>`).join('');
 }
 </script>

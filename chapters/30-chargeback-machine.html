@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>XXX. The Chargeback Machine — Decoding Credit Cards</title>
+<title>XXX. The Chargeback Machine | Decoding Credit Cards</title>
 <meta name="description" content="In chapter XII you disputed a charge. Now cross the counter. You run an online shop, three disputes arrive, and at every stage you choose: give in, or fight. Count what each choice costs.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/30-chargeback-machine.html">
-<meta property="og:title" content="XXX. The Chargeback Machine — Decoding Credit Cards">
+<meta property="og:title" content="XXX. The Chargeback Machine | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -62,35 +62,36 @@
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
 const { $, $$, R, rid, money, t, pick } = DCC;
 DCC.flow($('#path'), { nodes: [['🧑', 'Cardholder', ''], ['🏛️', R.issuer, 'issuer'], ['🌐', R.network, 'network'], ['⚙️', R.gateway, 'acquirer'], ['🛍️', 'Your shop', 'merchant']],
   steps: [
-    { from: 0, to: 1, tag: 'dispute', title: 'The cardholder complains', body: 'By phone or in the app. The issuer checks the claim fits a permitted reason and is inside the time limit — usually 120 days.' },
+    { from: 0, to: 1, tag: 'dispute', title: 'The cardholder complains', body: 'By phone or in the app. The issuer checks the claim fits a permitted reason and is inside the time limit, usually 120 days.' },
     { from: 1, to: 2, tag: 'alert?', title: 'An early warning, if you subscribed', body: 'Many issuers first send a <strong>pre-dispute alert</strong> through services owned by the networks. The merchant gets 24–72 hours to refund voluntarily and avoid a chargeback altogether.' },
     { from: 1, to: 3, tag: 'chargeback', kind: 'fail', title: 'The chargeback', body: 'The issuer files the dispute with a reason code. The network <strong>takes the money back from the acquirer immediately</strong>; the cardholder gets a provisional credit.', lit: [1, 2, 3] },
-    { from: 3, to: 4, tag: '− sale − fee', kind: 'fail', title: 'Your account is debited', body: 'The acquirer debits your shop for the sale and adds a chargeback fee, whether or not you are in the right. You have a deadline — often 20–30 days — to respond.' },
+    { from: 3, to: 4, tag: '− sale − fee', kind: 'fail', title: 'Your account is debited', body: 'The acquirer debits your shop for the sale and adds a chargeback fee, whether or not you are in the right. You have a deadline, often 20–30 days, to respond.' },
     { from: 4, to: 1, tag: 'evidence', title: 'Representment', body: 'If you fight, your acquirer sends your evidence back through the network: proof of delivery, proof the customer has bought before, proof of authentication. The money returns to you provisionally.', lit: [4, 3, 2, 1] },
     { from: 1, to: 4, tag: 'pre-arb', kind: 'fail', title: 'The issuer can push back', body: 'If the cardholder insists, the issuer files a <strong>pre-arbitration</strong>. Now one side must back down or escalate.', lit: [1, 2, 3, 4] },
-    { from: 2, to: 2, tag: 'ruling', kind: 'money', title: 'Arbitration', body: 'The network itself rules. It is final — and the loser pays a filing fee of several hundred dollars on top of the disputed amount, which is why very few cases get this far.', lit: [2] }
+    { from: 2, to: 2, tag: 'ruling', kind: 'money', title: 'Arbitration', body: 'The network itself rules. It is final, and the loser pays a filing fee of several hundred dollars on top of the disputed amount, which is why very few cases get this far.', lit: [2] }
   ] });
 
 const fee = pick({ in: 750, us: 25, uk: 20, au: 30 }), arb = pick({ in: 45000, us: 500, uk: 400, au: 750 }), L = R.a.laptop;
 // each case: stages as a decision tree keyed by choice
 const CASES = [
-  { icon: '🎧', title: 'Order #4471 — headphones', amt: Math.round(L * .3), reason: 'Fraud — “I did not make this purchase”',
+  { icon: '🎧', title: 'Order #4471, headphones', amt: Math.round(L * .3), reason: 'Fraud, “I did not make this purchase”',
     evid: [['y', 'Delivered to the address on the account, signed for'], ['y', 'Same device and IP address as two earlier orders that were never disputed'], ['y', 'The customer logged in and tracked the parcel'], ['n', 'No 3-D Secure on the payment']],
-    alert: 'fight', cb: 'fight', truth: 'This is <strong>friendly fraud</strong>: a real customer who forgot the purchase, did not recognise the name on the statement, or is trying it on. Network rules now accept “compelling evidence” — two prior undisputed purchases from the same device and address — to overturn a fraud claim.',
+    alert: 'fight', cb: 'fight', truth: 'This is <strong>friendly fraud</strong>: a real customer who forgot the purchase, did not recognise the name on the statement, or is trying it on. Network rules now accept “compelling evidence”, two prior undisputed purchases from the same device and address, to overturn a fraud claim.',
     won: true },
-  { icon: '💻', title: 'Order #4502 — a laptop', amt: L, reason: 'Fraud — “My card details were stolen”',
+  { icon: '💻', title: 'Order #4502, a laptop', amt: L, reason: 'Fraud, “My card details were stolen”',
     evid: [['n', 'Shipped to a freight-forwarding address never used before'], ['n', 'First order from this account, created ten minutes earlier'], ['n', 'No 3-D Secure, so no liability shift'], ['y', 'Security code matched']],
     alert: 'refund', cb: 'accept', truth: 'This is <strong>true fraud</strong>, and without authentication the liability is yours. A matching security code proves only that the thief had the whole card. Fighting cannot win; every extra stage adds fees. The real fix was upstream: 3-D Secure or a fraud rule on new accounts shipping to forwarders.',
     won: false },
-  { icon: '👟', title: 'Order #4533 — trainers', amt: Math.round(L * .12), reason: 'Consumer dispute — “Returned, never refunded”',
-    evid: [['n', 'Your warehouse logged the return three weeks ago'], ['n', 'The refund was never issued — a process failure'], ['y', 'The original delivery was fine'], ['y', 'Your returns policy is clearly published']],
-    alert: 'refund', cb: 'accept', truth: 'The customer is simply right. Most disputes in this family come from slow refunds and unclear policies rather than bad faith — and they are the cheapest to prevent.',
+  { icon: '👟', title: 'Order #4533, trainers', amt: Math.round(L * .12), reason: 'Consumer dispute, “Returned, never refunded”',
+    evid: [['n', 'Your warehouse logged the return three weeks ago'], ['n', 'The refund was never issued: a process failure'], ['y', 'The original delivery was fine'], ['y', 'Your returns policy is clearly published']],
+    alert: 'refund', cb: 'accept', truth: 'The customer is simply right. Most disputes in this family come from slow refunds and unclear policies rather than bad faith, and they are the cheapest to prevent.',
     won: false }
 ];
 let ci = 0, stage, tape, results = [];
@@ -102,12 +103,12 @@ function show(actionsHtml, note) {
   $('#game').innerHTML = `<div class="row row--between" style="margin-bottom:14px"><span class="mono faint">Dispute ${ci + 1} of ${CASES.length}</span><span class="dots">${CASES.map((_, k) => `<i class="${k < ci ? (results[k].good ? 'done' : 'bad') : k === ci ? 'on' : ''}"></i>`).join('')}</span></div>
     <div class="case-head"><span style="font-size:2.2rem">${c.icon}</span><div><h3 class="h3">${c.title}</h3><span class="chip is-danger">${c.reason}</span></div><b class="val">${money(c.amt)}</b></div>
     <div class="split" style="margin-top:6px"><div><div class="eyebrow" style="margin-top:14px">What your records show</div><div class="evid">${c.evid.map(e => `<div class="${e[0]}">${e[1]}</div>`).join('')}</div></div>
-    <div><div class="eyebrow" style="margin-top:14px">This dispute’s ledger</div><div class="tape">${tape.map(x => `<div class="${x[1] < 0 ? 'neg' : x[1] > 0 ? 'pos' : ''}"><span>${x[0]}</span><span>${x[1] ? sgn(x[1]) : '—'}</span></div>`).join('')}<div class="sum"><span>Net so far</span><span>${sgn(total())}</span></div></div></div></div>
+    <div><div class="eyebrow" style="margin-top:14px">This dispute’s ledger</div><div class="tape">${tape.map(x => `<div class="${x[1] < 0 ? 'neg' : x[1] > 0 ? 'pos' : ''}"><span>${x[0]}</span><span>${x[1] ? sgn(x[1]) : '–'}</span></div>`).join('')}<div class="sum"><span>Net so far</span><span>${sgn(total())}</span></div></div></div></div>
     <div aria-live="polite" style="margin-top:18px">${note || ''}${actionsHtml}</div>`;
 }
 const btns = a => `<div class="row" style="margin-top:14px">${a.map(([k, l, p]) => `<button class="btn ${p ? 'btn--primary' : 'btn--outline'}" data-a="${k}">${l}</button>`).join('')}</div>`;
 function start() { const c = CASES[ci]; stage = 'alert'; tape = []; line('Sale banked', c.amt);
-  show(btns([['refund', 'Refund the customer now', 1], ['ignore', 'Ignore the alert']]), `<div class="callout"><b>Stage 1 · Pre-dispute alert</b>The issuer warns you that the cardholder has complained. You have 72 hours. Refund voluntarily and no chargeback is filed — nothing counts against your dispute ratio.</div>`); }
+  show(btns([['refund', 'Refund the customer now', 1], ['ignore', 'Ignore the alert']]), `<div class="callout"><b>Stage 1 · Pre-dispute alert</b>The issuer warns you that the cardholder has complained. You have 72 hours. Refund voluntarily and no chargeback is filed: nothing counts against your dispute ratio.</div>`); }
 function finish(good, text) { const c = CASES[ci]; results.push({ good, net: total(), cb: tape.some(x => x[0].startsWith('Chargeback')) });
   show(btns([['next', ci < CASES.length - 1 ? 'Next dispute →' : 'See the month →', 1]]), `<div class="fb ${good ? 'good' : 'bad'}"><div class="fb-title">${good ? '✓ The right call' : '✗ That cost more than it had to'} · net ${sgn(total())}</div><p>${text}</p><p style="margin-top:8px">${c.truth}</p></div>`);
   good ? DCC.playSuccess() : DCC.playError(); }
@@ -115,37 +116,37 @@ $('#game').addEventListener('click', e => { const b = e.target.closest('[data-a]
   if (a === 'again') { ci = 0; results = []; return start(); }
   if (a === 'next') { ci++; return ci < CASES.length ? start() : end(); }
   if (stage === 'alert') {
-    if (a === 'refund') { line('Refund issued', -c.amt); if (c.won) line('Goods not returned', 0); return finish(!c.won, c.won ? 'You gave away a sale you could have defended — though refunding at the alert stage is never a disaster: no fee, no mark on your ratio.' : 'Refunding at the alert is the cheapest exit: you lose the sale, but pay no chargeback fee and your dispute ratio is untouched.'); }
+    if (a === 'refund') { line('Refund issued', -c.amt); if (c.won) line('Goods not returned', 0); return finish(!c.won, c.won ? 'You gave away a sale you could have defended, though refunding at the alert stage is never a disaster: no fee, no mark on your ratio.' : 'Refunding at the alert is the cheapest exit: you lose the sale, but pay no chargeback fee and your dispute ratio is untouched.'); }
     stage = 'cb'; line('Chargeback: sale reversed', -c.amt); line('Chargeback fee', -fee);
-    DCC.playError(); return show(btns([['fight', 'Fight it — submit evidence', 1], ['accept', 'Accept the chargeback']]), `<div class="callout is-danger"><b>Stage 2 · Chargeback</b>The money has been taken back and a fee charged. You have 20 days to respond, and it now counts in your dispute ratio whatever happens next.</div>`); }
+    DCC.playError(); return show(btns([['fight', 'Fight it: submit evidence', 1], ['accept', 'Accept the chargeback']]), `<div class="callout is-danger"><b>Stage 2 · Chargeback</b>The money has been taken back and a fee charged. You have 20 days to respond, and it now counts in your dispute ratio whatever happens next.</div>`); }
   if (stage === 'cb') {
-    if (a === 'accept') return finish(!c.won && c.alert !== 'refund' ? true : !c.won ? false : false, c.won ? 'You had the evidence to win and did not use it.' : 'Accepting is right here — but the alert was the moment to act. Refunding then would have saved the fee and kept this off your ratio.');
+    if (a === 'accept') return finish(!c.won && c.alert !== 'refund' ? true : !c.won ? false : false, c.won ? 'You had the evidence to win and did not use it.' : 'Accepting is right here, but the alert was the moment to act. Refunding then would have saved the fee and kept this off your ratio.');
     line('Staff time preparing evidence', -Math.round(fee * .8));
     if (c.won) { line('Representment won: sale returned', c.amt); return finish(true, 'Your evidence met the network’s standard and the issuer accepted it. You keep the sale, less the fee and the time.'); }
-    stage = 'pre'; DCC.playError(); return show(btns([['accept', 'Back down', 1], ['fight', 'Take it to arbitration']]), `<div class="callout is-danger"><b>Stage 3 · Pre-arbitration</b>The issuer has rejected your evidence and the cardholder is standing firm. Escalating means the network decides — and the loser pays an arbitration fee of ${money(arb)}.</div>`); }
+    stage = 'pre'; DCC.playError(); return show(btns([['accept', 'Back down', 1], ['fight', 'Take it to arbitration']]), `<div class="callout is-danger"><b>Stage 3 · Pre-arbitration</b>The issuer has rejected your evidence and the cardholder is standing firm. Escalating means the network decides, and the loser pays an arbitration fee of ${money(arb)}.</div>`); }
   if (stage === 'pre') {
-    if (a === 'accept') return finish(false, 'You stopped before arbitration, which was sensible — but the fight was unwinnable from the start and cost you time on top of the fee.');
-    line('Arbitration lost: filing fee', -arb); return finish(false, 'The network ruled for the cardholder. You have paid the sale, the chargeback fee, the staff time and the arbitration fee — several times what refunding would have cost.'); }
+    if (a === 'accept') return finish(false, 'You stopped before arbitration, which was sensible, but the fight was unwinnable from the start and cost you time on top of the fee.');
+    line('Arbitration lost: filing fee', -arb); return finish(false, 'The network ruled for the cardholder. You have paid the sale, the chargeback fee, the staff time and the arbitration fee: several times what refunding would have cost.'); }
 });
 function end() {
   const net = results.reduce((a, r) => a + r.net, 0), cbs = results.filter(r => r.cb).length, good = results.filter(r => r.good).length, pct = cbs / 3 * 100;
-  $('#game').innerHTML = `<div style="text-align:center"><h3 class="h2">${good} of 3 <em>handled well</em>.</h3><p class="lede" style="margin-inline:auto">Net result across the three orders: <strong>${sgn(net)}</strong>. Played perfectly — defend the first, refund the other two at the alert — it is ${sgn(CASES[0].amt - fee - Math.round(fee * .8))}.</p></div>
+  $('#game').innerHTML = `<div style="text-align:center"><h3 class="h2">${good} of 3 <em>handled well</em>.</h3><p class="lede" style="margin-inline:auto">Net result across the three orders: <strong>${sgn(net)}</strong>. Played perfectly, defend the first, refund the other two at the alert, it is ${sgn(CASES[0].amt - fee - Math.round(fee * .8))}.</p></div>
     <div class="panel" style="margin-top:20px"><div class="row row--between"><b>Your dispute ratio this month</b><span class="mono">${cbs} chargeback${cbs === 1 ? '' : 's'} on 200 orders · ${(cbs / 200 * 100).toFixed(1)}%</span></div><div class="ratio"><i style="left:${Math.min(98, cbs / 200 * 100 / 1.5 * 60)}%"></i><b>monitoring threshold ≈ 0.9–1.5%</b></div>
-    <p class="small muted" style="margin-top:30px">Networks track every merchant’s disputes and fraud as a share of sales. Cross the threshold and you enter a monitoring programme with monthly fines; stay there and you lose the right to accept cards. Winning a chargeback does not remove it from the count — only preventing it does.</p></div>
+    <p class="small muted" style="margin-top:30px">Networks track every merchant’s disputes and fraud as a share of sales. Cross the threshold and you enter a monitoring programme with monthly fines; stay there and you lose the right to accept cards. Winning a chargeback does not remove it from the count, only preventing it does.</p></div>
     <div class="row" style="justify-content:center;margin-top:18px"><button class="btn btn--outline" data-a="again">↻ Run the month again</button></div>`;
   if (good === 3) DCC.burstConfetti(); DCC.playSuccess(); DCC.markDone();
 }
 start();
 
 $('#fam').innerHTML = [
-  ['Fraud', 'The cardholder says they did not take part. The largest family online. Whether the merchant or the issuer bears it depends on authentication — chip read or 3-D Secure shifts it to the issuer. A growing share is “first-party” or friendly fraud by the genuine customer.'],
+  ['Fraud', 'The cardholder says they did not take part. The largest family online. Whether the merchant or the issuer bears it depends on authentication: chip read or 3-D Secure shifts it to the issuer. A growing share is “first-party” or friendly fraud by the genuine customer.'],
   ['Authorisation', 'The merchant charged without a valid approval: a declined card that was forced through, an expired authorisation, an amount above what was approved. Almost always the merchant’s systems at fault, and rarely winnable.'],
   ['Processing errors', 'Duplicate charges, wrong amounts, wrong currency, a refund processed as a sale, a transaction presented too late. Mechanical mistakes with mechanical remedies.'],
   ['Consumer disputes', 'Goods not received, not as described, cancelled subscriptions, refunds not processed. The cardholder took part but is unhappy. Evidence decides these: delivery proof, the published policy, the correspondence.'],
   [pick({ in: 'In India', us: 'In the US', uk: 'In the UK and EU', au: 'In Australia' }), pick({
     in: 'RBI’s customer-protection rules sit on top of the network process: the issuer must credit the customer within 10 working days of a reported unauthorised transaction and resolve it within 90, regardless of how the chargeback itself is going. UPI has its own separate dispute system run by NPCI.',
     us: 'The Fair Credit Billing Act gives cardholders a statutory right alongside the network rules, which is one reason US dispute volumes are the highest in the world. Regulation E gives similar, weaker rights for debit.',
-    uk: 'Section 75 is separate from chargeback and can be claimed directly against the card issuer for purchases over £100 — the issuer may then recover from the merchant through the chargeback process, but its liability to the customer does not depend on winning.',
+    uk: 'Section 75 is separate from chargeback and can be claimed directly against the card issuer for purchases over £100: the issuer may then recover from the merchant through the chargeback process, but its liability to the customer does not depend on winning.',
     au: 'The ePayments Code and the banking code oblige banks to use chargeback rights where they exist, and AFCA can review a bank’s handling of a dispute.' })]
 ].map(([h, p]) => `<details class="fold"><summary><span class="h4">${h}</span></summary><div class="fold-body"><p>${p}</p></div></details>`).join('');
 }

@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>III. The Anatomy of a Card — Decoding Credit Cards</title>
+<title>III. The Anatomy of a Card | Decoding Credit Cards</title>
 <meta name="description" content="Twelve things are printed on that rectangle and each has a job. Tap every part, flip the card over, and find them all.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/03-the-anatomy.html">
-<meta property="og:title" content="III. The Anatomy of a Card — Decoding Credit Cards">
+<meta property="og:title" content="III. The Anatomy of a Card | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -84,9 +84,9 @@
   <div class="eyebrow">Where this is heading</div>
   <h2 class="h2">The card is <em>losing its parts</em>.</h2>
   <div class="grid" style="--min:240px;margin-top:22px">
-    <div class="panel reveal"><h3 class="h4">Numberless cards</h3><p class="small muted">Newer cards print no number, expiry or code at all — the details live in the app, where they can be hidden, frozen or regenerated.</p></div>
+    <div class="panel reveal"><h3 class="h4">Numberless cards</h3><p class="small muted">Newer cards print no number, expiry or code at all: the details live in the app, where they can be hidden, frozen or regenerated.</p></div>
     <div class="panel reveal" style="--i:1"><h3 class="h4">The stripe retires</h3><p class="small muted">Mastercard stopped requiring the magnetic stripe on new cards in Europe from 2024, the US follows from 2027, and it disappears from all new cards by 2033.</p></div>
-    <div class="panel reveal" style="--i:2"><h3 class="h4">The phone is the card</h3><p class="small muted">Apple Pay and Google Pay never transmit your real number — they send a one-off token. The plastic becomes the backup, not the main event.</p></div>
+    <div class="panel reveal" style="--i:2"><h3 class="h4">The phone is the card</h3><p class="small muted">Apple Pay and Google Pay never transmit your real number: they send a one-off token. The plastic becomes the backup, not the main event.</p></div>
   </div>
 </section>
 
@@ -96,35 +96,36 @@
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
 const { $, $$, R, t, pick } = DCC;
 const P = {
-  issuer: ['The <em>issuer</em>', 'The lender', 'The logo top-left is the bank that lends you the money, sets your limit, sends the statement and reports to the credit bureaus. If a second brand sits beside it — an airline, a retailer — that is a <strong>co-brand</strong>: the bank still issues the card, the partner pays for richer rewards inside its own shop.', 'The issuer is who you ring when something goes wrong, and who has the legal claim if you do not pay. Always know who it is.'],
+  issuer: ['The <em>issuer</em>', 'The lender', 'The logo top-left is the bank that lends you the money, sets your limit, sends the statement and reports to the credit bureaus. If a second brand sits beside it, an airline, a retailer, that is a <strong>co-brand</strong>: the bank still issues the card, the partner pays for richer rewards inside its own shop.', 'The issuer is who you ring when something goes wrong, and who has the legal claim if you do not pay. Always know who it is.'],
   chip: ['The <em>EMV chip</em>', 'Europay · Mastercard · Visa standard', 'A tiny computer. For every payment it produces a <strong>one-time cryptogram</strong> that only this chip can generate, so copying the data from one transaction gets a thief nothing. Chip cards are why counterfeit-card fraud collapsed.', 'Insert or tap whenever you can. If a terminal insists on a swipe, treat it as a yellow flag.'],
-  nfc: ['The <em>contactless</em> mark', 'NFC · 13.56 MHz · range about 4 cm', 'Four curved lines mean an antenna runs round the edge of the card. Held near a reader it wakes up and performs the same cryptogram exchange as the chip — no contact, usually no PIN.', pick({
+  nfc: ['The <em>contactless</em> mark', 'NFC · 13.56 MHz · range about 4 cm', 'Four curved lines mean an antenna runs round the edge of the card. Held near a reader it wakes up and performs the same cryptogram exchange as the chip: no contact, usually no PIN.', pick({
     in: 'In India a tap works without a PIN up to <strong>₹5,000</strong>; above that you enter it. You can switch contactless on or off, and set your own limit, in the bank app.',
-    us: 'The US has no legal tap limit — the terminal and issuer decide, and many purchases need neither PIN nor signature.',
+    us: 'The US has no legal tap limit, the terminal and issuer decide, and many purchases need neither PIN nor signature.',
     uk: 'The UK limit was £100 for years. Since 19 March 2026 banks may set their own, though most have kept £100. In the eurozone it is typically €50. Phone wallets have no cap because your face or fingerprint is the check.',
     au: 'A tap needs no PIN up to $100 (some banks $200); New Zealand is typically NZ$200. Above that the terminal asks for it.' })],
-  holo: ['The <em>hologram</em>', 'Anti-counterfeit feature', 'A foil image — a dove on older Visa cards, interlocking globes on Mastercard — whose microscopic ridges shift as you tilt it. It is hard to print and was once the cashier’s way to spot a fake.', 'Now largely decorative: the chip does the authenticating. Many new cards drop it altogether.'],
-  num: ['The <em>card number</em>', 'PAN — primary account number', 'Not random. The first digit is the network (4 Visa, 5 or 2 Mastercard, 3 Amex). The first <strong>6 to 8 digits</strong> are the BIN, identifying the issuer. The last digit is a <strong>checksum</strong> from the Luhn formula — which is how a web form knows you mistyped before any bank is asked.', 'First 6 and last 4 are printed on receipts and are safe to share. Never post the full number.'],
-  name: ['The <em>cardholder name</em>', 'Embossed, printed — or absent', 'Raised lettering dates from the “knuckle-buster” imprinters that pressed your card onto carbon paper. Terminals stopped needing it decades ago, so modern cards print it flat or leave it off.', 'A name that does not match your ID can cause trouble at hotels, car hire desks and airport lounges. Get mistakes fixed.'],
-  exp: ['The <em>expiry date</em>', 'MM/YY', 'Cards expire so that worn plastic and ageing chip keys get replaced, and so a stolen number has a shelf life. The bank posts a new card a month or two early — usually the same number, a new expiry and a new security code.', 'Subscriptions can fail when the expiry changes. Networks run an “account updater” that fixes many automatically, but not all — check the ones that matter.'],
+  holo: ['The <em>hologram</em>', 'Anti-counterfeit feature', 'A foil image, a dove on older Visa cards, interlocking globes on Mastercard, whose microscopic ridges shift as you tilt it. It is hard to print and was once the cashier’s way to spot a fake.', 'Now largely decorative: the chip does the authenticating. Many new cards drop it altogether.'],
+  num: ['The <em>card number</em>', 'PAN: primary account number', 'Not random. The first digit is the network (4 Visa, 5 or 2 Mastercard, 3 Amex). The first <strong>6 to 8 digits</strong> are the BIN, identifying the issuer. The last digit is a <strong>checksum</strong> from the Luhn formula, which is how a web form knows you mistyped before any bank is asked.', 'First 6 and last 4 are printed on receipts and are safe to share. Never post the full number.'],
+  name: ['The <em>cardholder name</em>', 'Embossed, printed, or absent', 'Raised lettering dates from the “knuckle-buster” imprinters that pressed your card onto carbon paper. Terminals stopped needing it decades ago, so modern cards print it flat or leave it off.', 'A name that does not match your ID can cause trouble at hotels, car hire desks and airport lounges. Get mistakes fixed.'],
+  exp: ['The <em>expiry date</em>', 'MM/YY', 'Cards expire so that worn plastic and ageing chip keys get replaced, and so a stolen number has a shelf life. The bank posts a new card a month or two early, usually the same number, a new expiry and a new security code.', 'Subscriptions can fail when the expiry changes. Networks run an “account updater” that fixes many automatically, but not all: check the ones that matter.'],
   net: ['The <em>network</em>', '{networks}', 'The logo bottom-right tells a shop which rails the card runs on. The network does not lend you anything; it connects your bank to the shop’s bank and writes the rules both follow.', pick({
     in: '<strong>RuPay</strong> is India’s own network, run by NPCI, and RuPay credit cards can be linked to UPI. For travel outside India, Visa or Mastercard still has the widest acceptance. Since 2024 issuers must let you <strong>choose your network</strong> when a card is issued or renewed.',
     us: 'Visa and Mastercard are accepted almost everywhere. Amex and Discover are both the network <em>and</em> the lender, which is why some small shops and many places abroad do not take them.',
     uk: 'Visa and Mastercard are near-universal. Amex acceptance is patchier because it costs shops more. In France many cards are co-badged with the domestic Cartes Bancaires network.',
     au: 'Visa and Mastercard are universal. <strong>eftpos</strong> is the domestic debit network; many debit cards carry both, and “least-cost routing” lets a shop send your tap down the cheaper rail.' })],
-  mag: ['The <em>magnetic stripe</em>', 'Track 1 & 2 · 1960s technology', 'Your card number and expiry stored as static magnetic data. Static means copyable: a skimmer the size of a matchbox reads it in a swipe. It survives only as a fallback for places without chip readers.', 'It is being retired — new cards will stop carrying one over the next few years. You will not miss it.'],
-  sig: ['The <em>signature panel</em>', 'A relic', 'You were meant to sign it so that a cashier could compare signatures. The networks dropped signature checks in 2018 because chip and PIN — and now your phone’s biometrics — do the job far better.', 'Many new cards have no panel at all. Signing it does no harm; relying on it does nothing.'],
-  cvv: ['The <em>security code</em>', 'CVV2 / CVC2 · 3 digits (4 on the front of an Amex)', 'Printed, never embossed, and <strong>not stored on the stripe or chip</strong> — so a skimmed card cannot be used online without it. Card-industry rules (PCI DSS) forbid any merchant from storing it after a payment is authorised, which is why a saved card still asks for it now and then.', 'No genuine bank employee ever needs it. Anyone asking for your code on a call is a criminal. Some apps now show a <strong>dynamic code</strong> that changes every few hours.'],
+  mag: ['The <em>magnetic stripe</em>', 'Track 1 & 2 · 1960s technology', 'Your card number and expiry stored as static magnetic data. Static means copyable: a skimmer the size of a matchbox reads it in a swipe. It survives only as a fallback for places without chip readers.', 'It is being retired: new cards will stop carrying one over the next few years. You will not miss it.'],
+  sig: ['The <em>signature panel</em>', 'A relic', 'You were meant to sign it so that a cashier could compare signatures. The networks dropped signature checks in 2018 because chip and PIN, and now your phone’s biometrics, do the job far better.', 'Many new cards have no panel at all. Signing it does no harm; relying on it does nothing.'],
+  cvv: ['The <em>security code</em>', 'CVV2 / CVC2 · 3 digits (4 on the front of an Amex)', 'Printed, never embossed, and <strong>not stored on the stripe or chip</strong>, so a skimmed card cannot be used online without it. Card-industry rules (PCI DSS) forbid any merchant from storing it after a payment is authorised, which is why a saved card still asks for it now and then.', 'No genuine bank employee ever needs it. Anyone asking for your code on a call is a criminal. Some apps now show a <strong>dynamic code</strong> that changes every few hours.'],
   fine: ['The <em>small print</em>', 'The line nobody reads', 'It carries the 24-hour number for lost and stolen cards and one legally important sentence: the card belongs to the issuer, not you. They can cancel or recall it at any time.', pick({
     in: 'Save that number in your phone today. You can also block the card instantly in the app or by SMS; if money is taken, the cyber-fraud helpline is 1930.',
-    us: 'Save that number in your phone today. Every issuer also offers an instant lock in the app — use that first, then call.',
+    us: 'Save that number in your phone today. Every issuer also offers an instant lock in the app: use that first, then call.',
     uk: 'Save that number in your phone. In the UK you can also dial <strong>159</strong> to reach your bank’s genuine fraud line through a trusted switchboard.',
-    au: 'Save that number in your phone. Every major bank offers an instant lock in the app — use that first, then call.' })]
+    au: 'Save that number in your phone. Every major bank offers an instant lock in the app: use that first, then call.' })]
 };
 const keys = Object.keys(P), seen = new Set();
 $('#pips').innerHTML = keys.map(() => '<i></i>').join('');

@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>XXIX. Build a Fraud Engine — Decoding Credit Cards</title>
+<title>XXIX. Build a Fraud Engine | Decoding Credit Cards</title>
 <meta name="description" content="Every payment is scored for fraud in a few milliseconds. Decline too little and criminals get through; decline too much and you insult your own customers. Take the controls and find the balance.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/29-fraud-engine.html">
-<meta property="og:title" content="XXIX. Build a Fraud Engine — Decoding Credit Cards">
+<meta property="og:title" content="XXIX. Build a Fraud Engine | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -43,7 +43,7 @@
 <section class="sec">
   <div class="eyebrow">The control room</div>
   <h2 class="h2">Four hundred payments. <em>Where do you draw the line?</em></h2>
-  <p class="lede">Each dot is a payment, placed by its fraud score. Red dots are fraud — which the engine does not know. Move the threshold and switch rules on. Your target is the lowest total cost.</p>
+  <p class="lede">Each dot is a payment, placed by its fraud score. Red dots are fraud, which the engine does not know. Move the threshold and switch rules on. Your target is the lowest total cost.</p>
   <div class="stage split">
     <div class="sticky">
       <svg class="plot" id="plot" viewBox="0 0 400 210" role="img" aria-label="Payments plotted by fraud score"></svg>
@@ -73,10 +73,11 @@
 
 <aside class="checkpoint" data-icon="🧠">
   <h3>You have felt the <em>trade-off</em>.</h3>
-  <p>No setting stops all fraud without hurting real customers; the job is choosing which mistake is cheaper. Next: what happens to the fraud that gets through — the chargeback.</p>
+  <p>No setting stops all fraud without hurting real customers; the job is choosing which mistake is cheaper. Next: what happens to the fraud that gets through, the chargeback.</p>
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
@@ -91,7 +92,7 @@ for (let i = 0; i < N; i++) {
   TX.push({ fraud, score: Math.max(1, Math.min(99, score)), amt, y: 18 + rnd() * 160, foreign: rnd() < (fraud ? .45 : .09), newdev: rnd() < (fraud ? .75 : .1), fast: rnd() < (fraud ? .45 : .015), r: rnd() });
 }
 const bigAmt = unit * 25;
-const RULES = [['foreign', 'Block every foreign online payment', 'Blunt. Catches fraud — and every customer on holiday or buying from abroad.'], ['newdev', `Decline over ${money(bigAmt)} on a device never seen before`, 'Targeted: high value plus an unknown device is a classic account-takeover pattern.'], ['fast', 'Decline the fourth payment within an hour', 'A velocity rule. Stops “card testing” bursts; also stops people doing their Christmas shopping.'], ['step', 'Ask for extra verification in the grey zone instead of declining', 'Payments scoring within 25 points below the threshold get a challenge. Most fraudsters fail it; a few genuine customers give up.']];
+const RULES = [['foreign', 'Block every foreign online payment', 'Blunt. Catches fraud, and every customer on holiday or buying from abroad.'], ['newdev', `Decline over ${money(bigAmt)} on a device never seen before`, 'Targeted: high value plus an unknown device is a classic account-takeover pattern.'], ['fast', 'Decline the fourth payment within an hour', 'A velocity rule. Stops “card testing” bursts; also stops people doing their Christmas shopping.'], ['step', 'Ask for extra verification in the grey zone instead of declining', 'Payments scoring within 25 points below the threshold get a challenge. Most fraudsters fail it; a few genuine customers give up.']];
 const on = new Set();
 $('#rules').innerHTML = RULES.map(([k, h, d]) => `<button class="rule" data-k="${k}" aria-pressed="false"><i>✓</i><span><b>${h}</b><small>${d}</small></span></button>`).join('');
 const X = s => 12 + s / 100 * 376;
@@ -129,7 +130,7 @@ function update() {
   else if (r.total <= bench * .97) { c.className = 'callout is-success'; c.innerHTML = `<b>You beat the score alone</b>Rules and step-up verification let you catch fraud the score missed without declining as many good customers. That is what a fraud team actually does all day. ${on.has('step') ? 'Gold dots are customers who were challenged and carried on.' : ''}`; DCC.markDone(); }
   else if (r.fp > r.miss * 1.5) { c.className = 'callout is-warm'; c.innerHTML = `<b>Too strict</b>You are declining about ${ratio} genuine customers for every fraud you stop, and lost sales now cost more than the fraud would have. Across the industry, wrongly declined payments cost merchants several times more than fraud itself.`; }
   else if (r.miss > r.fp * 1.5) { c.className = 'callout is-warm'; c.innerHTML = `<b>Too loose</b>${r.missN} frauds are still getting through (the ringed red dots). Tighten the threshold or add a targeted rule.`; }
-  else { c.className = 'callout'; c.innerHTML = `<b>Close</b>The two kinds of mistake are roughly in balance. Now try rules: can you get under ${money(bench)}? Hint — try verification in the grey zone, then compare the blunt rule with the targeted ones.`; }
+  else { c.className = 'callout'; c.innerHTML = `<b>Close</b>The two kinds of mistake are roughly in balance. Now try rules: can you get under ${money(bench)}? Hint: try verification in the grey zone, then compare the blunt rule with the targeted ones.`; }
 }
 $('#thr').addEventListener('input', update);
 $('#rules').addEventListener('click', e => { const b = e.target.closest('.rule'); if (!b) return; const k = b.dataset.k; on.has(k) ? on.delete(k) : on.add(k); b.classList.toggle('on', on.has(k)); b.setAttribute('aria-pressed', on.has(k)); DCC.playClick(); update(); });
@@ -142,12 +143,12 @@ $('#signals').innerHTML = [
   ['Velocity', 'Counts over time windows: payments in the last hour, distinct merchants today, declined attempts in a row. Simple, old, and still one of the strongest signals.'],
   ['The network’s view', 'Visa and Mastercard see every card at every merchant, so they can spot a compromised shop or a card-testing attack that no single bank could. They attach their own risk score to each authorisation for the issuer to use.'],
   ['Rules and machine learning together', 'Models produce the score; humans write rules on top for new attack patterns, because a rule can be deployed in an hour and a model retrained in weeks. The hard part is feedback: a fraud is only confirmed when the customer complains, often a month later.'],
-  ['The costs are lopsided — in the other direction', 'A missed fraud costs the amount of the payment. A wrongly declined customer costs the sale, sometimes the customer, and for an issuer the place at the “top of the wallet”. This is why engines increasingly challenge rather than decline.']
+  ['The costs are lopsided, in the other direction', 'A missed fraud costs the amount of the payment. A wrongly declined customer costs the sale, sometimes the customer, and for an issuer the place at the “top of the wallet”. This is why engines increasingly challenge rather than decline.']
 ].map(([h, p]) => `<details class="fold"><summary><span class="h4">${h}</span></summary><div class="fold-body"><p>${p}</p></div></details>`).join('');
 $('#you').innerHTML = [
   ['You look unlike yourself', 'A new country, an unusually large amount, a merchant type you never use. Approve the alert in your app, or reply to the text, and the next attempt normally goes through.'],
-  ['You tripped a velocity rule', 'Several payments in quick succession — festival bars, ticket sales, a run of online orders. Wait a few minutes, or use the chip and PIN.'],
-  [pick({ in: 'A switch is off', us: 'The merchant looks risky', uk: 'Authentication was needed', au: 'A card lock is on' }), pick({ in: 'Online, international and contactless use can each be switched off in the app, and international use is off by default. A decline abroad is very often just that switch.', us: 'Some merchant categories are scored harshly or blocked outright by certain issuers. It says more about the merchant’s fraud history than about you.', uk: 'A “declined” at a contactless terminal is frequently a request to insert the card and enter the PIN; online, it is an approval waiting in your banking app.', au: 'Per-channel locks in the banking app — online, overseas, contactless — are easy to forget you set.' })]
+  ['You tripped a velocity rule', 'Several payments in quick succession: festival bars, ticket sales, a run of online orders. Wait a few minutes, or use the chip and PIN.'],
+  [pick({ in: 'A switch is off', us: 'The merchant looks risky', uk: 'Authentication was needed', au: 'A card lock is on' }), pick({ in: 'Online, international and contactless use can each be switched off in the app, and international use is off by default. A decline abroad is very often just that switch.', us: 'Some merchant categories are scored harshly or blocked outright by certain issuers. It says more about the merchant’s fraud history than about you.', uk: 'A “declined” at a contactless terminal is frequently a request to insert the card and enter the PIN; online, it is an approval waiting in your banking app.', au: 'Per-channel locks in the banking app, online, overseas, contactless, are easy to forget you set.' })]
 ].map(([h, p], i) => `<div class="panel reveal" style="--i:${i}"><h3 class="h4" style="margin-bottom:6px">${h}</h3><p class="small">${p}</p></div>`).join('');
 DCC.observe();
 }

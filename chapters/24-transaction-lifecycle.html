@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>XXIV. The Life of a Transaction — Decoding Credit Cards</title>
+<title>XXIV. The Life of a Transaction | Decoding Credit Cards</title>
 <meta name="description" content="An approval is not a payment. Between the yes and the money sit holds, adjustments, captures, reversals and refunds. Run four real situations and watch three ledgers move.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/24-transaction-lifecycle.html">
-<meta property="og:title" content="XXIV. The Life of a Transaction — Decoding Credit Cards">
+<meta property="og:title" content="XXIV. The Life of a Transaction | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -74,6 +74,7 @@
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
@@ -94,13 +95,13 @@ const SC = [
   { name: '📦 Order in two parcels', steps: [
     ['Checkout: one authorisation', '0100', `You order ${money(shop)} of goods. The shop authorises the whole amount but may only charge you when items ship.`, ['hold', 'o', R.marketplace.toUpperCase() + ' · pending', shop]],
     ['Parcel one ships: a partial capture', 'clearing', `Sixty per cent ships today and is captured. The rest of the authorisation stays open.`, ['split', 'o', R.marketplace.toUpperCase(), shop * .6, shop * .4]],
-    ['Ten days pass: the authorisation expires', 'expiry', 'Authorisations are valid for a limited time — commonly about a week for online purchases. The remaining hold drops off by itself.', ['drop', 'o']],
-    ['Parcel two ships: a fresh authorisation and capture', '0100 + clearing', 'The shop must ask again before charging the rest. That is why one order can appear as two charges on different days — and why the second can be declined if your limit has filled up meanwhile.', ['postnew', 'o2', R.marketplace.toUpperCase(), shop * .4]] ] },
+    ['Ten days pass: the authorisation expires', 'expiry', 'Authorisations are valid for a limited time: commonly about a week for online purchases. The remaining hold drops off by itself.', ['drop', 'o']],
+    ['Parcel two ships: a fresh authorisation and capture', '0100 + clearing', 'The shop must ask again before charging the rest. That is why one order can appear as two charges on different days, and why the second can be declined if your limit has filled up meanwhile.', ['postnew', 'o2', R.marketplace.toUpperCase(), shop * .4]] ] },
   { name: '↩️ Reversal vs refund', steps: [
     ['You buy a laptop', '0100', 'Authorised. A hold appears.', ['hold', 'l', R.store.toUpperCase() + ' · pending', ref]],
-    ['Wrong model — cancelled within the hour', '0400 · reversal', 'Because the sale has not been captured, the shop sends a <strong>reversal</strong>. The hold simply vanishes; on most statements the purchase never appears at all.', ['drop', 'l']],
+    ['Wrong model: cancelled within the hour', '0400 · reversal', 'Because the sale has not been captured, the shop sends a <strong>reversal</strong>. The hold simply vanishes; on most statements the purchase never appears at all.', ['drop', 'l']],
     ['You buy the right one. It posts.', 'clearing', 'This time the sale is captured and clears.', ['postnew', 'l2', R.store.toUpperCase(), ref]],
-    ['A week later you return it: a refund', 'credit · new transaction', 'Too late for a reversal. A <strong>refund is a brand-new transaction</strong> in the opposite direction, with its own clearing and settlement — which is why it takes days and shows as a separate credit line rather than deleting the original. The shop also does not get its fees back.', ['credit', 'r', R.store.toUpperCase() + ' · REFUND', ref]] ] }
+    ['A week later you return it: a refund', 'credit · new transaction', 'Too late for a reversal. A <strong>refund is a brand-new transaction</strong> in the opposite direction, with its own clearing and settlement, which is why it takes days and shows as a separate credit line rather than deleting the original. The shop also does not get its fees back.', ['credit', 'r', R.store.toUpperCase() + ' · REFUND', ref]] ] }
 ];
 let si = 0, k = 0, rows, posted;
 const pend = () => rows.filter(r => r.pend && !r.gone).reduce((a, r) => a + r.amt, 0);
@@ -138,17 +139,17 @@ $('#next').onclick = () => { if (k < SC[si].steps.length - 1) { k++; step(); } e
 load(0);
 
 $('#vocab').innerHTML = [
-  ['Authorisation (and pre-authorisation)', 'Permission, plus a reservation against your limit. No money moves. A pre-authorisation is one made for an estimate — hotels, car hire, fuel, tips.'],
-  ['Hold / pending', 'What an authorisation looks like from your side: your available credit drops, your balance does not. Holds expire if never captured — typically within about a week, up to a month for hotels and car hire.'],
+  ['Authorisation (and pre-authorisation)', 'Permission, plus a reservation against your limit. No money moves. A pre-authorisation is one made for an estimate: hotels, car hire, fuel, tips.'],
+  ['Hold / pending', 'What an authorisation looks like from your side: your available credit drops, your balance does not. Holds expire if never captured, typically within about a week, up to a month for hotels and car hire.'],
   ['Capture', 'The merchant’s instruction to actually charge an authorised amount. It can be for less than was authorised, in several parts, or (for tips) slightly more.'],
   ['Reversal / void', 'Cancels an authorisation before capture. Fast, free for the merchant, and usually invisible on your statement.'],
   ['Clearing and posting', 'The merchant’s captured sales are sent through the network to your issuer, matched to the hold, and become real entries on the account. Only posted items appear on a statement and can be disputed.'],
   ['Refund / credit', 'A separate transaction that sends money back after posting. It takes days, shows as its own line, and if it lands after your statement closes you may have to pay first and receive the credit next month.']
 ].map(([h, p]) => `<details class="fold"><summary><span class="h4">${h}</span></summary><div class="fold-body"><p>${p}</p></div></details>`).join('');
 $('#local').innerHTML = pick({
-  in: [['Failed but debited?', 'RBI’s turnaround-time rules require a failed card transaction at a terminal or online to be reversed automatically within five days of the transaction. Beyond that the bank owes you <strong>₹100 a day</strong>.'], ['Refund timing', 'Refunds usually reach the card in 5–7 working days. A refund is a credit to the card account, not cash — if it leaves you in credit, you can ask the bank to pay the surplus to your bank account.'], ['Attended pumps', 'Because fuel is served by an attendant, Indian pumps charge the exact amount; large estimated holds are mostly a hotel, car-hire and EV-charging matter.']],
-  us: [['The $175 pump hold', 'Networks let fuel pumps hold up to $175 on a card. With credit it is a nuisance; with debit it can bounce other payments. Paying inside avoids it.'], ['Tips', 'A restaurant authorises the bill and captures it later with the tip added — networks allow a margin of around 20% without a new authorisation. That is why the pending amount is lower than the posted one.'], ['Refunds', 'Typically 3–7 business days. If a refund creates a credit balance, the issuer must send you the money on request, and automatically after six months.']],
-  uk: [['Pay-at-pump', 'UK pumps authorise up to about £100–£120 and then send the true amount straight away, so a well-connected bank shows the real figure within minutes. A lingering hold means the completion message went astray — call the bank, not the garage.'], ['Hotels and car hire', 'Deposits are holds, not charges, and can take up to a month to drop off. Use a credit card so it is not your own money that is frozen.'], ['Refunds', 'Typically 3–5 working days. Chargeback and Section 75 rights apply only to posted transactions.']],
+  in: [['Failed but debited?', 'RBI’s turnaround-time rules require a failed card transaction at a terminal or online to be reversed automatically within five days of the transaction. Beyond that the bank owes you <strong>₹100 a day</strong>.'], ['Refund timing', 'Refunds usually reach the card in 5–7 working days. A refund is a credit to the card account, not cash, if it leaves you in credit, you can ask the bank to pay the surplus to your bank account.'], ['Attended pumps', 'Because fuel is served by an attendant, Indian pumps charge the exact amount; large estimated holds are mostly a hotel, car-hire and EV-charging matter.']],
+  us: [['The $175 pump hold', 'Networks let fuel pumps hold up to $175 on a card. With credit it is a nuisance; with debit it can bounce other payments. Paying inside avoids it.'], ['Tips', 'A restaurant authorises the bill and captures it later with the tip added: networks allow a margin of around 20% without a new authorisation. That is why the pending amount is lower than the posted one.'], ['Refunds', 'Typically 3–7 business days. If a refund creates a credit balance, the issuer must send you the money on request, and automatically after six months.']],
+  uk: [['Pay-at-pump', 'UK pumps authorise up to about £100–£120 and then send the true amount straight away, so a well-connected bank shows the real figure within minutes. A lingering hold means the completion message went astray: call the bank, not the garage.'], ['Hotels and car hire', 'Deposits are holds, not charges, and can take up to a month to drop off. Use a credit card so it is not your own money that is frozen.'], ['Refunds', 'Typically 3–5 working days. Chargeback and Section 75 rights apply only to posted transactions.']],
   au: [['Holds on fuel and hotels', 'Pay-at-pump and hotel pre-authorisations can hold $100–$200 or more for several days. On a debit card that is cash you cannot spend.'], ['Pending forever?', 'A pending transaction the merchant never completes usually drops off within 5–8 business days. Banks can release it sooner if the merchant confirms it will not be processed.'], ['Refunds', 'Typically 3–10 business days. A refund to a card with a zero balance leaves the account in credit; you can ask for it to be transferred out.']]
 }).map(([h, p], i) => `<div class="panel reveal" style="--i:${i}"><h3 class="h4" style="margin-bottom:6px">${h}</h3><p class="small">${p}</p></div>`).join('');
 DCC.observe();

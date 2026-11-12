@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>Glossary | Decoding Credit Cards</title>
+<meta name="description" content="A plain-language glossary of cards, payments and banking terms, from acquirer to zero liability.">
+<meta property="og:title" content="Glossary | Decoding Credit Cards">
+<meta property="og:description" content="A plain-language glossary of cards, payments and banking terms, from acquirer to zero liability.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="css/global.css">
+<style>
+.gl dt { font: 700 1.1rem var(--font-display); margin-top: 18px; scroll-margin-top: calc(var(--nav-h) + 16px); } .gl dd { color: var(--ink-soft); margin-top: 2px; max-width: 70ch; }
+.gl dd a { font: 400 .74rem var(--font-mono); margin-left: 6px; white-space: nowrap; }
+.letter { font: italic 300 2.4rem var(--font-display); color: var(--electric); margin-top: 34px; border-bottom: 1px dashed var(--border-strong); }
+.az { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 14px; } .az a { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 8px; background: var(--paper); font: 700 .78rem var(--font-mono); text-decoration: none; color: var(--ink-muted); } .az a:hover { background: var(--electric); color: #fff; }
+</style>
+</head>
+<body>
+<main class="page">
+<div class="wrap wrap--narrow">
+  <div class="eyebrow">Glossary</div><h1>The words, <em>decoded</em>.</h1>
+  <p class="standfirst" id="count"></p>
+  <input class="search" id="q" type="search" placeholder="Search a term: MDR, BIN, STIP, RTGS…" aria-label="Search the glossary" style="margin-top:24px">
+  <nav class="az" id="az" aria-label="Jump to letter"></nav>
+  <dl class="gl" id="out" aria-live="polite"></dl>
+</div>
+</main>
+<script src="js/regions.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/global.js"></script>
+<script src="kb/glossary.js"></script>
+<script>
+{
+const { $, item } = DCC, G = (window.DCC_GLOSSARY || []).slice().sort((a, b) => a[0].toLowerCase().localeCompare(b[0].toLowerCase()));
+let q = new URLSearchParams(location.search).get('q') || ''; $('#q').value = q;
+$('#count').textContent = `${G.length} terms from cards, payments and banking, in plain language. Where a term has a lab or a guide, it links to it.`;
+function draw() {
+  const w = q.toLowerCase().trim(), hit = G.filter(g => !w || (g[0] + ' ' + g[1]).toLowerCase().includes(w));
+  let last = '';
+  $('#out').innerHTML = hit.length ? hit.map(g => { const L = g[0][0].toUpperCase(), x = g[2] && item(g[2]); const head = L !== last && !w ? `<div class="letter" id="L-${L}">${L}</div>` : ''; last = L;
+    return `${head}<dt>${g[0]}</dt><dd>${g[1]}${x ? `<a href="${x.href}">${x.type === 'lab' ? 'lab' : 'guide'}: ${x.title} →</a>` : ''}</dd>`; }).join('') : `<p class="lede" style="margin-top:24px">No term matches. Try the <a href="library.html?q=${encodeURIComponent(q)}">library search</a>.</p>`;
+  $('#az').innerHTML = w ? '' : [...new Set(G.map(g => g[0][0].toUpperCase()))].map(L => `<a href="#L-${L}">${L}</a>`).join('');
+}
+$('#q').addEventListener('input', e => { q = e.target.value; draw(); }); draw();
+}
+</script>
+</body>
+</html>

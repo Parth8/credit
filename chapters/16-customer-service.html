@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>XVI. Talking to Your Bank — Decoding Credit Cards</title>
+<title>XVI. Talking to Your Bank | Decoding Credit Cards</title>
 <meta name="description" content="The same request gets a yes or a no depending on how it is put. Pick a call, choose what you say at each turn, and see how the agent reacts.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/16-customer-service.html">
-<meta property="og:title" content="XVI. Talking to Your Bank — Decoding Credit Cards">
+<meta property="og:title" content="XVI. Talking to Your Bank | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -54,10 +54,11 @@
 
 <aside class="checkpoint" data-icon="📞">
   <h3>You know <em>what to say</em>.</h3>
-  <p>Lead with the action you want, bring the facts, stay civil, get it in writing — and know where to go when the front line says no. Next: everything that is not a credit card.</p>
+  <p>Lead with the action you want, bring the facts, stay civil, get it in writing, and know where to go when the front line says no. Next: everything that is not a credit card.</p>
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
@@ -66,28 +67,28 @@ const A = R.a, late = money(R.lateFee), ag = s => ({ a: s }), you = (...c) => ({
 const C = [
   ['💳', 'Lost or stolen card', 'Block it, check for fraud, get a replacement.', [
     ag(`Thank you for calling ${R.issuer}. How can I help?`),
-    you(['I need to block my credit card right now — it has been lost.', 1, 'Action first. The agent goes straight to the block instead of small talk.'], ['Hi, sorry to bother you, I think I might have lost my card somewhere…', 0, 'Every second of preamble is a second the card is live. Never apologise for needing the service.'], ['I lost my card.', 0, 'True, but vague — you will be asked which card, when, and what you want. Say what you want done.']),
-    ag('Done — the card is blocked. Have you seen any transactions you do not recognise?'),
-    you(['Please check the last few days with me now, and raise anything I did not make as unauthorised.', 1, 'You are already on the line with someone who can see everything. Use it — and it fixes your reporting time.'], ['I don’t think so. I’ll check later.', 0, 'Later is how small frauds become long disputes. Reporting promptly is what protects your liability.']),
+    you(['I need to block my credit card right now: it has been lost.', 1, 'Action first. The agent goes straight to the block instead of small talk.'], ['Hi, sorry to bother you, I think I might have lost my card somewhere…', 0, 'Every second of preamble is a second the card is live. Never apologise for needing the service.'], ['I lost my card.', 0, 'True, but vague: you will be asked which card, when, and what you want. Say what you want done.']),
+    ag('Done: the card is blocked. Have you seen any transactions you do not recognise?'),
+    you(['Please check the last few days with me now, and raise anything I did not make as unauthorised.', 1, 'You are already on the line with someone who can see everything. Use it, and it fixes your reporting time.'], ['I don’t think so. I’ll check later.', 0, 'Later is how small frauds become long disputes. Reporting promptly is what protects your liability.']),
     ag('Nothing suspicious. A replacement will reach you in five to seven working days. Anything else?'),
-    you(['Yes — will the number change, and can I add the new card to my phone wallet straight away?', 1, 'A new number breaks subscriptions. Most issuers can push the new card to your wallet instantly, so you are not cardless for a week.'], ['No, that’s all.', 0, 'You will now find out about each broken subscription one failed payment at a time.'])]],
+    you(['Yes: will the number change, and can I add the new card to my phone wallet straight away?', 1, 'A new number breaks subscriptions. Most issuers can push the new card to your wallet instantly, so you are not cardless for a week.'], ['No, that’s all.', 0, 'You will now find out about each broken subscription one failed payment at a time.'])]],
   ['📋', 'Dispute a charge', 'A merchant billed you twice.', [
     ag(`${R.issuer}, how can I help?`),
     you([`I want to dispute a duplicate charge: ${money(A.meal * 5)} at ${R.foodApp} on the 15th, billed twice.`, 1, 'Amount, merchant, date, reason. The agent finds it in seconds.'], ['There’s something weird on my statement, can you look?', 0, 'They will spend the call working out which transaction you mean.']),
     ag('I can see both. Have you contacted the merchant?'),
-    you(['Yes — I wrote to them on the 16th and the 20th and have had no reply. I can send both emails.', 1, 'A documented attempt turns “customer has not tried” into “merchant unresponsive”, which is the box the agent needs to tick.'], ['No — surely the bank can just sort it out?', 0, 'You will be told to try the merchant and call back. Two weeks lost.']),
+    you(['Yes: I wrote to them on the 16th and the 20th and have had no reply. I can send both emails.', 1, 'A documented attempt turns “customer has not tried” into “merchant unresponsive”, which is the box the agent needs to tick.'], ['No: surely the bank can just sort it out?', 0, 'You will be told to try the merchant and call back. Two weeks lost.']),
     ag('I have raised a dispute for duplicate processing. You should see a temporary credit within a few days.'),
     you(['Thank you. Please give me the reference number and confirm this by email or secure message.', 1, 'If it is not written down it did not happen. The reference is what you quote at every later step.'], ['Great, thanks!', 0, 'No reference, no record you can point to if the case stalls.'])]],
   ['📈', 'Ask for a higher limit', 'Your income has gone up.', [
     ag(`${R.issuer}, how can I help?`),
-    you([`I’d like a credit limit increase. I’ve had the card two years, never missed a payment, and my income has risen to ${money(A.income * 1.3 * (rid === 'in' ? 1 : 12))}${rid === 'in' ? ' a month' : ' a year'}.`, 1, 'You have made the case for them: tenure, record, income.'], ['I keep hitting my limit and need more.', 0, 'That says you are stretched — the opposite of what gets approved.']),
-    ag(pick({ in: 'I can process that. You will need to upload your latest salary slips in the app.', us: 'I can submit that. It may require a hard inquiry on your credit report — shall I go ahead?', uk: 'I can look at that. We will need to run an affordability check, which may leave a search on your credit file.', au: 'I can take a request. We will need to reassess your income and expenses, as the law requires.' })),
-    you([pick({ in: 'Fine. Will this involve a fresh enquiry with the credit bureau?', us: 'Before you do — can it be done with a soft pull instead?', uk: 'Will that be a soft search or a hard search? I would rather avoid a hard one.', au: 'That is fine. Will this be recorded as a credit enquiry on my file?' }), 1, 'Always ask what goes on your credit file before you agree. Often the answer is “nothing” — but only if you ask.'], ['Sure, go ahead, whatever is needed.', 0, 'You may have just agreed to a hard enquiry you could have avoided.']),
-    ag('Approved — your new limit is active.'),
-    you(['Thanks. Please leave the over-limit facility switched off.', 1, 'A higher limit is for a lower utilisation ratio, not for more spending.'], ['Brilliant — time to go shopping.', 0, 'The limit rose to make your file look better. Spending up to it undoes that.'])]],
+    you([`I’d like a credit limit increase. I’ve had the card two years, never missed a payment, and my income has risen to ${money(A.income * 1.3 * (rid === 'in' ? 1 : 12))}${rid === 'in' ? ' a month' : ' a year'}.`, 1, 'You have made the case for them: tenure, record, income.'], ['I keep hitting my limit and need more.', 0, 'That says you are stretched: the opposite of what gets approved.']),
+    ag(pick({ in: 'I can process that. You will need to upload your latest salary slips in the app.', us: 'I can submit that. It may require a hard inquiry on your credit report: shall I go ahead?', uk: 'I can look at that. We will need to run an affordability check, which may leave a search on your credit file.', au: 'I can take a request. We will need to reassess your income and expenses, as the law requires.' })),
+    you([pick({ in: 'Fine. Will this involve a fresh enquiry with the credit bureau?', us: 'Before you do, can it be done with a soft pull instead?', uk: 'Will that be a soft search or a hard search? I would rather avoid a hard one.', au: 'That is fine. Will this be recorded as a credit enquiry on my file?' }), 1, 'Always ask what goes on your credit file before you agree. Often the answer is “nothing”, but only if you ask.'], ['Sure, go ahead, whatever is needed.', 0, 'You may have just agreed to a hard enquiry you could have avoided.']),
+    ag('Approved: your new limit is active.'),
+    you(['Thanks. Please leave the over-limit facility switched off.', 1, 'A higher limit is for a lower utilisation ratio, not for more spending.'], ['Brilliant: time to go shopping.', 0, 'The limit rose to make your file look better. Spending up to it undoes that.'])]],
   ['💰', 'Get a fee reversed', 'A late fee after years of paying on time.', [
     ag('How can I help today?'),
-    you([`There is a ${late} late fee on my statement. I have paid on time for three years — could you waive it as a one-off courtesy?`, 1, 'Polite, factual, and the phrase “one-off courtesy” is exactly the category agents are allowed to approve.'], ['Why have you charged me this? Take it off.', 0, 'Hostility makes the agent quote policy rather than look for discretion.'], ['Put me through to a manager.', 0, 'The front-line agent almost always has authority to waive a first fee. Skipping them removes the person most able to say yes.']),
+    you([`There is a ${late} late fee on my statement. I have paid on time for three years: could you waive it as a one-off courtesy?`, 1, 'Polite, factual, and the phrase “one-off courtesy” is exactly the category agents are allowed to approve.'], ['Why have you charged me this? Take it off.', 0, 'Hostility makes the agent quote policy rather than look for discretion.'], ['Put me through to a manager.', 0, 'The front-line agent almost always has authority to waive a first fee. Skipping them removes the person most able to say yes.']),
     ag('I can see your record. I will reverse the late fee as a goodwill gesture.'),
     you([pick({ in: 'Thank you. Please also reverse the GST charged on it, and any interest that arose from it.', us: 'Thank you. Could you also remove the interest that posted because of it?', uk: 'Thank you. Could you also confirm no missed-payment marker has gone to the credit reference agencies?', au: 'Thank you. Could you confirm it will not show as a late payment in my repayment history?' }), 1, 'The fee is one line. Its side-effects are others. Agents rarely reverse what you do not ask about.'], ['Thank you so much!', 0, 'The knock-on charge or marker stays, because nobody asked.'])]],
   ['🆘', 'Tell them you are struggling', 'You cannot meet next month’s payment.', [
@@ -101,7 +102,7 @@ const C = [
     ag('I have reviewed the case and the decision stands, I’m afraid.'),
     you(['I’d like to make a formal complaint, please. Can you log it and give me the complaint reference?', 1, 'The word “complaint” starts a regulated process with a clock on it. A grumble does not.'], ['This is ridiculous. I’m going to post about this everywhere.', 0, 'A threat is not a complaint. Nothing is logged and no clock starts.']),
     ag('I have logged it. Is there anything you would like to add?'),
-    you(['Yes: the facts in date order, the evidence I hold, and the outcome I want — a refund of the disputed amount.', 1, 'Whoever reviews it later sees only the file. Make the file complete, short and specific about the remedy.'], ['Just that I’m very unhappy.', 0, 'A reviewer cannot uphold a feeling. They can uphold a fact pattern.']),
+    you(['Yes: the facts in date order, the evidence I hold, and the outcome I want, a refund of the disputed amount.', 1, 'Whoever reviews it later sees only the file. Make the file complete, short and specific about the remedy.'], ['Just that I’m very unhappy.', 0, 'A reviewer cannot uphold a feeling. They can uphold a fact pattern.']),
     ag('You will receive our final response in writing.'),
     you([`Thank you. If I have not had a satisfactory answer within ${R.ombWait}, I will take it to ${R.ombudsman}.`, 1, 'It is free, it is independent, and banks know that every case costs them. Saying it calmly often changes the tone of the reply.'], ['Fine. I’ll wait to hear.', 0, 'Waiting without a date is how complaints die. Know the deadline and what comes after it.'])]]
 ];

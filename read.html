@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>Guide | Decoding Credit Cards</title>
+<meta name="description" content="A plain-language guide from the Decoding Credit Cards library: cards, payments and the banking machinery behind them.">
+<meta property="og:title" content="Guide | Decoding Credit Cards">
+<meta property="og:description" content="A plain-language guide from the Decoding Credit Cards library: cards, payments and the banking machinery behind them.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="css/global.css">
+<style>
+.toc-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 18px; }
+.toc-chips a { font: 400 .74rem var(--font-mono); padding: 5px 11px; border-radius: 999px; background: var(--paper); color: var(--ink-muted); text-decoration: none; }
+.toc-chips a:hover { background: var(--electric-soft); color: var(--electric); }
+.myth b { color: var(--danger); } .endmark { text-align: center; color: var(--electric); font-size: 1.6rem; margin-block: 36px 8px; }
+</style>
+</head>
+<body>
+<main class="page">
+<div class="wrap wrap--narrow" id="root"><p class="lede">Loading…</p></div>
+</main>
+<script src="js/regions.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/global.js"></script>
+<script>
+{
+const { $, $$, R, rid, t, pick, catalog, item } = DCC;
+const id = new URLSearchParams(location.search).get('e'), it = item(id || '');
+const root = $('#root');
+if (!it || it.type !== 'guide') { root.innerHTML = `<h1>Not found</h1><p class="standfirst">That guide does not exist. <a href="library.html">Browse the library</a>.</p>`; document.title = 'Not found | Decoding Credit Cards'; }
+else {
+  document.title = `${it.title} | Decoding Credit Cards`;
+  const dom = catalog.domains[it.domain];
+  const sc = document.createElement('script'); sc.src = `kb/${it.domain}.js`;
+  sc.onerror = () => root.innerHTML = `<h1>${it.title}</h1><p class="standfirst">This guide could not be loaded.</p>`;
+  sc.onload = () => {
+    const g = (window.DCC_KB || {})[id];
+    if (!g) { root.innerHTML = `<h1>${it.title}</h1><p class="standfirst">${it.desc}</p><div class="callout" style="margin-top:24px"><b>Being written</b>This guide is planned but not published yet. <a href="library.html">Back to the library</a>.</div>`; return; }
+    const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const reg = g.reg ? (typeof g.reg === 'string' ? g.reg : pick(g.reg)) : '';
+    const see = (g.see || []).map(item).filter(Boolean);
+    root.innerHTML = t(`<div class="crumbs"><a href="library.html">Library</a><span>›</span><a href="library.html?d=${it.domain}">${dom[1]}</a></div>
+      <span class="kind guide">Guide</span><span class="mono faint">${it.mins} min read · ${R.flag} ${R.label}</span>
+      <h1 style="margin-top:10px">${it.title}</h1><p class="standfirst">${it.desc}</p>
+      ${g.brief ? `<div class="brief"><div class="eyebrow">In brief</div><ul>${g.brief.map(b => `<li>${b}</li>`).join('')}</ul></div>` : ''}
+      ${g.sec.length > 2 ? `<nav class="toc-chips" aria-label="On this page">${g.sec.map(s => `<a href="#${slug(s[0])}">${s[0]}</a>`).join('')}</nav>` : ''}
+      ${g.flow ? `<div class="stage"><div class="eyebrow">Watch it move</div><div id="flow"></div></div>` : ''}
+      <article class="prose">${g.sec.map(s => `<h2 id="${slug(s[0])}">${s[0]}</h2>${s[1]}`).join('')}</article>
+      ${g.facts ? `<div class="stage"><div class="eyebrow">Quick reference</div><div class="kv">${g.facts.map(f => `<div><span>${f[0]}</span><span style="white-space:normal;text-align:right">${f[1]}</span></div>`).join('')}</div></div>` : ''}
+      ${reg ? `<div class="callout" style="margin-top:26px"><b>${R.flag} In ${R.name}</b>${reg}</div>` : ''}
+      ${g.myth ? `<h2 class="h3" style="margin-top:40px">Common mistakes</h2><div style="margin-top:14px" class="myth">${g.myth.map(m => `<details class="fold"><summary><span class="h4">“${m[0]}”</span></summary><div class="fold-body"><p>${m[1]}</p></div></details>`).join('')}</div>` : ''}
+      ${g.quiz ? `<h2 class="h3" style="margin-top:40px">Check yourself</h2><div class="stage" id="quiz" style="margin-top:14px"></div>` : ''}
+      <div class="endmark">※</div>
+      <div id="tnav"></div>
+      ${see.length ? `<h2 class="h3" style="margin-top:40px">Keep going</h2><div class="stack" style="margin-top:14px;--gap:10px">${see.map(x => `<a class="card-link ${DCC.itemDone(x.id) ? 'done' : ''}" href="${x.href}"><span class="ic">${x.type === 'lab' ? '🎮' : '📖'}</span><span><b>${x.title}</b><small>${x.desc}</small></span><span class="meta">${x.type === 'lab' ? 'Lab' : 'Guide'} · ${x.mins} min</span></a>`).join('')}</div>` : ''}`);
+    if (g.flow) DCC.flow($('#flow'), { nodes: g.flow.nodes, steps: g.flow.steps.map(s => ({ from: s[0], to: s[1], tag: s[2], kind: s[3] || 'req', title: s[4], body: s[5] })) });
+    const finish = () => { DCC.markRead(id); $('#tnav').innerHTML = DCC.trackNav(id); };
+    if (g.quiz) DCC.quiz($('#quiz'), { shuffle: true, label: 'Question', items: g.quiz.map(q => ({ title: t(q[0]), opts: q[1].map((o, i) => ({ t: t(o), ok: i === 0 })), explain: q[2] ? `<p>${t(q[2])}</p>` : '' })),
+      onEnd(s, n, again) { $('#quiz').innerHTML = `<div style="text-align:center"><h3 class="h3">${s} of ${n} <em>right</em>.</h3><div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn--outline" id="again">↻ Again</button></div></div>`; $('#again').onclick = again; DCC.playSuccess(); finish(); } });
+    $('#tnav').innerHTML = DCC.trackNav(id);
+    new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { finish(); o.disconnect(); } }), { threshold: 1 }).observe($('.endmark'));
+    DCC.fillAll(); DCC.observe();
+    if (location.hash) { const h = document.getElementById(location.hash.slice(1)); h && h.scrollIntoView(); }
+  };
+  document.body.appendChild(sc);
+}
+}
+</script>
+</body>
+</html>

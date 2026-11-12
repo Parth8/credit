@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>II. Getting a Card — Decoding Credit Cards</title>
-<meta name="description" content="Fill in a profile and watch the lender’s model decide in real time. Every answer shows whether it helped or hurt — so you learn what they are really looking at.">
+<title>II. Getting a Card | Decoding Credit Cards</title>
+<meta name="description" content="Fill in a profile and watch the lender’s model decide in real time. Every answer shows whether it helped or hurt, so you learn what they are really looking at.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/02-getting-a-card.html">
-<meta property="og:title" content="II. Getting a Card — Decoding Credit Cards">
+<meta property="og:title" content="II. Getting a Card | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -33,7 +33,7 @@
 <main class="ch"><div class="wrap">
 <header class="ch-head">
   <h1><em>Getting</em> a Card</h1>
-  <p>Fill in a profile and watch the lender’s model decide in real time. Every answer shows whether it helped or hurt — so you learn what they are really looking at.</p>
+  <p>Fill in a profile and watch the lender’s model decide in real time. Every answer shows whether it helped or hurt, so you learn what they are really looking at.</p>
 </header>
 
 <section class="sec">
@@ -73,10 +73,11 @@
 
 <aside class="checkpoint" data-icon="📝">
   <h3>You know <em>what lenders see</em>.</h3>
-  <p>Income, history, existing credit and recent applications — in that rough order. Next: the card itself, part by part.</p>
+  <p>Income, history, existing credit and recent applications, in that rough order. Next: the card itself, part by part.</p>
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
@@ -97,43 +98,43 @@ function update() {
   const f = []; let pass = true, review = false, limit = income * mult, apr = R.apr;
   const add = (c, x) => f.push([c, x]);
 
-  if (age < young) { add('b', pick({ in: 'Under 21 — most Indian issuers want 21+ for an unsecured card. A card against a fixed deposit, or an add-on card, is the way in.', us: 'Under 21 — the CARD Act requires your own income or a co-signer. Student and secured cards exist for exactly this.' })); if (st.emp === 'student' || income < mInc * .5) pass = false; else review = true; }
-  else if (age <= 25) add('w', 'Young file — expect a low starting limit that grows with on-time payments');
-  else if (age <= 58) add('g', 'Working-age profile — no age friction');
-  else add('w', 'Near retirement — the lender may ask how the income continues');
+  if (age < young) { add('b', pick({ in: 'Under 21, most Indian issuers want 21+ for an unsecured card. A card against a fixed deposit, or an add-on card, is the way in.', us: 'Under 21, the CARD Act requires your own income or a co-signer. Student and secured cards exist for exactly this.' })); if (st.emp === 'student' || income < mInc * .5) pass = false; else review = true; }
+  else if (age <= 25) add('w', 'Young file: expect a low starting limit that grows with on-time payments');
+  else if (age <= 58) add('g', 'Working-age profile: no age friction');
+  else add('w', 'Near retirement: the lender may ask how the income continues');
 
   if (income < mInc * .4 && st.emp !== 'student') { add('b', `Income of ${money(income * k)}${annual ? ' a year' : ' a month'} is under this card’s minimum`); pass = false; }
-  else if (income < mInc * .8) { add('w', 'Income clears the minimum, but only just — smaller limit'); limit *= .6; }
+  else if (income < mInc * .8) { add('w', 'Income clears the minimum, but only just: smaller limit'); limit *= .6; }
   else if (income < mInc * 2.5) add('g', 'Income comfortably supports this card');
-  else { add('g', 'Strong income — premium products open up'); limit *= 1.3; }
+  else { add('g', 'Strong income: premium products open up'); limit *= 1.3; }
 
-  if (score < fair) { add('b', `${R.score} of ${score} is in the “${B[0][1].toLowerCase()}” band — seen as high risk`); pass = false; }
-  else if (score < good) { add('w', `${R.score} of ${score} is only “${B[1][1].toLowerCase()}” — approval is uncertain and pricing is worse`); review = true; limit *= .6; apr += pick({ in: 3, us: 5, uk: 9, au: 0 }); }
-  else if (score < top) add('g', `${R.score} of ${score} — solid, standard terms`);
-  else { add('g', `${R.score} of ${score} — top band, best terms on offer`); limit *= 1.25; apr -= pick({ in: 3, us: 4, uk: 3, au: 0 }); }
+  if (score < fair) { add('b', `${R.score} of ${score} is in the “${B[0][1].toLowerCase()}” band: seen as high risk`); pass = false; }
+  else if (score < good) { add('w', `${R.score} of ${score} is only “${B[1][1].toLowerCase()}”: approval is uncertain and pricing is worse`); review = true; limit *= .6; apr += pick({ in: 3, us: 5, uk: 9, au: 0 }); }
+  else if (score < top) add('g', `${R.score} of ${score}: solid, standard terms`);
+  else { add('g', `${R.score} of ${score}: top band, best terms on offer`); limit *= 1.25; apr -= pick({ in: 3, us: 4, uk: 3, au: 0 }); }
 
-  if (st.emp === 'student') { add('w', pick({ in: 'Student — unsecured cards are rare; think FD-backed card or add-on card on a parent’s account', us: 'Student — student cards exist, with small limits; being an authorised user on a parent’s card also builds history', uk: 'Student — a student account card or a credit-builder card with a £250–£500 limit is realistic', au: 'Student — low-rate, low-limit cards only; lenders must check you can afford the whole limit' })); limit = Math.min(limit, mInc * .5); }
-  else if (st.emp === 'self') { add('w', pick({ in: 'Self-employed — expect to show 2 years of ITRs; limits start lower', us: 'Self-employed — stated income is accepted, but may be verified with tax returns', uk: 'Self-employed — variable income can mean a lower limit or a request for SA302s', au: 'Self-employed — two years of tax returns and BAS are commonly requested' })); limit *= .85; }
-  else add('g', 'Salaried — the most predictable income a lender can see');
+  if (st.emp === 'student') { add('w', pick({ in: 'Student, unsecured cards are rare; think FD-backed card or add-on card on a parent’s account', us: 'Student, student cards exist, with small limits; being an authorised user on a parent’s card also builds history', uk: 'Student, a student account card or a credit-builder card with a £250–£500 limit is realistic', au: 'Student, low-rate, low-limit cards only; lenders must check you can afford the whole limit' })); limit = Math.min(limit, mInc * .5); }
+  else if (st.emp === 'self') { add('w', pick({ in: 'Self-employed, expect to show 2 years of ITRs; limits start lower', us: 'Self-employed, stated income is accepted, but may be verified with tax returns', uk: 'Self-employed, variable income can mean a lower limit or a request for SA302s', au: 'Self-employed, two years of tax returns and BAS are commonly requested' })); limit *= .85; }
+  else add('g', 'Salaried: the most predictable income a lender can see');
 
-  if (st.cards === 0) add('w', 'No credit history — nothing for the model to learn from (a “thin file”)');
-  else if (st.cards === 1) add('g', 'Existing cards managed well — proof you can handle credit');
-  else { add('w', 'Plenty of credit already open — the lender counts your total exposure'); limit *= .7; }
+  if (st.cards === 0) add('w', 'No credit history: nothing for the model to learn from (a “thin file”)');
+  else if (st.cards === 1) add('g', 'Existing cards managed well: proof you can handle credit');
+  else { add('w', 'Plenty of credit already open: the lender counts your total exposure'); limit *= .7; }
 
-  if (st.apps === 1) add('w', 'A couple of recent applications — a small, temporary score dip');
+  if (st.apps === 1) add('w', 'A couple of recent applications: a small, temporary score dip');
   else if (st.apps === 3) { add('b', 'Three or more applications in six months reads as credit-hungry'); review = true; limit *= .7; }
   else add('g', 'No recent applications');
 
   const v = $('#verdict'); let cls, chip, head, sum;
-  if (!pass) { cls = 'no'; chip = '✗ Declined'; head = '<em>Not this time.</em>'; sum = 'The automated checks failed. The red lines below are the reasons — fix those first rather than applying elsewhere straight away.'; }
+  if (!pass) { cls = 'no'; chip = '✗ Declined'; head = '<em>Not this time.</em>'; sum = 'The automated checks failed. The red lines below are the reasons: fix those first rather than applying elsewhere straight away.'; }
   else if (review) { cls = 'mid'; chip = '⏳ Referred for review'; head = '<em>Borderline.</em>'; sum = 'The model would not say yes on its own. A person looks at it, may ask for documents, and often approves a smaller limit.'; }
   else { cls = 'ok'; chip = '✓ Approved in seconds'; head = '<em>Welcome aboard.</em>'; sum = 'Everything cleared the automated thresholds. No human looked at it.'; }
   if (v.dataset.s && v.dataset.s !== cls) { cls === 'ok' ? DCC.playSuccess() : cls === 'no' ? DCC.playError() : DCC.playClick(); if (cls === 'ok') { const b = v.getBoundingClientRect(); DCC.burstConfetti(b.left + b.width / 2, Math.max(120, b.top + 60), 14); } }
   v.dataset.s = cls; v.className = 'verdict ' + cls;
   $('#v-chip').textContent = chip; $('#v-head').innerHTML = head; $('#v-sum').textContent = sum;
   const step = pick({ in: 5000, us: 100, uk: 50, au: 500 }), floor = pick({ in: 10000, us: 300, uk: 250, au: 1000 });
-  $('#v-limit').textContent = pass ? money(Math.max(floor, Math.round(limit / step) * step)) : '—';
-  $('#v-apr').textContent = pass ? apr + '%' : '—';
+  $('#v-limit').textContent = pass ? money(Math.max(floor, Math.round(limit / step) * step)) : '–';
+  $('#v-apr').textContent = pass ? apr + '%' : '–';
   $('#v-why').innerHTML = f.map(([c, x], i) => `<div class="${c}" style="animation-delay:${i * 40}ms"><i>${c === 'g' ? '✓' : c === 'w' ? '~' : '✗'}</i><span>${x}</span></div>`).join('');
 }
 document.addEventListener('input', e => e.target.type === 'range' && update());
@@ -142,24 +143,24 @@ $$('.seg').forEach(s => s.addEventListener('click', e => { const b = e.target.cl
 update();
 
 const BEHIND = pick({
-  in: [['The bureau pull', 'The bank pulls your report from {bureau} (or another bureau). It shows every loan and card, and 36 months of payment history. This is a <strong>hard enquiry</strong> — visible to other lenders and worth a few points for a few months.'],
-       ['The income check', 'Salary slips, bank statements or ITRs, plus KYC with PAN and Aadhaar — often by video. The bank works out how much of your income already goes to EMIs; above roughly 50% is a problem.'],
+  in: [['The bureau pull', 'The bank pulls your report from {bureau} (or another bureau). It shows every loan and card, and 36 months of payment history. This is a <strong>hard enquiry</strong>: visible to other lenders and worth a few points for a few months.'],
+       ['The income check', 'Salary slips, bank statements or ITRs, plus KYC with PAN and Aadhaar, often by video. The bank works out how much of your income already goes to EMIs; above roughly 50% is a problem.'],
        ['The model', 'A scorecard compares you with millions of past customers and sets the limit and the product. <strong>For most applications no human is involved</strong> unless the model is unsure.']],
-  us: [['Soft pull, then hard pull', '“See if you’re pre-approved” tools use a <strong>soft pull</strong> that does not touch your score. The real application triggers a <strong>hard inquiry</strong> — usually under 5 points, counted for 12 months, visible for 24.'],
+  us: [['Soft pull, then hard pull', '“See if you’re pre-approved” tools use a <strong>soft pull</strong> that does not touch your score. The real application triggers a <strong>hard inquiry</strong>, usually under 5 points, counted for 12 months, visible for 24.'],
        ['Ability to pay', 'The CARD Act requires issuers to consider whether you can make the payments. You state your income; they may verify it. Under 21, it must be your own income or you need a co-signer.'],
-       ['The model — and unwritten rules', 'Approval is automated in seconds. Many issuers also run house rules, such as declining anyone who opened several cards recently, whatever their score.']],
-  uk: [['Eligibility check first', 'UK lenders offer <strong>eligibility checkers that use a soft search</strong> — no mark that other lenders can see. Use one before every real application, because a full application leaves a hard search for 12 months.'],
+       ['The model, and unwritten rules', 'Approval is automated in seconds. Many issuers also run house rules, such as declining anyone who opened several cards recently, whatever their score.']],
+  uk: [['Eligibility check first', 'UK lenders offer <strong>eligibility checkers that use a soft search</strong>: no mark that other lenders can see. Use one before every real application, because a full application leaves a hard search for 12 months.'],
        ['The electoral roll', 'Being registered to vote at your current address is one of the cheapest boosts there is: it is how lenders confirm who you are and where you live.'],
-       ['The “representative” APR', 'The advertised rate only has to be given to <strong>51% of accepted applicants</strong>. The other 49% can be approved at a higher rate — you find out after you apply.']],
+       ['The “representative” APR', 'The advertised rate only has to be given to <strong>51% of accepted applicants</strong>. The other 49% can be approved at a higher rate: you find out after you apply.']],
   au: [['Comprehensive credit reporting', 'Lenders see not just defaults but 24 months of repayment history, every open account and its limit. Each application is recorded as an enquiry for five years.'],
-       ['Responsible lending', 'By law the lender must check the card is “not unsuitable”. They assess whether you could repay the <strong>entire limit within three years</strong>, so you list expenses as well as income — and a big limit on one card reduces what you can borrow for a home.'],
+       ['Responsible lending', 'By law the lender must check the card is “not unsuitable”. They assess whether you could repay the <strong>entire limit within three years</strong>, so you list expenses as well as income, and a big limit on one card reduces what you can borrow for a home.'],
        ['You can ask for less', 'You are entitled to request a lower limit than the one offered, and to reduce or cancel online. Unsolicited limit-increase offers are banned.']]
 });
 $('#behind').innerHTML = t(BEHIND.map(([h, p], i) => `<div class="panel reveal" style="--i:${i}"><div class="hand">${['i.', 'ii.', 'iii.'][i]}</div><h3 class="h4" style="margin-block:6px">${h}</h3><p class="small">${p}</p></div>`).join(''));
 $('#declined').innerHTML = '<b>If you are declined</b>' + pick({
-  in: 'Ask the bank for the reason, pull your free annual credit report from each bureau, and fix what it shows. Do not fire off more applications — each one is another hard enquiry. A card secured against a fixed deposit builds the history you are missing.',
-  us: 'You must be sent an <strong>adverse action notice</strong> stating the main reasons and which bureau was used, and you get a free copy of that report. You can also phone the issuer’s reconsideration line — a human can overturn the model.',
-  uk: 'Ask which credit reference agency was used and check your statutory report (free) for errors. Wait before reapplying — several hard searches close together make the next decline more likely.',
+  in: 'Ask the bank for the reason, pull your free annual credit report from each bureau, and fix what it shows. Do not fire off more applications: each one is another hard enquiry. A card secured against a fixed deposit builds the history you are missing.',
+  us: 'You must be sent an <strong>adverse action notice</strong> stating the main reasons and which bureau was used, and you get a free copy of that report. You can also phone the issuer’s reconsideration line: a human can overturn the model.',
+  uk: 'Ask which credit reference agency was used and check your statutory report (free) for errors. Wait before reapplying: several hard searches close together make the next decline more likely.',
   au: 'The lender must tell you if the decline was based on your credit report and which bureau supplied it. You can get a free report from each bureau every three months.'
 });
 DCC.observe();

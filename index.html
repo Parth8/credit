@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="format-detection" content="telephone=no">
   <meta name="theme-color" content="#F7F3ED">
-  <title>Decoding Credit Cards — An interactive guide</title>
-  <meta name="description" content="Learn credit cards by playing with them. 31 interactive chapters in two parts — how to use a card, and how the payments industry works — tailored to India, the USA, UK &amp; Europe, and Australia &amp; NZ. Free forever. No card recommendations.">
+  <title>Decoding Credit Cards | An interactive guide</title>
+  <meta name="description" content="Learn credit cards by playing with them. 31 interactive chapters in two parts, how to use a card, and how the payments industry works, tailored to India, the USA, UK &amp; Europe, and Australia &amp; NZ. Free forever. No card recommendations.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://parth8.github.io/credit/">
-  <meta property="og:title" content="Decoding Credit Cards — An interactive guide">
+  <meta property="og:title" content="Decoding Credit Cards | An interactive guide">
   <meta property="og:description" content="Learn credit cards by playing with them. 31 chapters. Free forever. No affiliate links.">
   <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -107,7 +107,7 @@
           <div class="chip is-accent live" style="--i:0">An interactive guide · 31 chapters · 4 regions</div>
           <h1 style="--i:1">Credit cards,<br><em>finally</em> explained.</h1>
           <div class="hand" style="--i:2">by playing with one →</div>
-          <p class="lede" style="--i:3">Most credit card guides are written for people who already understand them. This one is built for everyone else. <strong>You learn by tapping cards, dragging sliders and making the decisions yourself</strong> — then seeing what they cost.</p>
+          <p class="lede" style="--i:3">Most credit card guides are written for people who already understand them. This one is built for everyone else. <strong>You learn by tapping cards, dragging sliders and making the decisions yourself</strong>, then seeing what they cost.</p>
           <div class="row" style="--i:4">
             <a id="cta" href="chapters/01-the-handshake.html" class="btn btn--primary btn--lg">Start Chapter I →</a>
             <a href="#why" class="btn btn--ghost">Why this exists</a>
@@ -144,7 +144,7 @@
         </div>
         <div class="stack reveal" style="--i:1">
           <p>Search “credit cards explained” and you find creators recommending which card to sign up for, blogs full of affiliate links, and bank pages written like legal documents.</p>
-          <p>What I wanted was simple — <strong>just tell me how the thing actually works</strong>. Who gets paid. What each fee is. What “utilisation” really means. Why minimum payments are a trap.</p>
+          <p>What I wanted was simple, <strong>just tell me how the thing actually works</strong>. Who gets paid. What each fee is. What “utilisation” really means. Why minimum payments are a trap.</p>
           <p>So I figured it out, wrote it down, and turned it into this.</p>
           <div class="quote">“If you understand the mechanics, you stop being the one who pays for everyone else’s rewards.”</div>
         </div>
@@ -152,7 +152,7 @@
       <div class="how grid">
         <div class="panel reveal"><div class="n">i.</div><h3 class="h4">Do, then read</h3><p class="small muted">Every chapter opens with something to tap, drag or decide. The explanation comes after you have seen the result.</p></div>
         <div class="panel reveal" style="--i:1"><div class="n">ii.</div><h3 class="h4">Your country’s rules</h3><p class="small muted">A late fee in Mumbai, Miami, Manchester and Melbourne are four different things. Pick an edition and every number, law and example changes.</p></div>
-        <div class="panel reveal" style="--i:2"><div class="n">iii.</div><h3 class="h4">It remembers you</h3><p class="small muted">Progress is saved on this device only — nothing is sent anywhere. Come back and pick up where you stopped.</p></div>
+        <div class="panel reveal" style="--i:2"><div class="n">iii.</div><h3 class="h4">It remembers you</h3><p class="small muted">Progress is saved on this device only: nothing is sent anywhere. Come back and pick up where you stopped.</p></div>
       </div>
     </div>
   </section>
@@ -169,12 +169,13 @@
 
   <section class="manifesto">
     <div class="wrap reveal">
-      <p>Credit is just a tool. The people who “teach” you about it usually want you to <em>buy something</em>. <strong>This site sells nothing</strong>, and never will. <em>No affiliate links, no card pitches.</em> <strong>The mechanics are yours to learn</strong> — what you do with them is yours to decide.</p>
+      <p>Credit is just a tool. The people who “teach” you about it usually want you to <em>buy something</em>. <strong>This site sells nothing</strong>, and never will. <em>No affiliate links, no card pitches.</em> <strong>The mechanics are yours to learn</strong>: what you do with them is yours to decide.</p>
     </div>
   </section>
 </main>
 
 <script src="js/regions.js"></script>
+<script src="js/catalog.js"></script>
 <script src="js/global.js"></script>
 <script>
   const { $, chapters, isDone, regions, rid, R, money } = DCC;
@@ -195,7 +196,7 @@
   $('#journey-text').textContent = `${done} of ${chapters.length} complete`;
   setTimeout(() => $('#journey-bar').style.width = (done / chapters.length * 100) + '%', 400);
   if (done && next) { const a = $('#cta'); a.href = DCC.href(next); a.textContent = `Continue · Chapter ${next.roman} →`; }
-  else if (done && !next) { const a = $('#cta'); a.href = '#chapters'; a.textContent = `All ${chapters.length} complete ✓ — revisit`; }
+  else if (done && !next) { const a = $('#cta'); a.href = '#chapters'; a.textContent = `All ${chapters.length} complete ✓: revisit`; }
 
   // hero demo: tap the card, get an approval
   const demo = $('#demo'), pill = $('#pill');
@@ -205,7 +206,7 @@
     DCC.playClick(); demo.classList.add('paid');
     pill.textContent = `${R.merchant} · ${money(R.a.meal)} · authorising…`; pill.classList.add('show');
     setTimeout(() => {
-      pill.textContent = `✓ Approved in 1.4s — 5 companies just got involved`;
+      pill.textContent = `✓ Approved in 1.4s: 5 companies just got involved`;
       DCC.playSuccess(); const b = demo.getBoundingClientRect(); DCC.burstConfetti(b.left + b.width / 2, b.top + b.height / 2, 18);
     }, 1400);
     setTimeout(() => { pill.classList.remove('show'); demo.classList.remove('paid'); busy = false; }, 5200);

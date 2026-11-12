@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>I. The Handshake — Decoding Credit Cards</title>
+<title>I. The Handshake | Decoding Credit Cards</title>
 <meta name="description" content="Every card payment is a five-way handshake that finishes in under two seconds. Tap the card, watch it unfold, and meet everyone who takes a cut.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/01-the-handshake.html">
-<meta property="og:title" content="I. The Handshake — Decoding Credit Cards">
+<meta property="og:title" content="I. The Handshake | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -61,7 +61,7 @@
 
 <section class="sec">
   <div class="eyebrow">Scene 1 · The tap</div>
-  <h2 class="h2">First — <em>tap your card</em> on the terminal.</h2>
+  <h2 class="h2">First: <em>tap your card</em> on the terminal.</h2>
   <p class="lede">You are buying {$meal} of coffee and cake at {merchant}. Tap the card, then step through what happens.</p>
   <div class="stage">
     <div class="arena">
@@ -108,7 +108,7 @@
 <section class="sec">
   <div class="eyebrow">Scene 4 · The split</div>
   <h2 class="h2">Every payment is a <em>four-way split</em>.</h2>
-  <p class="lede">The shop never receives the full price. A slice — the merchant fee — is shared out before the money lands. Drag the amount.</p>
+  <p class="lede">The shop never receives the full price. A slice, the merchant fee, is shared out before the money lands. Drag the amount.</p>
   <div class="stage">
     <div class="field"><div class="field-top"><label for="amt">You pay</label><span class="val" id="amt-val"></span></div><input type="range" id="amt"><div class="field-ends"><span id="amt-min"></span><span id="amt-max"></span></div></div>
     <div class="grid recips" id="recips"></div>
@@ -128,6 +128,7 @@
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
@@ -183,19 +184,19 @@ $('#replay').onclick = () => {
 
 // ---------- Scene 2 ----------
 const CAST = [
-  { icon: '💳', name: 'You', role: 'Cardholder', desc: 'You make the purchase and you owe the money. You are the only player who is not paid by the transaction — you pay for it, in interest and fees, whenever you slip.',
+  { icon: '💳', name: 'You', role: 'Cardholder', desc: 'You make the purchase and you owe the money. You are the only player who is not paid by the transaction: you pay for it, in interest and fees, whenever you slip.',
     jobs: ['Stay inside your credit limit', 'Pay the statement in full and on time', 'Report anything you did not authorise, fast', 'Read the pricing: APR, fees, penalties'],
     profit: 'Nothing from the payment itself. Your return is the interest-free float, rewards, protection, and a credit history that unlocks cheaper loans later.' },
-  { icon: '🏪', name: 'Merchant', role: 'The seller', desc: 'The shop, app or site where you spend. Shops accept cards because losing the sale costs more than the fee — even though that fee comes straight out of their margin.',
+  { icon: '🏪', name: 'Merchant', role: 'The seller', desc: 'The shop, app or site where you spend. Shops accept cards because losing the sale costs more than the fee, even though that fee comes straight out of their margin.',
     jobs: ['Take payment on certified terminals', 'Pay the merchant fee on every sale', 'Honour valid refunds and chargebacks', 'Never store your security code (card-industry rules forbid it)'],
     profit: 'Merchants <em>lose</em> a slice of every card sale. They accept it for speed, bigger baskets and not handling cash.' },
   { icon: '⚙️', name: 'Acquirer', role: 'The shop’s payment stack', desc: 'Two layers on the shop’s side. The <strong>gateway or processor</strong> ({gateway}) captures and encrypts the card data. The <strong>acquiring bank</strong> ({acqBank}) holds the licence to collect card money and pays the shop.',
     jobs: ['Encrypt and forward the request', 'Route it to the right network', 'Collect settled funds from issuers', 'Pay the shop, net of fees', 'Fight chargebacks for the shop'],
-    profit: 'A margin on top of interchange and network fees — a fraction of a percent, multiplied by millions of payments a day.' },
+    profit: 'A margin on top of interchange and network fees, a fraction of a percent, multiplied by millions of payments a day.' },
   { icon: '🌐', name: 'Network', role: 'The rails', desc: '{networks}. Networks do not lend money or hold your account. They connect every acquirer to every issuer, set the rulebook, and run clearing and settlement between banks.',
     jobs: ['Route requests between banks', 'Set interchange and operating rules', 'Run global fraud screening', 'Net and settle between banks daily', 'License the brand to issuers'],
     profit: 'A tiny fee per transaction and per unit of volume. Visa alone handles roughly 700 million transactions a day, which makes tiny fees enormous.' },
-  { icon: '🏛️', name: 'Issuer', role: 'Your bank', desc: 'The lender that approved you, set your limit, sends the statement and says yes or no to every payment. {issuers} are issuers. They have the most to gain — and lose — from how you use the card.',
+  { icon: '🏛️', name: 'Issuer', role: 'Your bank', desc: 'The lender that approved you, set your limit, sends the statement and says yes or no to every payment. {issuers} are issuers. They have the most to gain, and lose, from how you use the card.',
     jobs: ['Assess applications, set limits and rates', 'Approve or decline each payment', 'Bill you and collect', 'Investigate fraud and disputes', 'Report your behaviour to credit bureaus'],
     profit: 'Five streams: interchange on every purchase, interest on unpaid balances, annual fees, penalty fees, and cash-advance and foreign-currency fees. Interest is the big one.' }
 ];
@@ -217,7 +218,7 @@ $('#cast').addEventListener('click', e => {
 const PHASES = [
   { tab: 'Authorisation', when: '~1.4 seconds', icon: '⚡', body: '<p>You just watched this. {issuer} places a <strong>hold</strong> on {$meal} of your limit. No money has moved, and {merchant} has only a promise.</p>', note: 'It is the same thing a hotel does at check-in: a reservation of funds, not a charge. A hold that is never completed simply drops off after a few days.' },
   { tab: 'Clearing', when: 'End of day', icon: '📦', body: '<p>At close of business {merchant} batches the day’s sales and sends them through {gateway} and {network} to every issuer. Now {issuer} receives the final amount and matches it to the hold.</p>', note: 'This is why a payment sits as “pending” first, and why a tip or a fuel pump pre-authorisation can change the amount before it posts.' },
-  { tab: 'Settlement', when: pick({ in: 'T+1 working day', us: '1–3 days', uk: '1–3 days', au: 'next working day' }), icon: '🏦', body: '<p>Money finally moves. {issuer} pays {network}’s settlement bank, the network nets every bank against every other, and {acqBank} pays {merchant} — minus the merchant fee.</p>', note: 'You, meanwhile, pay nothing until your statement falls due. That gap is your interest-free period — chapter V.' }
+  { tab: 'Settlement', when: pick({ in: 'T+1 working day', us: '1–3 days', uk: '1–3 days', au: 'next working day' }), icon: '🏦', body: '<p>Money finally moves. {issuer} pays {network}’s settlement bank, the network nets every bank against every other, and {acqBank} pays {merchant}, minus the merchant fee.</p>', note: 'You, meanwhile, pay nothing until your statement falls due. That gap is your interest-free period: chapter V.' }
 ];
 $('#phases').innerHTML = PHASES.map((p, i) => `<button data-i="${i}" class="${i ? '' : 'on'}">${p.tab}<br><small class="mono">${p.when}</small></button>`).join('');
 const phase = i => { const p = PHASES[i]; $$('#phases button').forEach((b, k) => b.classList.toggle('on', k === i));
@@ -228,7 +229,7 @@ phase(0);
 // ---------- Scene 4 ----------
 const SPLIT = pick({
   in: { ic: 1.1, net: 0.1, acq: 0.3, name: 'MDR (merchant discount rate)', note: '<b>In India</b>Typical credit-card MDR is 1.5–2%, more on premium and rewards cards because the issuer funds your points from interchange. A UPI payment from a bank account carries <strong>zero MDR</strong>, which is why the corner shop waves away your card but happily shows a QR code. (RuPay credit cards on UPI do carry MDR on payments above ₹2,000.)' },
-  us: { ic: 1.8, net: 0.14, acq: 0.4, name: 'swipe fee', note: '<b>In the USA</b>Credit interchange is not capped and runs about 1.5–2.5%, higher on premium rewards cards. That is why American rewards are the richest in the world — shops fund them. Debit is different: the Durbin rule caps large banks’ debit interchange at roughly 21¢ plus 0.05%.' },
+  us: { ic: 1.8, net: 0.14, acq: 0.4, name: 'swipe fee', note: '<b>In the USA</b>Credit interchange is not capped and runs about 1.5–2.5%, higher on premium rewards cards. That is why American rewards are the richest in the world: shops fund them. Debit is different: the Durbin rule caps large banks’ debit interchange at roughly 21¢ plus 0.05%.' },
   uk: { ic: 0.3, net: 0.12, acq: 0.4, name: 'merchant service charge', note: '<b>In the UK and EU</b>Law caps consumer credit interchange at <strong>0.3%</strong> (0.2% on debit). It is the main reason European reward cards are thin compared with American ones. American Express runs its own model outside the cap, so it costs shops more and some refuse it.' },
   au: { ic: 0.3, net: 0.1, acq: 0.4, name: 'merchant service fee', note: '<b>In Australia</b>From 1 October 2026 the RBA cut the cap on consumer credit interchange to <strong>0.3%</strong> (it used to average about 0.5%, up to 0.8%) and banned surcharges on Visa, Mastercard and eftpos. Shops save; points programmes are getting thinner. New Zealand capped credit interchange at 0.8% in 2022 and is cutting further.' }
 });
@@ -248,19 +249,19 @@ $('#split-note').innerHTML = SPLIT.note + ` <span class="faint">Illustrative spl
 const SUR = pick({
   in: { title: 'The <em>“2% extra on credit card”</em> moment.', scene: `You are buying a ${money(big)} TV at an electronics showroom. You take out your credit card and the salesperson says:`, quote: '“Sir, credit card pe 2% extra lagega.”',
     rows: [['TV price', money(big)], ['Their real card cost (MDR)', '~' + money(big * .015) + '–' + money(big * .02)], ['What they want from you (2%)', money(big * .02), 1]],
-    truth: 'MDR is a contract between the shop and its bank — <strong>you are not a party to it</strong>. Card-network rules and RBI guidance say merchants should not pass it on, but enforcement is thin and it happens constantly on jewellery, electronics and school fees.',
+    truth: 'MDR is a contract between the shop and its bank, <strong>you are not a party to it</strong>. Card-network rules and RBI guidance say merchants should not pass it on, but enforcement is thin and it happens constantly on jewellery, electronics and school fees.',
     moves: [['📲', 'Pay by UPI', 'Zero MDR for the shop, no surcharge for you. You give up the card’s float, rewards and chargeback rights.'], ['🤝', 'Negotiate', 'It is their cost of doing business. On a big ticket they would rather drop the surcharge than lose the sale.'], ['🧮', 'Do the sum', 'If the card earns you more than 2% on this purchase, or you need the protection, paying the surcharge can still be the better deal.']] },
   us: { title: 'The <em>“3% card fee”</em> line on the bill.', scene: `Dinner for four comes to ${money(180)}. At the bottom of the check, in small print:`, quote: '“A 3% surcharge is applied to all credit card payments.”',
     rows: [['The meal', money(180)], ['Restaurant’s real card cost', '~' + money(180 * .023, 1) + '–' + money(180 * .03, 1)], ['Surcharge added (3%)', money(5.4, 1), 1]],
     truth: 'Surcharging credit cards is legal in most US states, but there are rules: it must be <strong>disclosed before you pay</strong>, it cannot exceed the shop’s actual cost (Visa caps it at 3%), and it may <strong>never be applied to debit cards</strong>. A “cash discount” is the same idea turned around.',
-    moves: [['💵', 'Pay debit or cash', 'No surcharge is allowed on debit. You give up credit-card rewards and the stronger dispute rights.'], ['🔎', 'Check the disclosure', 'No sign at the door or on the menu? It is a rule violation — say so, and it usually disappears.'], ['🧮', 'Do the sum', 'A 2% cashback card against a 3% surcharge loses 1%. A 4% dining card wins 1%. Know your card.']] },
-  uk: { title: 'The <em>“50p card charge”</em> that is not allowed.', scene: 'A corner shop has a handwritten sign by the till:', quote: '“Card payments under £5 — 50p charge.”',
+    moves: [['💵', 'Pay debit or cash', 'No surcharge is allowed on debit. You give up credit-card rewards and the stronger dispute rights.'], ['🔎', 'Check the disclosure', 'No sign at the door or on the menu? It is a rule violation: say so, and it usually disappears.'], ['🧮', 'Do the sum', 'A 2% cashback card against a 3% surcharge loses 1%. A 4% dining card wins 1%. Know your card.']] },
+  uk: { title: 'The <em>“50p card charge”</em> that is not allowed.', scene: 'A corner shop has a handwritten sign by the till:', quote: '“Card payments under £5, 50p charge.”',
     rows: [['Your purchase', '£3.80'], ['Shop’s real card cost', 'a few pence'], ['Charge demanded', '£0.50', 1]],
-    truth: 'Since January 2018, surcharging consumer debit and credit cards has been <strong>banned across the UK and EU</strong>. A shop may set a minimum card spend, or refuse cards altogether — but it cannot add a fee for paying by Visa or Mastercard. (Business cards and, in some cases, Amex are outside the ban.)',
+    truth: 'Since January 2018, surcharging consumer debit and credit cards has been <strong>banned across the UK and EU</strong>. A shop may set a minimum card spend, or refuse cards altogether, but it cannot add a fee for paying by Visa or Mastercard. (Business cards and, in some cases, Amex are outside the ban.)',
     moves: [['🗣️', 'Say it is not allowed', 'Politely. Most small shops simply have not caught up, and the charge comes off.'], ['👛', 'Pay another way', 'Cash or a bigger basket to clear a legitimate minimum spend.'], ['📮', 'Report repeat offenders', 'Trading Standards enforces the ban (via Citizens Advice). You are entitled to the surcharge back.']] },
   au: { title: 'The <em>surcharge</em> that just became illegal.', scene: 'For years the last line on almost every Australian café receipt read:', quote: '“1.5% card surcharge applies.”',
     rows: [['Brunch', money(48)], ['Old surcharge (1.5%)', money(.72, 1), 1], ['From 1 Oct 2026 on Visa, Mastercard, eftpos', money(0)]],
-    truth: 'The Reserve Bank’s payments review ended surcharging on <strong>eftpos, Visa and Mastercard — debit and credit — from 1 October 2026</strong>, and cut interchange so shops pay less to accept cards. American Express is outside the ban and can still be surcharged. Expect some of the cost to move quietly into shelf prices.',
+    truth: 'The Reserve Bank’s payments review ended surcharging on <strong>eftpos, Visa and Mastercard, debit and credit, from 1 October 2026</strong>, and cut interchange so shops pay less to accept cards. American Express is outside the ban and can still be surcharged. Expect some of the cost to move quietly into shelf prices.',
     moves: [['🧾', 'Check the receipt', 'A surcharge on Visa, Mastercard or eftpos is no longer permitted. Ask for it to be removed.'], ['📮', 'Report it', 'The ACCC polices surcharging. Repeat offenders are worth a report.'], ['🧮', 'Amex maths', 'If a shop surcharges Amex at 1.5% and your points are worth 1%, you are losing. Switch cards at that till.']] }
 });
 $('#sur-title').innerHTML = SUR.title;

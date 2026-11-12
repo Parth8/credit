@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>XXVI. Interchange &amp; the Price of a Payment — Decoding Credit Cards</title>
+<title>XXVI. Interchange &amp; the Price of a Payment | Decoding Credit Cards</title>
 <meta name="description" content="Accepting a card has a price, and it is not one number. It changes with the card in your hand, how you pay, what you are buying and where the card was issued. Build a payment and watch the price move.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/26-interchange.html">
-<meta property="og:title" content="XXVI. Interchange &amp; the Price of a Payment — Decoding Credit Cards">
+<meta property="og:title" content="XXVI. Interchange &amp; the Price of a Payment | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -72,10 +72,11 @@
 
 <aside class="checkpoint" data-icon="⚖">
   <h3>You can <em>price a payment</em>.</h3>
-  <p>Interchange to the issuer, scheme fees to the network, a margin to the acquirer — and regulators redrawing the lines. Next: the companies standing between the shop and the network.</p>
+  <p>Interchange to the issuer, scheme fees to the network, a margin to the acquirer, and regulators redrawing the lines. Next: the companies standing between the shop and the network.</p>
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
@@ -83,11 +84,11 @@ const { $, $$, R, rid, money, t, pick } = DCC;
 // base interchange per card type: [percent, fixed, capped?]
 const T = pick({
   in: { names: ['RuPay debit / UPI', 'Other debit', 'Credit', 'Premium credit', 'Business', 'Foreign card'], base: [[0, 0, 1], [.3, 0, 1], [1.1, 0], [1.8, 0], [2, 0], [2, 0]], scheme: .1, acq: .3, blend: 1.8,
-    note: ['<strong>Zero.</strong> Since January 2020 the government has mandated a zero merchant discount rate on RuPay debit and UPI. Banks are compensated partly through a budget subsidy.', 'RBI caps the merchant fee on debit cards at 0.4% for small merchants and 0.9% for larger ones, so the interchange inside it is small.', 'Credit card interchange is not capped in India. It funds the interest-free period, fraud losses and rewards.', 'Premium cards carry higher interchange — the shop pays for your lounge visits whether it wants to or not.', 'Business cards carry the highest domestic rates; the buyer gets credit and data, the seller pays.', 'A card issued abroad costs more to accept, and the network adds cross-border fees.'] },
+    note: ['<strong>Zero.</strong> Since January 2020 the government has mandated a zero merchant discount rate on RuPay debit and UPI. Banks are compensated partly through a budget subsidy.', 'RBI caps the merchant fee on debit cards at 0.4% for small merchants and 0.9% for larger ones, so the interchange inside it is small.', 'Credit card interchange is not capped in India. It funds the interest-free period, fraud losses and rewards.', 'Premium cards carry higher interchange: the shop pays for your lounge visits whether it wants to or not.', 'Business cards carry the highest domestic rates; the buyer gets credit and data, the seller pays.', 'A card issued abroad costs more to accept, and the network adds cross-border fees.'] },
   us: { names: ['Debit (big bank)', 'Debit (small bank)', 'Credit', 'Premium rewards', 'Business', 'Foreign card'], base: [[.05, .22, 1], [.8, .15], [1.65, .1], [2.4, .1], [2.7, .1], [2.0, .1]], scheme: .14, acq: .3, blend: 2.9,
-    note: ['The <strong>Durbin rule</strong> caps debit interchange for banks with over $10 billion in assets at about 21¢ + 0.05% (plus 1¢ for fraud prevention). On a small purchase the fixed part dominates.', 'Banks under $10 billion are exempt from the cap, so their debit cards earn more — one reason fintech apps partner with small banks.', 'Credit interchange is uncapped. A standard card costs the shop about 1.5–1.8%.', 'The same shop, the same goods — but a premium rewards card costs it noticeably more. That gap is your points.', 'Business and corporate cards carry the highest rates of all.', 'A foreign-issued card adds cross-border assessments of around 1% on top.'] },
+    note: ['The <strong>Durbin rule</strong> caps debit interchange for banks with over $10 billion in assets at about 21¢ + 0.05% (plus 1¢ for fraud prevention). On a small purchase the fixed part dominates.', 'Banks under $10 billion are exempt from the cap, so their debit cards earn more: one reason fintech apps partner with small banks.', 'Credit interchange is uncapped. A standard card costs the shop about 1.5–1.8%.', 'The same shop, the same goods, but a premium rewards card costs it noticeably more. That gap is your points.', 'Business and corporate cards carry the highest rates of all.', 'A foreign-issued card adds cross-border assessments of around 1% on top.'] },
   uk: { names: ['Debit', 'Debit (prepaid)', 'Credit', 'Premium credit', 'Business', 'Non-EEA card'], base: [[.2, 0, 1], [.2, 0, 1], [.3, 0, 1], [.3, 0, 1], [1.6, 0], [1.5, 0]], scheme: .12, acq: .35, blend: 1.4,
-    note: ['Consumer debit interchange is capped at <strong>0.2%</strong> by law in the UK and EU.', 'Prepaid cards are treated as debit: 0.2%.', 'Consumer credit interchange is capped at <strong>0.3%</strong>.', 'Still 0.3%. The cap applies to every consumer credit card, however shiny — which is why European premium cards charge fees and give modest rewards.', 'Commercial cards are <strong>outside the cap</strong>, at around 1.5–1.8%. It is the main way a small business can still earn real rewards.', 'Cards from outside the region are capped at 0.2% / 0.3% in shops but 1.15% / 1.5% online. UK–EU online payments rose to those levels after Brexit, which UK regulators have been examining.'] },
+    note: ['Consumer debit interchange is capped at <strong>0.2%</strong> by law in the UK and EU.', 'Prepaid cards are treated as debit: 0.2%.', 'Consumer credit interchange is capped at <strong>0.3%</strong>.', 'Still 0.3%. The cap applies to every consumer credit card, however shiny, which is why European premium cards charge fees and give modest rewards.', 'Commercial cards are <strong>outside the cap</strong>, at around 1.5–1.8%. It is the main way a small business can still earn real rewards.', 'Cards from outside the region are capped at 0.2% / 0.3% in shops but 1.15% / 1.5% online. UK–EU online payments rose to those levels after Brexit, which UK regulators have been examining.'] },
   au: { names: ['Debit (eftpos)', 'Debit (Visa / MC)', 'Credit', 'Premium credit', 'Business', 'Foreign card'], base: [[0, .04, 1], [.16, 0, 1], [.3, 0, 1], [.3, 0, 1], [.8, 0, 1], [1.0, 0, 1]], scheme: .1, acq: .3, blend: 1.1,
     note: ['eftpos is the cheapest rail. From October 2026 debit interchange is capped at the lower of 8 cents or 0.16%.', 'Scheme debit is capped the same way; “least-cost routing” lets the terminal choose eftpos when it is cheaper.', 'From 1 October 2026 consumer credit interchange is capped at <strong>0.3%</strong>, down from an average near 0.5% and a ceiling of 0.8%.', 'The cap applies to premium cards too, so issuers are trimming points and raising annual fees.', 'Commercial credit keeps a cap of 0.8%.', 'Foreign-issued cards get a cap of 1.0% from April 2027; until then they cost considerably more.'] }
 });
@@ -103,7 +104,7 @@ function calc() {
   } else if (st.chan !== 'cp' || st.mcc !== 'gen') adj.push('this card’s interchange is fixed by regulation, so channel and merchant type barely change it');
   const free = rid === 'in' && st.card === 0;
   const ic = free ? 0 : a * p / 100 + fix, sch = free ? 0 : a * T.scheme / 100 * (st.card === 5 ? 6 : 1), acq = free ? 0 : a * T.acq / 100 + (rid === 'us' ? .1 : 0), tot = ic + sch + acq || 1e-9;
-  $('#amt-v').textContent = money(a, a < 100); $('#price').textContent = money(free ? 0 : tot, true); $('#price-pct').textContent = free ? 'nothing — the merchant fee is zero by mandate' : `${(tot / a * 100).toFixed(2)}% of the sale`;
+  $('#amt-v').textContent = money(a, a < 100); $('#price').textContent = money(free ? 0 : tot, true); $('#price-pct').textContent = free ? 'nothing: the merchant fee is zero by mandate' : `${(tot / a * 100).toFixed(2)}% of the sale`;
   const parts = [['Interchange → the card’s issuer', ic], ['Scheme fees → the network', sch], ['Margin → acquirer / processor', acq]];
   $('#bar').innerHTML = parts.map(([l, v], i) => `<span style="width:${v / tot * 100}%;background:${COL[i]}">${v / tot > .16 ? Math.round(v / tot * 100) + '%' : ''}</span>`).join('');
   $('#legend').innerHTML = parts.map(([l, v], i) => `<div><i style="background:${COL[i]}"></i><span>${l}</span><span>${money(v, true)}</span></div>`).join('');
@@ -117,7 +118,7 @@ function mix() {
   const m = +$('#mix').value / 100, rest = 1 - m, icpp = vol * (m * prem + rest * .5 * std + rest * .5 * deb), blend = vol * T.blend / 100;
   $('#mix-v').textContent = Math.round(m * 100) + '%'; $('#v-blend').textContent = money(blend); $('#v-icpp').textContent = money(icpp); $('#t-blend').textContent = `${T.blend}% on everything, whatever the card`;
   $('#s-blend').classList.toggle('win', blend < icpp); $('#s-icpp').classList.toggle('win', icpp <= blend);
-  $('#mix-note').innerHTML = icpp <= blend ? `<b>Cost-plus is cheaper by ${money(blend - icpp)} a month</b>With a flat rate the provider keeps the difference whenever a customer pays with a cheap card — and most do. Flat pricing buys simplicity; large merchants almost never accept it.`
+  $('#mix-note').innerHTML = icpp <= blend ? `<b>Cost-plus is cheaper by ${money(blend - icpp)} a month</b>With a flat rate the provider keeps the difference whenever a customer pays with a cheap card, and most do. Flat pricing buys simplicity; large merchants almost never accept it.`
     : `<b>The flat rate is cheaper by ${money(icpp - blend)} a month</b>With this many expensive cards, the provider is absorbing the cost. That is rare, and providers reprice merchants whose mix looks like this.`;
   $('#mix-note').className = 'callout ' + (icpp <= blend ? 'is-success' : 'is-warm');
 }
@@ -125,14 +126,14 @@ $('#mix').addEventListener('input', mix); mix();
 
 $('#ideas').innerHTML = [
   ['A two-sided market', 'A card network is useless to shoppers unless shops accept it, and useless to shops unless shoppers carry it. Interchange is the lever the network uses to balance the two sides: it charges the side that will tolerate it (merchants) to subsidise the side that needs persuading (cardholders, via rewards and free credit).'],
-  ['Who sets it, who gets it', 'The network sets the rates; the <strong>issuer</strong> keeps the money. Visa and Mastercard do not earn interchange — they earn separate scheme fees from both issuers and acquirers. Networks compete for issuers by offering them higher interchange, which is why competition between networks has tended to push merchant costs up, not down.'],
-  ['Three-party networks', 'American Express traditionally issues the card, runs the network and signs the merchant, so there is no interchange — just a single “discount rate” it keeps. That is why it has often sat outside interchange caps, and why its acceptance is patchier.'],
+  ['Who sets it, who gets it', 'The network sets the rates; the <strong>issuer</strong> keeps the money. Visa and Mastercard do not earn interchange: they earn separate scheme fees from both issuers and acquirers. Networks compete for issuers by offering them higher interchange, which is why competition between networks has tended to push merchant costs up, not down.'],
+  ['Three-party networks', 'American Express traditionally issues the card, runs the network and signs the merchant, so there is no interchange, just a single “discount rate” it keeps. That is why it has often sat outside interchange caps, and why its acceptance is patchier.'],
   ['What caps do', 'Wherever interchange has been capped, three things have followed: merchants’ costs fall, rewards shrink, and annual fees rise. Whether shop prices fall as well is the part economists still argue about.'],
   [pick({ in: 'India’s different path', us: 'The US fight', uk: 'Scheme fees are the new frontier', au: 'Australia’s reset' }), pick({
     in: 'India built a rail where the merchant pays nothing: UPI. Its volume now dwarfs cards, and card networks compete by linking credit cards and credit lines to it. Who pays for running UPI in the long run is an open policy question.',
     us: 'Merchants have been suing over interchange since 2005. Settlements have trimmed rates and loosened rules on steering and surcharging, while a proposed law would force large issuers to offer a second network on credit cards, as already happens with debit.',
     uk: 'With interchange capped, attention has moved to the networks’ own scheme and processing fees, which the Payment Systems Regulator found had risen substantially with little competitive pressure.',
-    au: 'The Reserve Bank’s 2026 package cut the caps, banned surcharges on the main networks and required fee transparency from large acquirers — the most interventionist model among comparable countries.' })]
+    au: 'The Reserve Bank’s 2026 package cut the caps, banned surcharges on the main networks and required fee transparency from large acquirers: the most interventionist model among comparable countries.' })]
 ].map(([h, p]) => `<details class="fold"><summary><span class="h4">${h}</span></summary><div class="fold-body"><p>${p}</p></div></details>`).join('');
 }
 </script>

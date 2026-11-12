@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>XII. Disputes &amp; Chargebacks — Decoding Credit Cards</title>
+<title>XII. Disputes &amp; Chargebacks | Decoding Credit Cards</title>
 <meta name="description" content="When a payment goes wrong, a credit card gives you something cash and bank transfers never do: a way to get the money back. Pick what happened and walk the steps.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/12-disputes.html">
-<meta property="og:title" content="XII. Disputes &amp; Chargebacks — Decoding Credit Cards">
+<meta property="og:title" content="XII. Disputes &amp; Chargebacks | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -47,7 +47,7 @@
   <div class="eyebrow">Before you file</div>
   <h2 class="h2">The evidence that <em>wins</em>.</h2>
   <div class="grid" style="--min:230px;margin-top:22px">
-    <div class="panel reveal"><h3 class="h4">Proof of the deal</h3><p class="small muted">Order confirmation, invoice, the listing or advert as it looked when you bought — screenshot it, because pages change.</p></div>
+    <div class="panel reveal"><h3 class="h4">Proof of the deal</h3><p class="small muted">Order confirmation, invoice, the listing or advert as it looked when you bought: screenshot it, because pages change.</p></div>
     <div class="panel reveal" style="--i:1"><h3 class="h4">Proof you tried</h3><p class="small muted">Dated emails or chat logs asking the merchant to fix it. Banks nearly always ask whether you tried the merchant first.</p></div>
     <div class="panel reveal" style="--i:2"><h3 class="h4">Proof of the problem</h3><p class="small muted">Photos, video, tracking that never moved, cancellation confirmations. Keep it factual and in date order.</p></div>
   </div>
@@ -60,15 +60,16 @@
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
 const { $, $$, R, rid, t, pick } = DCC;
 $('#rights').innerHTML = pick({
-  in: [['Unauthorised use', 'RBI’s 2017 rules: <strong>zero liability</strong> if you report within 3 working days. From 4 to 7 days your loss is capped (₹10,000–₹25,000 by card type). The bank must credit the amount within 10 working days and settle the case within 90.'], ['Goods and services', 'A chargeback under Visa, Mastercard or RuPay rules — usually within 120 days of the purchase or expected delivery. This is a network rule, not a law.'], ['If the bank stalls', 'After 30 days without a satisfactory answer, complain free to the RBI Integrated Ombudsman at cms.rbi.org.in.']],
+  in: [['Unauthorised use', 'RBI’s 2017 rules: <strong>zero liability</strong> if you report within 3 working days. From 4 to 7 days your loss is capped (₹10,000–₹25,000 by card type). The bank must credit the amount within 10 working days and settle the case within 90.'], ['Goods and services', 'A chargeback under Visa, Mastercard or RuPay rules, usually within 120 days of the purchase or expected delivery. This is a network rule, not a law.'], ['If the bank stalls', 'After 30 days without a satisfactory answer, complain free to the RBI Integrated Ombudsman at cms.rbi.org.in.']],
   us: [['Unauthorised use', 'The Fair Credit Billing Act caps your liability at <strong>$50</strong>; every major network makes it zero.'], ['Billing errors and non-delivery', 'Dispute in writing within <strong>60 days</strong> of the statement that shows the charge. The issuer must acknowledge within 30 days and resolve within two billing cycles. You need not pay the disputed amount meanwhile.'], ['Poor quality', 'For purchases over $50 you may also raise “claims and defenses” against the issuer after trying the merchant in good faith. Unresolved? File with the CFPB.']],
-  uk: [['Section 75', 'For anything costing <strong>over £100 and up to £30,000</strong>, the card provider is jointly liable with the seller for breach of contract or misrepresentation — even if you paid only the deposit by card. It is law, and there is no 120-day clock.'], ['Chargeback', 'A scheme rule, not a legal right, covering purchases of any size, credit or debit — usually within 120 days.'], ['If the provider says no', 'Complain; after 8 weeks or a final response, take it free to the Financial Ombudsman Service.']],
-  au: [['Unauthorised use', 'Under the ePayments Code you are not liable unless you contributed to the loss, for example by sharing a PIN or code.'], ['Chargeback', 'A card-scheme rule your bank must use where one is available — time limits apply, commonly 120 days. Your consumer guarantees under Australian Consumer Law apply as well.'], ['If the bank says no', 'Complain to the bank, then free to AFCA — typically after 30 days.']]
+  uk: [['Section 75', 'For anything costing <strong>over £100 and up to £30,000</strong>, the card provider is jointly liable with the seller for breach of contract or misrepresentation, even if you paid only the deposit by card. It is law, and there is no 120-day clock.'], ['Chargeback', 'A scheme rule, not a legal right, covering purchases of any size, credit or debit, usually within 120 days.'], ['If the provider says no', 'Complain; after 8 weeks or a final response, take it free to the Financial Ombudsman Service.']],
+  au: [['Unauthorised use', 'Under the ePayments Code you are not liable unless you contributed to the loss, for example by sharing a PIN or code.'], ['Chargeback', 'A card-scheme rule your bank must use where one is available: time limits apply, commonly 120 days. Your consumer guarantees under Australian Consumer Law apply as well.'], ['If the bank says no', 'Complain to the bank, then free to AFCA, typically after 30 days.']]
 }).map(([h, p], i) => `<div class="panel reveal" style="--i:${i};background:var(--white);border:1px solid var(--border-strong)"><h3 class="h4" style="margin-bottom:6px">${h}</h3><p class="small">${p}</p></div>`).join('');
 
 const prov = pick({ in: 'within 10 working days', us: 'usually within days', uk: 'often within days', au: 'usually within days' });
@@ -77,7 +78,7 @@ const C = [
     ['Lock the card', 'Freeze it in the app before anything else. You can sort out how it happened later.', '2 minutes'],
     ['Tell the issuer it was not you', `Call the number on the card or use the in-app dispute. Say “unauthorised transaction”. Note the reference number. ${R.lostRule}.`, '15 minutes'],
     ['Get the temporary credit', `The issuer refunds the amount ${prov} while it investigates, and sends a replacement card with a new number.`, 'Days'],
-    ['The investigation', 'The issuer raises a fraud chargeback through the network. The merchant has to show the payment was properly authenticated — chip read, PIN, second factor.', '30–90 days'],
+    ['The investigation', 'The issuer raises a fraud chargeback through the network. The merchant has to show the payment was properly authenticated: chip read, PIN, second factor.', '30–90 days'],
     ['Outcome', 'The credit becomes permanent. The one exception: evidence that you authorised it yourself, or handed over a PIN or code.', 'Money back']]],
   ['📦', 'It never arrived', 'You paid. Nothing came. The seller has gone quiet.', [
     ['Give the merchant one clear chance', 'Email: order number, what you paid, and a date by which you expect delivery or a refund. Keep it.', '7–10 days'],
@@ -85,8 +86,8 @@ const C = [
     ['Provisional credit', 'Most issuers credit you while the case runs. It can be reversed, so do not treat it as final.', 'Days'],
     ['The merchant must prove delivery', 'A carrier record to your address, ideally signed. Sellers that never shipped cannot produce one.', '30–45 days'],
     ['Outcome', 'No proof, no payment: the refund stands. If the merchant fights back (“representment”), the network decides.', 'Money back']]],
-  ['⚠️', 'Not what was described', 'It arrived broken, fake, or nothing like the listing — and the seller refuses a refund.', [
-    ['Photograph everything', 'The item, the packaging, the label — next to a screenshot of the listing.', '20 minutes'],
+  ['⚠️', 'Not what was described', 'It arrived broken, fake, or nothing like the listing, and the seller refuses a refund.', [
+    ['Photograph everything', 'The item, the packaging, the label: next to a screenshot of the listing.', '20 minutes'],
     ['Ask for a refund in writing', 'Offer to return it. A refusal, or silence, is your evidence.', '7 days'],
     ['File “not as described”', 'Send the issuer the photos, the listing and the correspondence. ' + pick({ in: 'You also have rights under the Consumer Protection Act; the e-commerce rules require a grievance officer to respond.', us: 'You can raise it both as a chargeback and as a “claims and defenses” dispute.', uk: 'Section 75 is strongest here: the card provider is as liable as the seller.', au: 'Quote your consumer guarantee: goods must match their description.' }), '30 minutes'],
     ['Be ready to return it', 'Networks usually require you to send the goods back, or show you tried. Keep the postage receipt.', '30–90 days'],
@@ -95,7 +96,7 @@ const C = [
     ['Capture the cancellation', 'The confirmation email, or screenshots of each attempt with dates.', '10 minutes'],
     ['Send one final notice', '“I cancelled on [date]. Refund the charge of [date] and stop billing me, or I will dispute it with my card issuer.”', '5 minutes'],
     ['File “cancelled recurring payment”', 'Both networks have a specific dispute reason for this. Attach the cancellation proof.', '20 minutes'],
-    ['Block the merchant', 'Ask the issuer to stop future charges from that merchant' + pick({ in: ' — and delete the e-mandate in the bank’s mandate hub; RBI rules require a 24-hour pre-debit alert on recurring payments.', us: '. Do not rely on a new card number: networks pass updated numbers to subscription merchants automatically.', uk: '. You have a legal right to cancel a continuous payment authority directly with your card provider.', au: '. Banks must act on a request to cancel a recurring card payment.' }), '5 minutes'],
+    ['Block the merchant', 'Ask the issuer to stop future charges from that merchant' + pick({ in: ', and delete the e-mandate in the bank’s mandate hub; RBI rules require a 24-hour pre-debit alert on recurring payments.', us: '. Do not rely on a new card number: networks pass updated numbers to subscription merchants automatically.', uk: '. You have a legal right to cancel a continuous payment authority directly with your card provider.', au: '. Banks must act on a request to cancel a recurring card payment.' }), '5 minutes'],
     ['Outcome', 'Refund for the charges after cancellation, and no more billing.', 'Refund + stop']]]
 ];
 $('#cases').innerHTML = C.map((c, i) => `<button class="tile" data-i="${i}"><span class="tile-icon">${c[0]}</span><span class="tile-name">${c[1]}</span><span class="tile-sub">${c[2]}</span></button>`).join('');

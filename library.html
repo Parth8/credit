@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>Library | Decoding Credit Cards</title>
+<meta name="description" content="The full library: interactive labs and plain-language guides on cards, payments, bank rails, fraud, compliance and banking architecture.">
+<meta property="og:title" content="Library | Decoding Credit Cards">
+<meta property="og:description" content="The full library: interactive labs and plain-language guides on cards, payments, bank rails, fraud, compliance and banking architecture.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="css/global.css">
+<style>
+.shelf { margin-top: 40px; } .shelf h2 { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; } .shelf .lede { margin-bottom: 14px; }
+.lib { display: grid; gap: 10px; } @media (min-width: 900px) { .lib { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<main class="page">
+<div class="wrap">
+  <div class="eyebrow">The library</div><h1>Everything, <em>searchable</em>.</h1>
+  <p class="standfirst"><span id="count"></span> Labs are things you do. Guides are things you read, each with a short check at the end.</p>
+  <input class="search" id="q" type="search" placeholder="Search: interchange, UPI, chargeback, BIAN, ACH…" aria-label="Search the library" style="margin-top:24px">
+  <div class="filters" id="doms" role="group" aria-label="Filter by subject"></div>
+  <div class="filters" id="kinds" role="group" aria-label="Filter by type"><button data-k="" class="on">Labs and guides</button><button data-k="lab">🎮 Labs only</button><button data-k="guide">📖 Guides only</button></div>
+  <div id="out" aria-live="polite"></div>
+</div>
+</main>
+<script src="js/regions.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/global.js"></script>
+<script>
+{
+const { $, $$, catalog, allItems, itemDone } = DCC;
+const items = allItems(), D = catalog.domains, qs = new URLSearchParams(location.search);
+let dom = D[qs.get('d')] ? qs.get('d') : '', kind = '', q = qs.get('q') || '';
+$('#q').value = q;
+$('#count').textContent = `${items.filter(i => i.type === 'lab').length} labs and ${items.filter(i => i.type === 'guide').length} guides across ${Object.keys(D).length} subjects.`;
+$('#doms').innerHTML = `<button data-d="" class="${dom ? '' : 'on'}">All subjects</button>` + Object.entries(D).map(([k, d]) => `<button data-d="${k}" class="${dom === k ? 'on' : ''}">${d[0]} ${d[1]}</button>`).join('');
+const card = x => `<a class="card-link ${itemDone(x.id) ? 'done' : ''}" href="${x.href}"><span class="ic">${x.type === 'lab' ? '🎮' : '📖'}</span><span><b>${x.title}</b><small>${x.desc}</small></span><span class="meta">${x.type === 'lab' ? 'Lab' : 'Guide'} · ${x.mins} min</span></a>`;
+function draw() {
+  const words = q.toLowerCase().split(/\s+/).filter(Boolean);
+  const hit = items.filter(x => (!dom || x.domain === dom) && (!kind || x.type === kind) && words.every(w => (x.title + ' ' + x.desc + ' ' + D[x.domain][1]).toLowerCase().includes(w)));
+  if (!hit.length) { $('#out').innerHTML = `<p class="lede" style="margin-top:32px">Nothing matches “${q.replace(/</g, '&lt;')}”. Try the <a href="glossary.html?q=${encodeURIComponent(q)}">glossary</a>.</p>`; return; }
+  $('#out').innerHTML = words.length ? `<p class="mono faint" style="margin-top:24px">${hit.length} result${hit.length === 1 ? '' : 's'}</p><div class="lib" style="margin-top:12px">${hit.map(card).join('')}</div>`
+    : Object.entries(D).filter(([k]) => hit.some(x => x.domain === k)).map(([k, d]) => `<section class="shelf"><h2 class="h3">${d[0]} ${d[1]} <span class="mono faint">${hit.filter(x => x.domain === k).length}</span></h2><p class="lede">${d[2]}</p><div class="lib">${hit.filter(x => x.domain === k).map(card).join('')}</div></section>`).join('');
+}
+$('#q').addEventListener('input', e => { q = e.target.value; draw(); });
+$('#doms').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; dom = b.dataset.d; $$('#doms button').forEach(x => x.classList.toggle('on', x === b)); draw(); });
+$('#kinds').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; kind = b.dataset.k; $$('#kinds button').forEach(x => x.classList.toggle('on', x === b)); draw(); });
+draw();
+}
+</script>
+</body>
+</html>

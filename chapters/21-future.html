@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>XXI. What’s Coming Next — Decoding Credit Cards</title>
+<title>XXI. What’s Coming Next | Decoding Credit Cards</title>
 <meta name="description" content="The plastic rectangle is becoming the least important part of a card. Set the rules for an AI agent that shops for you, then walk the timeline of what is already changing.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/21-future.html">
-<meta property="og:title" content="XXI. What’s Coming Next — Decoding Credit Cards">
+<meta property="og:title" content="XXI. What’s Coming Next | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -39,7 +39,7 @@
 <section class="sec">
   <div class="eyebrow">Try the near future</div>
   <h2 class="h2">Your AI agent has your card. <em>Set its rules.</em></h2>
-  <p class="lede">Agent checkout is live with the major networks and AI assistants. The skill that matters is no longer using a card — it is deciding what software may spend for you. Move the controls and watch four purchase attempts.</p>
+  <p class="lede">Agent checkout is live with the major networks and AI assistants. The skill that matters is no longer using a card: it is deciding what software may spend for you. Move the controls and watch four purchase attempts.</p>
   <div class="stage split">
     <div>
       <div class="field"><div class="field-top"><label for="cap">Most it may spend on one purchase</label><span class="val" id="cap-v"></span></div><input type="range" id="cap"></div>
@@ -63,10 +63,11 @@
 
 <aside class="checkpoint" data-icon="🔭">
   <h3>You can see <em>where this is going</em>.</h3>
-  <p>The card becomes a permission rather than an object. Everything you have learned still applies — to wallets, tokens and agents. One chapter left.</p>
+  <p>The card becomes a permission rather than an object. Everything you have learned still applies, to wallets, tokens and agents. One chapter left.</p>
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
@@ -78,14 +79,14 @@ function run() {
   const c = +cap.value, a = Math.min(+ask.value, c); $('#cap-v').textContent = money(c); $('#ask-v').textContent = money(a);
   let risky = 0, blocked = 0;
   $('#tries').innerHTML = TRY.map(([ic, n, amt, known, sub]) => {
-    let v = 'ok', why = 'Within your rules — bought with a one-off token.';
-    if (amt > c) { v = 'no'; why = 'Over your per-purchase cap.'; } else if (!known && s.where === 'known') { v = 'no'; why = 'Not a shop you have used.'; } else if (sub && s.subs === 'no') { v = 'no'; why = 'Recurring charge not allowed.'; } else if (amt > a) { v = 'ask'; why = 'Above your ask-first line — sent to your phone.'; }
+    let v = 'ok', why = 'Within your rules: bought with a one-off token.';
+    if (amt > c) { v = 'no'; why = 'Over your per-purchase cap.'; } else if (!known && s.where === 'known') { v = 'no'; why = 'Not a shop you have used.'; } else if (sub && s.subs === 'no') { v = 'no'; why = 'Recurring charge not allowed.'; } else if (amt > a) { v = 'ask'; why = 'Above your ask-first line: sent to your phone.'; }
     if (v === 'ok' && (!known || sub)) risky++; if (v === 'no') blocked++;
     return `<div class="try ${v}"><span style="font-size:1.4rem">${ic}</span><div><b>${n}</b><small>${money(amt)} · ${why}</small></div><b class="v">${{ ok: 'bought', no: 'blocked', ask: 'asks you' }[v]}</b></div>`; }).join('');
   const n = $('#agent-note');
-  if (risky) { n.className = 'callout is-danger'; n.innerHTML = '<b>Too loose</b>The agent just bought from an unknown site or signed you up to a repeat charge without asking. Who is liable when an agent is tricked is still being worked out — tighten the rules until the law catches up.'; }
+  if (risky) { n.className = 'callout is-danger'; n.innerHTML = '<b>Too loose</b>The agent just bought from an unknown site or signed you up to a repeat charge without asking. Who is liable when an agent is tricked is still being worked out: tighten the rules until the law catches up.'; }
   else if (blocked === TRY.length) { n.className = 'callout is-warm'; n.innerHTML = '<b>Too tight</b>Nothing gets through, so the agent is no use. Guardrails are a trade between convenience and control, not a way to avoid deciding.'; }
-  else { n.className = 'callout is-success'; n.innerHTML = '<b>Sensible</b>Routine purchases go through, anything unusual stops or comes to you. This is the same thinking as a credit limit, alerts and card locks — applied to software.'; }
+  else { n.className = 'callout is-success'; n.innerHTML = '<b>Sensible</b>Routine purchases go through, anything unusual stops or comes to you. This is the same thinking as a credit limit, alerts and card locks: applied to software.'; }
 }
 document.addEventListener('input', e => e.target.type === 'range' && run());
 ['where', 'subs'].forEach(k => $('#' + k).addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; s[k] = b.dataset.v; $$('#' + k + ' button').forEach(x => x.classList.toggle('on', x === b)); DCC.playClick(); run(); }));
@@ -94,23 +95,23 @@ run();
 const NOW = 'var(--success)', SOON = 'var(--gold)', LATER = 'var(--electric)';
 const common = [
   ['HAPPENING NOW', NOW, 'AI agents that <em>check out for you</em>', 'Visa, Mastercard and the big AI assistants launched agent payments in 2025–26.', 'The agent is issued a token scoped to one merchant, amount and time window, and the network can tell an approved agent from a bot. Open standards for this are being adopted by processors and shops. What is unsettled is liability: if an agent is tricked by a fake listing, the dispute rules were written for humans.', 'Start with tight limits and approval above a small amount. Treat the agent like a new employee with a company card.'],
-  ['HAPPENING NOW', NOW, 'Passkeys <em>replace</em> the one-time code', 'Approve a payment with your face or fingerprint instead of typing six digits.', 'Networks and banks are rolling out payment passkeys. Unlike a texted code, a passkey cannot be read out to a caller or typed into a fake site — it closes the door that most scams in chapter X walk through.', 'Turn it on when your bank offers it. A scam that needs your code no longer works.'],
+  ['HAPPENING NOW', NOW, 'Passkeys <em>replace</em> the one-time code', 'Approve a payment with your face or fingerprint instead of typing six digits.', 'Networks and banks are rolling out payment passkeys. Unlike a texted code, a passkey cannot be read out to a caller or typed into a fake site: it closes the door that most scams in chapter X walk through.', 'Turn it on when your bank offers it. A scam that needs your code no longer works.'],
   ['EMERGING', SOON, 'Stablecoins behind the <em>scenes</em>', 'The networks have started settling with banks in dollar stablecoins.', 'You will not see it. The card looks the same, but settlement between banks can run around the clock instead of on banking days. The United States passed a stablecoin law in 2025 and the EU’s rules are in force. Cards funded from a crypto balance also exist; they run on the same networks, with the same rules.', 'Faster refunds, eventually. Meanwhile, a card that spends crypto is still a card: the dispute rights come from the network, not the coin.'],
-  ['5–10 YEARS', LATER, 'The end of the <em>card number</em>', 'No number, no expiry, no plastic.', 'Every credential becomes a token bound to a device, a merchant or an agent, approved by biometrics. A stolen “card number” stops being a thing that exists. The fraud that remains is the kind that persuades you — which technology does not fix.', 'The lessons that last are the human ones: slow down, verify through your own channel, and know your rights.']
+  ['5–10 YEARS', LATER, 'The end of the <em>card number</em>', 'No number, no expiry, no plastic.', 'Every credential becomes a token bound to a device, a merchant or an agent, approved by biometrics. A stolen “card number” stops being a thing that exists. The fraud that remains is the kind that persuades you, which technology does not fix.', 'The lessons that last are the human ones: slow down, verify through your own channel, and know your rights.']
 ];
 const local = pick({
-  in: [['HAPPENING NOW', NOW, 'Credit on <em>UPI</em>', 'RuPay credit cards and bank credit lines now pay by scanning any UPI QR code.', 'This joins India’s two payment worlds: the reach of UPI with the float of a card. Small merchants pay no fee on low-value payments. Apple Pay arrived in September 2026 for some credit cards, joining Google Pay’s tap-to-pay.', 'Paying by QR feels like spending your own money. If it is drawing on a credit line, it is debt — know which account your UPI app is set to use.'],
+  in: [['HAPPENING NOW', NOW, 'Credit on <em>UPI</em>', 'RuPay credit cards and bank credit lines now pay by scanning any UPI QR code.', 'This joins India’s two payment worlds: the reach of UPI with the float of a card. Small merchants pay no fee on low-value payments. Apple Pay arrived in September 2026 for some credit cards, joining Google Pay’s tap-to-pay.', 'Paying by QR feels like spending your own money. If it is drawing on a credit line, it is debt: know which account your UPI app is set to use.'],
        ['HAPPENING NOW', NOW, 'Authentication beyond <em>SMS OTP</em>', 'From April 2026 banks may use app approval, biometrics or passkeys as the second factor.', 'RBI’s new framework is risk-based: low-risk payments may need less, high-risk ones more. Card networks can also be chosen at issue or renewal, and bank websites have moved to .bank.in addresses.', 'The spoken OTP was the scammer’s favourite tool. In-app approval that shows the amount and merchant is much harder to trick out of you.'],
        ['EMERGING', SOON, 'The <em>e-rupee</em> and pay-later everywhere', 'The RBI’s digital rupee is in wide pilot, and every shopping app offers its own credit line.', 'Six small credit lines across six apps add up to one large debt with no single statement. All of them now report to the bureaus.', 'Keep a list of every pay-later and credit line you hold. Close the ones you do not use.']],
   us: [['HAPPENING NOW', NOW, 'Tap to pay <em>finally</em> everywhere', 'The US was a decade behind; contactless and phone wallets are now the norm in stores and on transit.', 'Paying with a phone sends a token, never the card number, and needs your face or fingerprint.', 'Use the wallet instead of the plastic wherever you can. It is the same card, better protected.'],
        ['EMERGING', SOON, 'Pay by bank and <em>instant payments</em>', 'FedNow and RTP let money move in seconds; retailers are pushing “pay by bank” to avoid card fees.', 'Merchants may offer a discount for it. What you give up is the credit card’s dispute rights and float.', 'A discount for paying by bank is a real trade. Take it for bills and known merchants, not for purchases you might need to dispute.'],
-       ['EMERGING', SOON, 'Interchange and <em>rewards</em> under pressure', 'A long-running merchant lawsuit and proposed legislation both aim to lower swipe fees.', 'Rich US rewards are funded by uncapped interchange. Wherever regulators have capped it — Europe, Australia — rewards shrank within a couple of years. Pay-later loans are also starting to appear on credit reports.', 'Do not build your finances around a rewards programme. Its terms can change with one email.']],
-  uk: [['HAPPENING NOW', NOW, 'Contactless <em>without a cap</em>', 'Since March 2026 UK banks can set their own contactless limits, or let you choose yours.', 'Most have kept £100 for now. Phone wallets never had a limit because biometrics do the checking.', 'Decide your own limit in the app rather than accepting the default — lower if you worry about loss, higher if you use it for everything.'],
-       ['HAPPENING NOW', NOW, 'Pay-later is <em>regulated</em>', 'Since 15 July 2026 buy-now-pay-later is FCA-regulated credit.', 'Affordability checks, clearer information, the right to complain to the Ombudsman, and Section 75 on newer agreements. It also now appears on credit files.', 'Treat it as what it is — borrowing — and expect lenders to see it when you apply for a mortgage.'],
+       ['EMERGING', SOON, 'Interchange and <em>rewards</em> under pressure', 'A long-running merchant lawsuit and proposed legislation both aim to lower swipe fees.', 'Rich US rewards are funded by uncapped interchange. Wherever regulators have capped it, Europe, Australia, rewards shrank within a couple of years. Pay-later loans are also starting to appear on credit reports.', 'Do not build your finances around a rewards programme. Its terms can change with one email.']],
+  uk: [['HAPPENING NOW', NOW, 'Contactless <em>without a cap</em>', 'Since March 2026 UK banks can set their own contactless limits, or let you choose yours.', 'Most have kept £100 for now. Phone wallets never had a limit because biometrics do the checking.', 'Decide your own limit in the app rather than accepting the default: lower if you worry about loss, higher if you use it for everything.'],
+       ['HAPPENING NOW', NOW, 'Pay-later is <em>regulated</em>', 'Since 15 July 2026 buy-now-pay-later is FCA-regulated credit.', 'Affordability checks, clearer information, the right to complain to the Ombudsman, and Section 75 on newer agreements. It also now appears on credit files.', 'Treat it as what it is, borrowing, and expect lenders to see it when you apply for a mortgage.'],
        ['EMERGING', SOON, 'Pay by bank, Wero and a <em>digital euro</em>', 'Account-to-account payment at checkout is growing; Europe is building its own alternatives to the card networks.', 'Wero is live in several eurozone countries and the ECB is preparing a digital euro. Reimbursement for bank-transfer scams is now mandatory in the UK, and the EU is moving the same way.', 'Paying by bank is cheap for the shop but has no chargeback and no Section 75. For a big purchase, a credit card is still the protected choice.']],
   au: [['HAPPENING NOW', NOW, 'No more <em>surcharges</em>', 'From 1 October 2026 surcharging on eftpos, Visa and Mastercard is banned and interchange is capped lower.', 'Shops pay less to accept cards; issuers earn less; points programmes are being cut back. American Express sits outside the rules.', 'Re-check what your rewards card earns now against its annual fee. Many no longer pay their way.'],
        ['HAPPENING NOW', NOW, 'Scam duties on <em>banks, telcos and platforms</em>', 'The Scams Prevention Framework makes all three legally responsible for preventing and responding to scams.', 'Confirmation of payee now checks the account name before a transfer, and an SMS sender ID register blocks spoofed bank names.', 'Take a name-mismatch warning seriously. It is the system telling you the account is not who it claims to be.'],
-       ['EMERGING', SOON, 'PayTo, pay-later rules and the end of <em>cheques</em>', 'PayTo lets you approve bank-account payments in your banking app; pay-later has been regulated credit since June 2025; cheques are being phased out.', 'More payments will bypass cards entirely — cheaper for merchants, with different protections for you.', 'Before paying a business by bank transfer, ask yourself how you would get the money back.']]
+       ['EMERGING', SOON, 'PayTo, pay-later rules and the end of <em>cheques</em>', 'PayTo lets you approve bank-account payments in your banking app; pay-later has been regulated credit since June 2025; cheques are being phased out.', 'More payments will bypass cards entirely: cheaper for merchants, with different protections for you.', 'Before paying a business by bank transfer, ask yourself how you would get the money back.']]
 });
 const items = [local[0], common[0], local[1], common[1], local[2], common[2], common[3]];
 $('#tl').innerHTML = items.map(([era, c, h, blurb, body, you]) => `<details class="fold" style="--c:${c}"><summary><span class="era">${era}</span><span class="h4">${h}</span><br><span class="small muted">${blurb}</span></summary><div class="fold-body"><p>${body}</p><div class="callout"><b>What it means for you</b>${you}</div></div></details>`).join('');

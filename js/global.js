@@ -1,5 +1,5 @@
 // ============================================================
-// DECODING CREDIT CARDS — Engine v3  (window.DCC)
+// DECODING CREDIT CARDS: Engine v3  (window.DCC)
 // region lens · progress memory · page chrome · shared interactions
 // ============================================================
 (() => {
@@ -13,34 +13,34 @@
   // ---------- chapters ----------
   const CH = [
     ['01-the-handshake', 'The Handshake', 'Tap a card. Watch a transaction happen. Meet the five players who get paid every time.', 5],
-    ['02-getting-a-card', 'Getting a Card', 'Fill in an application and watch the lender’s model decide — and see which answers moved it.', 6],
+    ['02-getting-a-card', 'Getting a Card', 'Fill in an application and watch the lender’s model decide, and see which answers moved it.', 6],
     ['03-the-anatomy', 'The Anatomy of a Card', 'Poke every chip, stripe and digit. Learn what each part does and why it is still there.', 5],
     ['04-types-of-cards', 'Types of Cards', 'Secured, charge, prepaid, co-branded, business. Match six people to the card that fits them.', 6],
     ['05-the-billing-cycle', 'The Billing Cycle', 'Move a purchase around the calendar and see how many interest-free days it earns.', 6],
     ['06-the-trap', 'The Minimum Payment Trap', 'A live debt simulator. Drag the sliders and watch the minimum payment eat a decade.', 7],
     ['07-fees', 'Every Fee Explained', 'Trigger each fee yourself and watch exactly when and how it lands on the statement.', 9],
     ['08-the-score', 'Your Credit Score', 'Change your habits and watch the score react. See which factors really move it.', 7],
-    ['09-rewards', 'The Rewards Game', 'Six purchases, six cards. Pick the one that pays best — and see what it really cost.', 7],
+    ['09-rewards', 'The Rewards Game', 'Six purchases, six cards. Pick the one that pays best, and see what it really cost.', 7],
     ['10-fraud', 'Spot the Fraud', 'Six scams that are running right now. Decide what to do before you see the answer.', 8],
-    ['11-fraud-defense', 'Your Defense System', 'The invisible layers that guard every payment — and the switches you control yourself.', 6],
+    ['11-fraud-defense', 'Your Defense System', 'The invisible layers that guard every payment, and the switches you control yourself.', 6],
     ['12-disputes', 'Disputes & Chargebacks', 'Something went wrong. Walk the exact steps that get your money back.', 6],
     ['13-international', 'Going International', 'Plan a trip, choose how to pay, and see what the “pay in your own currency” button costs.', 6],
     ['14-management', 'Managing Like a Pro', 'Six months of real life. Every decision moves your score and your savings.', 8],
     ['15-protections', 'Hidden Protections', 'The cover that comes with your card that most people never claim.', 5],
     ['16-customer-service', 'Talking to Your Bank', 'Practise the call. Learn the words that get a fee reversed or a complaint escalated.', 6],
     ['17-alternatives', 'Cards vs Everything Else', 'Instant bank payments, debit, pay-later, wallets. Pick the right tool for each job.', 6],
-    ['18-taxes', 'Taxes & Your Card', 'Where tax quietly touches your card — and the myths that are simply wrong.', 5],
+    ['18-taxes', 'Taxes & Your Card', 'Where tax quietly touches your card, and the myths that are simply wrong.', 5],
     ['19-students', 'Your First Card, Right', 'A five-step playbook for a first card, with commitments you tick off yourself.', 6],
     ['20-relationship', 'Your Relationship With Money', 'Six ways a card bends your judgement, and the fix for each.', 6],
     ['21-future', 'What’s Coming Next', 'Wallets, pay-by-bank, stablecoins and AI agents that shop for you.', 6],
-    ['22-graduation', 'Graduation', 'Twelve questions across Part I. Earn the diploma — then go under the hood.', 10],
+    ['22-graduation', 'Graduation', 'Twelve questions across Part I. Earn the diploma, then go under the hood.', 10],
     // ---- Part II · Inside the machine ----
     ['23-the-message', 'Anatomy of an Authorisation', 'Open the message your card sends. Then sit in the issuer’s chair and approve or decline six of them.', 8],
     ['24-transaction-lifecycle', 'The Life of a Transaction', 'Holds, captures, reversals and refunds. Run a fuel pump, a hotel and a refund and watch three ledgers move.', 8],
     ['25-clearing-settlement', 'Clearing & Settlement', 'Four banks, a day of payments. Net them yourself and see why the money moves once, not a thousand times.', 7],
     ['26-interchange', 'Interchange & the Price of a Payment', 'Build a transaction and watch its price change with the card, the channel and the country.', 8],
     ['27-acquiring', 'The Acquiring Stack', 'Gateway, processor, acquirer, payment facilitator. Wire up three businesses and see who does what.', 7],
-    ['28-tokens-3ds', 'Tokens, Wallets & 3-D Secure', 'Put a card in a phone, tap it, and pass a 3-D Secure check — one message at a time.', 8],
+    ['28-tokens-3ds', 'Tokens, Wallets & 3-D Secure', 'Put a card in a phone, tap it, and pass a 3-D Secure check: one message at a time.', 8],
     ['29-fraud-engine', 'Build a Fraud Engine', 'Set the rules and the score threshold on a live stream of payments. Stop the fraud without declining your customers.', 8],
     ['30-chargeback-machine', 'The Chargeback Machine', 'Play the merchant. Fight or fold through every stage of a dispute and count what it costs.', 7],
     ['31-issuer-economics', 'Inside the Issuer', 'Run a card business. Set the rates, rewards and risk, and find out which customers pay for everyone else.', 9]
@@ -100,6 +100,27 @@
     if (!n || doneSet.has(n)) return;
     doneSet.add(n); store.set('done', [...doneSet]);
     $$(`.toc a[data-n="${n}"]`).forEach(a => a.classList.add('done'));
+  }
+
+  // ---------- catalog: labs + guides, tracks, reading progress ----------
+  const CAT = window.DCC_CATALOG || { domains: {}, guides: {}, tracks: {}, labDomain: {} };
+  const readSet = new Set(store.get('read', []));
+  const item = id => {
+    if (/^ch\d+$/.test(id)) { const c = CH[+id.slice(2) - 1]; return c && { id, type: 'lab', title: c.title, desc: c.desc, mins: c.mins, domain: CAT.labDomain[c.n], href: href(c), n: c.n }; }
+    const g = CAT.guides[id]; return g && { id, type: 'guide', title: g[0], domain: g[1], mins: g[2], desc: g[3], href: `${base}read.html?e=${id}` };
+  };
+  const allItems = () => [...CH.map(c => item('ch' + c.n)), ...Object.keys(CAT.guides).map(item)];
+  const itemDone = id => /^ch\d+$/.test(id) ? doneSet.has(+id.slice(2)) : readSet.has(id);
+  function markRead(id) { if (readSet.has(id)) return; readSet.add(id); store.set('read', [...readSet]); }
+  const track = id => { const t = CAT.tracks[id]; return t && { id, icon: t[0], title: t[1], who: t[2], items: t[3].map(item).filter(Boolean) }; };
+  const setTrack = id => store.set('track', id || null);
+  // "next in track" block for the bottom of a lab or guide
+  function trackNav(curId) {
+    const tr = track(store.get('track', null)); if (!tr) return '';
+    const i = tr.items.findIndex(x => x.id === curId); if (i < 0) return '';
+    const nx = tr.items[i + 1], done = tr.items.filter(x => itemDone(x.id)).length;
+    return `<div class="track-next"><div><span class="mono">${tr.icon} TRACK · ${tr.title.toUpperCase()} · STEP ${i + 1} OF ${tr.items.length}</span><div class="meter"><i style="width:${done / tr.items.length * 100}%"></i></div></div>
+      <div class="row">${nx ? `<a class="btn btn--primary" href="${nx.href}">Next: ${nx.title} →</a>` : `<a class="btn btn--primary" href="${base}track.html?t=${tr.id}">Track complete ✓</a>`}<a class="btn btn--ghost btn--sm" href="${base}track.html?t=${tr.id}">Track overview</a></div></div>`;
   }
 
   // ---------- sound + haptics ----------
@@ -184,11 +205,12 @@
   function buildChrome() {
     const nav = document.createElement('header');
     nav.className = 'nav';
-    nav.innerHTML = `<a class="nav-brand" href="${base}index.html" aria-label="Decoding Credit Cards — home">Decoding<i> · Credit Cards</i> <span>※</span></a>
+    nav.innerHTML = `<a class="nav-brand" href="${base}index.html" aria-label="Decoding Credit Cards, home">Decoding<i> · Credit Cards</i> <span>※</span></a>
       <div class="nav-actions">
         <button class="nav-btn region" data-open="regions" aria-label="Region: ${R.name}. Change">${R.flag} <span>${R.label}</span> ▾</button>
         <button class="nav-btn" data-mute aria-label="Toggle sound">${muted ? '🔇' : '🔊'}</button>
-        <button class="nav-btn" data-open="chapters" aria-label="All chapters">☰ <span class="lbl">Chapters</span></button>
+        <a class="nav-btn nav-lib" href="${base}library.html" aria-label="Library">📚 <span class="lbl">Library</span></a>
+        <button class="nav-btn" data-open="chapters" aria-label="Menu and all chapters">☰ <span class="lbl">Menu</span></button>
       </div>`;
     document.body.prepend(nav);
     const line = document.createElement('div'); line.className = 'progress-line'; document.body.prepend(line);
@@ -202,7 +224,7 @@
     picker = sheet('picker', 'Choose your edition', Object.values(REG).map(r =>
       `<button class="region-opt ${r.id === rid ? 'on' : ''}" data-region="${r.id}"><span class="flag">${r.flag}</span><span><b>${r.name}</b><small>${r.sub}</small></span></button>`).join('') +
       `<p class="small muted" style="padding:14px 20px">Every example, amount, law and regulator on the site switches to the edition you pick.</p>`);
-    drawer = sheet('drawer', 'All chapters', tocHtml());
+    drawer = sheet('drawer', 'Menu', `<nav class="menu-links"><a href="${base}index.html">🏠 Home</a><a href="${base}tracks.html">🛤️ Learning tracks</a><a href="${base}library.html">📚 Library</a><a href="${base}glossary.html">🔤 Glossary</a></nav>` + tocHtml());
 
     document.addEventListener('click', e => {
       const b = e.target.closest('[data-open],[data-close],button[data-region],[data-mute]');
@@ -220,7 +242,7 @@
     foot.className = 'footer';
     foot.innerHTML = `<div class="footer-brand">Decoding · Credit Cards <span>※</span></div>
       <p>No tracking · No ads · No card recommendations · Free forever</p>
-      <p>${R.flag} ${R.name} edition · figures checked ${R.asOf}. General education, not financial advice — rules and rates change, so confirm with your issuer.</p>
+      <p>${R.flag} ${R.name} edition · figures checked ${R.asOf}. General education, not financial advice: rules and rates change, so confirm with your issuer.</p>
       <div class="hand">Built with love, coffee (and Claude) by <a href="https://parth8.github.io/portfolio/" target="_blank" rel="noopener">Parth</a></div>
       <div class="footer-links"><a href="https://linkedin.com/in/aggarwalparth" target="_blank" rel="noopener">LinkedIn ↗</a><a href="https://parth8.github.io/portfolio/" target="_blank" rel="noopener">Portfolio ↗</a><a href="https://parthaggarwal8.medium.com/" target="_blank" rel="noopener">Medium ↗</a></div>`;
     document.body.appendChild(foot);
@@ -243,6 +265,7 @@
       new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { markDone(); o.disconnect(); } }), { threshold: .6 }).observe(cp);
     }
     const wrap = $('main .wrap') || $('main');
+    wrap.insertAdjacentHTML('beforeend', trackNav('ch' + chN));
     wrap.insertAdjacentHTML('beforeend', `<nav class="ch-nav" aria-label="Chapter navigation">
       <a href="${prev ? prev.slug + '.html' : base + 'index.html'}"><small>← ${prev ? 'Previous' : 'Back'}</small><b>${prev ? prev.title : 'Home'}</b></a>
       ${next ? `<a href="${next.slug}.html"><small>Next →</small><b>${next.title}</b></a>` : ''}</nav>`);
@@ -320,7 +343,7 @@
 
   // ---------- boot ----------
   window.DCC = { $, $$, R, rid, regions: REG, chapters: CH, money, num, t, pick, setRegion, openRegions, openChapters, localize, observe, fillAll,
-    isDone, markDone, playClick, playSuccess, playError, burstConfetti, animateNumber, quiz, flow, parts: PARTS, grade, toast, store, href, calm };
+    isDone, markDone, catalog: CAT, item, allItems, itemDone, markRead, track, setTrack, trackNav, base, playClick, playSuccess, playError, burstConfetti, animateNumber, quiz, flow, parts: PARTS, grade, toast, store, href, calm };
   localize();
   buildChrome();
   fillAll(); observe();

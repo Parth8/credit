@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>V. The Billing Cycle — Decoding Credit Cards</title>
+<title>V. The Billing Cycle | Decoding Credit Cards</title>
 <meta name="description" content="Statement date, due date, grace period. Buy something on any day of the month and watch how long the bank lends you that money for free.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/05-the-billing-cycle.html">
-<meta property="og:title" content="V. The Billing Cycle — Decoding Credit Cards">
+<meta property="og:title" content="V. The Billing Cycle | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -57,7 +57,7 @@ button.day:hover { transform: scale(1.1); border-color: var(--electric); z-index
       <div class="big" id="days">0</div>
       <div class="meter" style="margin-block:14px"><i id="bar" style="background:var(--success)"></i></div>
       <p id="story"></p>
-      <div class="callout is-success" style="margin-top:16px"><b>The quiet trick</b>Buy the day <em>after</em> your statement closes and you get the longest free loan the card offers — up to about <span id="maxd"></span> days. Buy the day before and you get the shortest. Same card, same price.</div>
+      <div class="callout is-success" style="margin-top:16px"><b>The quiet trick</b>Buy the day <em>after</em> your statement closes and you get the longest free loan the card offers, up to about <span id="maxd"></span> days. Buy the day before and you get the shortest. Same card, same price.</div>
     </div>
   </div>
 </section>
@@ -80,10 +80,11 @@ button.day:hover { transform: scale(1.1); border-color: var(--electric); z-index
 
 <aside class="checkpoint">
   <h3>You can read your <em>cycle</em>.</h3>
-  <p>The interest-free period is real, but it exists only while you clear the statement in full. Next: what happens when you do not — the most important chapter here.</p>
+  <p>The interest-free period is real, but it exists only while you clear the statement in full. Next: what happens when you do not, the most important chapter here.</p>
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
@@ -112,15 +113,15 @@ const debt = R.a.debt, mr = R.apr / 1200, minPay = Math.max(R.minFloor, DCC.rid 
 const PAY = {
   full: ['is-success', 'You owe nothing more', [['Paid', money(debt)], ['Interest', money(0)], ['Next month’s purchases', 'interest-free again']],
     'This is the whole game. Clear the statement balance by the due date and the bank has lent you its money for up to ' + maxFree + ' days at 0%. Set autopay to “full statement balance” and you never have to think about it.'],
-  min: ['is-warm', 'You kept the account in good standing — and lost the free period', [['Paid', money(minPay)], ['Carried forward', money(debt - minPay)], ['Interest next statement, roughly', money((debt - minPay) * mr * (1 + R.feeTax)), 1]],
+  min: ['is-warm', 'You kept the account in good standing, and lost the free period', [['Paid', money(minPay)], ['Carried forward', money(debt - minPay)], ['Interest next statement, roughly', money((debt - minPay) * mr * (1 + R.feeTax)), 1]],
     pick({
       in: 'Paying less than the full amount cancels the interest-free period. Interest (about ' + R.apr + '% a year, plus 18% GST) is charged on <strong>each purchase from the day you made it</strong>, and every new purchase starts accruing immediately until the whole balance is cleared.',
-      us: 'Pay less than the full statement balance and you lose the grace period. Interest accrues daily on the average daily balance, <strong>new purchases start accruing from the day you make them</strong>, and you need to pay in full — often two months running — to get the grace period back. That lingering charge is called trailing interest.',
-      uk: 'Pay less than the full balance and interest is charged on the whole statement, usually backdated to each transaction date, and new purchases accrue from day one. On a 0% promotional deal, the minimum is fine — but missing even one payment usually ends the 0% rate.',
+      us: 'Pay less than the full statement balance and you lose the grace period. Interest accrues daily on the average daily balance, <strong>new purchases start accruing from the day you make them</strong>, and you need to pay in full, often two months running, to get the grace period back. That lingering charge is called trailing interest.',
+      uk: 'Pay less than the full balance and interest is charged on the whole statement, usually backdated to each transaction date, and new purchases accrue from day one. On a 0% promotional deal, the minimum is fine, but missing even one payment usually ends the 0% rate.',
       au: 'Pay less than the closing balance and you lose your interest-free days: interest is charged on purchases back to the day you made them, and new purchases accrue immediately until you pay a statement in full.' })],
   late: ['is-danger', 'Now it gets expensive', [['Late fee', pick({ in: 'up to ' + money(1300) + ' + 18% GST', us: 'about ' + money(32), uk: money(12), au: 'about ' + money(25) }), 1], ['Interest', 'on the whole balance', 1], ['Credit report', pick({ in: 'if more than 3 days late', us: 'once 30 days late', uk: 'missed payment marker', au: 'once 14 days late' }), 1]],
     pick({
-      in: 'RBI rules give you a three-day buffer: the bank can charge a late fee and report you to the bureaus only if the payment is <strong>more than three days</strong> past the due date — and the fee is charged on the unpaid amount, not the total. After that the fee, interest and a mark on your CIBIL report all arrive together.',
+      in: 'RBI rules give you a three-day buffer: the bank can charge a late fee and report you to the bureaus only if the payment is <strong>more than three days</strong> past the due date, and the fee is charged on the unpaid amount, not the total. After that the fee, interest and a mark on your CIBIL report all arrive together.',
       us: 'The late fee is charged straight away. At 30 days late the issuer reports it to the bureaus, where it stays for <strong>seven years</strong>. At 60 days late the issuer may impose a <strong>penalty APR</strong> near 30% on your balance.',
       uk: 'A £12 default fee, interest on everything, and a missed-payment marker that stays on your credit file for <strong>six years</strong>. You usually lose any 0% promotional rate as well. Miss several and the account is registered as a default.',
       au: 'A late fee is added and your interest-free days go. If the payment is more than 14 days overdue, your repayment history for that month is recorded as late, where lenders can see it for <strong>two years</strong>. Sixty days overdue on $150 or more can be listed as a default for five years.' })]
@@ -132,10 +133,10 @@ $('#pay').addEventListener('click', e => { const b = e.target.closest('button');
 pay('full');
 
 $('#dates').innerHTML = [
-  ['Statement (closing) date', 'The day the bank adds up the cycle and issues the bill. The balance on this day is normally what gets reported to the credit bureaus — so it, not your payment record, drives your utilisation.'],
+  ['Statement (closing) date', 'The day the bank adds up the cycle and issues the bill. The balance on this day is normally what gets reported to the credit bureaus, so it, not your payment record, drives your utilisation.'],
   ['Payment due date', pick({ in: 'Usually 18–20 days after the statement. You can ask the bank to change your billing cycle at least once to suit your salary date.', us: 'By law at least 21 days after the statement is sent, and it must fall on the same date each month. You can ask to move it.', uk: 'Typically 25 days after the statement; cards advertise “up to 56 days interest-free”. Set a direct debit for the full balance.', au: 'Typically 14–25 days after the statement; cards advertise “up to 44” or “up to 55 days interest-free”.' })],
-  ['Minimum payment due', `The least you can pay to stay out of arrears — here, ${R.minRule}. It keeps your record clean. It does not stop interest. Chapter VI shows what it really costs.`],
-  ['Total / statement balance', 'The only figure that matters. Pay this and the card costs you nothing. “Current balance” may be higher because it includes purchases since the statement closed — those are not due yet.']
+  ['Minimum payment due', `The least you can pay to stay out of arrears: here, ${R.minRule}. It keeps your record clean. It does not stop interest. Chapter VI shows what it really costs.`],
+  ['Total / statement balance', 'The only figure that matters. Pay this and the card costs you nothing. “Current balance” may be higher because it includes purchases since the statement closed: those are not due yet.']
 ].map(([h, p]) => `<details class="fold"><summary><span class="h4">${h}</span></summary><div class="fold-body"><p>${p}</p></div></details>`).join('');
 }
 </script>

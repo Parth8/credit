@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>Learning tracks | Decoding Credit Cards</title>
+<meta name="description" content="Choose a learning track: use a card well, the full card payments stack, issuing, acquiring, bank payment rails, fraud and compliance, or banking architecture.">
+<meta property="og:title" content="Learning tracks | Decoding Credit Cards">
+<meta property="og:description" content="Choose a learning track: use a card well, the full card payments stack, issuing, acquiring, bank payment rails, fraud and compliance, or banking architecture.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="css/global.css">
+<style>
+.tgrid { --min: 280px; margin-top: 28px; }
+.tcard { display: flex; flex-direction: column; gap: 8px; padding: 22px; background: var(--white); border: 1.5px solid var(--border-strong); border-radius: var(--r-lg); color: inherit; text-decoration: none; transition: transform .3s var(--ease-out), border-color .2s, box-shadow .3s; }
+.tcard:hover { transform: translateY(-4px); border-color: var(--electric); box-shadow: var(--shadow-lift); }
+.tcard .ic { font-size: 2rem; } .tcard b { font: 700 var(--step-1)/1.2 var(--font-display); } .tcard small { color: var(--ink-muted); font-size: .9rem; line-height: 1.45; flex: 1; }
+.tcard .mono { color: var(--ink-faint); font-size: .7rem; }
+.steps a { counter-increment: st; } .steps { counter-reset: st; }
+.steps .ic { font: italic 700 1.1rem var(--font-display); color: var(--ink-ghost); } .steps .ic::before { content: counter(st); } .steps a.done .ic { color: var(--success); }
+</style>
+</head>
+<body>
+<main class="page">
+<div class="wrap" id="root"></div>
+</main>
+<script src="js/regions.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/global.js"></script>
+<script>
+{
+const { $, $$, catalog, track, itemDone } = DCC;
+const tid = new URLSearchParams(location.search).get('t'), tr = tid && track(tid), root = $('#root');
+const prog = x => { const d = x.items.filter(i => itemDone(i.id)).length; return [d, x.items.length, x.items.reduce((a, i) => a + i.mins, 0)]; };
+if (tr) {
+  document.title = `${tr.title} | Decoding Credit Cards`;
+  const [d, n, mins] = prog(tr), nxt = tr.items.find(i => !itemDone(i.id)) || tr.items[0];
+  root.innerHTML = `<div class="crumbs"><a href="tracks.html">Tracks</a><span>›</span><span>${tr.title}</span></div>
+    <div style="font-size:2.6rem">${tr.icon}</div><h1>${tr.title}</h1><p class="standfirst">${tr.who}</p>
+    <div class="row" style="margin-top:22px"><a class="btn btn--primary btn--lg" id="go" href="${nxt.href}">${d ? (d === n ? 'Revisit from the start' : 'Continue') : 'Start this track'} →</a><span class="mono faint">${n} steps · about ${Math.round(mins / 6) / 10} hours · ${d} done</span></div>
+    <div class="meter" style="margin-top:16px;max-width:520px"><i style="width:${d / n * 100}%"></i></div>
+    <div class="stack steps" style="margin-top:28px;--gap:10px">${tr.items.map(x => `<a class="card-link ${itemDone(x.id) ? 'done' : ''}" href="${x.href}"><span class="ic"></span><span><b><span class="kind ${x.type}">${x.type === 'lab' ? 'Lab' : 'Guide'}</span>${x.title}</b><small>${x.desc}</small></span><span class="meta">${x.mins} min</span></a>`).join('')}</div>`;
+  root.addEventListener('click', e => { if (e.target.closest('a.card-link, #go')) DCC.setTrack(tr.id); });
+} else {
+  root.innerHTML = `<div class="eyebrow">Learning tracks</div><h1>Pick a path. <em>Skip what you know.</em></h1>
+    <p class="standfirst">Each track is an ordered playlist of hands-on labs and short guides. Take one for an afternoon, or work through the whole stack. Progress is saved on this device.</p>
+    <div class="grid tgrid">${Object.keys(catalog.tracks).map(k => { const x = track(k), [d, n, mins] = prog(x); return `<a class="tcard reveal" href="tracks.html?t=${k}"><span class="ic">${x.icon}</span><b>${x.title}</b><small>${x.who}</small><div class="meter"><i style="width:${d / n * 100}%"></i></div><span class="mono">${n} steps · ${x.items.filter(i => i.type === 'lab').length} labs · ~${Math.round(mins / 6) / 10} h${d ? ' · ' + d + ' done' : ''}</span></a>`; }).join('')}</div>`;
+  DCC.observe();
+}
+}
+</script>
+</body>
+</html>

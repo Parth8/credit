@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>IX. The Rewards Game — Decoding Credit Cards</title>
+<title>IX. The Rewards Game | Decoding Credit Cards</title>
 <meta name="description" content="Six purchases and five cards in your wallet. Pick the card that pays most on each one. Then find out what rewards are really worth once interest gets involved.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/09-rewards.html">
-<meta property="og:title" content="IX. The Rewards Game — Decoding Credit Cards">
+<meta property="og:title" content="IX. The Rewards Game | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -76,6 +76,7 @@
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
@@ -89,14 +90,14 @@ $('#wallet').innerHTML = Object.values(CARDS).map(([ic, n, d]) => `<div class="p
 const rate = (k, cat) => k === 'flat' ? P.flat : P[k][k === cat ? 0 : 1];
 const BUYS = [['A laptop from ' + R.marketplace, A.laptop, 'mkt', 'One purchase, and the co-brand card pays for a year of its usefulness. Check the cap, though: most co-brand cards limit how much bonus you can earn in a month.'],
   ['A full tank at ' + R.fuel, pick({ in: 3000, us: 55, uk: 70, au: 90 }), 'fuel', 'Fuel cards win at their own brand of pump and almost nowhere else. Worth holding only if you drive a lot and that brand is on your route.'],
-  ['Dinner out for four', A.meal * 6, 'dine', 'Category cards beat a flat card by a wide margin in their category — and lose to it everywhere else.'],
+  ['Dinner out for four', A.meal * 6, 'dine', 'Category cards beat a flat card by a wide margin in their category, and lose to it everywhere else.'],
   ['Return flights to ' + R.abroad, Math.round(A.trip * .35), 'travel', 'Beyond the points, paying for travel on a travel card is usually what switches on its insurance and delay cover (chapter XV).'],
-  ['A ' + R.foodApp + ' order on a wet Sunday', A.meal * 2, 'dine', 'Food delivery normally counts as dining. Check your card’s category list — some treat it as “online shopping” instead.'],
+  ['A ' + R.foodApp + ' order on a wet Sunday', A.meal * 2, 'dine', 'Food delivery normally counts as dining. Check your card’s category list: some treat it as “online shopping” instead.'],
   ['A prescription at the pharmacy', A.meal * 3, 'flat', 'No category card covers this, so each pays only its low “everything else” rate. This is why a flat-rate card belongs in every wallet: it wins by never being bad.']];
 const items = BUYS.map(([name, amt, cat, why]) => {
   const earn = k => amt * rate(k, cat) / 100, best = Object.keys(CARDS).reduce((a, b) => earn(b) > earn(a) ? b : a);
   return { kicker: 'Purchase', title: name, body: `<p class="lede">You are about to pay <strong>${money(amt)}</strong>. Which card?</p>`, amt, cat, best, earn,
-    opts: Object.entries(CARDS).map(([k, c]) => ({ t: `${c[0]} <strong>${c[1]}</strong> — ${c[2]}`, ok: k === best, k })), yes: `Best card. You earn ${money(earn(best), true)}.`, no: `The best card was ${CARDS[best][1]}.`,
+    opts: Object.entries(CARDS).map(([k, c]) => ({ t: `${c[0]} <strong>${c[1]}</strong>, ${c[2]}`, ok: k === best, k })), yes: `Best card. You earn ${money(earn(best), true)}.`, no: `The best card was ${CARDS[best][1]}.`,
     explain: `<div class="kv" style="margin-block:10px">${Object.entries(CARDS).sort((a, b) => earn(b[0]) - earn(a[0])).map(([k, c]) => `<div class="${k === best ? 'is-total' : ''}"><span>${c[0]} ${c[1]} · ${rate(k, cat)}%</span><span>${money(earn(k), true)}</span></div>`).join('')}</div><p>${why}</p>` };
 });
 let earned = 0;
@@ -119,22 +120,22 @@ function net() {
   $('#net-rows').innerHTML = `<div><span>Rewards earned</span><span>+${money(rew)}</span></div><div class="is-fee"><span>Annual fee${R.feeTax ? ' + GST' : ''}</span><span>−${money(feeCost)}</span></div><div class="is-fee"><span>Interest in the months you carried</span><span>−${money(int)}</span></div>`;
   const note = $('#net-note');
   if (c === 0 && n >= 0) { note.className = 'callout is-success'; note.innerHTML = '<b>You are on the right side</b>Paying in full every month, rewards are a small, genuine discount funded by shops and by people who revolve.'; }
-  else if (n >= 0) { note.className = 'callout is-warm'; note.innerHTML = `<b>Leaking</b>Each month you carry a balance costs about ${money(int / c)} — roughly ${Math.round((int / c) / (s * r / 100) * 10) / 10 || '—'} months of rewards.`; }
-  else { note.className = 'callout is-danger'; note.innerHTML = '<b>You are funding everyone else’s rewards</b>Interest and fees outweigh everything the card gives back. Until the balance is cleared every month, the reward rate is irrelevant — a plain low-rate card would serve you better.'; }
+  else if (n >= 0) { note.className = 'callout is-warm'; note.innerHTML = `<b>Leaking</b>Each month you carry a balance costs about ${money(int / c)}, roughly ${Math.round((int / c) / (s * r / 100) * 10) / 10 || '–'} months of rewards.`; }
+  else { note.className = 'callout is-danger'; note.innerHTML = '<b>You are funding everyone else’s rewards</b>Interest and fees outweigh everything the card gives back. Until the balance is cleared every month, the reward rate is irrelevant: a plain low-rate card would serve you better.'; }
 }
 document.addEventListener('input', e => e.target.type === 'range' && net()); net();
 
 $('#local-eyebrow').textContent = `${R.flag} ${R.name}`;
 $('#local').innerHTML = pick({
   in: [['Points are not rupees', 'A “reward point” can be worth anything from ₹0.20 to ₹1 depending on how you redeem it. Statement credit is usually the worst value; the bank’s travel portal or airline transfers the best. Always convert to a percentage before comparing cards.'],
-       ['Exclusions keep growing', 'Rent, fuel, wallet loads, utilities, insurance, education and government payments increasingly earn nothing — and some now attract a 1% fee. Banks revise this list every few months, by email.'],
+       ['Exclusions keep growing', 'Rent, fuel, wallet loads, utilities, insurance, education and government payments increasingly earn nothing, and some now attract a 1% fee. Banks revise this list every few months, by email.'],
        ['Caps, expiry and devaluation', 'Bonus categories are capped monthly, points expire in two to three years on many cards, and issuers can cut their value with 30 days’ notice. Lounge access is now often tied to spending in the previous quarter. Earn and burn.']],
-  us: [['The bonus is the product', 'A sign-up bonus — spend a set amount in three months, receive $200–$1,000 in value — often outweighs years of everyday earning. Never spend extra to reach it.'],
+  us: [['The bonus is the product', 'A sign-up bonus, spend a set amount in three months, receive $200–$1,000 in value, often outweighs years of everyday earning. Never spend extra to reach it.'],
        ['Points are worth what you do with them', 'Typically 1 cent as cashback and more when transferred to airline or hotel partners. That takes effort; if you will not make it, take a simple 2% card.'],
        ['Who pays', 'Uncapped interchange (chapter I) funds all of this, which is why US rewards are so much richer than Europe’s or Australia’s. Issuers may also limit how often you can earn a bonus, or decline you for opening too many cards.']],
   uk: [['Thin by design', 'Interchange is capped at 0.3%, so cashback of 0.25–1% is normal and anything higher is temporary or comes with a fee. American Express, outside the cap, pays more but is accepted in fewer places.'],
-       ['The real UK perk is Section 75', 'Buy anything costing over £100 and up to £30,000 on a credit card and the card provider is jointly liable if it goes wrong — worth far more than half a percent. See chapter XII.'],
-       ['Airline points', 'Avios and similar schemes can be good value for flights — until the taxes and surcharges on “free” tickets are added. Price the cash fare first.']],
+       ['The real UK perk is Section 75', 'Buy anything costing over £100 and up to £30,000 on a credit card and the card provider is jointly liable if it goes wrong: worth far more than half a percent. See chapter XII.'],
+       ['Airline points', 'Avios and similar schemes can be good value for flights, until the taxes and surcharges on “free” tickets are added. Price the cash fare first.']],
   au: [['Rates are falling', 'With the interchange cap cut to 0.3% from October 2026, banks are lowering earn rates, capping points per month and raising fees. Re-check what your card now earns.'],
        ['Points per dollar is not a percentage', 'One Qantas or Velocity point is worth roughly half a cent to a cent on flights, less on gift cards. A “1 point per $1” card is therefore a 0.5–1% card.'],
        ['Sign-up bonuses and annual fees', 'Big bonus-point offers come with $200–$450 fees and spending targets. Open them deliberately, and remember each application is recorded on your credit file.']]

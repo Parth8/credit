@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>XI. Your Defense System — Decoding Credit Cards</title>
-<meta name="description" content="Six layers sit between a thief and your money. Launch five different attacks and watch which layer stops each one — and find the one attack nothing stops.">
+<title>XI. Your Defense System | Decoding Credit Cards</title>
+<meta name="description" content="Six layers sit between a thief and your money. Launch five different attacks and watch which layer stops each one, and find the one attack nothing stops.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/11-fraud-defense.html">
-<meta property="og:title" content="XI. Your Defense System — Decoding Credit Cards">
+<meta property="og:title" content="XI. Your Defense System | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -38,7 +38,7 @@
 <main class="ch"><div class="wrap">
 <header class="ch-head">
   <h1>Your <em>Defense System</em></h1>
-  <p>Six layers sit between a thief and your money. Launch five different attacks and watch which layer stops each one — and find the one attack nothing stops.</p>
+  <p>Six layers sit between a thief and your money. Launch five different attacks and watch which layer stops each one, and find the one attack nothing stops.</p>
 </header>
 
 <section class="sec">
@@ -60,11 +60,12 @@
 </section>
 
 <aside class="checkpoint" data-icon="🛡">
-  <h3>You know where the <em>armour</em> is — and where it is not.</h3>
+  <h3>You know where the <em>armour</em> is, and where it is not.</h3>
   <p>The system protects you from almost everything except being talked into approving a payment yourself. When something still gets through, you dispute it. That is next.</p>
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
@@ -72,31 +73,31 @@ const { $, $$, R, rid, t, pick, store } = DCC;
 const twoFA = pick({
   in: ['Two-factor authentication', 'RBI requires a second factor on almost every online card payment in India. Since April 2026 banks may use app approval, biometrics or passkeys as well as SMS OTP.'],
   us: ['3-D Secure and address checks', 'The US has no legal two-factor requirement. Merchants lean on the security code, the address verification service (AVS) and optional 3-D Secure challenges.'],
-  uk: ['Strong customer authentication', 'UK and EU law require two of: something you know, have, or are — usually an approval in your banking app — for most online payments.'],
+  uk: ['Strong customer authentication', 'UK and EU law require two of: something you know, have, or are, usually an approval in your banking app, for most online payments.'],
   au: ['3-D Secure challenges', 'Australian issuers challenge riskier online payments with an app approval or code, under an industry framework rather than a blanket law.'] });
 const L = [
   ['🔒', 'EMV chip', 'A fresh cryptogram for every payment; copied data cannot be replayed.'],
-  ['🎭', 'Tokenisation', pick({ in: 'Shops and wallets hold a stand-in token, not your number — mandatory for saved cards in India since 2022.', us: 'Wallets and many shops hold a stand-in token, not your real card number.' })],
+  ['🎭', 'Tokenisation', pick({ in: 'Shops and wallets hold a stand-in token, not your number, mandatory for saved cards in India since 2022.', us: 'Wallets and many shops hold a stand-in token, not your real card number.' })],
   ['🔑', twoFA[0], twoFA[1]],
   ['🏛', 'PCI DSS', 'The card industry’s security standard. Merchants may not keep your security code after a payment, and must encrypt the rest.'],
   ['🧠', 'Real-time monitoring', 'Your issuer scores every payment in milliseconds against how you normally behave.'],
-  ['👤', 'You', 'Alerts, card lock, limits — and whether you approve what you are asked to approve.']
+  ['👤', 'You', 'Alerts, card lock, limits, and whether you approve what you are asked to approve.']
 ];
 const weak = rid === 'us';
 const AT = [
   ['🧲', 'Skimmed stripe', 'A device on a fuel pump copies your magnetic stripe and a clone is made.', ['stops', 'no', 'no', 'no', 'helps', 'helps'],
-    'The clone has no chip, so it cannot produce the cryptogram a chip terminal demands. It only works where terminals still accept a swipe — which is why fraudsters ship cloned cards to the places that do. Monitoring catches most of the rest.', 'Stopped'],
+    'The clone has no chip, so it cannot produce the cryptogram a chip terminal demands. It only works where terminals still accept a swipe, which is why fraudsters ship cloned cards to the places that do. Monitoring catches most of the rest.', 'Stopped'],
   ['💾', 'Shop gets hacked', 'An online retailer you used last year suffers a data breach.', ['no', 'stops', 'helps', 'stops', 'helps', 'no'],
-    'If the shop stored a token, the thieves have something that works only at that shop. If it stored the real number, PCI rules mean it does not have your security code — and anything they try still meets ' + (weak ? 'the issuer’s fraud model.' : 'a second-factor challenge.'), 'Stopped'],
+    'If the shop stored a token, the thieves have something that works only at that shop. If it stored the real number, PCI rules mean it does not have your security code, and anything they try still meets ' + (weak ? 'the issuer’s fraud model.' : 'a second-factor challenge.'), 'Stopped'],
   ['🌐', 'Card number used online', 'Someone has your number, expiry and security code and goes shopping.', ['no', 'no', weak ? 'helps' : 'stops', 'no', 'helps', 'helps'],
     weak ? 'This is the soft spot in the US: without mandatory two-factor checks, card-not-present fraud is the largest category. Monitoring stops much of it, alerts tell you about the rest, and the law makes the loss the bank’s, not yours.' : 'The payment triggers a challenge that only your phone or app can answer. Without it, the purchase fails. Some low-value or “trusted merchant” payments are exempt, which is where monitoring takes over.', weak ? 'Mostly stopped' : 'Stopped'],
   ['👜', 'Wallet stolen', 'Your physical card is taken and tapped until it stops working.', ['no', 'no', 'no', 'no', 'helps', 'stops'],
     `Contactless is limited (${R.contactless}) and issuers force a PIN after a few taps in a row. The damage ends the moment you lock the card in the app. ${R.lostRule}.`, 'Limited, then stopped by you'],
   ['🎣', 'You are talked into it', 'A caller persuades you to read out a code or approve a payment in your app.', ['no', 'no', 'fail', 'no', 'helps', 'fail'],
-    'Every technical layer works perfectly — and that is the problem. The second factor was satisfied, by you. To the bank it looks like a payment you made, so refunds are harder and may be refused. <strong>No bank ever needs a code it has just sent you.</strong>', 'Gets through']
+    'Every technical layer works perfectly, and that is the problem. The second factor was satisfied, by you. To the bank it looks like a payment you made, so refunds are harder and may be refused. <strong>No bank ever needs a code it has just sent you.</strong>', 'Gets through']
 ];
 $('#attacks').innerHTML = AT.map((a, i) => `<button class="tile" data-i="${i}"><span class="tile-icon">${a[0]}</span><span class="tile-name">${a[1]}</span><span class="tile-sub">${a[2]}</span></button>`).join('');
-const drawStack = v => $('#stack').innerHTML = L.map((l, i) => `<div class="layer ${v ? v[i] : ''}" style="transition-delay:${i * 70}ms"><span class="ic">${l[0]}</span><div><b>${l[1]}</b><small>${l[2]}</small></div><span class="tag">${v ? { stops: 'stops it', helps: 'helps', no: '—', fail: 'bypassed' }[v[i]] : ''}</span></div>`).join('');
+const drawStack = v => $('#stack').innerHTML = L.map((l, i) => `<div class="layer ${v ? v[i] : ''}" style="transition-delay:${i * 70}ms"><span class="ic">${l[0]}</span><div><b>${l[1]}</b><small>${l[2]}</small></div><span class="tag">${v ? { stops: 'stops it', helps: 'helps', no: '–', fail: 'bypassed' }[v[i]] : ''}</span></div>`).join('');
 drawStack();
 const seen = new Set();
 $('#attacks').addEventListener('click', e => { const b = e.target.closest('.tile'); if (!b) return; const i = +b.dataset.i, a = AT[i];
@@ -114,7 +115,7 @@ const SW = [
   [pick({ in: 'Switch off international and contactless use until you need them', us: 'Set a per-transaction or daily limit if your issuer offers one', uk: 'Set your own contactless limit, or switch contactless off', au: 'Lock international and online payments unless you are using them' }), pick({ in: 'RBI requires every card to have these switches, and your own limits for online, POS and ATM use.', us: 'Many issuers let you cap transaction size or block categories.', uk: 'Since March 2026 UK banks can let you choose your own contactless limit.', au: 'Most bank apps have per-channel locks: online, overseas, ATM, contactless.' })],
   ['Put the card in your phone’s wallet', 'Apple Pay and Google Pay send a token and need your face or fingerprint. Safer than the plastic.'],
   ['Use a virtual or one-off card number for unfamiliar sites', 'Many issuers generate one in the app. If that shop is breached, the number is already dead.'],
-  ['Save the lost-card number in your contacts', pick({ in: 'And the cyber-fraud helpline: 1930.', us: 'It is on the back of the card — which is no help once the card is gone.', uk: 'And remember 159, which routes you to your bank’s real fraud team.', au: 'It is on the back of the card — which is no help once the card is gone.' })]
+  ['Save the lost-card number in your contacts', pick({ in: 'And the cyber-fraud helpline: 1930.', us: 'It is on the back of the card, which is no help once the card is gone.', uk: 'And remember 159, which routes you to your bank’s real fraud team.', au: 'It is on the back of the card, which is no help once the card is gone.' })]
 ];
 const on = new Set(store.get('switches', []));
 const drawSw = () => { $('#switches').innerHTML = SW.map((s, i) => `<button class="sw ${on.has(i) ? 'on' : ''}" data-i="${i}" aria-pressed="${on.has(i)}"><i>✓</i><span><b>${s[0]}</b><small>${s[1]}</small></span></button>`).join(''); $('#sw-count').textContent = `${on.size} of ${SW.length} done`; };

@@ -1,5 +1,5 @@
 // ============================================================
-// REGION DATA — everything that differs by geography lives here.
+// REGION DATA: everything that differs by geography lives here.
 // Chapters read it through DCC.R and {tokens}. Figures are typical,
 // rounded, and checked as of `asOf`; never FX-converted between regions.
 // ============================================================

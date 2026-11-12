@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>VIII. Your Credit Score — Decoding Credit Cards</title>
+<title>VIII. Your Credit Score | Decoding Credit Cards</title>
 <meta name="description" content="A number that decides what you are offered and what it costs. It is built from a handful of habits, and you control most of them. Change one and watch the needle.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/08-the-score.html">
-<meta property="og:title" content="VIII. Your Credit Score — Decoding Credit Cards">
+<meta property="og:title" content="VIII. Your Credit Score | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -85,6 +85,7 @@
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
@@ -92,15 +93,15 @@ const { $, $$, R, rid, t, pick } = DCC;
 const lo = R.scoreMin, hi = R.scoreMax, k = (hi - lo) / 550, sc = n => Math.round(n * k);
 const W = pick({ us: ['35%', '30%', '15%', '10%', '10%'], in: ['biggest', 'big', 'medium', 'small', 'small'] });
 $('#lab-lede').innerHTML = pick({
-  in: 'This models a CIBIL score (300–900). CIBIL does not publish its exact weights, so the sizes here are indicative — the ranking of what matters is not in doubt.',
+  in: 'This models a CIBIL score (300–900). CIBIL does not publish its exact weights, so the sizes here are indicative: the ranking of what matters is not in doubt.',
   us: 'This models a FICO score (300–850) using FICO’s published weights. VantageScore ranks the same factors slightly differently.',
   uk: 'The UK has no single score: Experian (0–999), Equifax (0–1000) and TransUnion (0–710) each publish one, and every lender builds its own. This models Experian’s scale; the ranking of what matters holds everywhere.',
   au: 'This models an Equifax score (0–1200); Experian and illion use 0–1000. Lenders also score you themselves. The ranking of what matters holds across all of them.' });
 const F = [
-  { id: 'pay', name: 'Payment history', why: 'Whether you pay on time. Nothing else comes close — one missed payment outweighs years of good behaviour.', opts: [['Often late', -180], ['One miss this year', -60], ['Always on time', 0]], d: 2, max: 180 },
+  { id: 'pay', name: 'Payment history', why: 'Whether you pay on time. Nothing else comes close: one missed payment outweighs years of good behaviour.', opts: [['Often late', -180], ['One miss this year', -60], ['Always on time', 0]], d: 2, max: 180 },
   { id: 'util', name: 'Utilisation', why: 'How much of your limit is in use when the statement closes. Under 30% is fine; under 10% is best. It is a snapshot, so it recovers as soon as you pay down.', slider: true, d: 15, max: 110 },
   { id: 'age', name: 'Length of history', why: 'The age of your oldest account and the average of all of them. The reason not to close your first card.', opts: [['Under 1 yr', -40], ['1–3 yrs', -15], ['3–7 yrs', 0], ['7+ yrs', 25]], d: 2, max: 40 },
-  { id: 'mix', name: 'Credit mix', why: 'Lenders like to see you handle more than one kind of credit — cards plus a loan. Never borrow just for this.', opts: [['Cards only', -15], ['Card + a loan', 0], ['Several types', 12]], d: 1, max: 15 },
+  { id: 'mix', name: 'Credit mix', why: 'Lenders like to see you handle more than one kind of credit, cards plus a loan. Never borrow just for this.', opts: [['Cards only', -15], ['Card + a loan', 0], ['Several types', 12]], d: 1, max: 15 },
   { id: 'inq', name: 'Recent applications', why: 'Each application leaves a hard enquiry. A cluster in a short period looks like distress.', opts: [['None in 6 months', 0], ['2–3', -12], ['5 or more', -35]], d: 0, max: 35 }
 ];
 const st = {}; F.forEach(f => st[f.id] = f.d);
@@ -110,7 +111,7 @@ $('#factors').innerHTML = F.map((f, i) => `<div class="factor"><div class="row r
   ${f.slider ? `<div class="field-top"><label for="util">Balance as a share of your limit</label><span class="val" id="util-v"></span></div><input type="range" id="util" min="0" max="100" step="1" value="${f.d}"><div class="field-ends"><span>0%</span><span class="c-success">30%</span><span>100%</span></div>`
     : `<div class="seg" data-f="${f.id}">${f.opts.map((o, j) => `<button data-j="${j}" class="${j === f.d ? 'on' : ''}">${o[0]}<small>${o[1] > 0 ? '+' : ''}${sc(o[1]) || '±0'}</small></button>`).join('')}</div>`}</div>`).join('');
 const cols = ['var(--danger)', 'var(--warm)', 'var(--gold)', '#65a30d', 'var(--success)'], B = R.bands, col = i => cols[Math.round(i / (B.length - 1) * 4)];
-$('#bands').innerHTML = B.map((b, i) => `<div data-i="${i}"><i style="background:${col(i)}"></i><span class="mono">${b[0]}–${i < B.length - 1 ? B[i + 1][0] - 1 : hi}</span><span>${b[1]} — ${b[2]}</span></div>`).join('');
+$('#bands').innerHTML = B.map((b, i) => `<div data-i="${i}"><i style="background:${col(i)}"></i><span class="mono">${b[0]}–${i < B.length - 1 ? B[i + 1][0] - 1 : hi}</span><span>${b[1]}, ${b[2]}</span></div>`).join('');
 const arc = $('#arc'), len = arc.getTotalLength(); arc.style.strokeDasharray = len;
 let prev = null;
 function calc() {
@@ -153,7 +154,7 @@ $('#local').innerHTML = pick({
   us: [['Three bureaus, two scoring brands', 'Equifax, Experian and TransUnion hold the files; FICO and VantageScore turn them into numbers. Your scores differ a little because each bureau holds slightly different data.'],
        ['Free reports and free freezes', 'You can pull each report <strong>free every week</strong> at annualcreditreport.com. A security freeze is free, takes minutes, and stops anyone opening credit in your name.'],
        ['Seven years', 'Late payments and collections stay for seven years; hard inquiries for two (they count for one). Newer models read 24 months of trends and are starting to include pay-later loans.']],
-  uk: [['Three agencies, no universal score', 'Lenders never see “your Experian score”. They take the raw data and apply their own scorecard — which is why you can be accepted by one bank and declined by another on the same day.'],
+  uk: [['Three agencies, no universal score', 'Lenders never see “your Experian score”. They take the raw data and apply their own scorecard, which is why you can be accepted by one bank and declined by another on the same day.'],
        ['The electoral roll and your address', 'Register to vote, keep addresses consistent across accounts, and close old unused accounts linked to former addresses. Cheap, quick wins.'],
        ['Financial links', 'A joint account or joint mortgage links your file to the other person’s, and their history can count against you. Ask for a “notice of disassociation” once the link has ended. Statutory reports are free; most marks last six years.']],
   au: [['Comprehensive credit reporting', 'Since 2018–19 the big banks report the good as well as the bad: every account, its limit, and 24 months of whether you paid on time.'],

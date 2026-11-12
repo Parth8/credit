@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>XVIII. Taxes &amp; Your Card — Decoding Credit Cards</title>
-<meta name="description" content="Using a credit card is almost never taxable — but tax touches it in a few places, and there are some stubborn myths. Sort the true from the false.">
+<title>XVIII. Taxes &amp; Your Card | Decoding Credit Cards</title>
+<meta name="description" content="Using a credit card is almost never taxable, but tax touches it in a few places, and there are some stubborn myths. Sort the true from the false.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/18-taxes.html">
-<meta property="og:title" content="XVIII. Taxes &amp; Your Card — Decoding Credit Cards">
+<meta property="og:title" content="XVIII. Taxes &amp; Your Card | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -28,7 +28,7 @@
 <main class="ch"><div class="wrap">
 <header class="ch-head">
   <h1>Taxes &amp; <em>Your Card</em></h1>
-  <p>Using a credit card is almost never taxable — but tax touches it in a few places, and there are some stubborn myths. Sort the true from the false.</p>
+  <p>Using a credit card is almost never taxable, but tax touches it in a few places, and there are some stubborn myths. Sort the true from the false.</p>
 </header>
 
 <section class="sec">
@@ -40,7 +40,7 @@
 <section class="sec" data-r="in">
   <div class="eyebrow">The one India-specific calculator</div>
   <h2 class="h2">Money sent abroad: <em>when TCS applies</em>.</h2>
-  <p class="lede">Tax collected at source applies to remittances under the Liberalised Remittance Scheme. The surprise is what counts — and what does not.</p>
+  <p class="lede">Tax collected at source applies to remittances under the Liberalised Remittance Scheme. The surprise is what counts, and what does not.</p>
   <div class="stage split">
     <div>
       <div class="field"><label>How are you paying abroad?</label><div class="seg" id="how" style="margin-top:6px"><button data-v="cc" class="on">Credit card</button><button data-v="lrs">Debit / forex card / wire</button></div></div>
@@ -61,7 +61,7 @@
   <div class="eyebrow">Where tax really meets the card</div>
   <h2 class="h2">The <em>short list</em>.</h2>
   <div id="facts" style="margin-top:22px"></div>
-  <p class="small faint" style="margin-top:18px">General information, not tax advice. Tax rules change every year — check the current position or ask a qualified adviser.</p>
+  <p class="small faint" style="margin-top:18px">General information, not tax advice. Tax rules change every year: check the current position or ask a qualified adviser.</p>
 </section>
 
 <aside class="checkpoint" data-icon="🧾">
@@ -70,34 +70,35 @@
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
 const { $, $$, R, rid, money, t, pick } = DCC;
 const Q = pick({
   in: [['Spending more than ₹10 lakh abroad on a credit card triggers 20% TCS.', false, 'International <strong>credit card</strong> spending is currently outside the LRS limit, so no TCS is collected. A 2023 plan to include it was deferred and has not been brought back. Debit cards, forex cards and wire transfers <em>do</em> count.'],
-       ['Every fee on my card statement carries 18% GST.', true, 'Annual fee, late fee, interest, forex markup, EMI processing — all attract 18% GST. If a fee is reversed, ask for the GST on it to be reversed too.'],
+       ['Every fee on my card statement carries 18% GST.', true, 'Annual fee, late fee, interest, forex markup, EMI processing: all attract 18% GST. If a fee is reversed, ask for the GST on it to be reversed too.'],
        ['Cashback and reward points are taxable income.', false, 'For personal cards they are treated as a discount on what you bought, not income. (Rewards earned on business spending that you claimed as an expense are a question for your CA.)'],
-       ['The income-tax department can see large card payments.', true, 'Banks report card bill payments of ₹10 lakh or more in a year (₹1 lakh or more in cash) in the Statement of Financial Transactions. It appears in your AIS. It is reporting, not a tax — but it should be explainable by your income.'],
+       ['The income-tax department can see large card payments.', true, 'Banks report card bill payments of ₹10 lakh or more in a year (₹1 lakh or more in cash) in the Statement of Financial Transactions. It appears in your AIS. It is reporting, not a tax, but it should be explainable by your income.'],
        ['TCS that has been collected is money lost.', false, 'It is an advance tax credit against your PAN. It shows in Form 26AS and is adjusted or refunded when you file your return. You lose it only if you do not file.']],
-  us: [['Cashback from spending on my card is taxable income.', false, 'The IRS treats rewards earned by spending as a rebate — a reduction in the price you paid — not income.'],
-       ['A bank bonus I get without having to spend anything can be taxable.', true, 'A reward that is not tied to a purchase — a bonus for opening an account, or a referral bonus — is income, and the issuer may send a 1099-INT or 1099-MISC.'],
+  us: [['Cashback from spending on my card is taxable income.', false, 'The IRS treats rewards earned by spending as a rebate, a reduction in the price you paid, not income.'],
+       ['A bank bonus I get without having to spend anything can be taxable.', true, 'A reward that is not tied to a purchase, a bonus for opening an account, or a referral bonus, is income, and the issuer may send a 1099-INT or 1099-MISC.'],
        ['I can deduct the interest on my personal credit card.', false, 'Personal credit-card interest has not been deductible since the 1980s. Interest on genuine business expenses is.'],
-       ['Paying my federal taxes by credit card is free.', false, 'Payment processors charge about 1.75–2.9%. It is only worth it if a sign-up bonus or reward outweighs the fee — and you clear the balance.'],
+       ['Paying my federal taxes by credit card is free.', false, 'Payment processors charge about 1.75–2.9%. It is only worth it if a sign-up bonus or reward outweighs the fee, and you clear the balance.'],
        ['If a card company forgives $600 or more of my debt, I may owe tax on it.', true, 'Cancelled debt of $600 or more is reported on Form 1099-C and generally counts as income, unless you were insolvent at the time.']],
   uk: [['Cashback on my personal credit card is taxable.', false, 'HMRC treats it as a discount on your purchases, not income.'],
        ['Interest on a personal credit card can be offset against my income tax.', false, 'Not for personal spending. If you are self-employed, interest and charges on genuine business purchases can be an allowable expense.'],
        ['There is VAT on my card’s annual fee and interest.', false, 'Credit is an exempt financial service, so fees and interest carry no VAT.'],
-       ['If I pay a business expense on a personal card, I can still claim it.', true, 'What matters is that the cost was wholly and exclusively for the business — keep the receipt. A separate card for business spending makes self-assessment far easier.'],
+       ['If I pay a business expense on a personal card, I can still claim it.', true, 'What matters is that the cost was wholly and exclusively for the business: keep the receipt. A separate card for business spending makes self-assessment far easier.'],
        ['I can pay HMRC with a personal credit card.', false, 'HMRC stopped accepting personal credit cards in 2018. Debit cards and corporate credit cards (for a fee) are accepted.']],
   au: [['Reward points from my personal card are taxable.', false, 'The ATO does not treat points from personal spending as income.'],
-       ['Points earned on business spending can never have tax consequences.', false, 'Usually they do not — but the ATO has said points received under an arrangement tied to business activity, in large volumes, can be assessable or attract FBT. Unusual, but real.'],
-       ['Card interest can be deductible if the card was used for investment or business costs.', true, 'Interest is deductible to the extent the borrowing paid for income-producing expenses. Mixed personal and business use on one card makes the apportionment painful — keep them separate.'],
+       ['Points earned on business spending can never have tax consequences.', false, 'Usually they do not, but the ATO has said points received under an arrangement tied to business activity, in large volumes, can be assessable or attract FBT. Unusual, but real.'],
+       ['Card interest can be deductible if the card was used for investment or business costs.', true, 'Interest is deductible to the extent the borrowing paid for income-producing expenses. Mixed personal and business use on one card makes the apportionment painful: keep them separate.'],
        ['There is GST on my card’s interest and annual fee.', false, 'Credit is an input-taxed financial supply: no GST on interest or the annual fee.'],
        ['Paying the ATO by credit card costs extra.', true, 'A card payment fee applies (under 1% for Visa and Mastercard, more for Amex). It can be deductible for a business.']]
 });
 DCC.quiz($('#game'), { label: 'Statement', items: Q.map(([q, ok, why]) => ({ title: `“${q}”`, opts: [{ t: 'True', ok, why }, { t: 'False', ok: !ok, why }], yes: 'Correct.', no: 'The other one.' })),
-  onEnd(s, n, again) { $('#game').innerHTML = `<div style="text-align:center"><h3 class="h3">${s} of ${n} <em>correct</em>.</h3><p class="lede" style="margin-inline:auto">${s === n ? 'You know more about this than most people who give advice on it.' : 'These catch nearly everyone — the myths are repeated far more often than the rules.'}</p><div class="row" style="justify-content:center;margin-top:16px"><button class="btn btn--outline" id="again">↻ Again</button></div></div>`; $('#again').onclick = again; DCC.playSuccess(); DCC.markDone(); } });
+  onEnd(s, n, again) { $('#game').innerHTML = `<div style="text-align:center"><h3 class="h3">${s} of ${n} <em>correct</em>.</h3><p class="lede" style="margin-inline:auto">${s === n ? 'You know more about this than most people who give advice on it.' : 'These catch nearly everyone, the myths are repeated far more often than the rules.'}</p><div class="row" style="justify-content:center;margin-top:16px"><button class="btn btn--outline" id="again">↻ Again</button></div></div>`; $('#again').onclick = again; DCC.playSuccess(); DCC.markDone(); } });
 
 if (rid === 'in') {
   const st = { how: 'cc', what: 'other' }, amt = $('#amt');
@@ -107,16 +108,16 @@ if (rid === 'in') {
     const n = $('#tcs-note');
     if (st.how === 'cc') { n.className = 'callout is-success'; n.innerHTML = '<b>No TCS</b>Credit card spending abroad is not counted under LRS at present, whatever the amount. It is still visible to the tax department, and the forex markup and GST still apply.'; }
     else if (!tcs) { n.className = 'callout is-success'; n.innerHTML = `<b>Under the threshold</b>${money(th - v)} of headroom left this financial year (April to March), counted per PAN across all your banks.`; }
-    else { n.className = 'callout is-warm'; n.innerHTML = `<b>TCS at ${rate * 100}% on the excess</b>${money(v - th)} is above the threshold. ${money(tcs)} is collected up front — a cash-flow cost, not a tax: it comes back as a credit when you file your return.`; } };
+    else { n.className = 'callout is-warm'; n.innerHTML = `<b>TCS at ${rate * 100}% on the excess</b>${money(v - th)} is above the threshold. ${money(tcs)} is collected up front: a cash-flow cost, not a tax: it comes back as a credit when you file your return.`; } };
   amt.addEventListener('input', calc);
   ['how', 'what'].forEach(k => $('#' + k).addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st[k] = b.dataset.v; $$('#' + k + ' button').forEach(x => x.classList.toggle('on', x === b)); DCC.playClick(); calc(); }));
   calc();
 }
 
 $('#facts').innerHTML = pick({
-  in: [['GST on everything the bank charges', 'A ₹1,500 annual fee is ₹1,770. Interest of ₹1,000 is ₹1,180. It is the reason carrying a balance in India costs noticeably more than the headline rate.'], ['Reporting, not taxing', 'Card payments of ₹10 lakh or more a year are reported by the bank and appear in your Annual Information Statement. Spending far beyond your declared income invites a query.'], ['Paying other people’s bills', 'Letting friends use your card for points makes their spending look like yours in the tax records. Repayments to you can look like unexplained income.'], ['Business use', 'If you freelance or run a business, card statements are your cleanest expense record — and GST input credit needs a proper tax invoice in the business’s name, not just a card slip. Use a separate card.']],
-  us: [['Sales tax is part of the purchase', 'It is charged by the merchant and simply included in what goes on the card. Rewards are earned on the full amount including tax.'], ['Business cards and deductions', 'Interest, annual fees and purchases for a business are deductible business expenses. Keep business and personal spending on separate cards; mixed statements are what audits pick apart.'], ['Forgiven debt', 'A settlement that writes off $600 or more usually produces a 1099-C. Budget for the tax before agreeing a settlement.'], ['HSA and FSA cards', 'These debit cards spend pre-tax money and only on eligible medical costs. Keep receipts — the administrator can ask you to substantiate.']],
-  uk: [['Almost nothing to declare', 'For an employee using a personal card, there is no tax angle at all: no VAT on fees, no tax on cashback, no relief on interest.'], ['Self-employed', 'Business purchases on a card are allowable expenses when they are wholly and exclusively for the business; so are the interest and fees on them. Making Tax Digital now requires digital records — a separate card helps.'], ['VAT on what you buy', 'VAT is in the price of the goods, not a card matter. A VAT-registered business needs a VAT invoice to reclaim it; a card receipt alone is not enough above £25.'], ['Elsewhere in EMEA', 'The pattern is similar across the EU: credit is VAT-exempt and personal rewards are untaxed. In the UAE, 5% VAT does apply to card fees.']],
+  in: [['GST on everything the bank charges', 'A ₹1,500 annual fee is ₹1,770. Interest of ₹1,000 is ₹1,180. It is the reason carrying a balance in India costs noticeably more than the headline rate.'], ['Reporting, not taxing', 'Card payments of ₹10 lakh or more a year are reported by the bank and appear in your Annual Information Statement. Spending far beyond your declared income invites a query.'], ['Paying other people’s bills', 'Letting friends use your card for points makes their spending look like yours in the tax records. Repayments to you can look like unexplained income.'], ['Business use', 'If you freelance or run a business, card statements are your cleanest expense record, and GST input credit needs a proper tax invoice in the business’s name, not just a card slip. Use a separate card.']],
+  us: [['Sales tax is part of the purchase', 'It is charged by the merchant and simply included in what goes on the card. Rewards are earned on the full amount including tax.'], ['Business cards and deductions', 'Interest, annual fees and purchases for a business are deductible business expenses. Keep business and personal spending on separate cards; mixed statements are what audits pick apart.'], ['Forgiven debt', 'A settlement that writes off $600 or more usually produces a 1099-C. Budget for the tax before agreeing a settlement.'], ['HSA and FSA cards', 'These debit cards spend pre-tax money and only on eligible medical costs. Keep receipts: the administrator can ask you to substantiate.']],
+  uk: [['Almost nothing to declare', 'For an employee using a personal card, there is no tax angle at all: no VAT on fees, no tax on cashback, no relief on interest.'], ['Self-employed', 'Business purchases on a card are allowable expenses when they are wholly and exclusively for the business; so are the interest and fees on them. Making Tax Digital now requires digital records: a separate card helps.'], ['VAT on what you buy', 'VAT is in the price of the goods, not a card matter. A VAT-registered business needs a VAT invoice to reclaim it; a card receipt alone is not enough above £25.'], ['Elsewhere in EMEA', 'The pattern is similar across the EU: credit is VAT-exempt and personal rewards are untaxed. In the UAE, 5% VAT does apply to card fees.']],
   au: [['No GST on credit', 'Interest and annual fees are input-taxed, so there is no GST in them and nothing to claim back.'], ['Deductible interest', 'Card interest is deductible only to the extent the card paid for income-producing costs. One card for work, one for everything else.'], ['Salary-packaged and corporate cards', 'Personal spending on an employer’s card can create a fringe-benefits-tax issue for the employer, and points earned may belong to them under company policy.'], ['Receipts', 'The ATO accepts card statements as evidence of payment, but you still need a record showing what was bought. myDeductions in the ATO app does the job.']]
 }).map(([h, p]) => `<details class="fold"><summary><span class="h4">${h}</span></summary><div class="fold-body"><p>${p}</p></div></details>`).join('');
 }

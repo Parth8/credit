@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>XX. Your Relationship With Money — Decoding Credit Cards</title>
+<title>XX. Your Relationship With Money | Decoding Credit Cards</title>
 <meta name="description" content="A card changes how spending feels, and the people who design cards know it. Try one experiment on yourself, then meet six biases and the fix for each.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/20-relationship.html">
-<meta property="og:title" content="XX. Your Relationship With Money — Decoding Credit Cards">
+<meta property="og:title" content="XX. Your Relationship With Money | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -74,10 +74,11 @@
 
 <aside class="checkpoint" data-icon="🪞">
   <h3>You can see the <em>strings</em>.</h3>
-  <p>Knowing a bias exists does not switch it off — which is why every fix here is a rule you set in advance, not willpower in the moment. Next: where payments are going.</p>
+  <p>Knowing a bias exists does not switch it off, which is why every fix here is a rule you set in advance, not willpower in the moment. Next: where payments are going.</p>
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
@@ -93,7 +94,7 @@ function stmt() {
 stmt();
 $('#stmt').addEventListener('click', e => { const b = e.target.closest('[data-p]'); if (!b) return; const min = b.dataset.p === 'min';
   $('#exp').innerHTML = `<span class="chip ${min ? 'is-danger' : 'is-success'}">${min ? 'You took the anchor' : 'You resisted it'}</span><h3 class="h3" style="margin-block:10px">${honest ? 'Same numbers. <em>Different design.</em>' : 'Look at what the layout did.'}</h3>
-    <p>${honest ? 'Here the full balance is the big number and the primary button. Nothing about your debt changed — only which figure was made easy.' : `The smallest number was the largest type and the main button. The real bill was a grey line, and paying it meant choosing “other amount”. That is <strong>anchoring</strong>: the first, most prominent figure becomes the reference for what feels reasonable.`}</p>
+    <p>${honest ? 'Here the full balance is the big number and the primary button. Nothing about your debt changed, only which figure was made easy.' : `The smallest number was the largest type and the main button. The real bill was a grey line, and paying it meant choosing “other amount”. That is <strong>anchoring</strong>: the first, most prominent figure becomes the reference for what feels reasonable.`}</p>
     <div class="kv" style="margin-top:14px"><div class="is-fee"><span>Interest next month if you pay ${money(minP)}</span><span>${money((debt - minP) * r * tax)}</span></div><div><span>Interest if you pay ${money(debt)}</span><span>${money(0)}</span></div></div>
     <p class="small muted" style="margin-top:12px">Research on real statements finds that simply showing a minimum figure pulls payments down towards it. ${min ? 'You are in large company.' : 'Most people do not resist.'} The fix is not willpower: set autopay to the full balance so you never see the choice.</p>`;
   $('#swap').hidden = false; min ? DCC.playError() : DCC.playSuccess(); });
@@ -101,19 +102,19 @@ $('#swap').onclick = () => { honest = !honest; stmt(); $('#swap').textContent = 
 
 const big = money(Math.round(R.a.limit * 3)), thr = money(pick({ in: 2000, us: 50, uk: 40, au: 75 }));
 $('#biases').innerHTML = [
-  ['PAYMENT DECOUPLING', 'The <em>“future me”</em> problem', 'A card separates the pleasure of buying from the pain of paying — by weeks.', 'Handing over cash stings a little, and that sting is a brake. A tap removes it. Experiments repeatedly find people will pay more for the same thing by card than in cash. When the bill comes, the pleasure is long gone and only the cost remains.', `For anything over ${thr}, ask: would I take this out of a cash machine and hand it over? If not, it is a card-only purchase. Skip it.`],
-  ['LIMIT AS WEALTH', `“I have <em>${big}</em> available”`, 'A credit limit is not money. Your brain files it next to your bank balance anyway.', 'It appears in the same app, in the same typeface, as your actual balance. People given higher limits spend more — including on things they could have paid for outright.', 'Call it what it is: the most the bank will let you owe. When deciding whether you can afford something, look at your bank balance only.'],
+  ['PAYMENT DECOUPLING', 'The <em>“future me”</em> problem', 'A card separates the pleasure of buying from the pain of paying, by weeks.', 'Handing over cash stings a little, and that sting is a brake. A tap removes it. Experiments repeatedly find people will pay more for the same thing by card than in cash. When the bill comes, the pleasure is long gone and only the cost remains.', `For anything over ${thr}, ask: would I take this out of a cash machine and hand it over? If not, it is a card-only purchase. Skip it.`],
+  ['LIMIT AS WEALTH', `“I have <em>${big}</em> available”`, 'A credit limit is not money. Your brain files it next to your bank balance anyway.', 'It appears in the same app, in the same typeface, as your actual balance. People given higher limits spend more, including on things they could have paid for outright.', 'Call it what it is: the most the bank will let you owe. When deciding whether you can afford something, look at your bank balance only.'],
   ['REWARDS FRAMING', '“It was <em>practically free</em>”', 'Earning 2% back means spending the other 98%.', 'Rewards exist because they make people spend more, and more often on the card. The clearest symptom is buying something to “use the offer” or to reach a bonus threshold.', 'Rewards are a by-product of spending you were going to do. Never the reason for it.'],
   ['ANCHORING', 'The <em>minimum due</em>', 'The figure shown first and largest becomes the figure that feels normal.', 'You just experienced it. The minimum is presented as the amount required; the total is presented as optional.', 'Autopay the full balance. The minimum should never reach your eyes as a choice.'],
-  ['STATUS', 'The <em>metal card</em>', 'Platinum, Black, Reserve. The names are doing a job.', 'Tiers are a ladder built to be climbed. Higher fees buy perks most holders do not use enough to break even — but the card feels like an achievement.', 'Annual fee divided by the times you really used the perk last year. If a lounge visit works out dearer than buying lunch, hand it back.'],
+  ['STATUS', 'The <em>metal card</em>', 'Platinum, Black, Reserve. The names are doing a job.', 'Tiers are a ladder built to be climbed. Higher fees buy perks most holders do not use enough to break even, but the card feels like an achievement.', 'Annual fee divided by the times you really used the perk last year. If a lounge visit works out dearer than buying lunch, hand it back.'],
   ['SHAME', 'The <em>silence</em> tax', 'When debt becomes a problem, embarrassment stops people asking for help while help is still cheap.', 'Most card debt that turns into a crisis was fixable months earlier. Lenders have hardship arrangements; free advisers exist. Both work best before the first missed payment.', 'Treat it as an administrative problem, not a moral one. The first call is the hardest and the most valuable.']
 ].map((b, i) => `<details class="fold"><summary><span class="num">0${i + 1}</span><span class="tag">${b[0]}</span><span><span class="h4">${b[1]}</span><br><span class="small muted">${b[2]}</span></span></summary><div class="fold-body"><p>${b[3]}</p><div class="callout is-success"><b>The fix</b>${b[4]}</div></div></details>`).join('');
 
 $('#help').innerHTML = '<b>You are not the first</b>' + pick({
-  in: 'Speak to your bank before you miss a payment and ask about restructuring into EMIs. If a recovery agent harasses you, that breaches RBI’s code — complain to the bank and then to the RBI Ombudsman (cms.rbi.org.in). Non-profit credit counselling centres run by banks and bodies such as DISHA offer free guidance. If the stress is affecting you, Tele-MANAS is on 14416.',
-  us: 'Call your issuer and ask for a hardship programme. For a full plan, use a non-profit credit counselling agency affiliated with the NFCC (nfcc.org) — the first session is free. If debt is affecting your mental health, call or text 988.',
+  in: 'Speak to your bank before you miss a payment and ask about restructuring into EMIs. If a recovery agent harasses you, that breaches RBI’s code: complain to the bank and then to the RBI Ombudsman (cms.rbi.org.in). Non-profit credit counselling centres run by banks and bodies such as DISHA offer free guidance. If the stress is affecting you, Tele-MANAS is on 14416.',
+  us: 'Call your issuer and ask for a hardship programme. For a full plan, use a non-profit credit counselling agency affiliated with the NFCC (nfcc.org): the first session is free. If debt is affecting your mental health, call or text 988.',
   uk: 'StepChange (0800 138 1111), National Debtline and Citizens Advice are free and independent. MoneyHelper has a debt-advice locator. Breathing Space gives 60 days’ legal protection while you get advice. Samaritans are on 116 123, day or night.',
-  au: 'The National Debt Helpline — 1800 007 007 — offers free, confidential financial counselling. You have a legal right to ask your lender for a hardship variation. Lifeline is on 13 11 14. In New Zealand: MoneyTalks, 0800 345 123.' });
+  au: 'The National Debt Helpline, 1800 007 007, offers free, confidential financial counselling. You have a legal right to ask your lender for a hardship variation. Lifeline is on 13 11 14. In New Zealand: MoneyTalks, 0800 345 123.' });
 DCC.observe();
 }
 </script>

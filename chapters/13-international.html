@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>XIII. Going International — Decoding Credit Cards</title>
+<title>XIII. Going International | Decoding Credit Cards</title>
 <meta name="description" content="Abroad, the same purchase can cost four different amounts depending on two choices you make. Press the button a terminal offers you, then plan a whole trip.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/13-international.html">
-<meta property="og:title" content="XIII. Going International — Decoding Credit Cards">
+<meta property="og:title" content="XIII. Going International | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -83,6 +83,7 @@
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
@@ -101,7 +102,7 @@ $$('.term-btn').forEach(b => b.onclick = () => {
   const viaBank = bill * (1 + R.fx / 100 * tax), viaDcc = bill * (1 + DCC_M + dccExtra);
   $('#t-out').innerHTML = `<span class="chip ${home ? 'is-danger' : 'is-success'}">${home ? '✗ That was the trap' : '✓ Correct'}</span><h3 class="h3" style="margin-block:10px">${home ? 'You just paid extra for the <em>word “guaranteed”</em>.' : 'Always the <em>local currency</em>.'}</h3>
     <div class="kv"><div><span>Local currency, converted by your bank</span><span>${money(viaBank, true)}</span></div><div class="is-fee"><span>Home currency, converted by the terminal</span><span>${money(viaDcc, true)}</span></div><div class="is-total"><span>The green button costs</span><span>${money(viaDcc - viaBank, true)} more</span></div></div>
-    <p class="small" style="margin-top:14px">This is <strong>dynamic currency conversion</strong>. The shop’s payment company sets its own exchange rate — typically 3–8% worse than the network’s — and shares the margin with the shop, which is why staff are trained to press it for you. It is legal everywhere. It is on by default, highlighted and reassuringly worded for a reason. ${pick({ in: 'Many Indian issuers add a further ~1% plus GST on “rupee transactions abroad”.', us: 'You also see it at ATMs abroad: “accept conversion?” — decline it.', uk: 'You also see it at ATMs abroad: “accept conversion?” — decline it. EU rules now make terminals show the markup, but only in small print.', au: 'And your bank may still add its 3% international fee, because the merchant is overseas.' })}</p>`;
+    <p class="small" style="margin-top:14px">This is <strong>dynamic currency conversion</strong>. The shop’s payment company sets its own exchange rate, typically 3–8% worse than the network’s, and shares the margin with the shop, which is why staff are trained to press it for you. It is legal everywhere. It is on by default, highlighted and reassuringly worded for a reason. ${pick({ in: 'Many Indian issuers add a further ~1% plus GST on “rupee transactions abroad”.', us: 'You also see it at ATMs abroad: “accept conversion?”, decline it.', uk: 'You also see it at ATMs abroad: “accept conversion?”, decline it. EU rules now make terminals show the markup, but only in small print.', au: 'And your bank may still add its 3% international fee, because the merchant is overseas.' })}</p>`;
   home ? DCC.playError() : DCC.playSuccess();
 });
 
@@ -122,7 +123,7 @@ function trip() {
   $('#bars').innerHTML = row('At the real exchange rate', v, 'var(--ink-ghost)') + row('Best you can do', best, 'var(--success)') + row('<strong>Your choices</strong>', you, you - best < 1 ? 'var(--success)' : you >= worst - 1 ? 'var(--danger)' : 'var(--gold)') + row('What most travellers do', worst, 'var(--danger)');
   const n = $('#trip-note'), extra = you - v;
   if (you - best < 1) { n.className = 'callout is-success'; n.innerHTML = `<b>Best possible</b>You pay ${money(extra)} over the real rate and keep ${money(worst - you)} that the default choices would have cost.`; }
-  else { n.className = 'callout ' + (you >= worst - 1 ? 'is-danger' : 'is-warm'); n.innerHTML = `<b>${money(extra)} in avoidable costs</b>` + [s.dcc === 'home' ? 'Paying in your home currency is the biggest leak — switch it and watch the bar.' : '', s.dcc === 'local' && s.card === 'reg' ? `The ${R.fx}% foreign fee${R.feeTax ? ' plus GST' : ''} applies to everything you buy.` : '', s.cash === 'credit' ? 'Cash from a credit card adds a withdrawal fee and interest from day one.' : ''].filter(Boolean).join(' '); }
+  else { n.className = 'callout ' + (you >= worst - 1 ? 'is-danger' : 'is-warm'); n.innerHTML = `<b>${money(extra)} in avoidable costs</b>` + [s.dcc === 'home' ? 'Paying in your home currency is the biggest leak: switch it and watch the bar.' : '', s.dcc === 'local' && s.card === 'reg' ? `The ${R.fx}% foreign fee${R.feeTax ? ' plus GST' : ''} applies to everything you buy.` : '', s.cash === 'credit' ? 'Cash from a credit card adds a withdrawal fee and interest from day one.' : ''].filter(Boolean).join(' '); }
 }
 spend.addEventListener('input', trip);
 $('#dests').addEventListener('click', e => { const b = e.target.closest('.tile'); if (!b) return; s.dest = ALL[+b.dataset.i]; $$('#dests .tile').forEach(x => x.classList.toggle('on', x === b)); DCC.playClick(); trip(); });
@@ -135,7 +136,7 @@ $('#tips').innerHTML = [
   ['Take two cards on two networks', 'One Visa and one Mastercard, kept in different places. Terminals fail, cards get blocked, wallets get lost.'],
   ['Cash: debit card, bank-owned ATM, decline conversion', 'Never a credit card for cash. Use a machine attached to a bank rather than a standalone one in a tourist street, and when it offers to convert for you, say no.'],
   ['Hotels and car hire place holds', 'A pre-authorisation can lock up a chunk of your limit for a week or more. Use a credit card, not a debit card, so it is the bank’s money that is frozen.'],
-  [pick({ in: 'Know the tax position', us: 'Know your cover', uk: 'Section 75 travels with you', au: 'Activate the insurance' }), pick({ in: 'International <strong>credit card</strong> spending is currently outside the LRS limit and attracts no TCS. Debit and forex cards do count. Chapter XVIII has the detail.', us: 'Many travel cards include rental-car damage cover and trip delay cover — but only if you paid for the booking with that card.', uk: 'Purchases over £100 made abroad on a UK credit card are covered by Section 75 just as at home.', au: 'Complimentary travel insurance usually needs to be activated — typically by spending a minimum amount on prepaid travel with the card. Read the conditions before you rely on it.' })]
+  [pick({ in: 'Know the tax position', us: 'Know your cover', uk: 'Section 75 travels with you', au: 'Activate the insurance' }), pick({ in: 'International <strong>credit card</strong> spending is currently outside the LRS limit and attracts no TCS. Debit and forex cards do count. Chapter XVIII has the detail.', us: 'Many travel cards include rental-car damage cover and trip delay cover, but only if you paid for the booking with that card.', uk: 'Purchases over £100 made abroad on a UK credit card are covered by Section 75 just as at home.', au: 'Complimentary travel insurance usually needs to be activated, typically by spending a minimum amount on prepaid travel with the card. Read the conditions before you rely on it.' })]
 ].map(([h, p]) => `<details class="fold"><summary><span class="h4">${h}</span></summary><div class="fold-body"><p>${p}</p></div></details>`).join('');
 }
 </script>

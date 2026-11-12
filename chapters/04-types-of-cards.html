@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>IV. Types of Cards — Decoding Credit Cards</title>
-<meta name="description" content="Six people, six situations. Pick the kind of card that fits each one. Get it wrong and you will see exactly why — that is the point.">
+<title>IV. Types of Cards | Decoding Credit Cards</title>
+<meta name="description" content="Six people, six situations. Pick the kind of card that fits each one. Get it wrong and you will see exactly why, that is the point.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/04-types-of-cards.html">
-<meta property="og:title" content="IV. Types of Cards — Decoding Credit Cards">
+<meta property="og:title" content="IV. Types of Cards | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -26,7 +26,7 @@
 <main class="ch"><div class="wrap">
 <header class="ch-head">
   <h1><em>Types</em> of Cards</h1>
-  <p>Six people, six situations. Pick the kind of card that fits each one. Get it wrong and you will see exactly why — that is the point.</p>
+  <p>Six people, six situations. Pick the kind of card that fits each one. Get it wrong and you will see exactly why, that is the point.</p>
 </header>
 
 <section class="sec">
@@ -47,25 +47,26 @@
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
 const { $, R, money, t, pick } = DCC;
 const starter = pick({
   in: ['Secured', 'Backed by a fixed deposit', 'You open a fixed deposit with the bank and get a limit of 75–90% of it. Approval is near-certain, the FD keeps earning interest, and the card reports to the bureaus like any other.', ['FD-backed', 'Almost any score']],
-  us: ['Secured', 'Backed by a cash deposit', 'You put down a refundable deposit — often $200–$500 — and that becomes your limit. It reports to all three bureaus, and good behaviour usually “graduates” you to an unsecured card and returns the deposit.', ['Refundable deposit', 'Thin or damaged file']],
+  us: ['Secured', 'Backed by a cash deposit', 'You put down a refundable deposit, often $200–$500, and that becomes your limit. It reports to all three bureaus, and good behaviour usually “graduates” you to an unsecured card and returns the deposit.', ['Refundable deposit', 'Thin or damaged file']],
   uk: ['Credit-builder', 'Low limit, high APR', 'The UK has almost no deposit-backed cards. Instead, credit-builder cards accept thin or damaged files in exchange for a small limit (£200–£1,200) and an APR of 30–40%. Pay in full and the rate never matters.', ['Limit from £200', 'APR 30%+']],
   au: ['Low-limit starter', 'Small limit, low rate', 'Deposit-backed cards are rare in Australia. A first card is usually a no-frills, low-rate card with the minimum limit (often $500–$1,000), assessed under responsible-lending rules.', ['Limit from $500', 'Low or no fee']]
 });
 const TYPES = {
   unsecured: ['🔓', 'Unsecured', 'Standard credit, no deposit', 'The ordinary credit card. The bank lends on the strength of your income and history alone. You can pay in full, or carry a balance and pay interest.', ['No deposit', 'Good score needed']],
   starter: ['🔒', ...starter],
-  charge: ['⚡', 'Charge', 'Must be paid in full monthly', 'No revolving, no interest, no pre-set limit — the whole balance is due every month. Usually premium, with a high annual fee and heavy penalties for paying late.', ['Balance due in full', 'High fee, big perks']],
+  charge: ['⚡', 'Charge', 'Must be paid in full monthly', 'No revolving, no interest, no pre-set limit: the whole balance is due every month. Usually premium, with a high annual fee and heavy penalties for paying late.', ['Balance due in full', 'High fee, big perks']],
   prepaid: ['💰', 'Prepaid', 'Load money first', 'Not credit at all. You load it, then spend it. Good for travel money, gifts and teenagers. <strong>It builds no credit history</strong> because nothing is borrowed.', ['Load, then spend', 'No credit built']],
   cobrand: ['🤝', 'Co-branded', 'A bank plus a brand', 'Issued by a bank in partnership with an airline, retailer or app. Rich rewards inside that brand, ordinary rewards everywhere else.', ['Brand-loyal', 'Boosted rewards']],
   business: ['🏢', 'Business', 'For company spending', 'Issued for business expenses, with per-employee cards, spending controls and accounting feeds. For small firms the owner often gives a personal guarantee.', ['Expense controls', 'Often personally guaranteed']]
 };
-const opts = ok => Object.entries(TYPES).map(([k, v]) => ({ t: `${v[0]} <strong>${v[1]}</strong> — ${v[2]}`, ok: k === ok }));
+const opts = ok => Object.entries(TYPES).map(([k, v]) => ({ t: `${v[0]} <strong>${v[1]}</strong>, ${v[2]}`, ok: k === ok }));
 const inc = n => money(Math.round(R.a.income * n / 100) * 100) + (DCC.rid === 'in' ? ' a month' : ' a month');
 const ITEMS = [
   { kicker: 'Your friend', title: 'First job. Never borrowed anything. Just got declined.', body: `<p class="lede">Earns ${inc(.6)}. Applied for a normal card and was turned down for having no credit history at all.</p>`, ok: 'starter',
@@ -73,14 +74,14 @@ const ITEMS = [
   { kicker: 'A founder', title: 'Twelve staff, lots of travel and software bills.', body: '<p class="lede">Wants each employee to pay for work costs without using personal cards, with every expense visible to the accountant.</p>', ok: 'business',
     explain: 'A business card programme gives each person a card with its own limit and category controls, and pushes receipts straight into the accounts. Read the liability clause: in a small company the director is usually on the hook personally if the business cannot pay.' },
   { kicker: 'You', title: `You shop at {marketplace} every week.`, body: '<p class="lede">Most of your discretionary spending goes through one retailer, and you want the most back on it.</p>', ok: 'cobrand',
-    explain: 'When one brand takes the bulk of your spending, its co-branded card usually beats a general card — often 3–5% back there against 1% elsewhere. The catch: rewards are frequently paid as credit you can only spend with that brand, and the card earns little anywhere else.' },
-  { kicker: 'A parent', title: 'A 15-year-old is going on a school trip.', body: `<p class="lede">The parent wants to hand over ${money(R.a.groceries)} for the week — not cash, and not their own credit card.</p>`, ok: 'prepaid',
-    explain: 'Load the amount and that is the ceiling: no overdraft, no debt, every transaction visible to the parent. It builds no credit history — irrelevant at fifteen. Watch for loading and inactivity fees, which is how prepaid cards make their money.' },
+    explain: 'When one brand takes the bulk of your spending, its co-branded card usually beats a general card, often 3–5% back there against 1% elsewhere. The catch: rewards are frequently paid as credit you can only spend with that brand, and the card earns little anywhere else.' },
+  { kicker: 'A parent', title: 'A 15-year-old is going on a school trip.', body: `<p class="lede">The parent wants to hand over ${money(R.a.groceries)} for the week, not cash, and not their own credit card.</p>`, ok: 'prepaid',
+    explain: 'Load the amount and that is the ceiling: no overdraft, no debt, every transaction visible to the parent. It builds no credit history: irrelevant at fifteen. Watch for loading and inactivity fees, which is how prepaid cards make their money.' },
   { kicker: 'A senior professional', title: 'Spends heavily, always clears the bill, wants the perks.', body: `<p class="lede">Puts about ${inc(1.5)} on the card and has never carried a balance. Wants lounges, travel cover and no fixed limit.</p>`, ok: 'charge',
-    explain: 'For someone who pays in full anyway, “no revolving credit” costs nothing and removes temptation. The trade is a hefty annual fee — worth it only if the perks would otherwise be bought with cash. Charge cards are mostly an American Express product.' },
+    explain: 'For someone who pays in full anyway, “no revolving credit” costs nothing and removes temptation. The trade is a hefty annual fee: worth it only if the perks would otherwise be bought with cash. Charge cards are mostly an American Express product.' },
   { kicker: 'A colleague', title: 'Steady salary, good score, wants a plain card.', body: `<p class="lede">Earns ${inc(1.1)}, pays everything on time, simply never got round to a credit card. Wants something simple with a little cashback.</p>`, ok: 'unsecured',
-    explain: 'This is the profile unsecured cards are built for: no deposit, no special product — an entry-level cashback card with no annual fee. Nothing clever is required.' }
-].map(q => ({ ...q, title: t(q.title), opts: opts(q.ok), explain: `<p>${t(q.explain)}</p>`, no: `Not quite — it is ${TYPES[q.ok][1]}.` }));
+    explain: 'This is the profile unsecured cards are built for: no deposit, no special product, an entry-level cashback card with no annual fee. Nothing clever is required.' }
+].map(q => ({ ...q, title: t(q.title), opts: opts(q.ok), explain: `<p>${t(q.explain)}</p>`, no: `Not quite, it is ${TYPES[q.ok][1]}.` }));
 DCC.quiz($('#game'), { items: ITEMS, label: 'Person', endLabel: 'See result →', onEnd(s, n, again) {
   $('#game').innerHTML = `<div class="result"><div class="grade">${DCC.grade(s, n)}</div><h3 class="h3">You matched <em>${s} of ${n}</em>.</h3><p class="lede" style="margin-inline:auto">${s === n ? 'Flawless. The reference below is yours to come back to.' : 'The ones you missed are explained in the reference below.'}</p><div class="row" style="justify-content:center;margin-top:18px"><button class="btn btn--outline" id="again">↻ Play again</button></div></div>`;
   $('#again').onclick = again; if (s >= n - 1) { DCC.playSuccess(); DCC.burstConfetti(); }

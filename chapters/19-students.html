@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
-<title>XIX. Your First Card, Right — Decoding Credit Cards</title>
+<title>XIX. Your First Card, Right | Decoding Credit Cards</title>
 <meta name="description" content="The habits you set in the first year tend to last for decades. Find the right way in for your situation, follow five steps, and make five commitments to yourself.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/19-students.html">
-<meta property="og:title" content="XIX. Your First Card, Right — Decoding Credit Cards">
+<meta property="og:title" content="XIX. Your First Card, Right | Decoding Credit Cards">
 <meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
 <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -67,6 +67,7 @@
 </aside>
 </div></main>
 <script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
 <script src="../js/global.js"></script>
 <script>
 {
@@ -74,16 +75,16 @@ const { $, $$, R, rid, money, t, pick, store } = DCC;
 const lim = money(Math.round(R.a.limit * .3));
 const WHO = [['student', '🎓 Student, little income'], ['first', '💼 First job, no history'], ['rebuild', '🔧 Rebuilding after problems']];
 const ROUTE = pick({
-  in: { student: ['An add-on card, or a card against a fixed deposit', 'An add-on (supplementary) card on a parent’s account lets you learn with their limit — though the history is mostly theirs. A card secured by your own fixed deposit of ₹10,000–₹25,000 builds a CIBIL record in your name from month one. You must be 18.'],
+  in: { student: ['An add-on card, or a card against a fixed deposit', 'An add-on (supplementary) card on a parent’s account lets you learn with their limit, though the history is mostly theirs. A card secured by your own fixed deposit of ₹10,000–₹25,000 builds a CIBIL record in your name from month one. You must be 18.'],
         first: ['A basic card from your salary-account bank', 'The bank that receives your salary can see your income and will usually pre-approve a simple, lifetime-free card. If it declines, take the fixed-deposit route for six to twelve months.'],
         rebuild: ['A card against a fixed deposit', 'Approval does not depend on your score. Use it lightly, pay in full for a year, and check your free credit reports for errors and for accounts marked “Settled” or “Written off” that should be closed properly.'] },
   us: { student: ['A student card, or authorised user on a parent’s card', 'Under 21 you need your own income (part-time work counts) or a co-signer. Being added as an <strong>authorised user</strong> on a parent’s long-held, well-paid card puts its history on your file. Student cards are designed for thin files.'],
-        first: ['A no-fee starter card — use the pre-approval tool', 'Check the issuer’s pre-qualification page first: it uses a soft pull. If you are declined everywhere, a secured card with a $200–$300 deposit works and usually graduates within a year.'],
+        first: ['A no-fee starter card, use the pre-approval tool', 'Check the issuer’s pre-qualification page first: it uses a soft pull. If you are declined everywhere, a secured card with a $200–$300 deposit works and usually graduates within a year.'],
         rebuild: ['A secured card', 'Refundable deposit, reports to all three bureaus. Pull your free reports at annualcreditreport.com and dispute anything wrong before you apply.'] },
   uk: { student: ['A student-account card or a credit-builder card', 'You must be 18. Register on the electoral roll at your term-time address first. A credit-builder card with a £250–£500 limit, cleared in full by direct debit, is enough.'],
         first: ['Run an eligibility checker', 'It shows your chance of acceptance with a soft search. Pick the plainest card with a high acceptance chance; ignore the rewards for now.'],
-        rebuild: ['A credit-builder card', 'High APR, low limit — irrelevant if you pay in full. Get your statutory credit reports (free) and correct errors; defaults drop off after six years.'] },
-  au: { student: ['A low-rate, minimum-limit card — or wait', 'You must be 18 with a regular income. Lenders must assess whether you could repay the whole limit in three years, so ask for the smallest limit on offer. A debit card is a perfectly good choice until you have steady pay.'],
+        rebuild: ['A credit-builder card', 'High APR, low limit: irrelevant if you pay in full. Get your statutory credit reports (free) and correct errors; defaults drop off after six years.'] },
+  au: { student: ['A low-rate, minimum-limit card, or wait', 'You must be 18 with a regular income. Lenders must assess whether you could repay the whole limit in three years, so ask for the smallest limit on offer. A debit card is a perfectly good choice until you have steady pay.'],
         first: ['A no-annual-fee, low-rate card at a low limit', 'Ask for a limit of $1,000–$2,000 even if more is offered. Remember that any limit, used or not, reduces what a bank will lend you for a home.'],
         rebuild: ['A basic low-limit card, after checking your file', 'Get your free reports from the three bureaus. Repayment history clears after two years and defaults after five; then a small card paid in full rebuilds it.'] }
 });
@@ -94,7 +95,7 @@ $('#who').addEventListener('click', e => { const b = e.target.closest('button');
 $('#steps').innerHTML = [
   ['Pick the <em>simplest</em> card', 'Your first card should be boring: no annual fee, a low limit, from a bank you already use. Premium cards are for people who already know their own habits.', 'One plain card. Learn on low stakes.', 'Three applications “to compare”, or anything advertised as guaranteed approval.'],
   ['Set <em>autopay to full</em> on day one', 'Before the first purchase, set up automatic payment of the <strong>full statement balance</strong>. Not the minimum, not a fixed amount. If the full amount ever hurts, that is information about your spending, not a reason to change the setting.', 'Autopay: full balance. Make it impossible to forget.', 'Autopay: minimum. That is the trap with a bow on it.'],
-  ['Stay under <em>30%</em>', `Keep the balance below about 30% of the limit when the statement closes — with a ${money(R.a.limit)} limit, that is ${lim}. Lenders read a card near its limit as someone who needs credit.`, 'Treat the limit as three times what you may spend.', '“I can afford the bill, so 90% is fine.” The bureau still sees 90%.'],
+  ['Stay under <em>30%</em>', `Keep the balance below about 30% of the limit when the statement closes, with a ${money(R.a.limit)} limit, that is ${lim}. Lenders read a card near its limit as someone who needs credit.`, 'Treat the limit as three times what you may spend.', '“I can afford the bill, so 90% is fine.” The bureau still sees 90%.'],
   ['Put <em>one predictable bill</em> on it', 'A phone plan or a streaming subscription is ideal. It gets paid automatically, month after month, and builds a spotless record without any effort from you. Add everyday spending gradually.', 'One or two fixed bills, then groceries.', '“I’ll work out how to pay for it later.” The card is not an emergency fund.'],
   ['Read the statement <em>once a month</em>', 'Five minutes: every line, looking for charges you do not recognise, subscriptions you forgot, and fees. It catches fraud early and shows you where your money really goes.', 'A recurring five-minute calendar entry.', 'Waiting until something feels wrong. By then it is three months old.']
 ].map(([h, p, d, x], i) => `<div class="pstep reveal"><div class="n">0${i + 1}</div><div><h3 class="h3">${h}</h3><p style="margin-top:8px">${p}</p><div class="grid dd"><div class="do"><b>Do</b>${d}</div><div class="dont"><b>Don’t</b>${x}</div></div></div></div>`).join('');
