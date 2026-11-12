@@ -187,3 +187,45 @@ Object.assign(window.DCC_KB = window.DCC_KB || {}, {
   see: ['sepa', 'swift', 'instant-payments', 'rails-map']
 }
 });
+
+// ---- added Nov 2026: remittances, payouts, ATMs ----
+(() => {
+const { R, pick } = DCC;
+Object.assign(window.DCC_KB, {
+'remittances': {
+  brief: ['Remittances are money migrants send home: hundreds of billions of dollars a year, more than all foreign aid combined.', 'Sending $200 still costs about 6.4% on average worldwide, more than double the 3% global target.', 'The cost is mostly the exchange-rate margin, and it varies wildly by corridor and provider.'],
+  sec: [
+    ['Why it matters', '<p>For many families the money sent from abroad pays for food, school and medical care. India is the largest recipient in the world. Every percentage point of cost is taken from people who can least afford it, which is why cutting remittance costs is a UN Sustainable Development Goal.</p>'],
+    ['Who moves the money', '<p><strong>Banks</strong>, through the correspondent chain (lab XXXIII). <strong>Money transfer operators</strong> with agent networks where cash is handed over and collected. <strong>Digital specialists</strong> that pre-fund accounts in each country and pay out locally, often to a bank account, a mobile money wallet or straight to a card. Increasingly, <strong>linked instant payment systems</strong> between countries.</p>'],
+    ['Where the cost hides', '<p>The fee is visible. The exchange-rate margin, the difference between the rate you get and the mid-market rate, is often larger and is not shown as a fee. Cash pick-up costs more than bank deposit. Small amounts cost proportionally more. Corridors with little competition cost the most.</p>'],
+    ['What is changing', '<p>Linking domestic instant systems lets money cross borders in seconds: India’s UPI links with Singapore’s PayNow and others, and the BIS-designed Project Nexus aims to connect many such systems through one hub. Stablecoins are used in some corridors. Regulators push for full disclosure of the total cost, including the exchange-rate margin.</p>']
+  ],
+  reg: { in: 'India receives more remittances than any other country. Inbound money arrives under FEMA rules; outbound remittances by residents count against the LRS limit and can attract TCS above ₹10 lakh a year.', us: 'US remittance providers must disclose the exchange rate, fees and the amount the recipient will receive before you pay, and you can cancel within 30 minutes under the CFPB’s remittance rule.', uk: 'Providers must disclose the total charges and exchange rate, including margin over the reference rate, under UK payment services rules.', au: 'Australia has been encouraged by its competition regulator to make providers show the total cost, including the exchange-rate margin, upfront.' },
+  facts: [['Global average cost', 'About 6.4% to send $200'], ['UN target', '3% by 2030'], ['Largest recipient', 'India'], ['Usually cheapest', 'Digital providers paying into bank accounts or wallets']],
+  quiz: [['What is usually the largest cost of sending money abroad?', ['The exchange-rate margin', 'The flat fee', 'Tax'], ''], ['Why do linked instant payment systems lower costs?', ['They remove the chain of correspondent banks', 'They are subsidised', 'They skip currency conversion'], '']],
+  see: ['ch33', 'swift', 'cross-border', 'financial-inclusion']
+},
+'payouts': {
+  brief: ['A payout is a business sending money to many people: gig workers, sellers, insurance claimants, refund recipients, prize winners.', 'Speed now matters as much as cost: workers expect to be paid the day they work.', 'Payouts can go to bank accounts, cards, wallets or mobile money, each with different reach and risk.'],
+  sec: [
+    ['Rails for payouts', `<p><strong>Batch bank transfers</strong> (ACH, Bacs, NEFT, BECS) are cheap and slow. <strong>Instant payments</strong> (${pick({ in: 'IMPS and UPI', us: 'RTP and FedNow', uk: 'Faster Payments', au: 'the NPP' })}) land in seconds. <strong>Push-to-card</strong> services from the networks send money to a debit card in minutes using only the card number. <strong>Wallets and mobile money</strong> reach people without bank accounts.</p>`],
+    ['What a payout platform does', '<p>Collects and verifies recipient details, screens them against sanctions lists, checks identity where required, chooses the cheapest rail that meets the deadline, retries failures, reports tax where needed, and reconciles every payment against the business’s funding account.</p>'],
+    ['Risks', '<p>Paying the wrong person because bank details were changed by a fraudster. Paying sanctioned parties. Running out of pre-funding at a busy moment. And returned payments when accounts are closed. Name checks and confirmation steps before first payment to a new account reduce the first.</p>'],
+    ['Instant pay for workers', '<p>Earned-wage access products let workers draw wages they have already earned before payday, sometimes for a fee. Regulators in several countries are deciding whether those fees make it a form of credit.</p>']
+  ],
+  quiz: [['What does push-to-card need from the recipient?', ['A debit card number', 'A bank account and routing code', 'A cheque'], ''], ['What is the main fraud risk in payouts?', ['Recipient bank details changed by a fraudster', 'Chargebacks', 'Card skimming'], '']],
+  see: ['ch32', 'instant-payments', 'reconciliation', 'marketplaces']
+},
+'atm-networks': {
+  brief: ['A cash withdrawal is a card authorisation that ends with a machine counting notes.', 'If the ATM is not your bank’s, a network connects the two, and fees flow between them.', 'As cash use falls, ATMs are closing and shared “utility” networks are replacing bank-owned ones.'],
+  sec: [
+    ['How a withdrawal works', '<p>The ATM reads the chip, encrypts your PIN, and sends an authorisation request through its acquirer to an ATM network or card network, which routes it to your bank. If approved, the machine dispenses and the transaction clears like any other. If the machine fails after your account is debited, the reversal rules in the guide on failed payments apply.</p>'],
+    ['Who pays for the machine', `<p>The ATM’s owner earns an interchange fee from the card issuer for each withdrawal by another bank’s customer, and in some countries charges you a surcharge on screen. ${pick({ in: 'In India, banks must give a set number of free transactions a month at their own and other banks’ ATMs, after which they may charge a capped fee; ATM interchange is set by the NPCI network.', us: 'In the US, out-of-network ATMs commonly charge a surcharge and your bank may charge too; some banks reimburse these.', uk: 'In the UK, most withdrawals through the LINK network are free to the customer, funded by interchange between banks, and banks are now legally required to maintain reasonable access to cash.', au: 'Australia’s major banks dropped fees for other banks’ customers at their ATMs in 2017; independent ATMs may still surcharge.' })}</p>`],
+    ['Abroad', '<p>Use a debit card at a machine attached to a bank, and decline the machine’s offer to convert to your home currency. Credit card cash withdrawals are a cash advance: a fee and interest from day one.</p>'],
+    ['Cash is declining, not disappearing', '<p>Many countries now protect access to cash in law because people without bank accounts, older people and those in rural areas still depend on it, and because cash works when systems fail. Shared bank hubs and ATM utilities let banks keep coverage while closing branches.</p>']
+  ],
+  quiz: [['Who usually earns an interchange fee when you use another bank’s ATM?', ['The ATM’s owner', 'Your bank', 'The network only'], ''], ['Abroad, the ATM offers to charge you in your home currency. What should you do?', ['Decline and be charged in local currency', 'Accept for certainty', 'Cancel the withdrawal'], '']],
+  see: ['ch13', 'misdirected-payments', 'debit-cards']
+}
+});
+})();

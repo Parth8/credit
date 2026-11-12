@@ -78,3 +78,32 @@ Object.assign(window.DCC_KB = window.DCC_KB || {}, {
 }
 });
 })();
+
+// ---- added Nov 2026: marketplaces, QR payments ----
+(() => {
+const { R, pick } = DCC;
+Object.assign(window.DCC_KB, {
+'marketplaces': {
+  brief: ['A marketplace takes payment from buyers on behalf of thousands of sellers, then pays each seller its share.', 'Who is the merchant of record decides who is liable for refunds, disputes and tax.', 'Holding other people’s money between payment and payout is regulated almost everywhere.'],
+  sec: [
+    ['Merchant of record', '<p>On some platforms the marketplace itself is the seller in law: its name is on your statement and it handles refunds and chargebacks. On others each seller is the merchant and the platform is a facilitator. The answer decides whom you dispute with and which consumer rights apply.</p>'],
+    ['Split payments', '<p>One customer payment is divided: most to the seller, a commission to the platform, perhaps a share to a delivery partner, with tax withheld where required. Payment providers offer this as a product, holding funds and paying each party on a schedule.</p>'],
+    ['Holding the money', `<p>Funds held between the buyer paying and the seller being paid are customer money. ${pick({ in: 'In India, payment aggregators must keep it in an escrow account with a bank and settle merchants within set timelines; marketplaces themselves usually work through a licensed aggregator.', us: 'In the US, a platform holding funds for others may need money transmitter licences in each state unless it is structured as an agent of the payee.', uk: 'In the UK and EU, holding funds for others normally requires authorisation as a payment institution or reliance on a narrow commercial-agent exemption.', au: 'In Australia, holding funds for others can require a financial services licence; payments licensing is being reformed.' })}</p>`],
+    ['Buyer guarantees', '<p>Many marketplaces offer their own guarantee on top of card protection, such as refunding when an item does not arrive. Use the platform’s process first, keep everything inside the platform’s messages, and never pay a seller outside the platform: that is where most marketplace scams happen.</p>']
+  ],
+  quiz: [['Why does it matter who the merchant of record is?', ['It decides who is liable for refunds, disputes and tax', 'It sets the price', 'It decides delivery speed'], ''], ['A seller asks you to pay them directly by bank transfer to “avoid fees”. What do you lose?', ['The platform’s guarantee and card protection', 'Nothing', 'Only the fee'], '']],
+  see: ['payouts', 'ch27', 'rights-by-method', 'licences']
+},
+'qr-payments': {
+  brief: ['A QR code is just a way of passing payment details to a phone: who to pay, sometimes how much.', 'Static codes are printed once; dynamic codes are generated per transaction with the amount built in.', 'QR payments run on whatever rail sits behind them: UPI, Pix, PayNow, a wallet, or a card network.'],
+  sec: [
+    ['Static and dynamic', '<p>A <strong>static</strong> code is printed on a counter and identifies the merchant; you type the amount. A <strong>dynamic</strong> code is shown on a screen for one transaction, with the amount and an order reference, so the payment reconciles automatically.</p>'],
+    ['Standards', '<p>EMVCo publishes a QR specification so that one code can carry payment details for several schemes. National systems use it or their own: UPI QR and Bharat QR in India, SGQR in Singapore, Pix in Brazil. Interoperable codes mean any app can pay any shop.</p>'],
+    ['Why it took off', `<p>A printed code costs nothing, needs no terminal and works with any smartphone. Where instant payments are free to merchants, QR beats card terminals on cost. ${pick({ in: 'In India most retail payments by count are UPI QR payments, confirmed aloud by a small speaker beside the code.', us: 'In the US QR payments are growing slowly, mostly through wallets and pay-by-bank checkouts.', uk: 'In the UK QR is used for parking, restaurants and pay-by-bank checkouts more than at tills.', au: 'In Australia QR codes are mostly used for ordering and bill payment; PayTo and PayID can sit behind them.' })}</p>`],
+    ['QR scams', '<p>A fraudulent sticker placed over a real code. A buyer asking you to scan a code to “receive” money (scanning and entering a PIN always <em>sends</em> money). Parking-meter codes leading to fake payment pages. Check the payee name your app shows before confirming.</p>']
+  ],
+  quiz: [['A buyer asks you to scan their QR code and enter your PIN to receive payment. What happens if you do?', ['You send them money', 'You receive money', 'Nothing'], ''], ['What does a dynamic QR code carry that a static one usually does not?', ['The amount and an order reference', 'Your bank PIN', 'A discount'], '']],
+  see: ['upi', 'ch10', 'payment-methods', 'terminals']
+}
+});
+})();

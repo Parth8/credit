@@ -1,0 +1,59 @@
+// Guides: the industry. Schema: see CLAUDE.md ("Guide schema"). Names are institutions, never recommendations.
+(() => {
+const { R, pick } = DCC;
+Object.assign(window.DCC_KB = window.DCC_KB || {}, {
+'market-map': {
+  brief: ['Payments is a stack of specialised companies, each taking a small slice of a very large flow.', 'Most of them are invisible to consumers: you see your bank, an app and a logo.', 'This map groups them by job. Examples are illustrative, not endorsements.'],
+  sec: [
+    ['Networks and schemes', '<p>Card networks: Visa, Mastercard, American Express, Discover (now owned by Capital One), UnionPay, JCB, and domestic schemes such as RuPay and eftpos. Account-to-account schemes and operators: NPCI (UPI, IMPS, NACH), The Clearing House and the Federal Reserve (RTP, FedNow, ACH), Pay.UK, the European Payments Council and EBA Clearing, Australian Payments Plus. Messaging: Swift.</p>'],
+    ['Issuers and lenders', '<p>Large banks, specialist card lenders, co-brand programmes, digital banks, and pay-later firms. In most markets a handful of issuers hold most card balances.</p>'],
+    ['Issuer processors and card platforms', '<p>Long-established processors run most large banks’ card portfolios; a newer generation of API-first platforms serves fintechs and new programmes, including Indian firms that now serve banks worldwide. Card manufacturers and personalisation bureaus produce the plastic and metal.</p>'],
+    ['Acquirers, processors and gateways', '<p>Bank acquirers, large independent merchant processors, and payment service providers that bundle gateway, acquiring and tools for online merchants. Point-of-sale providers combine terminals and software for small businesses. Payment facilitators and aggregators onboard small merchants at scale.</p>'],
+    ['Wallets and front ends', '<p>Device wallets from phone makers, money-holding wallets, super-apps, and in India the UPI apps that carry most retail payments.</p>'],
+    ['Infrastructure and services', '<p>Fraud and identity providers, credit bureaus, tokenisation and 3-D Secure providers, HSM and security vendors, core banking vendors, open-banking aggregators, banking-as-a-service platforms, dispute and chargeback specialists, cross-border and remittance firms, and stablecoin issuers.</p>'],
+    ['How they make money', '<p>Networks: scheme fees. Issuers: interest, interchange and fees. Acquirers and processors: a margin per transaction. Wallets: a share of interchange or merchant fees, or none. Infrastructure: per-call, per-account or licence fees. The economics in chapters XXVI and XXXI explain why each layer fights for its slice.</p>']
+  ],
+  quiz: [['Which layer earns interchange?', ['Issuers', 'Networks', 'Gateways'], ''], ['Who operates UPI?', ['NPCI', 'The RBI directly', 'Google'], '']],
+  see: ['network-models', 'ch27', 'regulators-map', 'payments-history']
+},
+'regulators-map': {
+  brief: ['Payments are watched by several kinds of authority: central banks for the systems, conduct regulators for how customers are treated, and others for competition, data and crime.', 'Each country divides the work differently.', 'Knowing which body covers what tells you where to complain and whose rules apply.'],
+  sec: [
+    ['India', '<p><strong>Reserve Bank of India</strong>: banks, NBFCs, payment systems and operators, payment aggregators, prepaid instruments, the Integrated Ombudsman. <strong>NPCI</strong>: operates retail systems under RBI oversight and sets their rules. <strong>SEBI</strong> and <strong>IRDAI</strong> for securities and insurance. <strong>FIU-IND</strong> for money-laundering reports. <strong>MeitY and the Data Protection Board</strong> for personal data. The <strong>Competition Commission</strong> and consumer commissions.</p>'],
+    ['United States', '<p><strong>Federal Reserve</strong>: bank holding companies, state member banks, Fedwire, FedNow and FedACH. <strong>OCC</strong>: national banks. <strong>FDIC</strong>: deposit insurance and state non-member banks. <strong>CFPB</strong>: consumer financial protection. <strong>FinCEN</strong>: money laundering. <strong>OFAC</strong>: sanctions. <strong>FTC</strong>: unfair practices outside banks. <strong>State regulators</strong>: money transmitters, state banks and consumer lending.</p>'],
+    ['United Kingdom and EU', '<p>UK: <strong>Bank of England</strong> (systemic payment systems and stablecoins; the PRA supervises banks), <strong>Financial Conduct Authority</strong> (conduct, payment and e-money firms, consumer credit), the <strong>Payment Systems Regulator</strong> (being folded into the FCA), the <strong>Financial Ombudsman Service</strong>, the <strong>ICO</strong> for data, and HM Treasury’s OFSI for sanctions. EU: the <strong>European Central Bank</strong> (big banks and payment system oversight), the <strong>European Banking Authority</strong> (rules), national authorities, and the European Commission, which proposes laws such as PSD3 and the payment services regulation.</p>'],
+    ['Australia and New Zealand', '<p><strong>Reserve Bank of Australia</strong> and its Payments System Board: payment system regulation, interchange and surcharging. <strong>APRA</strong>: prudential supervision of banks and insurers. <strong>ASIC</strong>: conduct, licensing, consumer credit and the ePayments Code. <strong>ACCC</strong>: competition and consumer law. <strong>AUSTRAC</strong>: money laundering. <strong>OAIC</strong>: privacy. <strong>AFCA</strong>: complaints. In New Zealand, the Reserve Bank and the Commerce Commission, which regulates interchange.</p>'],
+    ['Global standard setters', '<p>The <strong>Basel Committee</strong> (bank capital), the <strong>Financial Stability Board</strong> (systemic risk, the G20 cross-border payments targets), the <strong>BIS Committee on Payments and Market Infrastructures</strong> (payment system principles), <strong>FATF</strong> (money laundering), and industry bodies such as EMVCo and the PCI Security Standards Council.</p>']
+  ],
+  quiz: [['In the UK, which body regulates how payment firms treat customers?', ['The Financial Conduct Authority', 'The Bank of England', 'HM Treasury'], ''], ['Which Australian body sets interchange caps?', ['The Reserve Bank’s Payments System Board', 'ASIC', 'AFCA'], '']],
+  see: ['licences', 'escalation', 'market-map', 'conduct']
+},
+'payments-history': {
+  brief: ['Today’s system is a stack of inventions, each built on the last.', 'Many “new” ideas, such as paying later, tokens and instant transfers, are old ideas on new rails.', 'Knowing the history explains the odd shapes of the present.'],
+  sec: [
+    ['Before cards', '<p>Merchants extended credit to known customers for centuries. In the early twentieth century, department stores issued metal charge plates. Oil companies issued cards for fuel. Every one of them worked only with the issuer.</p>'],
+    ['The first general-purpose cards (1950s–60s)', '<p>Diners Club (1950) let members pay at many restaurants and settle monthly. American Express followed in 1958. Bank of America mailed BankAmericard to Californians in 1958, introducing revolving credit at scale; it later became Visa (1976). Banks formed a rival association that became Mastercard (1966 as Interbank, renamed in 1979).</p>'],
+    ['Electronic money (1960s–80s)', '<p>The first cash machines opened in 1967. The US ACH began in the early 1970s. Swift was founded in 1973 to replace telex. The magnetic stripe became standard, and electronic authorisation replaced phone calls to the bank. ISO 8583, the card message format still used today, was published in 1987.</p>'],
+    ['Security and the internet (1990s–2000s)', '<p>Europay, Mastercard and Visa published the EMV chip standard in the mid-1990s. Online shopping brought card-not-present fraud, 3-D Secure (2001) and PCI DSS (2004, with the council in 2006). The UK launched Faster Payments in 2008, one of the first instant systems. M-Pesa launched in Kenya in 2007 and showed that a phone could be a bank account.</p>'],
+    ['Mobile and instant (2010s–20s)', '<p>Phone wallets and network tokenisation (2014). India’s UPI (2016), and its explosive growth after 2016–17. Real-time payments in the US (RTP 2017, FedNow 2023), Brazil’s Pix (2020), the EU’s instant payments regulation (2024–25). Pay-later surged and then came under regulation. Interchange caps in Europe (2015) and Australia (2026). The move of high-value systems and Swift to ISO 20022 (2023–25).</p>'],
+    ['Now', '<p>Stablecoins settling card payments, central banks experimenting with digital currency, banks being broken into components, and software agents beginning to pay on people’s behalf.</p>']
+  ],
+  facts: [['1950', 'Diners Club'], ['1958', 'American Express card; BankAmericard'], ['1967', 'First cash machine'], ['1973', 'Swift founded'], ['1987', 'ISO 8583'], ['1990s', 'EMV chip standard'], ['2007', 'M-Pesa'], ['2008', 'UK Faster Payments'], ['2016', 'UPI'], ['2020', 'Pix'], ['2023', 'FedNow']],
+  quiz: [['Which card introduced revolving credit at scale and later became Visa?', ['BankAmericard', 'Diners Club', 'American Express'], ''], ['What did M-Pesa show in 2007?', ['A phone could act as a bank account for people without one', 'Chips beat stripes', 'Cards could be free'], '']],
+  see: ['charge-cards', 'emv', 'upi', 'market-map']
+},
+'financial-inclusion': {
+  brief: ['About four in five adults worldwide now have an account, up from about half in 2011.', 'That still leaves around 1.3 billion adults without one, more of them women and people in poorer and rural areas.', 'Mobile money, digital identity and instant payments did more for inclusion than decades of branch building.'],
+  sec: [
+    ['Why an account matters', '<p>Without an account, people pay more to send and receive money, cannot save safely, cannot build a credit history and are excluded from government payments. With one, wages, benefits and remittances arrive directly, and savings are protected.</p>'],
+    ['Mobile money', '<p>In Kenya, M-Pesa let people store and send money on a basic phone through a network of shop agents. Mobile money spread across Africa and South Asia and is often the first financial account people ever have.</p>'],
+    ['India’s stack', '<p>India combined three things: <strong>Jan Dhan</strong>, a drive from 2014 that opened hundreds of millions of basic accounts; <strong>Aadhaar</strong>, a national digital identity that made opening accounts and verifying people cheap; and <strong>UPI</strong>, which made those accounts useful for everyday payments. Government benefits paid straight into accounts cut leakage and gave people a reason to use them.</p>'],
+    ['Beyond access', '<p>An account that sits unused does little. The next challenges are usage, digital literacy, protection from fraud (new users are prime targets for scams), affordable credit without predatory lending, and making sure people who cannot or will not go digital are not shut out of cash.</p>'],
+    ['Measuring it', '<p>The World Bank’s Global Findex survey, last published in 2025, is the standard measure. It found that 79% of adults worldwide have an account, and that mobile phones are increasingly how people in developing economies save and pay.</p>']
+  ],
+  facts: [['Adults with an account', '79% (Global Findex 2025)'], ['Without one', 'About 1.3 billion adults'], ['In 2011', 'About 51%'], ['Key enablers', 'Mobile money, digital ID, instant payments']],
+  quiz: [['What three things did India combine to drive inclusion?', ['Basic accounts, digital identity and an instant payment system', 'Cards, branches and ATMs', 'Cash subsidies only'], ''], ['Why are new account holders at higher risk of scams?', ['They are less familiar with digital payments and their warning signs', 'They have more money', 'Their accounts are uninsured'], '']],
+  see: ['upi', 'remittances', 'payments-history', 'rights-by-method']
+}
+});
+})();

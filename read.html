@@ -53,7 +53,7 @@ else {
       ${g.sec.length > 2 ? `<nav class="toc-chips" aria-label="On this page">${g.sec.map(s => `<a href="#${slug(s[0])}">${s[0]}</a>`).join('')}</nav>` : ''}
       ${g.flow ? `<div class="stage"><div class="eyebrow">Watch it move</div><div id="flow"></div></div>` : ''}
       <article class="prose">${g.sec.map(s => `<h2 id="${slug(s[0])}">${s[0]}</h2>${s[1]}`).join('')}</article>
-      ${g.facts ? `<div class="stage"><div class="eyebrow">Quick reference</div><div class="kv">${g.facts.map(f => `<div><span>${f[0]}</span><span style="white-space:normal;text-align:right">${f[1]}</span></div>`).join('')}</div></div>` : ''}
+      ${g.facts ? `<div class="stage"><div class="eyebrow">Quick reference</div><div class="kv">${g.facts.map(f => `<div><span>${f[0]}</span><span style="white-space:normal;text-align:right;overflow-wrap:anywhere">${f[1]}</span></div>`).join('')}</div></div>` : ''}
       ${reg ? `<div class="callout" style="margin-top:26px"><b>${R.flag} In ${R.name}</b>${reg}</div>` : ''}
       ${g.myth ? `<h2 class="h3" style="margin-top:40px">Common mistakes</h2><div style="margin-top:14px" class="myth">${g.myth.map(m => `<details class="fold"><summary><span class="h4">“${m[0]}”</span></summary><div class="fold-body"><p>${m[1]}</p></div></details>`).join('')}</div>` : ''}
       ${g.quiz ? `<h2 class="h3" style="margin-top:40px">Check yourself</h2><div class="stage" id="quiz" style="margin-top:14px"></div>` : ''}

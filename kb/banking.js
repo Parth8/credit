@@ -117,3 +117,85 @@ Object.assign(window.DCC_KB = window.DCC_KB || {}, {
 }
 });
 })();
+
+// ---- added Nov 2026: capital, ALM, trade, cash management, keys, engineering ----
+(() => {
+const { R, pick, money } = DCC;
+Object.assign(window.DCC_KB, {
+'basel-capital': {
+  brief: ['Capital is the bank’s own money, mostly shareholders’ equity, that absorbs losses before depositors are hurt.', 'Rules set how much capital a bank must hold against its risk-weighted assets.', 'The international standard is Basel III, written by the Basel Committee and applied by each country.'],
+  sec: [
+    ['Why capital', '<p>A bank funded almost entirely by deposits can be wiped out by small losses. Capital is the buffer. The more of it, the safer the bank and the lower its return on equity, which is why banks and regulators argue about the right level.</p>'],
+    ['Risk-weighted assets', '<p>Not all assets are equally risky, so each is given a risk weight: cash and government bonds near zero, mortgages lower, unsecured loans and credit card balances higher. Capital requirements are a percentage of the total, so a bank holding riskier assets needs more capital. Large banks may use their own models for the weights, within limits.</p>'],
+    ['The ratios', '<p>The core measure is common equity tier 1 (CET1) capital as a share of risk-weighted assets, with a minimum of 4.5% plus buffers that take most large banks above 10%. A leverage ratio limits total assets to a multiple of capital regardless of risk weights, as a backstop against models that underestimate risk.</p>'],
+    ['Liquidity rules', '<p>Basel III added liquidity standards after 2008: the liquidity coverage ratio requires enough high-quality liquid assets to survive 30 days of stressed outflows; the net stable funding ratio requires stable funding for long-term assets.</p>'],
+    ['Where it stands', '<p>The final Basel III reforms, often called Basel 3.1 or the “endgame”, are being implemented at different speeds: the EU began in 2025, the UK set 2027, and US rules have been repeatedly revised. Smaller banks and non-banks face simpler regimes.</p>']
+  ],
+  facts: [['CET1 minimum', '4.5% of RWA, plus buffers'], ['Credit cards', 'Higher risk weight than mortgages'], ['Liquidity', 'LCR (30 days) and NSFR (one year)'], ['Standard setter', 'Basel Committee on Banking Supervision']],
+  quiz: [['Why do credit card balances need more capital than the same value of mortgages?', ['They carry a higher risk weight because they are unsecured', 'They earn less interest', 'They are newer'], ''], ['What is the leverage ratio for?', ['A backstop limit that ignores risk weights', 'Setting interest rates', 'Measuring liquidity'], '']],
+  see: ['how-banks-work', 'alm-treasury', 'credit-risk']
+},
+'alm-treasury': {
+  brief: ['Asset-liability management is how a bank handles the mismatch between short-term deposits and long-term loans and investments.', 'The two big risks are interest rate risk and liquidity risk.', 'Silicon Valley Bank failed in 2023 when both struck at once.'],
+  sec: [
+    ['The mismatch', '<p>Deposits can leave tomorrow; mortgages and bonds last for years. That maturity transformation is what banks are for, and it is also what makes them fragile. The treasury function decides how much mismatch to run and how to hedge it.</p>'],
+    ['Interest rate risk', '<p>If a bank holds long fixed-rate bonds or loans and rates rise, their market value falls, while the rate it must pay depositors to stay goes up. Measures include the change in economic value of equity and in net interest income under rate shocks. Banks hedge with interest rate swaps and by matching durations.</p>'],
+    ['Liquidity risk', '<p>Can the bank meet outflows today and through a stress? Treasury holds a buffer of high-quality liquid assets, monitors deposit concentration and stability, and keeps access to central bank facilities ready, with collateral pre-positioned.</p>'],
+    ['What happened at SVB', '<p>Silicon Valley Bank took in a flood of deposits from tech start-ups in 2020–21 and invested much of it in long-dated government bonds. When rates rose in 2022, those bonds lost value. Its depositors were concentrated, largely uninsured and connected to each other. When the bank announced a loss on selling bonds in March 2023, about $42 billion was withdrawn in a day, and it failed the next morning.</p>'],
+    ['Deposit betas', '<p>When rates rise, banks pass only part of the increase to depositors; the share is the deposit beta. Mobile banking and money-market alternatives make deposits more rate-sensitive and faster to move than older models assumed.</p>']
+  ],
+  quiz: [['Why did rising rates hurt Silicon Valley Bank?', ['Its long-dated bonds lost value while depositors could leave instantly', 'Its loans defaulted', 'It was fined'], ''], ['What is a deposit beta?', ['The share of a rate rise passed on to depositors', 'A new account type', 'A capital ratio'], '']],
+  see: ['how-banks-work', 'basel-capital', 'central-bank-money']
+},
+'trade-finance': {
+  brief: ['Trade finance solves a problem of trust: an exporter wants to be paid before shipping, an importer wants the goods before paying.', 'Banks stand in the middle, using documents to control when money and goods change hands.', 'It finances a large share of world trade and is still surprisingly paper-based.'],
+  sec: [
+    ['Letters of credit', '<p>The importer’s bank promises to pay the exporter when the exporter presents specified documents: a bill of lading showing the goods were shipped, an invoice, an inspection certificate. Banks check the documents, not the goods. Rules are standardised internationally by the ICC’s UCP 600.</p>'],
+    ['Documentary collections', '<p>A cheaper, weaker alternative: the exporter’s bank sends the shipping documents to the importer’s bank, which releases them only against payment or a promise to pay. The bank does not guarantee payment.</p>'],
+    ['Open account and supply chain finance', '<p>Most trade between established partners is on open account: ship now, pay in 30 to 90 days. Supply chain finance lets a supplier be paid early by a bank, at a rate based on the large buyer’s credit, while the buyer pays on the due date.</p>'],
+    ['Guarantees', '<p>Banks also issue guarantees and standby letters of credit that pay out if a party fails to perform, common in construction and commodity contracts.</p>'],
+    ['Going digital', '<p>Bills of lading are documents of title, so for decades they had to be paper. Laws such as the UK Electronic Trade Documents Act 2023, following a UN model law, now let electronic versions carry the same legal weight.</p>']
+  ],
+  quiz: [['What does a bank check before paying under a letter of credit?', ['The documents', 'The goods', 'The buyer’s credit score'], ''], ['Why is supply chain finance cheaper for small suppliers?', ['It is priced on the large buyer’s credit', 'It is subsidised', 'It has no interest'], '']],
+  see: ['cash-management', 'swift', 'sanctions']
+},
+'cash-management': {
+  brief: ['Cash management is banking for a company’s treasurer: collecting money in, paying it out, and knowing where all of it is today.', 'Large companies run dozens of accounts across banks and countries.', 'Tools such as virtual accounts, sweeping and pooling make the money work as one balance.'],
+  sec: [
+    ['Collections', '<p>Receiving payments from customers by transfer, direct debit, card and cheque, and matching each to the right invoice. <strong>Virtual accounts</strong> give every customer a unique account number that routes into one real account, so incoming payments identify themselves.</p>'],
+    ['Payables', '<p>Paying suppliers, salaries and taxes in bulk files, with approval workflows and controls against fraud such as changed supplier bank details.</p>'],
+    ['Liquidity', '<p><strong>Sweeping</strong> moves balances automatically between accounts at the end of each day, for example zeroing subsidiaries into a central account. <strong>Notional pooling</strong> offsets balances for interest purposes without moving money. Both reduce idle cash and borrowing.</p>'],
+    ['Visibility', '<p>Banks send end-of-day and intraday statements, increasingly in ISO 20022 formats and through APIs, into treasury management systems that show the group’s position in one place and forecast cash needs.</p>'],
+    ['Why it matters', '<p>A company can be profitable and still fail for lack of cash on a particular day. Cash management is the plumbing that prevents that.</p>']
+  ],
+  quiz: [['What does a virtual account do?', ['Gives each payer a unique account number that routes into one real account', 'Holds a separate balance', 'Replaces a bank licence'], ''], ['What is a cash sweep?', ['An automatic transfer of balances between accounts', 'A cleaning fee', 'A type of loan'], '']],
+  see: ['reconciliation', 'iso20022', 'payouts', 'commercial-cards']
+},
+'hsm-keys': {
+  brief: ['Every card cryptogram, PIN check and token depends on secret keys, and those keys live in hardware security modules.', 'An HSM is a tamper-resistant computer that performs cryptography without ever revealing its keys.', 'Keys are arranged in layers, so the most valuable ones are almost never used directly.'],
+  sec: [
+    ['What an HSM does', '<p>It generates, stores and uses keys inside protected hardware. If someone tries to open it, it erases them. Applications send it requests, such as “verify this PIN” or “check this cryptogram”, and get back yes or no. The key itself never leaves.</p>'],
+    ['A hierarchy of keys', '<p>At the top, a master key protects everything stored outside the HSM. Below it, <strong>zone keys</strong> are shared with partners such as the card network to protect PINs and keys in transit. Below those, <strong>working keys</strong> encrypt individual messages and are changed often. Card-specific keys are derived from issuer master keys, so each card has its own.</p>'],
+    ['PINs in transit', '<p>Your PIN is encrypted in the terminal’s PIN pad into a PIN block. As it travels, each party that receives it translates it from one key to the next inside an HSM, so it is never in clear text on any computer. Many terminals use a scheme in which a new key is derived for every transaction.</p>'],
+    ['Key ceremonies', '<p>Top-level keys are created and loaded in formal ceremonies, split into components held by different people, none of whom can reconstruct the key alone. Dual control and split knowledge are basic rules of the trade.</p>'],
+    ['Standards', '<p>HSMs are certified to security standards, and the card industry’s PIN security requirements and PCI HSM standard govern how they are used. Cloud providers now offer HSMs as a service.</p>']
+  ],
+  quiz: [['Why is a top-level key split into components held by different people?', ['So no single person can reconstruct it', 'To make it longer', 'To share it with customers'], ''], ['Where is your PIN in clear text during a payment?', ['Nowhere outside secure hardware', 'On the merchant’s server', 'At the card network'], '']],
+  see: ['emv', 'pci-dss', 'issuer-processor', 'ch28']
+},
+'payments-engineering': {
+  brief: ['Payment systems must never lose money, never move it twice, and always be able to explain every movement.', 'Networks fail, messages arrive twice, and replies go missing. The design has to assume all three.', 'A handful of patterns make this possible: idempotency, state machines, reversals, and reconciliation.'],
+  sec: [
+    ['Idempotency', '<p>Every request that moves money carries a unique key. If the same key arrives again, the system returns the original result instead of acting twice. Lab XXXIV shows what happens without it.</p>'],
+    ['Timeouts are not failures', '<p>If a request times out, you do not know whether it succeeded. The safe responses are to query the status, or to send a reversal that cancels it if it did happen. Card networks build this in: a missing authorisation response triggers an automatic reversal.</p>'],
+    ['State machines', '<p>A payment moves through defined states: created, authorised, captured, settled, refunded, disputed. Only certain transitions are allowed. Modelling this explicitly prevents impossible combinations such as refunding a payment that was never captured.</p>'],
+    ['Ledgers first', '<p>Balances are derived from an immutable ledger of entries, not stored as a number that gets overwritten. Every movement balances. Corrections are new entries.</p>'],
+    ['Reconciliation as a feature', '<p>Every external record (network files, bank statements, partner reports) is matched to internal records daily, and breaks are worked until zero. Payment companies that treat reconciliation as an afterthought eventually cannot say whose money is whose.</p>'],
+    ['Availability and change', '<p>Payment systems target very high availability, so changes roll out gradually, behind feature flags, with the ability to roll back. Peak days such as festivals and sales are rehearsed with load tests. And every incident is reviewed for its cause rather than its culprit.</p>']
+  ],
+  facts: [['Never', 'Lose money, or move it twice'], ['On timeout', 'Query or reverse, never blindly retry'], ['Source of truth', 'Immutable double-entry ledger'], ['Daily', 'Reconcile every external record']],
+  quiz: [['A request to move money times out. What is the safe next step?', ['Query its status or send a reversal', 'Send it again with a new reference', 'Assume it failed'], ''], ['Why model a payment as a state machine?', ['To allow only valid transitions, such as no refund before capture', 'To make it faster', 'To save storage'], '']],
+  see: ['ch34', 'ledgers', 'reconciliation', 'op-resilience']
+}
+});
+})();

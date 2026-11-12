@@ -83,3 +83,44 @@ Object.assign(window.DCC_KB = window.DCC_KB || {}, {
 }
 });
 })();
+
+// ---- added Nov 2026: privacy, resilience, conduct ----
+(() => {
+const { R, pick } = DCC;
+Object.assign(window.DCC_KB, {
+'data-privacy': {
+  brief: ['Payment data reveals where you go, what you buy and who you know. Privacy law limits who may use it, and for what.', 'Most regimes rest on the same ideas: a lawful basis, a stated purpose, minimal data, security, and your rights to see and correct it.', 'Payments add special rules: card data security, data localisation, and limits on sharing with partners.'],
+  sec: [
+    ['The common principles', '<p>Collect only what is needed, for a stated purpose. Have a lawful basis, often consent or the need to perform a contract. Keep it secure and only as long as necessary. Let people see, correct and in some cases delete their data. Report serious breaches quickly.</p>'],
+    ['The main laws', `<p><strong>GDPR</strong> in the EU and its UK version set the global benchmark, with fines up to 4% of worldwide turnover. <strong>India’s Digital Personal Data Protection Act 2023</strong> came into force through rules notified in November 2025, with consent managers from November 2026 and most obligations from May 2027. ${pick({ in: 'Banks in India also follow RBI rules that require payment data to be stored only in India.', us: 'The US has no single federal privacy law; financial institutions follow the Gramm-Leach-Bliley Act, and a growing list of states have broad privacy laws.', uk: 'In the UK, the Data (Use and Access) Act 2025 amended the UK GDPR, including rules for smart data schemes such as open banking.', au: 'Australia’s Privacy Act was amended in 2024, adding a statutory right to sue for serious invasions of privacy, with further reforms planned.' })}</p>`],
+    ['Payment-specific rules', '<p>Card data is governed by PCI DSS as well as privacy law. Several countries require payment data to stay inside their borders. Co-branding rules may stop a partner seeing your transactions. Open banking requires explicit, revocable consent for each use of your account data.</p>'],
+    ['Fraud versus privacy', '<p>Fraud prevention needs data: devices, locations, behaviour, shared watch lists. Most laws allow this as a legitimate interest or legal obligation, within limits. The tension is real, and decides how much banks can share with each other about mule accounts.</p>'],
+    ['Your rights in practice', '<p>Ask your bank or app what data it holds about you and with whom it shares it. Withdraw marketing consent. Check app permissions. Lenders may not use data beyond what you consented to.</p>']
+  ],
+  quiz: [['Under most privacy laws, what must an organisation have before using your data?', ['A lawful basis and a stated purpose', 'Your phone number', 'A licence from the central bank'], ''], ['Why do payment firms argue they need to share some data with each other?', ['To detect fraud and mule accounts across institutions', 'For marketing', 'To set interest rates'], '']],
+  see: ['pci-dss', 'open-banking', 'kyc']
+},
+'op-resilience': {
+  brief: ['Payments are critical infrastructure: when they stop, people cannot buy food or get paid.', 'Regulators now require firms to map their most important services, set how long each may be down, and prove they can recover.', 'Much of the risk now sits with third parties: cloud providers, processors and software vendors.'],
+  sec: [
+    ['What goes wrong', '<p>Software updates that fail, data centre outages, cyber attacks, failed migrations, and problems at a supplier. A faulty security software update in July 2024 crashed millions of computers worldwide, taking down airlines, hospitals and some banks’ systems in a morning. One bank’s botched core migration in 2018 locked customers out for weeks.</p>'],
+    ['The regulatory approach', `<p>Identify important business services, such as making payments or giving access to cash. Set an impact tolerance: the longest disruption the firm can allow before causing intolerable harm. Map the people, systems and suppliers behind each. Test against severe scenarios. ${pick({ in: 'In India, RBI directions on IT governance, outsourcing and cyber resilience set similar expectations, and payment operators must report outages quickly.', us: 'US banking agencies set expectations through guidance on third-party risk management and incident notification within 36 hours.', uk: 'In the UK, firms had to be able to stay within their impact tolerances by March 2025; critical third parties such as cloud providers can now be designated and overseen directly.', au: 'In Australia, APRA’s operational risk standard, CPS 230, has applied since July 2025, covering business continuity and service providers.' })} The EU’s Digital Operational Resilience Act (DORA) has applied since January 2025 and brings critical tech suppliers under direct oversight.</p>`],
+    ['Third-party concentration', '<p>When many banks use the same cloud provider or processor, one outage can hit them all. Regulators now ask firms to have exit plans and to understand which suppliers they share with others.</p>'],
+    ['What it means for you', '<p>Keep more than one way to pay: a card from a second bank, a different app, a little cash. During an outage, do not repeat payments that seemed to fail; check your statement first.</p>']
+  ],
+  quiz: [['What is an impact tolerance?', ['The maximum disruption a service may suffer before causing intolerable harm', 'A fee for outages', 'A credit limit'], ''], ['Why do regulators worry about cloud concentration?', ['One provider’s outage can hit many banks at once', 'Cloud is illegal for banks', 'It is too cheap'], '']],
+  see: ['payments-engineering', 'core-banking', 'central-bank-money']
+},
+'conduct': {
+  brief: ['Conduct rules require financial firms to treat customers fairly, not just to stay within the letter of product rules.', 'They target the gaps: confusing pricing, products sold to the wrong people, obstacles to complaints and cancellation.', 'They are why regulators can act against practices that are legal on paper but harmful in practice.'],
+  sec: [
+    ['The main regimes', `<p>${pick({ in: 'In India, the RBI’s fair practices codes, customer service directions and digital lending rules set conduct standards: transparent pricing through key fact statements, no hidden charges, fair recovery practices and grievance redress.', us: 'In the US, the prohibition on unfair, deceptive or abusive acts and practices (UDAAP) is the broad standard, enforced by the CFPB, other regulators and state attorneys general, alongside specific laws such as the Truth in Lending Act.', uk: 'In the UK, the Consumer Duty has applied since July 2023. Firms must deliver good outcomes for retail customers on products, price and value, understanding, and support, and must evidence it with data.', au: 'In Australia, design and distribution obligations require firms to define who a product is for and sell it only to them, alongside the general obligation to provide services efficiently, honestly and fairly.' })}</p>`],
+    ['What it changes in practice', '<p>Fees that cannot be justified by value come under scrutiny. Customers who are overpaying, such as those in persistent card debt, must be contacted. Cancelling must be as easy as signing up. Vulnerable customers need different support. Communications are tested for whether people actually understand them.</p>'],
+    ['Persistent debt', '<p>A card customer who pays more in interest and fees than they repay in principal for a long period is in persistent debt. UK rules require issuers to intervene after 18 and 36 months and, if necessary, offer a way to repay over a reasonable period.</p>'],
+    ['Why it matters to you', '<p>If a product was sold to you unsuitably, or charges were unfair, conduct rules are often the basis for a complaint to the ombudsman, even if no specific rule was broken.</p>']
+  ],
+  quiz: [['What does the UK Consumer Duty require?', ['Good outcomes for customers on products, price, understanding and support', 'Lower interest rates', 'Free banking'], ''], ['What do design and distribution obligations require in Australia?', ['Defining who a product is for and selling it to them', 'Selling to everyone', 'Government approval of every product'], '']],
+  see: ['escalation', 'card-interest', 'collections', 'licences']
+}
+});
+})();

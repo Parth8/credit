@@ -21,16 +21,20 @@ actually work. Every page is tailored to India, the USA, UK and Europe, or Austr
 | Bank payments: ACH to UPI | Everything that moves money without a card |
 | Fraud, risk and compliance | KYC, AML, sanctions, PCI DSS, fraud engines |
 | Banking and fintech architecture | Ledgers, core banking, BIAN, open banking, BaaS, stablecoins |
+| Disputes, scams and getting your money back | Everyone: rights by payment method, scams, refunds law, escalation |
+| Business payments and banking | Founders and finance teams |
+| The payments industry, end to end | New joiners, students, investors |
 
 ## The library
 
-54 guides across eight shelves: cards and credit, networks and schemes, issuing, acquiring and merchants,
-bank payment rails, fraud risk and compliance, banking architecture, and what comes next. Browse or search at
+83 guides across ten shelves: cards, credit and loans; disputes, scams and your rights; networks and schemes;
+issuing; acquiring and merchants; bank payment rails; fraud, risk and compliance; banking architecture; the industry;
+and what comes next. About 200 glossary terms. Browse or search at
 `library.html`; the glossary is at `glossary.html`.
 
 ## The labs
 
-31 interactive chapters in two parts , how to use a card, and how the industry behind it works , in four regional editions.
+37 interactive labs in three parts , how to use a card, and how the industry behind it works , in four regional editions.
 Pick **India, USA, UK & Europe, or Australia & NZ** and every amount, example, law, regulator
 and scam on the site switches to that market.
 
@@ -72,6 +76,17 @@ and scam on the site switches to that market.
 | XXIX | Build a Fraud Engine | Set thresholds and rules on a live stream of payments |
 | XXX | The Chargeback Machine | Play the merchant through every stage of a dispute |
 | XXXI | Inside the Issuer | Run one account's P&L; watch collections escalate |
+
+**Part III · Money beyond cards**
+
+| # | Lab | What you do |
+|---|---------|-------------|
+| XXXII | Send Money Five Ways | Race one payment down five rails and compare speed, cost and reversibility |
+| XXXIII | The Correspondent Chain | Watch fees and exchange margins eat an international transfer |
+| XXXIV | Build a Ledger | Post double entries yourself, then break the books with a retry bug |
+| XXXV | Assemble a Bank | Choose the BIAN service domains a card journey needs |
+| XXXVI | The Dispute Desk | Work six cases as a bank's dispute analyst |
+| XXXVII | Get Your Money Back | Find your real protection by payment method and problem |
 
 ## Stack
 

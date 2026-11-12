@@ -103,3 +103,33 @@ Object.assign(window.DCC_KB = window.DCC_KB || {}, {
 }
 });
 })();
+
+// ---- added Nov 2026: loans ----
+(() => {
+const { R, pick, money } = DCC;
+const P = R.a.big * 3, r = pick({ in: 13, us: 12, uk: 8, au: 11 }), n = 36, i = r / 1200, emi = P * i / (1 - Math.pow(1 + i, -n));
+Object.assign(window.DCC_KB, {
+'personal-loans': {
+  brief: ['A personal loan lends a fixed amount, repaid in equal instalments over a fixed term, at a rate usually far below a credit card’s.', 'It suits a planned expense or replacing expensive card debt, if you stop using the card.', 'Compare the total cost, including fees, not just the headline rate.'],
+  sec: [
+    ['How it works', `<p>You borrow ${money(P)} over ${n} months at ${r}% a year. Each month you pay about ${money(emi)}. Early payments are mostly interest; later ones mostly principal. Total repaid: about ${money(emi * n)}, of which ${money(emi * n - P)} is interest.</p>`],
+    ['Against a credit card', `<p>Card debt at ${R.apr}% has no end date and a falling minimum payment. A loan at a lower rate with a fixed end date is usually cheaper, but only if the card is then paid off and kept clear. Consolidating and then running the card up again doubles the debt.</p>`],
+    ['What to check', `<p>The annual percentage rate including fees. Processing fees${R.feeTax ? ' and GST on them' : ''}. Charges for paying early. What happens if a payment is missed. Whether the rate is fixed. ${pick({ in: 'Indian lenders must give a Key Fact Statement with the all-in annual rate before you sign, and digital lenders must disburse to your own bank account.', us: 'Lenders must disclose the APR and total finance charge under the Truth in Lending Act.', uk: 'Lenders must show a representative APR and give pre-contract information; you have 14 days to withdraw.', au: 'Lenders must give a key facts sheet and assess that the loan is not unsuitable.' })}</p>`],
+    ['Buy now, pay later and other cousins', '<p>Instalment plans at the checkout, card-to-instalment conversions and salary advances are personal loans in other clothes. Apply the same checks.</p>']
+  ],
+  quiz: [['Why do loans used to clear card debt so often fail?', ['People run the card balance up again', 'Loans cost more', 'Banks refuse them'], ''], ['What is the best single number to compare loans?', ['The annual percentage rate including fees', 'The monthly instalment', 'The processing fee'], '']],
+  see: ['ch6', 'card-interest', 'bnpl', 'underwriting']
+},
+'mortgages': {
+  brief: ['A mortgage is a long loan secured on a home: if you do not repay, the lender can take the property.', 'Because it is secured and long, it is the cheapest borrowing most people ever get, and the largest.', 'The biggest choices are how much to borrow, fixed or floating rate, and how long to take.'],
+  sec: [
+    ['How lenders decide', '<p>Income and stable employment, existing debts (card limits count, even if unused), credit history, the deposit, and the property itself, valued independently. Loan-to-value, the loan as a share of the property’s value, is the key risk measure: a bigger deposit gets a lower rate.</p>'],
+    ['Fixed and floating', `<p>A fixed rate stays the same for a set period, protecting you from rises. A floating rate moves with a benchmark, so payments can rise or fall. ${pick({ in: 'Most Indian home loans float, linked to an external benchmark such as the RBI repo rate, and banks may not charge prepayment penalties on floating-rate loans to individuals.', us: 'Thirty-year fixed-rate mortgages are standard in the US and can usually be repaid early without penalty.', uk: 'In the UK most borrowers fix for two to five years, then remortgage; leaving a fix early usually means an early repayment charge.', au: 'Most Australian mortgages are variable, with offset accounts that reduce interest by the savings held against the loan.' })}</p>`],
+    ['Amortisation', '<p>Early payments are mostly interest. Paying extra early, when allowed, saves far more interest than the same amount paid late. Shortening the term raises the payment but cuts total interest sharply.</p>'],
+    ['Your card and your mortgage', '<p>Lenders look at your card limits and repayment history. Late card payments and high utilisation in the months before applying can cost you a better rate. Avoid new credit applications before applying.</p>']
+  ],
+  quiz: [['What is loan-to-value?', ['The loan as a share of the property’s value', 'The interest rate', 'The monthly payment'], ''], ['Why can unused credit card limits affect a mortgage application?', ['Lenders count them as potential debt', 'They lower your score automatically', 'They do not'], '']],
+  see: ['personal-loans', 'credit-reports', 'underwriting', 'alm-treasury']
+}
+});
+})();

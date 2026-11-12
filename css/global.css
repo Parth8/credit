@@ -66,7 +66,8 @@ a { color: var(--electric); }
 .row { display: flex; flex-wrap: wrap; gap: var(--gap, 12px); align-items: center; }
 .row--between { justify-content: space-between; }
 .grid { display: grid; gap: var(--gap, 14px); grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min, 220px)), 1fr)); }
-.split { display: grid; gap: clamp(20px, 3vw, 40px); align-items: start; }
+.split { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); align-items: start; }
+.split > * { min-width: 0; }
 @media (min-width: 900px) {
   .split { grid-template-columns: 1fr 1fr; }
   .split--l { grid-template-columns: 1.35fr 1fr; }

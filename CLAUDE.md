@@ -23,13 +23,13 @@ name institutions (issuers, networks, regulators, merchants) but **do not recomm
 
 The site is an open, gamified encyclopedia of cards and payments. Three content types, one catalog:
 
-- **Labs** (`chapters/NN-slug.html`, 31): interactive chapters. Things you *do*. Registered in `CH` in `js/global.js`.
-- **Guides** (`read.html?e=<id>`, 54): plain-language reading with a brief, sections, optional animated flow, quick
+- **Labs** (`chapters/NN-slug.html`, 37 in three parts): interactive chapters. Things you *do*. Registered in `CH` in `js/global.js`.
+- **Guides** (`read.html?e=<id>`, 83): plain-language reading with a brief, sections, optional animated flow, quick
   reference, regional note, common mistakes and a 2-question check. Things you *read*. Bodies in `kb/<domain>.js`.
-- **Glossary** (`glossary.html`, ~170 terms in `kb/glossary.js`), each term linked to its lab or guide.
+- **Glossary** (`glossary.html`, ~200 terms in `kb/glossary.js`), each term linked to its lab or guide.
 
 `js/catalog.js` (`window.DCC_CATALOG`) is the single source for the IA:
-`domains` (8 library shelves), `labDomain` (chapter to shelf), `guides` (id to title, domain, minutes, summary) and
+`domains` (10 library shelves: cards, disputes, networks, issuing, acquiring, rails, risk, banking, industry, future), `labDomain` (chapter to shelf), `guides` (id to title, domain, minutes, summary) and
 `tracks` (id to icon, title, audience, ordered item ids; labs are `ch<N>`). Pages:
 `index.html` (hero, tracks, why, labs list and library search) · `tracks.html` (all tracks, or `?t=<id>`) ·
 `library.html` (search and filters, `?d=<domain>`, `?q=`) · `read.html?e=<id>` · `glossary.html?q=`.
@@ -61,9 +61,9 @@ css/global.css          design system v3: tokens, layout utilities, shared compo
 js/regions.js           window.DCC_REGIONS: every fact, name and amount that differs by geography
 js/global.js            engine, window.DCC: region lens, progress, catalog helpers, page chrome, effects, quiz, flow
 js/catalog.js           window.DCC_CATALOG: domains, guide index cards, learning tracks
-kb/<domain>.js          guide bodies (cards, networks, issuing, acquiring, rails, risk, banking, future) + glossary.js
+kb/<domain>.js          guide bodies, one file per shelf (later additions are appended as extra blocks) + glossary.js
 read.html, library.html, tracks.html, glossary.html   reading and navigation pages
-chapters/NN-slug.html   31 chapters in two parts: shared <head>, a small <style> for unique visuals, markup, one inline <script>
+chapters/NN-slug.html   37 labs in three parts: shared <head>, a small <style> for unique visuals, markup, one inline <script>
 og-image.png / .svg     social card
 ```
 
@@ -168,6 +168,20 @@ Honours `prefers-reduced-motion`; all controls are real buttons with focus rings
 | 29 | 29-fraud-engine | threshold + rules + step-up on 400 seeded payments, minimise total cost | decline reasons |
 | 30 | 30-chargeback-machine | dispute flow; play the merchant through alert → chargeback → pre-arb → arbitration | fees, legal overlay |
 | 31 | 31-issuer-economics | per-account P&L with 5 customer presets; days-past-due slider; issuer stack | interchange, cost of funds, collections timeline |
+
+**Part III · Money beyond cards** (added Nov 2026)
+
+| # | File | Interaction | Regional data |
+|---|------|-------------|---------------|
+| 32 | 32-send-money | race one payment down card, instant, batch, wire and SWIFT; weekday vs Saturday night; trade-off table; rail quiz | rail names, timings, fees, scam protection |
+| 33 | 33-correspondent-chain | SHA vs OUR vs specialist provider; FX margin slider; fees deducted per hop | home and destination currency |
+| 34 | 34-build-a-ledger | post six events by tapping debit then credit; trial balance; retry without idempotency, reconciliation break | unit amounts |
+| 35 | 35-assemble-a-bank | pick two BIAN service domains per journey step; map of domains used | none (BIAN names, Fraud Evaluation not Fraud Detection) |
+| 36 | 36-dispute-desk | bank dispute pipeline flow; regulatory clocks; six cases as the dispute analyst | clocks and scam answers per region |
+| 37 | 37-money-back | protection finder: 9 payment methods × 6 problems, first steps, evidence, deadlines; protection grid | levels, deadlines, Section 75, scam rules |
+
+The chapter sources for 32-37 were assembled with a scratch build script (`build.py`, not in the repo) that
+refuses to emit an em dash. Treat the built `chapters/*.html` files as the source of truth.
 
 ## History: what the May 2026 original got wrong (do not reintroduce)
 
