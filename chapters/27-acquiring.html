@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>XXVII. The Acquiring Stack — Decoding Credit Cards</title>
+<meta name="description" content="“The acquirer” in chapter I is really a stack of companies: a checkout, a gateway, a processor, a licensed bank. Set up payments for three different businesses and see how the pieces get bundled.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/27-acquiring.html">
+<meta property="og:title" content="XXVII. The Acquiring Stack — Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.layers { display: grid; gap: 8px; }
+.lay { display: grid; grid-template-columns: 38px 1fr auto; gap: 12px; align-items: center; padding: 12px 14px; border-radius: var(--r-md); background: var(--paper); border-left: 4px solid var(--ink-ghost); transition: background .4s, border-color .4s, transform .4s var(--ease-out); }
+.lay span:first-child { font-size: 1.4rem; text-align: center; }
+.lay small { display: block; color: var(--ink-muted); font-size: .84rem; }
+.lay .by { font: 700 .7rem var(--font-mono); text-align: right; max-width: 130px; }
+.lay.one { background: var(--electric-soft); border-color: var(--electric); } .lay.one .by { color: var(--electric); }
+.lay.own { background: var(--gold-soft); border-color: var(--gold); } .lay.own .by { color: var(--gold); }
+.lay.sees { box-shadow: inset 0 0 0 2px var(--danger); }
+.lay .eye { font-size: .7rem; color: var(--danger); font-family: var(--font-mono); display: none; } .lay.sees .eye { display: block; }
+.cmp { --min: 130px; margin-top: 14px; }
+.scope { font: 900 clamp(2.4rem, 9vw, 3.8rem)/1 var(--font-display); letter-spacing: -.03em; }
+</style>
+</head>
+<body data-ch="27">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>The <em>Acquiring Stack</em></h1>
+  <p>“The acquirer” in chapter I is really a stack of companies: a checkout, a gateway, a processor, a licensed bank. Set up payments for three different businesses and see how the pieces get bundled.</p>
+</header>
+
+<section class="sec">
+  <div class="eyebrow">Scene 1 · Choose a business, then a setup</div>
+  <h2 class="h2">Who should run <em>your payments</em>?</h2>
+  <div class="seg" id="biz" style="margin-top:20px"></div>
+  <div class="stage split">
+    <div>
+      <p id="biz-desc" class="lede" style="margin:0 0 16px"></p>
+      <div class="eyebrow">Pick a model</div>
+      <div class="seg" id="model"></div>
+      <div class="grid cmp" id="cmp"></div>
+      <div class="callout" id="fit" style="margin-top:16px" aria-live="polite"></div>
+    </div>
+    <div class="sticky"><div class="eyebrow">Who does each job</div><div class="layers" id="layers"></div></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">Scene 2 · Who touches the card number?</div>
+  <h2 class="h2">Your checkout decides <em>your security burden</em>.</h2>
+  <p class="lede">The card industry’s security standard, PCI DSS, applies to anyone who stores, processes or transmits card data. How you build the payment page decides how much of it lands on you.</p>
+  <div class="stage split">
+    <div><div class="seg" id="integ"><button data-v="0" class="on">Redirect to a hosted page</button><button data-v="1">Embedded hosted fields</button><button data-v="2">Your own form and API</button></div>
+      <div class="layers" id="path" style="margin-top:18px"></div></div>
+    <div class="sticky" aria-live="polite"><div class="eyebrow">Security requirements you must meet yourself</div><div class="scope" id="scope"></div><p id="scope-t" style="margin-top:10px"></p></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">Scene 3 · Getting a merchant account</div>
+  <h2 class="h2">Before the first sale: <em>underwriting</em>.</h2>
+  <div class="stage"><div id="onb"></div></div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">The cast, defined</div>
+  <h2 class="h2">Eight words you will <em>hear in every payments meeting</em>.</h2>
+  <div style="margin-top:22px" id="terms"></div>
+</section>
+
+<aside class="checkpoint" data-icon="🧱">
+  <h3>You can draw the <em>merchant side</em>.</h3>
+  <p>One job list, bundled a dozen different ways. Next: what happens to the card number itself on the way through — tokens, wallets and 3-D Secure.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
+<script src="../js/global.js"></script>
+<script>
+{
+const { $, $$, R, rid, money, t, pick } = DCC;
+const PF = pick({ in: 'Razorpay / PhonePe', us: 'Square / Stripe', uk: 'SumUp / Stripe', au: 'Square / Tyro' }), ACQ = pick({ in: 'Axis / HDFC acquiring', us: 'Chase / Fiserv', uk: 'Worldpay / Barclaycard Payments', au: 'NAB / CommBank acquiring' });
+const JOBS = [['🖥️', 'Checkout / terminal', 'Captures the card details'], ['🚪', 'Gateway', 'Encrypts, tokenises and routes the request'], ['⚙️', 'Processor', 'Speaks ISO 8583 to the networks, runs clearing files'], ['🏦', 'Acquirer', 'Holds the network licence, carries the risk, pays the merchant'], ['🧾', 'Merchant account', 'The identity (MID) the money is settled under']];
+const MODELS = [
+  { name: 'All-in-one', who: [PF, PF, PF, PF + '’s partner bank', 'Shared — you are a sub-merchant'], cls: 'one', cmp: [['Live in', 'Minutes'], ['Pricing', 'Flat rate, highest'], ['Control', 'Low'], ['Risk of sudden freeze', 'Higher']],
+    d: 'A <strong>payment facilitator</strong> (or payment aggregator) signs you up under its own master merchant account. One contract, one dashboard, one flat price. In exchange it underwrites you lightly — and can hold funds or close you just as quickly if something looks wrong.' },
+  { name: 'Merchant account', who: ['Your choice', 'Gateway provider', ACQ, ACQ, 'Your own MID'], cls: 'own', cmp: [['Live in', 'Days to weeks'], ['Pricing', 'Interchange++, lower'], ['Control', 'Medium'], ['Risk of sudden freeze', 'Lower']],
+    d: 'You are underwritten properly and get your <strong>own merchant ID</strong> with an acquirer, often sold through a reseller. Cheaper per transaction once volume justifies the paperwork, and your relationship is with the bank that actually holds the licence.' },
+  { name: 'Multi-acquirer', who: ['Your own build', 'Orchestration layer', 'Several, by region', 'Several, by region', 'MIDs in each market'], cls: 'own', cmp: [['Live in', 'Months'], ['Pricing', 'Negotiated, lowest'], ['Control', 'High'], ['Risk of sudden freeze', 'Spread']],
+    d: 'Large merchants connect to several acquirers and route each payment to whichever will approve it most cheaply — local acquiring in each country, automatic retry on a second acquirer after a decline. Approval rates rise by a few points, which at scale is worth millions.' }
+];
+const BIZ = [
+  ['☕ A new café', 'One site, two staff, perhaps ' + money(R.a.income * 4) + ' a month in card sales, opening on Saturday.', 0, 'A flat rate costs a little more per sale, but there is nothing to negotiate at this size and the café is taking payments this week. The convenience is worth the premium.', 'Overkill for now. The paperwork and monthly fees outweigh the saving until volume is several times higher.'],
+  ['🛍️ A growing online brand', 'Three years old, ' + money(R.a.income * 60) + ' a month online, thin margins, a few chargebacks.', 1, 'At this volume every tenth of a percent matters, and an own merchant account on cost-plus pricing typically saves a meaningful share of the fee. It also means the acquirer has underwritten the business properly, so a spike in sales is less likely to trigger a freeze.', 'Either paying too much per sale (all-in-one) or building more than the volume justifies (multi-acquirer).'],
+  ['✈️ An international airline', 'Sells in forty countries, huge tickets, sold months before the service is delivered.', 2, 'Cross-border payments are declined more often and cost more, so local acquiring in each market pays for itself. Airlines are also high-risk for acquirers — if one fails, every unflown ticket becomes a chargeback — so they spread exposure and are often asked for collateral.', 'A single provider would mean lower approval rates abroad, higher cross-border fees, and one company able to hold back the whole business’s cash.']
+];
+let bi = 0, mi = 0;
+$('#biz').innerHTML = BIZ.map((b, i) => `<button data-i="${i}" class="${i ? '' : 'on'}">${b[0]}</button>`).join('');
+$('#model').innerHTML = MODELS.map((m, i) => `<button data-i="${i}" class="${i ? '' : 'on'}">${m.name}</button>`).join('');
+const tried = new Set();
+function draw() {
+  const b = BIZ[bi], m = MODELS[mi], good = b[2] === mi;
+  $('#biz-desc').textContent = b[1];
+  $$('#biz button').forEach((x, i) => x.classList.toggle('on', i === bi)); $$('#model button').forEach((x, i) => x.classList.toggle('on', i === mi));
+  $('#layers').innerHTML = JOBS.map((j, i) => `<div class="lay ${m.cls}" style="transition-delay:${i * 60}ms"><span>${j[0]}</span><div><b>${j[1]}</b><small>${j[2]}</small></div><span class="by">${m.who[i]}</span></div>`).join('');
+  $('#cmp').innerHTML = m.cmp.map(([k, v]) => `<div class="stat"><div class="stat-k">${k}</div><b>${v}</b></div>`).join('');
+  $('#fit').className = 'callout ' + (good ? 'is-success' : 'is-warm');
+  $('#fit').innerHTML = `<b>${good ? '✓ A good fit' : 'Workable, but not the best fit'}</b>${m.d}<br><br>${good ? b[3] : b[4]}`;
+  if (good) { tried.add(bi); if (tried.size === BIZ.length) DCC.markDone(); }
+  return good;
+}
+$('#biz').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { bi = +b.dataset.i; draw(); DCC.playClick(); } });
+$('#model').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { mi = +b.dataset.i; draw() ? DCC.playSuccess() : DCC.playClick(); } });
+draw();
+
+const INT = [
+  ['A handful', 'The customer leaves your site to pay on the provider’s page and comes back afterwards. Card data never touches your servers or your page. You attest to about thirty basic requirements once a year. The price is a checkout you cannot fully design.', [0, 1, 1, 1]],
+  ['Dozens', 'The card fields are small frames served by the provider, sitting inside your own page. It looks seamless and the numbers still never reach your servers — but because your page hosts those frames, you must now protect it against tampering scripts, a requirement that became mandatory in 2025.', [0, 1, 1, 1]],
+  ['Hundreds', 'Your own form posts card numbers to your own server, which calls the processor. Full control, and the full standard: network segmentation, encryption, logging, quarterly scans, penetration tests and, above a certain volume, an external audit. Almost nobody should choose this.', [1, 1, 1, 1]]
+];
+const PATH = [['🛒', 'Your website and servers'], ['🚪', 'Gateway'], ['⚙️', 'Processor and acquirer'], ['🌐', 'Card network']];
+function integ(i) { const x = INT[i]; $$('#integ button').forEach((b, k) => b.classList.toggle('on', k === i));
+  $('#path').innerHTML = PATH.map((p, k) => `<div class="lay ${x[2][k] ? 'sees' : ''}"><span>${p[0]}</span><div><b>${p[1]}</b><small class="eye">● sees the real card number</small></div><span class="by">${x[2][k] ? 'in scope' : 'out of scope'}</span></div>`).join('');
+  $('#scope').textContent = x[0]; $('#scope').style.color = ['var(--success)', 'var(--gold)', 'var(--danger)'][i]; $('#scope-t').textContent = x[1]; }
+$('#integ').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { integ(+b.dataset.v); +b.dataset.v === 2 ? DCC.playError() : DCC.playClick(); } }); integ(0);
+
+DCC.flow($('#onb'), { nodes: [['🏪', 'Merchant', 'applies'], ['🔎', 'Onboarding', 'KYC / KYB'], ['⚖️', 'Underwriting', 'risk'], ['🏦', 'Acquirer', 'sponsor'], ['🌐', 'Network', 'registration']],
+  steps: [
+    { from: 0, to: 1, tag: 'apply', title: 'The application', body: 'Legal entity, owners, bank account, website, what is sold and how. ' + pick({ in: 'In India the aggregator must complete full KYC on every merchant under RBI’s payment-aggregator directions.', us: 'Beneficial owners with 25% or more are identified, and names are screened against sanctions lists.', uk: 'Directors and beneficial owners are verified under the money-laundering regulations.', au: 'Owners are verified under the AML/CTF rules, which were broadened in 2026.' }) },
+    { from: 1, to: 2, tag: 'checks', title: 'Screening', body: 'Sanctions lists, fraud databases, and the networks’ shared list of merchants terminated for cause (MATCH or VMAS). A business on that list will struggle to get an account anywhere for five years.' },
+    { from: 2, to: 3, tag: 'risk', title: 'Underwriting the exposure', body: 'The acquirer is liable for chargebacks if the merchant cannot pay. So it asks: how long between payment and delivery? What is the refund rate? A café is low-risk; a travel agent selling trips six months out is not. The answer sets pricing, payout speed and whether a reserve is held back.' },
+    { from: 3, to: 4, tag: 'MID + MCC', title: 'Registered with the network', body: 'The merchant gets a <strong>merchant ID</strong> and a four-digit <strong>category code</strong>. The code matters more than it looks: it decides the interchange rate, the cardholder’s reward category and which fraud rules apply. Deliberately choosing the wrong one is a serious breach.' },
+    { from: 3, to: 0, tag: 'live', kind: 'res', title: 'Live — and watched', body: 'Approval is not the end. The acquirer monitors sales patterns, refunds and chargeback ratios continuously. Breach the networks’ thresholds and the merchant enters a monitoring programme with fines; keep breaching and the account is closed.' }
+  ] });
+
+$('#terms').innerHTML = [
+  ['Acquirer', 'The licensed institution — nearly always a bank — that is a member of the card networks, takes financial responsibility for the merchant’s transactions and settles funds to it.'],
+  ['Processor', 'The technical operator that formats messages, connects to the networks and runs clearing. Sometimes the acquirer itself, often a specialist working on its behalf.'],
+  ['Gateway', 'The front door for e-commerce: takes the payment from the checkout, tokenises the card, adds fraud tools and passes it to a processor. A gateway moves messages, not money.'],
+  ['Payment facilitator / aggregator', 'A company that onboards many small merchants as sub-merchants under its own master account and pays them out. ' + pick({ in: 'In India this is a licensed category: payment aggregators are authorised and supervised by the RBI and must keep merchant funds in escrow.', us: 'It does so under an acquiring bank’s sponsorship and is liable for its sub-merchants.', uk: 'It needs FCA authorisation as a payment institution and must safeguard merchant funds.', au: 'It operates under an acquirer’s sponsorship; licensing for payment providers is being overhauled.' })],
+  ['ISO / reseller', 'An independent sales organisation that sells an acquirer’s merchant accounts and often the terminal. It finds the merchant; the acquirer still holds the risk.'],
+  ['Orchestration', 'Software that sits above several gateways and acquirers and decides, payment by payment, where to send each one — and where to retry after a decline.'],
+  ['Merchant of record', 'The legal seller in a transaction: the name on the statement, and the party liable for tax, refunds and chargebacks. Marketplaces and app stores are often the merchant of record for the sellers on them.'],
+  ['Rolling reserve', 'A share of each day’s sales held back for a set period — say 10% for 180 days — as security against future chargebacks. Common for new, fast-growing or delayed-delivery businesses.']
+].map(([h, p]) => `<details class="fold"><summary><span class="h4">${h}</span></summary><div class="fold-body"><p>${p}</p></div></details>`).join('');
+}
+</script>
+</body>
+</html>
