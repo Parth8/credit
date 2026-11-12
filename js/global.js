@@ -116,7 +116,7 @@
       });
     } catch { /* no audio */ }
   }
-  const buzz = p => { if (!muted && navigator.vibrate) try { navigator.vibrate(p); } catch { /* ignore */ } };
+  const buzz = p => { if (!muted && navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) try { navigator.vibrate(p); } catch { /* ignore */ } };
   const playClick = () => { tone([620], .035, .07); buzz(8); };
   const playSuccess = () => { tone([523, 659, 784], .05, .25); buzz([12, 40, 18]); };
   const playError = () => { tone([220, 180], .04, .16); buzz(30); };

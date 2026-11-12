@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>XXIV. The Life of a Transaction — Decoding Credit Cards</title>
+<meta name="description" content="An approval is not a payment. Between the yes and the money sit holds, adjustments, captures, reversals and refunds. Run four real situations and watch three ledgers move.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/24-transaction-lifecycle.html">
+<meta property="og:title" content="XXIV. The Life of a Transaction — Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.ledgers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; position: sticky; top: calc(var(--nav-h) + 8px); z-index: 5; background: var(--white); padding-block: 8px; }
+.led { border-radius: var(--r-md); padding: 10px 12px; background: var(--paper); border-top: 4px solid var(--c); transition: transform .3s var(--ease-spring); }
+.led.bump { transform: scale(1.06); }
+.led small { display: block; font: 400 .6rem var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); }
+.led b { font: 800 clamp(1rem, 4.4vw, 1.7rem)/1.1 var(--font-display); font-variant-numeric: tabular-nums; }
+.limitbar { display: flex; height: 16px; border-radius: 8px; overflow: hidden; background: var(--success-soft); margin-block: 10px 18px; }
+.limitbar i { transition: width .7s var(--ease-out); }
+.stmt-list { font-family: var(--font-mono); font-size: .8rem; margin-top: 16px; }
+.stmt-list div { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 1px dashed var(--border-strong); animation: rise .5s var(--ease-out); transition: opacity .4s; }
+.stmt-list .pend { color: var(--gold); font-style: italic; } .stmt-list .gone { opacity: .35; text-decoration: line-through; } .stmt-list .cr { color: var(--success); }
+.ev-now { margin-top: 16px; }
+</style>
+</head>
+<body data-ch="24">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>The Life of a <em>Transaction</em></h1>
+  <p>An approval is not a payment. Between the yes and the money sit holds, adjustments, captures, reversals and refunds. Run four real situations and watch three ledgers move.</p>
+</header>
+
+<section class="sec">
+  <div class="eyebrow">Pick a situation, then step through it</div>
+  <h2 class="h2">Pending is not posted. <em>Watch why.</em></h2>
+  <div class="seg" id="scen" style="margin-top:20px"></div>
+  <div class="stage split split--r">
+    <div>
+      <div class="eyebrow">Your card account</div>
+      <div class="ledgers"><div class="led" style="--c:var(--success)"><small>Available</small><b id="l-av"></b></div><div class="led" style="--c:var(--gold)"><small>Pending holds</small><b id="l-pe"></b></div><div class="led" style="--c:var(--electric)"><small>Posted balance</small><b id="l-po"></b></div></div>
+      <div class="limitbar" role="img" aria-label="Share of credit limit"><i id="b-po" style="background:var(--electric)"></i><i id="b-pe" style="background:var(--gold)"></i></div>
+      <div class="eyebrow">What the app shows</div>
+      <div class="stmt-list" id="list"></div>
+    </div>
+    <div class="sticky">
+      <div class="ev-now panel" id="now" aria-live="polite"></div>
+      <div class="row row--between" style="margin-top:14px"><span class="dots" id="dots"></span><div class="row"><button class="btn btn--ghost btn--sm" id="restart">↻ restart</button><button class="btn btn--primary" id="next">next →</button></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">The vocabulary</div>
+  <h2 class="h2">Six words that <em>explain every surprise</em>.</h2>
+  <div style="margin-top:22px" id="vocab"></div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">In {name}</div>
+  <div class="grid" id="local" style="--min:250px"></div>
+</section>
+
+<aside class="checkpoint" data-icon="⏳">
+  <h3>You know why the number <em>changed</em>.</h3>
+  <p>A hold is a promise; a capture is the bill; a refund is a second, separate transaction. Next: how the money itself moves between banks.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
+<script src="../js/global.js"></script>
+<script>
+{
+const { $, $$, R, rid, money, t, pick } = DCC;
+const lim = R.a.limit, start = Math.round(lim * .2);
+const night = pick({ in: 6000, us: 180, uk: 140, au: 220 }), pumpHold = pick({ in: 2000, us: 175, uk: 120, au: 200 }), pumpReal = pick({ in: 640, us: 52, uk: 68, au: 85 }), pumpName = pick({ in: 'EV charger', us: 'Fuel pump', uk: 'Fuel pump', au: 'Fuel pump' }), shop = R.a.groceries * 2, ref = R.a.laptop;
+// op: [type, id, label, amount]  types: hold, adj (replace hold), drop (remove hold), post (hold → posted), credit
+const SC = [
+  { name: '🏨 Hotel stay', steps: [
+    ['Check-in: a pre-authorisation', '0100 · estimated', `The hotel does not know your final bill, so it asks for an <strong>estimated authorisation</strong>: two nights plus a deposit for extras. Nothing is charged. ${money(night * 2.5)} of your limit is simply unavailable.`, ['hold', 'h', 'HOTEL · pending', night * 2.5]],
+    ['Room service: an incremental authorisation', '0100 · incremental', 'You run up more than the deposit covers. The hotel tops up the same hold rather than creating a new one.', ['adj', 'h', 'HOTEL · pending', night * 2.9]],
+    ['Checkout: the real amount is captured', 'clearing', `The final bill is ${money(night * 2.3)}. The hotel submits that for clearing. Until it arrives, you still see the bigger hold.`, null],
+    ['Two days later: it posts', 'posted', 'The clearing record reaches your issuer, is matched to the hold, and the real amount moves to your posted balance. The unused part of the hold is released.', ['post', 'h', 'HOTEL', night * 2.3]] ] },
+  { name: (pick({ in: '🔌 ', us: '⛽ ', uk: '⛽ ', au: '⛽ ' })) + pumpName, steps: [
+    ['Card in: a hold for the maximum', '0100 · pre-auth', `The ${pumpName.toLowerCase()} cannot know how much you will take, so it asks for a fixed amount: ${money(pumpHold)}. On a credit card that is an annoyance; on a debit card it is your own cash frozen.`, ['hold', 'p', pumpName.toUpperCase() + ' · pending', pumpHold]],
+    ['You finish: a completion message', '0120 · advice', `The real amount is ${money(pumpReal)}. The terminal sends an <strong>advice</strong> telling the issuer the final figure. A well-run issuer shrinks the hold within minutes.`, ['adj', 'p', pumpName.toUpperCase() + ' · pending', pumpReal]],
+    ['It posts', 'posted', 'Clearing arrives, usually the next day, and the pending line becomes a posted one. If the completion message was lost, the original hold would have sat there until it expired.', ['post', 'p', pumpName.toUpperCase(), pumpReal]] ] },
+  { name: '📦 Order in two parcels', steps: [
+    ['Checkout: one authorisation', '0100', `You order ${money(shop)} of goods. The shop authorises the whole amount but may only charge you when items ship.`, ['hold', 'o', R.marketplace.toUpperCase() + ' · pending', shop]],
+    ['Parcel one ships: a partial capture', 'clearing', `Sixty per cent ships today and is captured. The rest of the authorisation stays open.`, ['split', 'o', R.marketplace.toUpperCase(), shop * .6, shop * .4]],
+    ['Ten days pass: the authorisation expires', 'expiry', 'Authorisations are valid for a limited time — commonly about a week for online purchases. The remaining hold drops off by itself.', ['drop', 'o']],
+    ['Parcel two ships: a fresh authorisation and capture', '0100 + clearing', 'The shop must ask again before charging the rest. That is why one order can appear as two charges on different days — and why the second can be declined if your limit has filled up meanwhile.', ['postnew', 'o2', R.marketplace.toUpperCase(), shop * .4]] ] },
+  { name: '↩️ Reversal vs refund', steps: [
+    ['You buy a laptop', '0100', 'Authorised. A hold appears.', ['hold', 'l', R.store.toUpperCase() + ' · pending', ref]],
+    ['Wrong model — cancelled within the hour', '0400 · reversal', 'Because the sale has not been captured, the shop sends a <strong>reversal</strong>. The hold simply vanishes; on most statements the purchase never appears at all.', ['drop', 'l']],
+    ['You buy the right one. It posts.', 'clearing', 'This time the sale is captured and clears.', ['postnew', 'l2', R.store.toUpperCase(), ref]],
+    ['A week later you return it: a refund', 'credit · new transaction', 'Too late for a reversal. A <strong>refund is a brand-new transaction</strong> in the opposite direction, with its own clearing and settlement — which is why it takes days and shows as a separate credit line rather than deleting the original. The shop also does not get its fees back.', ['credit', 'r', R.store.toUpperCase() + ' · REFUND', ref]] ] }
+];
+let si = 0, k = 0, rows, posted;
+const pend = () => rows.filter(r => r.pend && !r.gone).reduce((a, r) => a + r.amt, 0);
+function paint(bump) {
+  const pe = pend(), av = lim - posted - pe;
+  [['l-av', av], ['l-pe', pe], ['l-po', posted]].forEach(([id, v]) => { const el = $('#' + id), old = +el.dataset.v || v; DCC.animateNumber(el, v, { from: old, dur: 600, fmt: x => money(Math.round(x)) }); el.dataset.v = v; if (bump && old !== v) { el.parentNode.classList.add('bump'); setTimeout(() => el.parentNode.classList.remove('bump'), 350); } });
+  $('#b-po').style.width = posted / lim * 100 + '%'; $('#b-pe').style.width = pe / lim * 100 + '%';
+  $('#list').innerHTML = `<div><span>OPENING BALANCE</span><span>${money(start)}</span></div>` + rows.map(r => `<div class="${r.pend ? 'pend' : ''} ${r.gone ? 'gone' : ''} ${r.cr ? 'cr' : ''}"><span>${r.label}</span><span>${r.cr ? '−' : ''}${money(Math.round(r.amt))}</span></div>`).join('');
+}
+function apply(op) {
+  if (!op) return; const [ty, id, label, amt, rest] = op, row = rows.find(r => r.id === id);
+  if (ty === 'hold') rows.push({ id, label, amt, pend: true });
+  else if (ty === 'adj') { row.amt = amt; row.label = label; }
+  else if (ty === 'drop') row.gone = true;
+  else if (ty === 'post') { row.pend = false; row.label = label; row.amt = amt; posted += amt; }
+  else if (ty === 'split') { row.amt = rest; rows.push({ id: id + 'p', label, amt }); posted += amt; }
+  else if (ty === 'postnew') { rows.push({ id, label, amt }); posted += amt; }
+  else if (ty === 'credit') { rows.push({ id, label, amt, cr: true }); posted -= amt; }
+}
+function step() {
+  const s = SC[si].steps[k];
+  apply(s[3]); paint(true);
+  $('#now').innerHTML = `<div class="row" style="margin-bottom:6px"><span class="chip is-accent">${k + 1} / ${SC[si].steps.length}</span><span class="chip">${s[1]}</span></div><h3 class="h4">${s[0]}</h3><p class="small" style="margin-top:6px">${s[2]}</p>`;
+  $('#dots').innerHTML = SC[si].steps.map((_, j) => `<i class="${j < k ? 'done' : j === k ? 'on' : ''}"></i>`).join('');
+  const last = k === SC[si].steps.length - 1; $('#next').textContent = last ? (si < SC.length - 1 ? 'next situation →' : 'done ✓') : 'next →';
+  last ? DCC.playSuccess() : DCC.playClick();
+}
+function load(i) { si = i; k = 0; rows = []; posted = start; ['l-av', 'l-pe', 'l-po'].forEach(id => delete $('#' + id).dataset.v);
+  $$('#scen button').forEach((b, j) => { b.classList.toggle('on', j === i); }); step(); }
+const seenS = new Set();
+$('#scen').innerHTML = SC.map((s, i) => `<button data-i="${i}">${s.name}</button>`).join('');
+$('#scen').addEventListener('click', e => { const b = e.target.closest('button'); if (b) load(+b.dataset.i); });
+$('#restart').onclick = () => load(si);
+$('#next').onclick = () => { if (k < SC[si].steps.length - 1) { k++; step(); } else { seenS.add(si); if (seenS.size === SC.length) DCC.markDone(); if (si < SC.length - 1) load(si + 1); else { DCC.burstConfetti(); $('#vocab').scrollIntoView({ behavior: 'smooth', block: 'start' }); } } };
+load(0);
+
+$('#vocab').innerHTML = [
+  ['Authorisation (and pre-authorisation)', 'Permission, plus a reservation against your limit. No money moves. A pre-authorisation is one made for an estimate — hotels, car hire, fuel, tips.'],
+  ['Hold / pending', 'What an authorisation looks like from your side: your available credit drops, your balance does not. Holds expire if never captured — typically within about a week, up to a month for hotels and car hire.'],
+  ['Capture', 'The merchant’s instruction to actually charge an authorised amount. It can be for less than was authorised, in several parts, or (for tips) slightly more.'],
+  ['Reversal / void', 'Cancels an authorisation before capture. Fast, free for the merchant, and usually invisible on your statement.'],
+  ['Clearing and posting', 'The merchant’s captured sales are sent through the network to your issuer, matched to the hold, and become real entries on the account. Only posted items appear on a statement and can be disputed.'],
+  ['Refund / credit', 'A separate transaction that sends money back after posting. It takes days, shows as its own line, and if it lands after your statement closes you may have to pay first and receive the credit next month.']
+].map(([h, p]) => `<details class="fold"><summary><span class="h4">${h}</span></summary><div class="fold-body"><p>${p}</p></div></details>`).join('');
+$('#local').innerHTML = pick({
+  in: [['Failed but debited?', 'RBI’s turnaround-time rules require a failed card transaction at a terminal or online to be reversed automatically within five days of the transaction. Beyond that the bank owes you <strong>₹100 a day</strong>.'], ['Refund timing', 'Refunds usually reach the card in 5–7 working days. A refund is a credit to the card account, not cash — if it leaves you in credit, you can ask the bank to pay the surplus to your bank account.'], ['Attended pumps', 'Because fuel is served by an attendant, Indian pumps charge the exact amount; large estimated holds are mostly a hotel, car-hire and EV-charging matter.']],
+  us: [['The $175 pump hold', 'Networks let fuel pumps hold up to $175 on a card. With credit it is a nuisance; with debit it can bounce other payments. Paying inside avoids it.'], ['Tips', 'A restaurant authorises the bill and captures it later with the tip added — networks allow a margin of around 20% without a new authorisation. That is why the pending amount is lower than the posted one.'], ['Refunds', 'Typically 3–7 business days. If a refund creates a credit balance, the issuer must send you the money on request, and automatically after six months.']],
+  uk: [['Pay-at-pump', 'UK pumps authorise up to about £100–£120 and then send the true amount straight away, so a well-connected bank shows the real figure within minutes. A lingering hold means the completion message went astray — call the bank, not the garage.'], ['Hotels and car hire', 'Deposits are holds, not charges, and can take up to a month to drop off. Use a credit card so it is not your own money that is frozen.'], ['Refunds', 'Typically 3–5 working days. Chargeback and Section 75 rights apply only to posted transactions.']],
+  au: [['Holds on fuel and hotels', 'Pay-at-pump and hotel pre-authorisations can hold $100–$200 or more for several days. On a debit card that is cash you cannot spend.'], ['Pending forever?', 'A pending transaction the merchant never completes usually drops off within 5–8 business days. Banks can release it sooner if the merchant confirms it will not be processed.'], ['Refunds', 'Typically 3–10 business days. A refund to a card with a zero balance leaves the account in credit; you can ask for it to be transferred out.']]
+}).map(([h, p], i) => `<div class="panel reveal" style="--i:${i}"><h3 class="h4" style="margin-bottom:6px">${h}</h3><p class="small">${p}</p></div>`).join('');
+DCC.observe();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>XXV. Clearing &amp; Settlement — Decoding Credit Cards</title>
+<meta name="description" content="Approval moves information. Settlement moves money — once a day, in a handful of transfers, however many billions of payments there were. Net a day of payments yourself and see how.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/25-clearing-settlement.html">
+<meta property="og:title" content="XXV. Clearing &amp; Settlement — Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.banks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.bank { text-align: center; background: var(--paper); border-radius: var(--r-md); padding: 12px 6px; position: relative; overflow: hidden; }
+.bank b { display: block; font-size: clamp(.68rem, 2.4vw, .95rem); } .bank i { font-style: normal; font-size: 1.5rem; }
+.bank .pos { display: block; font: 700 clamp(.72rem, 2.6vw, 1rem) var(--font-mono); margin-top: 4px; min-height: 1.3em; transition: color .3s; }
+.bank .fillbar { position: absolute; left: 0; right: 0; bottom: 0; height: 0; opacity: .16; transition: height .8s var(--ease-out), background .3s; }
+.arena { position: relative; height: 150px; margin-block: 14px; background: repeating-linear-gradient(0deg, transparent 0 29px, var(--border) 29px 30px); border-radius: var(--r-md); overflow: hidden; }
+.dot { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--electric); top: 0; opacity: .85; }
+.hub { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: var(--ink); color: var(--cream); padding: 8px 14px; border-radius: 999px; font: 700 .7rem var(--font-mono); z-index: 2; white-space: nowrap; }
+.who { display: grid; gap: 8px; margin-top: 14px; }
+.who div { display: grid; grid-template-columns: 34px 1fr auto; gap: 10px; align-items: center; padding: 12px 14px; border-radius: var(--r-md); background: var(--paper); border-left: 4px solid var(--ink-ghost); transition: background .4s, border-color .4s; }
+.who div.yes { background: var(--success-soft); border-color: var(--success); } .who div.out { background: var(--danger-soft); border-color: var(--danger); }
+.who small { display: block; color: var(--ink-muted); }
+</style>
+</head>
+<body data-ch="25">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>Clearing &amp; <em>Settlement</em></h1>
+  <p>Approval moves information. Settlement moves money — once a day, in a handful of transfers, however many billions of payments there were. Net a day of payments yourself and see how.</p>
+</header>
+
+<section class="sec">
+  <div class="eyebrow">Scene 1 · After the shop closes</div>
+  <h2 class="h2">From a day’s sales to <em>money in the bank</em>.</h2>
+  <div class="stage"><div id="eod"></div></div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">Scene 2 · The netting machine</div>
+  <h2 class="h2">A thousand payments. <em>Three transfers.</em></h2>
+  <p class="lede">Each dot is one card payment: a customer of one bank buying from a shop that banks with another. Add a day of them, then press Net.</p>
+  <div class="stage">
+    <div class="banks" id="banks"></div>
+    <div class="arena" id="arena"><div class="hub" id="hub">{network} settlement</div></div>
+    <div class="grid" style="--min:140px"><div class="stat"><div class="stat-k">Payments</div><div class="stat-v" id="n-tx">0</div></div><div class="stat"><div class="stat-k">Gross value</div><div class="stat-v" id="n-gross"></div></div><div class="stat"><div class="stat-k">Transfers needed</div><div class="stat-v c-accent" id="n-moves">—</div></div><div class="stat"><div class="stat-k">Money that moves</div><div class="stat-v c-accent" id="n-net">—</div></div></div>
+    <div class="row" style="margin-top:16px"><button class="btn btn--outline" id="add">＋ add 40 payments</button><button class="btn btn--primary" id="net">Net them →</button><button class="btn btn--ghost" id="clear">reset</button></div>
+    <div class="callout" id="net-note" style="margin-top:16px" aria-live="polite">Every payment is a debt from the customer’s bank to the shop’s bank. Settling each one separately would mean one bank transfer per payment.</div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">Scene 3 · Who is out of pocket?</div>
+  <h2 class="h2">Drag time forward on <em>one purchase</em>.</h2>
+  <p class="lede">You buy a {$big} television. Move the slider and see who has been paid and who is waiting.</p>
+  <div class="stage">
+    <div class="field"><div class="field-top"><label for="day">Days since you tapped</label><span class="val" id="day-v"></span></div><input type="range" id="day" min="0" max="50" value="0"><div class="field-ends"><span>tap</span><span>statement</span><span>due date</span></div></div>
+    <div class="who" id="who" aria-live="polite"></div>
+    <div class="callout is-warm" id="float-note" style="margin-top:16px"></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">How it runs in {name}</div>
+  <div class="grid" id="local" style="--min:250px"></div>
+</section>
+
+<aside class="checkpoint" data-icon="🏦">
+  <h3>You know how the <em>money actually moves</em>.</h3>
+  <p>Messages first, a file at day’s end, one net transfer per bank — and an issuer quietly funding your purchase for weeks. Next: what that service costs, and who sets the price.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
+<script src="../js/global.js"></script>
+<script>
+{
+const { $, $$, R, rid, money, num, t, pick } = DCC;
+DCC.flow($('#eod'), { nodes: [['🏪', R.merchant, 'merchant'], ['⚙️', R.acqBank, 'acquirer'], ['🌐', R.network, 'network'], ['🏦', 'Settlement bank', 'network’s agent'], ['🏛️', R.issuer, 'issuer']],
+  steps: [
+    { from: 0, to: 1, tag: 'batch', title: 'The shop closes its batch', body: 'At close of business the terminal sends every approved sale as a batch. Until this happens the shop has only promises — an authorisation that is never captured simply expires.' },
+    { from: 1, to: 2, tag: 'clearing file', title: 'The acquirer submits a clearing file', body: 'Each sale becomes a clearing record: the final amount, the merchant category, and the data that decides its interchange rate. The network checks every record against its rules.' },
+    { from: 2, to: 4, tag: 'records', title: 'The issuer receives its records', body: 'Each record is matched to the authorisation hold on your account and becomes a posted transaction. This is the moment a purchase appears on your statement.' },
+    { from: 2, to: 3, tag: 'net positions', title: 'The network works out who owes what', body: 'For every member bank the network adds up everything it owes and is owed across the cycle — purchases, refunds, chargebacks, interchange and fees — and produces <strong>one net figure</strong> per bank per currency.' },
+    { from: 4, to: 3, tag: R.cur, kind: 'money', title: 'Net debtors pay in', body: 'Banks that owe pay a single amount to the network’s settlement account, usually through the central bank’s high-value payment system.' },
+    { from: 3, to: 1, tag: R.cur, kind: 'money', title: 'Net creditors are paid', body: 'Banks that are owed receive a single amount. The network guarantees this even if a member bank fails, which is why members post collateral.' },
+    { from: 1, to: 0, tag: R.cur + ' − fee', kind: 'money', title: 'The shop is paid', body: 'The acquirer credits the shop for its sales, less the merchant fee — ' + pick({ in: 'typically the next working day.', us: 'typically in one to two business days, or instantly for an extra fee.', uk: 'typically in one to three working days.', au: 'typically the next business day, sometimes the same day.' }) }
+  ] });
+
+// ---- netting ----
+const NAMES = pick({ in: ['HDFC', 'SBI', 'ICICI', 'Axis'], us: ['Chase', 'Citi', 'Cap One', 'BofA'], uk: ['Barclays', 'Lloyds', 'NatWest', 'HSBC'], au: ['CommBank', 'Westpac', 'NAB', 'ANZ'] });
+$('#banks').innerHTML = NAMES.map((n, i) => `<div class="bank" data-i="${i}"><div class="fillbar"></div><i>🏛️</i><b>${n}</b><span class="pos"></span></div>`).join('');
+let tx = [], netted = false; const unit = R.a.meal;
+const xOf = i => (i + .5) / 4 * 100;
+function stats() {
+  const gross = tx.reduce((a, x) => a + x.amt, 0);
+  $('#n-tx').textContent = num(tx.length); $('#n-gross').textContent = money(gross);
+  if (!netted) { $('#n-moves').textContent = tx.length ? num(tx.length) : '—'; $('#n-net').textContent = tx.length ? money(gross) : '—'; }
+}
+function add() {
+  if (netted) reset(false);
+  const arena = $('#arena');
+  for (let j = 0; j < 40; j++) { let a = Math.floor(Math.random() * 4), b = Math.floor(Math.random() * 4); if (a === b) b = (b + 1) % 4;
+    const amt = Math.round(unit * (1 + Math.random() * 30)); tx.push({ a, b, amt });
+    if (!DCC.calm && j < 24) { const d = document.createElement('div'); d.className = 'dot'; arena.appendChild(d);
+      d.animate([{ left: xOf(a) + '%', top: '-10px' }, { left: xOf(b) + '%', top: '150px' }], { duration: 900 + Math.random() * 900, delay: j * 35, easing: 'ease-in-out' }).onfinish = () => d.remove(); } }
+  stats(); DCC.playClick();
+  $('#net-note').className = 'callout'; $('#net-note').innerHTML = `${num(tx.length)} separate debts between four banks. Now press <strong>Net them</strong>.`;
+}
+function net() {
+  if (!tx.length) return add();
+  const pos = [0, 0, 0, 0]; tx.forEach(x => { pos[x.a] -= x.amt; pos[x.b] += x.amt; });
+  const gross = tx.reduce((a, x) => a + x.amt, 0), moved = pos.filter(p => p < 0).reduce((a, p) => a - p, 0), moves = pos.filter(p => p !== 0).length, mx = Math.max(...pos.map(Math.abs));
+  $$('.bank').forEach((el, i) => { const p = pos[i], s = $('.pos', el), f = $('.fillbar', el);
+    s.textContent = (p > 0 ? '+' : p < 0 ? '−' : '') + money(Math.abs(p)); s.style.color = p >= 0 ? 'var(--success)' : 'var(--danger)';
+    f.style.height = Math.abs(p) / mx * 100 + '%'; f.style.background = p >= 0 ? 'var(--success)' : 'var(--danger)'; });
+  netted = true; $('#n-moves').textContent = moves; $('#n-net').textContent = money(moved);
+  $('#net-note').className = 'callout is-success';
+  $('#net-note').innerHTML = `<b>${num(tx.length)} payments settled with ${moves} transfers</b>Only ${money(moved)} had to move to settle ${money(gross)} of payments — <strong>${Math.round((1 - moved / gross) * 100)}% less money in motion</strong>. Red banks pay the settlement account; green banks are paid from it. Add more payments and net again: the saving grows, because flows in opposite directions cancel out.`;
+  DCC.playSuccess(); DCC.markDone();
+}
+function reset(all = true) { netted = false; if (all) tx = []; $$('.bank').forEach(el => { $('.pos', el).textContent = ''; $('.fillbar', el).style.height = 0; }); stats(); }
+$('#add').onclick = add; $('#net').onclick = net; $('#clear').onclick = () => { reset(); $('#net-note').className = 'callout'; $('#net-note').textContent = 'Cleared. Add a day of payments.'; };
+stats();
+
+// ---- float ----
+const g = R.graceDays, big = R.a.big, cof = pick({ in: 7.5, us: 5, uk: 4.5, au: 4.5 });
+function who() {
+  const d = +$('#day').value, stmt = 24, due = stmt + g > 50 ? 50 : stmt + g;
+  $('#day-v').textContent = d === 0 ? 'the tap' : 'day ' + d;
+  const rows = [
+    ['🏪', R.store, d === 0 ? 'Has an approval code, no money' : d < 2 ? 'Batch submitted, waiting for payout' : `Paid ${money(big * .985)} — the price less the merchant fee`, d >= 2 ? 'yes' : ''],
+    ['🏛️', R.issuer, d === 0 ? 'Has placed a hold on your limit' : d < due ? `Has paid out ${money(big)} and received nothing from you` : 'Repaid in full', d >= 1 && d < due ? 'out' : d >= due ? 'yes' : ''],
+    ['💳', 'You', d < stmt ? 'Have the television. Nothing is due yet' : d < due ? `Statement issued: ${money(big)} due on day ${due}` : 'Paid the statement in full — no interest', d >= due ? 'yes' : '']];
+  $('#who').innerHTML = rows.map(([ic, n, s, c]) => `<div class="${c}"><span style="font-size:1.4rem">${ic}</span><span><b>${n}</b><small>${s}</small></span><span class="mono">${c === 'yes' ? '✓ settled' : c === 'out' ? 'out of pocket' : 'waiting'}</span></div>`).join('');
+  const days = Math.max(0, Math.min(d, due) - 1), cost = big * cof / 100 * days / 365;
+  $('#float-note').innerHTML = `<b>The float</b>The shop was paid on about day 2. You pay on day ${due}. For the ${days} day${days === 1 ? '' : 's'} so far, ${R.issuer} has funded your television at its own cost of money — roughly ${money(cost, true)} at ${cof}% a year. Interchange is what pays for that. When cardholders pay in full, this float is a cost the issuer carries; when they do not, it becomes the most profitable loan in banking.`;
+}
+$('#day').addEventListener('input', who); who();
+
+$('#local').innerHTML = pick({
+  in: [['Who settles', 'Visa, Mastercard, RuPay and Amex are all authorised payment systems under RBI oversight. RuPay clears through NPCI. Final settlement between banks happens in central-bank money through the RBI’s systems.'], ['Merchant payouts', 'Payment aggregators must hold merchant funds in an escrow account and pass them on within a set time after the transaction — in practice the next working day.'], ['Data and reconciliation', 'Payment data must be stored in India. Merchants reconcile three things daily: sales, the settlement report, and the bank credit — the differences are fees, refunds and chargebacks.']],
+  us: [['Who settles', 'Visa and Mastercard calculate net positions and settle through member banks, with funds ultimately moving over Fedwire. American Express and Discover mostly settle with merchants directly, because they are the network and often the issuer.'], ['Merchant payouts', 'Standard funding is one to two business days. “Instant payouts” push money to a debit card in minutes for an extra fee of around 1–1.5%.'], ['Reserves', 'New or risky merchants may have a rolling reserve — a percentage of sales held back for months — because the acquirer is liable for chargebacks if the merchant disappears.']],
+  uk: [['Who settles', 'Card schemes calculate net positions; final settlement between UK banks is made across accounts at the Bank of England. Eurozone settlement runs over the ECB’s systems.'], ['Merchant payouts', 'Typically one to three working days, depending on the acquirer. The Payment Systems Regulator has pressed for clearer pricing and easier switching.'], ['Safeguarding', 'Payment firms that are not banks must safeguard customer funds in segregated accounts — the rule that matters when a payment company fails.']],
+  au: [['Who settles', 'Card schemes and eftpos calculate obligations, which settle across Exchange Settlement Accounts at the Reserve Bank. The NPP, by contrast, settles each payment individually in real time.'], ['Merchant payouts', 'Usually next business day; some acquirers offer same-day settlement, including weekends.'], ['Why it matters to a shop', 'Cash-flow timing is a reason small merchants choose one provider over another — often more than the headline fee.']]
+}).map(([h, p], i) => `<div class="panel reveal" style="--i:${i}"><h3 class="h4" style="margin-bottom:6px">${h}</h3><p class="small">${p}</p></div>`).join('');
+DCC.observe();
+}
+</script>
+</body>
+</html>
