@@ -33,8 +33,19 @@
     ['19-students', 'Your First Card, Right', 'A five-step playbook for a first card, with commitments you tick off yourself.', 6],
     ['20-relationship', 'Your Relationship With Money', 'Six ways a card bends your judgement, and the fix for each.', 6],
     ['21-future', 'What’s Coming Next', 'Wallets, pay-by-bank, stablecoins and AI agents that shop for you.', 6],
-    ['22-graduation', 'Graduation', 'Ten questions across everything you have learned. Earn the diploma.', 10]
-  ].map(([slug, title, desc, mins], i) => ({ n: i + 1, slug, title, desc, mins, roman: roman(i + 1) }));
+    ['22-graduation', 'Graduation', 'Twelve questions across Part I. Earn the diploma — then go under the hood.', 10],
+    // ---- Part II · Inside the machine ----
+    ['23-the-message', 'Anatomy of an Authorisation', 'Open the message your card sends. Then sit in the issuer’s chair and approve or decline six of them.', 8],
+    ['24-transaction-lifecycle', 'The Life of a Transaction', 'Holds, captures, reversals and refunds. Run a fuel pump, a hotel and a refund and watch three ledgers move.', 8],
+    ['25-clearing-settlement', 'Clearing & Settlement', 'Four banks, a day of payments. Net them yourself and see why the money moves once, not a thousand times.', 7],
+    ['26-interchange', 'Interchange & the Price of a Payment', 'Build a transaction and watch its price change with the card, the channel and the country.', 8],
+    ['27-acquiring', 'The Acquiring Stack', 'Gateway, processor, acquirer, payment facilitator. Wire up three businesses and see who does what.', 7],
+    ['28-tokens-3ds', 'Tokens, Wallets & 3-D Secure', 'Put a card in a phone, tap it, and pass a 3-D Secure check — one message at a time.', 8],
+    ['29-fraud-engine', 'Build a Fraud Engine', 'Set the rules and the score threshold on a live stream of payments. Stop the fraud without declining your customers.', 8],
+    ['30-chargeback-machine', 'The Chargeback Machine', 'Play the merchant. Fight or fold through every stage of a dispute and count what it costs.', 7],
+    ['31-issuer-economics', 'Inside the Issuer', 'Run a card business. Set the rates, rewards and risk, and find out which customers pay for everyone else.', 9]
+  ].map(([slug, title, desc, mins], i) => ({ n: i + 1, slug, title, desc, mins, roman: roman(i + 1), part: i < 22 ? 1 : 2 }));
+  const PARTS = { 1: 'Part I · Your card', 2: 'Part II · Inside the machine' };
   function roman(n) { const m = [[10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']]; let s = ''; for (const [v, r] of m) while (n >= v) { s += r; n -= v; } return s; }
 
   const chN = parseInt(document.body.dataset.ch || '0', 10);
@@ -161,7 +172,7 @@
   function openSheet(s) { closeSheets(); lastFocus = document.activeElement; scrim.classList.add('open'); s.classList.add('open'); const f = $('button, a', s); f && f.focus({ preventScroll: true }); }
   function closeSheets() { $$('.sheet.open').forEach(s => s.classList.remove('open')); scrim && scrim.classList.remove('open'); lastFocus && lastFocus.focus && lastFocus.focus({ preventScroll: true }); lastFocus = null; }
   const openRegions = () => openSheet(picker), openChapters = () => openSheet(drawer);
-  const tocHtml = () => `<nav class="toc">${CH.map(c => `<a href="${href(c)}" data-n="${c.n}" class="${c.n === chN ? 'here' : ''} ${isDone(c.n) ? 'done' : ''}"><span class="n">${c.roman}</span><span class="t">${c.title}</span><span class="s">✓</span></a>`).join('')}</nav>`;
+  const tocHtml = () => `<nav class="toc">${CH.map(c => `${c.n === 1 || c.n === 23 ? `<div class="toc-part">${PARTS[c.part]}</div>` : ''}<a href="${href(c)}" data-n="${c.n}" class="${c.n === chN ? 'here' : ''} ${isDone(c.n) ? 'done' : ''}"><span class="n">${c.roman}</span><span class="t">${c.title}</span><span class="s">✓</span></a>`).join('')}</nav>`;
 
   function toast(html, ms = 7000) {
     const el = document.createElement('div'); el.className = 'toast'; el.setAttribute('role', 'status'); el.innerHTML = html;
@@ -242,6 +253,39 @@
       ${next ? `<a href="${next.slug}.html">Next ›</a>` : `<a href="${base}index.html">Home ›</a>`}</div>`);
   }
 
+  // ---------- animated message flow ----------
+  // nodes: [[icon, name, role]]; steps: [{ from, to, tag, kind, title, body, lit }]  kind: req | res | money | fail
+  function flow(el, { nodes, steps, onStep, loop }) {
+    let i = -1, timer = null;
+    const n = nodes.length, pos = k => (k + .5) / n * 100 + '%';
+    el.classList.add('flow');
+    el.innerHTML = `<div class="flow-track" style="--n:${n}"><div class="flow-line"></div><div class="flow-seg"></div><div class="flow-pkt"></div>
+      ${nodes.map(([ic, nm, role]) => `<div class="flow-node"><i>${ic}</i><b>${nm}</b><small>${role || ''}</small></div>`).join('')}</div>
+      <div class="flow-say panel" aria-live="polite"><span class="hand">press play ▶</span></div>
+      <div class="row row--between flow-ctl"><span class="dots">${steps.map(() => '<i></i>').join('')}</span>
+      <div class="row"><button class="btn btn--ghost btn--sm" data-f="back" disabled>← back</button><button class="btn btn--outline btn--sm" data-f="play">▶ play</button><button class="btn btn--primary btn--sm" data-f="next">next →</button></div></div>`;
+    const pkt = $('.flow-pkt', el), seg = $('.flow-seg', el), nodesEl = $$('.flow-node', el);
+    const go = k => {
+      if (k < 0 || k >= steps.length) return; i = k; const st = steps[k];
+      const a = Math.min(st.from, st.to), b = Math.max(st.from, st.to);
+      seg.style.left = pos(a); seg.style.width = `calc(${pos(b)} - ${pos(a)})`; seg.dataset.kind = st.kind || 'req';
+      pkt.dataset.kind = st.kind || 'req'; pkt.textContent = st.tag || '';
+      pkt.style.transition = 'none'; pkt.style.left = pos(st.from); pkt.style.opacity = 1;
+      requestAnimationFrame(() => requestAnimationFrame(() => { pkt.style.transition = ''; pkt.style.left = pos(st.to); }));
+      nodesEl.forEach((x, j) => { x.classList.toggle('lit', (st.lit || [st.from, st.to]).includes(j)); x.classList.toggle('bad', st.kind === 'fail' && j === st.to); });
+      $('.flow-say', el).innerHTML = `<div class="row" style="margin-bottom:6px"><span class="chip is-accent">${k + 1} / ${steps.length}</span><b class="h4">${st.title}</b></div><p class="small">${t(st.body)}</p>`;
+      $$('.dots i', el).forEach((d, j) => d.className = j < k ? 'done' : j === k ? 'on' : '');
+      $('[data-f=back]', el).disabled = k === 0; $('[data-f=next]', el).disabled = k === steps.length - 1 && !loop;
+      st.kind === 'fail' ? playError() : st.kind === 'money' || k === steps.length - 1 ? playSuccess() : playClick();
+      onStep && onStep(st, k); if (k === steps.length - 1) { stop(); el.dispatchEvent(new CustomEvent('flowend')); }
+    };
+    const stop = () => { clearInterval(timer); timer = null; $('[data-f=play]', el).textContent = '▶ play'; };
+    el.addEventListener('click', e => { const b = e.target.closest('[data-f]'); if (!b) return; const f = b.dataset.f;
+      if (f === 'next') { stop(); go(i + 1 >= steps.length ? 0 : i + 1); } else if (f === 'back') { stop(); go(i - 1); }
+      else if (timer) stop(); else { if (i >= steps.length - 1) i = -1; go(i + 1); b.textContent = '❚❚ pause'; timer = setInterval(() => go(i + 1), calm ? 1200 : 2600); } });
+    return { go, reset() { stop(); i = -1; pkt.style.opacity = 0; seg.style.width = 0; nodesEl.forEach(x => x.classList.remove('lit', 'bad')); } };
+  }
+
   // ---------- shared quiz runner ----------
   // items: [{ kicker, title, body, opts:[{t, ok, why}], explain }]
   function quiz(el, { items, label = 'Round', nextLabel = 'Next →', endLabel = 'See result →', onEnd, onAnswer, shuffle }) {
@@ -276,7 +320,7 @@
 
   // ---------- boot ----------
   window.DCC = { $, $$, R, rid, regions: REG, chapters: CH, money, num, t, pick, setRegion, openRegions, openChapters, localize, observe, fillAll,
-    isDone, markDone, playClick, playSuccess, playError, burstConfetti, animateNumber, quiz, grade, toast, store, href, calm };
+    isDone, markDone, playClick, playSuccess, playError, burstConfetti, animateNumber, quiz, flow, parts: PARTS, grade, toast, store, href, calm };
   localize();
   buildChrome();
   fillAll(); observe();

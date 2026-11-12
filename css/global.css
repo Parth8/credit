@@ -271,6 +271,28 @@ details.fold .fold-body > * + * { margin-top: 12px; }
 .toc .s { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--ink-ghost); display: grid; place-items: center; font-size: .7rem; color: transparent; }
 .toc a.done .s { background: var(--success); border-color: var(--success); color: #fff; }
 
+.toc-part { padding: 14px 20px 8px; font: 400 .68rem var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--electric); background: var(--paper); }
+
+/* animated message flow (DCC.flow) */
+.flow-track { --d: clamp(38px, 9vw, 62px); display: grid; grid-template-columns: repeat(var(--n), 1fr); position: relative; padding-top: 22px; }
+.flow-line, .flow-seg { position: absolute; top: calc(22px + var(--d) / 2 - 1px); height: 2px; }
+.flow-line { left: calc(50% / var(--n)); right: calc(50% / var(--n)); background: var(--parchment); }
+.flow-seg { background: var(--electric); width: 0; transition: left .5s var(--ease-out), width .5s var(--ease-out), background .3s; height: 3px; }
+.flow-seg[data-kind=res] { background: var(--success); } .flow-seg[data-kind=money] { background: var(--gold); } .flow-seg[data-kind=fail] { background: var(--danger); }
+.flow-pkt { position: absolute; top: calc(22px + var(--d) / 2); left: 0; transform: translate(-50%, -50%); z-index: 3; min-width: 30px; padding: 4px 8px; border-radius: 999px; background: var(--electric); color: #fff; font: 700 .64rem/1.2 var(--font-mono); text-align: center; white-space: nowrap; opacity: 0; box-shadow: 0 3px 12px var(--electric-glow); transition: left 1s var(--ease-out), opacity .3s, background .3s; }
+.flow-pkt[data-kind=res] { background: var(--success); } .flow-pkt[data-kind=money] { background: var(--gold); } .flow-pkt[data-kind=fail] { background: var(--danger); }
+.flow-node { text-align: center; position: relative; z-index: 1; padding-inline: 2px; }
+.flow-node i { width: var(--d); height: var(--d); margin: 0 auto 6px; border-radius: 50%; background: var(--white); border: 2px solid var(--border-strong); display: grid; place-items: center; font-style: normal; font-size: calc(var(--d) * .45); transition: all .45s var(--ease-spring); }
+.flow-node.lit i { border-color: var(--electric); background: #e8effd; transform: scale(1.14); box-shadow: 0 0 0 6px var(--electric-soft); }
+.flow-node.bad i { border-color: var(--danger); background: var(--danger-soft); box-shadow: 0 0 0 6px var(--danger-soft); }
+.flow-node b { display: block; font-size: clamp(.6rem, 2.1vw, .84rem); line-height: 1.2; overflow-wrap: anywhere; }
+.flow-node small { display: block; font: 400 clamp(.5rem, 1.6vw, .64rem) var(--font-mono); color: var(--ink-faint); text-transform: uppercase; letter-spacing: .04em; }
+.flow-say { margin-top: 20px; min-height: 120px; }
+.flow-ctl { margin-top: 14px; }
+/* code-ish blocks */
+.wire { font-family: var(--font-mono); font-size: .8rem; background: var(--ink); color: #d6f5dd; border-radius: var(--r-md); padding: 16px; overflow-x: auto; line-height: 1.7; }
+.wire b { color: #F7B87A; font-weight: 400; } .wire em { color: #93b4ff; font-style: normal; }
+
 /* toast */
 .toast { position: fixed; left: 50%; bottom: calc(var(--bar-h) + 18px + env(safe-area-inset-bottom)); z-index: 300; transform: translate(-50%, 30px); opacity: 0; background: var(--ink); color: var(--cream); padding: 12px 18px; border-radius: var(--r-pill); font-size: .9rem; display: flex; gap: 12px; align-items: center; box-shadow: var(--shadow-lift); transition: transform .5s var(--ease-spring), opacity .3s; width: max-content; max-width: calc(100vw - 32px); }
 .toast.show { transform: translate(-50%, 0); opacity: 1; }

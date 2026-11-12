@@ -6,11 +6,11 @@
   <meta name="format-detection" content="telephone=no">
   <meta name="theme-color" content="#F7F3ED">
   <title>Decoding Credit Cards — An interactive guide</title>
-  <meta name="description" content="Learn credit cards by playing with them. 22 interactive chapters, tailored to India, the USA, UK &amp; Europe, and Australia &amp; NZ. Free forever. No card recommendations.">
+  <meta name="description" content="Learn credit cards by playing with them. 31 interactive chapters in two parts — how to use a card, and how the payments industry works — tailored to India, the USA, UK &amp; Europe, and Australia &amp; NZ. Free forever. No card recommendations.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://parth8.github.io/credit/">
   <meta property="og:title" content="Decoding Credit Cards — An interactive guide">
-  <meta property="og:description" content="Learn credit cards by playing with them. 22 chapters. Free forever. No affiliate links.">
+  <meta property="og:description" content="Learn credit cards by playing with them. 31 chapters. Free forever. No affiliate links.">
   <meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <script>document.documentElement.className = 'js'</script>
@@ -67,6 +67,9 @@
     .journey { min-width: min(100%, 300px); }
     .journey .meter { margin-top: 8px; background: var(--white); }
     .list { background: var(--white); border: 1px solid var(--border-strong); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow); }
+    .part { padding: 18px 18px 12px; background: var(--ink); color: var(--cream); display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline; }
+    .part b { font: 700 var(--step-1) var(--font-display); } .part span { font: 400 var(--step--1) var(--font-mono); opacity: .7; }
+    @media (min-width: 700px) { .part { padding: 20px 32px 14px; } }
     .item { display: grid; grid-template-columns: 44px 1fr; gap: 6px 14px; align-items: center; padding: 18px 18px; color: inherit; text-decoration: none; border-bottom: 1px solid var(--border); position: relative; transition: background .25s; }
     .item:last-child { border-bottom: 0; }
     .item::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--electric); transform: scaleY(0); transition: transform .3s var(--ease-out); }
@@ -101,7 +104,7 @@
     <div class="wrap">
       <div class="hero-grid">
         <div class="hero-copy">
-          <div class="chip is-accent live" style="--i:0">An interactive guide · 22 chapters · 4 regions</div>
+          <div class="chip is-accent live" style="--i:0">An interactive guide · 31 chapters · 4 regions</div>
           <h1 style="--i:1">Credit cards,<br><em>finally</em> explained.</h1>
           <div class="hand" style="--i:2">by playing with one →</div>
           <p class="lede" style="--i:3">Most credit card guides are written for people who already understand them. This one is built for everyone else. <strong>You learn by tapping cards, dragging sliders and making the decisions yourself</strong> — then seeing what they cost.</p>
@@ -123,7 +126,7 @@
         </div>
       </div>
       <div class="trust grid" style="--i:6">
-        <div><b>22</b><span>chapters of depth</span></div>
+        <div><b>31</b><span>chapters in two parts</span></div>
         <div><b>4</b><span>regional editions</span></div>
         <div><b>0</b><span>card recommendations</span></div>
         <div><b>0</b><span>affiliate links, ever</span></div>
@@ -157,7 +160,7 @@
   <section class="chapters" id="chapters">
     <div class="wrap">
       <div class="chapters-head">
-        <div><div class="eyebrow">The full curriculum</div><h2 class="h2">Twenty-two <em>interactive chapters.</em></h2></div>
+        <div><div class="eyebrow">The full curriculum</div><h2 class="h2">Two parts. <em>Thirty-one chapters.</em></h2></div>
         <div class="journey"><div class="mono faint" id="journey-text">0 of 22 complete</div><div class="meter"><i id="journey-bar"></i></div></div>
       </div>
       <div class="list reveal" id="list"></div>
@@ -183,7 +186,7 @@
   // chapter list + journey
   const done = chapters.filter(c => isDone(c.n)).length;
   const next = chapters.find(c => !isDone(c.n));
-  $('#list').innerHTML = chapters.map(c => `
+  $('#list').innerHTML = chapters.map(c => `${c.n === 1 || c.n === 23 ? `<div class="part"><b>${DCC.parts[c.part]}</b><span>${c.part === 1 ? 'Everything a cardholder should know' : 'How the payments industry actually works'}</span></div>` : ''}
     <a class="item ${isDone(c.n) ? 'done' : ''} ${done && next && c.n === next.n ? 'next' : ''}" href="${DCC.href(c)}">
       <div class="n">${c.roman}</div>
       <div><div class="name">${c.title}</div><div class="desc">${c.desc}</div></div>
@@ -192,7 +195,7 @@
   $('#journey-text').textContent = `${done} of ${chapters.length} complete`;
   setTimeout(() => $('#journey-bar').style.width = (done / chapters.length * 100) + '%', 400);
   if (done && next) { const a = $('#cta'); a.href = DCC.href(next); a.textContent = `Continue · Chapter ${next.roman} →`; }
-  else if (done && !next) { const a = $('#cta'); a.href = '#chapters'; a.textContent = 'All 22 complete ✓ — revisit'; }
+  else if (done && !next) { const a = $('#cta'); a.href = '#chapters'; a.textContent = `All ${chapters.length} complete ✓ — revisit`; }
 
   // hero demo: tap the card, get an approval
   const demo = $('#demo'), pill = $('#pill');

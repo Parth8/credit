@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F7F3ED">
 <title>XXII. Graduation — Decoding Credit Cards</title>
-<meta name="description" content="Twelve questions drawn from every part of the guide, set in the {name} edition. No looking things up. See what stuck — then collect your diploma.">
+<meta name="description" content="Twelve questions drawn from all of Part I, set in the {name} edition. No looking things up. See what stuck — then collect your diploma.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://parth8.github.io/credit/chapters/22-graduation.html">
 <meta property="og:title" content="XXII. Graduation — Decoding Credit Cards">
@@ -34,7 +34,7 @@
 <main class="ch"><div class="wrap">
 <header class="ch-head">
   <h1><em>Graduation</em></h1>
-  <p>Twelve questions drawn from every part of the guide, set in the {name} edition. No looking things up. See what stuck — then collect your diploma.</p>
+  <p>Twelve questions drawn from all of Part I, set in the {name} edition. No looking things up. See what stuck — then collect your diploma.</p>
 </header>
 
 <section class="sec" id="exam">
@@ -73,6 +73,7 @@ function diploma(s, n, again) {
     <div class="seal">DECODING · CREDIT CARDS · ${new Date().toLocaleDateString(R.locale, { month: 'long', year: 'numeric' }).toUpperCase()}</div>
     <p class="small faint" style="margin-top:14px">${done} of ${chapters.length} chapters completed on this device</p>
     <div class="row no-print" style="justify-content:center;margin-top:20px"><button class="btn btn--primary" id="print">Print or save as PDF</button><button class="btn btn--outline" id="again">↻ Retake</button><a class="btn btn--ghost" href="../index.html#chapters">All chapters</a></div></div>
+    <div class="callout no-print" style="margin-top:24px"><b>Part II · Inside the machine</b>You know how to use a card. Nine more chapters open up the industry behind it: the messages, the money movement, the pricing, the fraud engines and the issuer’s P&amp;L. <a href="23-the-message.html"><strong>Start chapter XXIII →</strong></a></div>
     ${missed.length ? `<div class="review no-print" style="margin-top:28px"><div class="eyebrow">Worth another look</div>${[...new Map(missed.map(x => [x.ch, x])).values()].map(x => `<a href="${chapters[x.ch - 1].slug}.html"><b>${chapters[x.ch - 1].roman}. ${chapters[x.ch - 1].title}</b><span>→</span></a>`).join('')}</div>` : ''}`;
   $('#nm').addEventListener('input', e => store.set('name', e.target.value));
   $('#print').onclick = () => print(); $('#again').onclick = () => { marks.length = 0; again(); };

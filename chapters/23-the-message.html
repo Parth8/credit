@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>XXIII. Anatomy of an Authorisation — Decoding Credit Cards</title>
+<meta name="description" content="That 1.4-second beep is a message of about thirty numbered fields crossing six computers and back. Watch it travel, open it up, then sit in the issuer’s chair and answer six of them yourself.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/23-the-message.html">
+<meta property="og:title" content="XXIII. Anatomy of an Authorisation — Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.msg-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.de { font: 400 .74rem/1.3 var(--font-mono); padding: 7px 10px; border-radius: 8px; background: #26261f; color: #d6f5dd; border: 1.5px solid transparent; text-align: left; transition: transform .2s var(--ease-spring), border-color .2s, background .2s; animation: rise .4s var(--ease-out) both; }
+.de small { display: block; color: #8f8f80; font-size: .6rem; letter-spacing: .06em; }
+.de:hover { transform: translateY(-2px); border-color: #93b4ff; }
+.de.on { background: var(--electric); color: #fff; border-color: #fff; } .de.on small { color: #dbe6ff; }
+.de.seen:not(.on) { border-color: rgba(74,222,128,.5); }
+.msgbox { background: var(--ink); border-radius: var(--r-md); padding: 16px; }
+.acct { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin-top: 12px; }
+.acct div { background: var(--paper); border-radius: 10px; padding: 10px 12px; font-size: .85rem; } .acct small { display: block; font: 400 .62rem var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); }
+</style>
+</head>
+<body data-ch="23">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>Anatomy of an <em>Authorisation</em></h1>
+  <p>That 1.4-second beep is a message of about thirty numbered fields crossing six computers and back. Watch it travel, open it up, then sit in the issuer’s chair and answer six of them yourself.</p>
+</header>
+
+<section class="sec">
+  <div class="eyebrow">Scene 1 · The round trip</div>
+  <h2 class="h2">One request out. <em>One response back.</em></h2>
+  <p class="lede">You tap for {$meal} at {merchant}. Press play, or step through it.</p>
+  <div class="stage"><div id="trip"></div></div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">Scene 2 · Open the envelope</div>
+  <h2 class="h2">The message is just <em>numbered fields</em>.</h2>
+  <p class="lede">Almost every card payment on earth speaks ISO 8583, a format from 1987: a message type, then “data elements” by number. Tap each field of your coffee purchase.</p>
+  <div class="stage split split--l">
+    <div><div class="msgbox"><div class="msg-grid" id="fields"></div></div><p class="mono faint" id="seen" style="margin-top:10px"></p></div>
+    <div class="sticky" id="field-info" aria-live="polite"><span class="hand">← tap a field</span></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">Scene 3 · Your turn</div>
+  <h2 class="h2">You are the <em>issuer’s authorisation system</em>.</h2>
+  <p class="lede">Six requests arrive. You have about 100 milliseconds each — take longer here. Pick the response code you would send in field 39.</p>
+  <div class="stage" id="game"></div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">Reference</div>
+  <h2 class="h2">The <em>decline decoder</em>.</h2>
+  <p class="lede">A terminal usually says only “declined”. The two-character code underneath says why — and whether trying again can ever work.</p>
+  <div class="stage"><div class="kv" id="codes"></div></div>
+  <div class="grid" id="extra" style="--min:250px;margin-top:22px"></div>
+</section>
+
+<aside class="checkpoint" data-icon="✉">
+  <h3>You can read the <em>wire</em>.</h3>
+  <p>A message type, a handful of fields, a two-character answer. Everything else in payments is built on that. Next: what happens to a transaction after the yes.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
+<script src="../js/global.js"></script>
+<script>
+{
+const { $, $$, R, rid, money, t, pick } = DCC;
+const cur = pick({ in: '356', us: '840', uk: '826', au: '036' }), amt12 = String(Math.round(R.a.meal * 100)).padStart(12, '0');
+DCC.flow($('#trip'), { nodes: [['💳', 'Card', 'chip'], ['🏪', R.merchant, 'terminal'], ['⚙️', R.gateway, 'acquirer side'], ['🌐', R.network, 'network'], ['🖥️', 'Processor', 'issuer side'], ['🏛️', R.issuer, 'issuer']],
+  steps: [
+    { from: 0, to: 1, tag: 'ARQC', title: 'The chip signs the transaction', body: 'The terminal sends the amount and a random number to the chip. The chip combines them with a counter and its secret key to produce an <strong>application request cryptogram (ARQC)</strong> — a one-off signature that only this card could have made.' },
+    { from: 1, to: 2, tag: '0100', title: 'The terminal builds an authorisation request', body: 'Message type <strong>0100</strong>. It carries the card number, amount, merchant category, how the card was read, and the chip data — encrypted on its way to {gateway}.' },
+    { from: 2, to: 3, tag: '0100', title: 'The acquirer adds its details and forwards it', body: 'The acquiring side adds its own institution ID, a trace number and a retrieval reference, then hands the message to {network}.' },
+    { from: 3, to: 4, tag: '0100', title: 'The network routes it', body: 'The first 6–8 digits tell {network} which issuer owns the card. The network also scores the payment for fraud, swaps any token for the real card number, and starts a timer.' },
+    { from: 4, to: 5, tag: 'checks', title: 'The issuer decides', body: 'Usually an <strong>issuer processor</strong> does the work: is the card active, is the cryptogram valid, is there credit available, do the velocity rules and the fraud score pass? If so it reserves {$meal} against your limit.' },
+    { from: 5, to: 3, tag: '0110 · 00', kind: 'res', title: 'The response comes back', body: 'Message type <strong>0110</strong>, with response code <strong>00</strong> (approved) in field 39 and a six-character approval code in field 38. A response cryptogram lets the chip confirm the answer really came from {issuer}.' },
+    { from: 3, to: 1, tag: '0110 · 00', kind: 'res', title: 'Approved', body: 'The same message retraces the route. The terminal prints the approval code. Total elapsed: about a second and a half. If the response had not arrived in time, the terminal would send a <strong>reversal (0400)</strong> so the hold does not linger.', lit: [1, 2, 3] }
+  ] });
+
+const F = [
+  ['MTI', '0100', 'Message type indicator', 'Four digits that say what kind of message this is. <strong>01</strong>xx is authorisation, 02xx a financial transaction, 04xx a reversal, 08xx network housekeeping. The last two digits say request (00) or response (10). So 0100 is a request and 0110 its answer.'],
+  ['DE 2', '453912******7821', 'Primary account number', 'The card number. The first 6–8 digits (the BIN) are what the network routes on. In a wallet payment this field holds a <strong>token</strong> rather than the real number.'],
+  ['DE 3', '000000', 'Processing code', 'What is being asked. 00 = purchase of goods, 01 = cash withdrawal, 20 = refund, 30 = balance inquiry. The remaining digits name the account types involved.'],
+  ['DE 4', amt12, 'Transaction amount', `Twelve digits, in the currency’s smallest unit with no decimal point. That is ${money(R.a.meal, true)}.`],
+  ['DE 7', '1112093045', 'Transmission date and time', 'Month, day, hour, minute, second in UTC. Together with the trace number it makes the message unique.'],
+  ['DE 11', '482913', 'System trace audit number', 'A six-digit counter set by whoever originated the message. The response must echo it, so request and response can be matched.'],
+  ['DE 14', '3012', 'Expiry date', 'Year then month: December 2030. A mismatch is one of the simplest reasons for a decline.'],
+  ['DE 18', pick({ in: '5814', us: '5814', uk: '5814', au: '5814' }), 'Merchant category code', 'A four-digit code for the type of business. 5814 is fast food and cafés; 5411 supermarkets; 5541 fuel; 4111 transit; 6011 ATM cash. <strong>It drives the interchange rate, your reward category, and many fraud rules.</strong>'],
+  ['DE 22', '071', 'Point-of-service entry mode', 'How the card data was captured. 05 = chip inserted, 07 = contactless chip, 90 = magnetic stripe, 01 = keyed by hand, 10 = stored credential. The last digit says whether a PIN could be entered. Issuers trust 05 and 07 far more than 90 or 01.'],
+  ['DE 37', '631609482913', 'Retrieval reference number', 'Twelve characters assigned by the acquirer that follow the transaction for life — through clearing, refunds and any dispute.'],
+  ['DE 41/42', 'T0041792 · M000318552', 'Terminal and merchant IDs', 'Which device and which merchant account. Chargebacks, settlement and fraud monitoring all key off the merchant ID.'],
+  ['DE 43', R.merchant.toUpperCase().slice(0, 22) + ' ' + R.city.toUpperCase(), 'Merchant name and location', 'The text that ends up on your statement. When it is unrecognisable, it is because the merchant registered an unhelpful name here.'],
+  ['DE 49', cur, 'Currency code', `ISO 4217 numeric code: ${cur} is ${R.homeCur}. If dynamic currency conversion happened, a second amount and currency travel in fields 6 and 51.`],
+  ['DE 55', '9F26 08 A1C4…', 'Chip (EMV) data', 'A bundle of tagged values from the chip: the cryptogram (tag 9F26), the transaction counter, the terminal’s verification results and more. The issuer recomputes the cryptogram with the card’s key; if it matches, the card is genuine and the data is untampered.'],
+  ['DE 39', '— (response)', 'Response code', 'Empty in the request. In the 0110 response it carries the two-character verdict: <strong>00</strong> approved, or one of about a hundred reasons for no. You are about to choose it.']
+];
+const seen = new Set();
+$('#fields').innerHTML = F.map((f, i) => `<button class="de" data-i="${i}" style="animation-delay:${i * 30}ms"><small>${f[0]}</small>${f[1]}</button>`).join('');
+$('#fields').addEventListener('click', e => { const b = e.target.closest('.de'); if (!b) return; const i = +b.dataset.i, f = F[i]; seen.add(i);
+  $$('.de').forEach((x, k) => { x.classList.toggle('on', k === i); if (seen.has(k)) x.classList.add('seen'); });
+  $('#field-info').innerHTML = `<div class="eyebrow c-accent">${f[0]}</div><h3 class="h3">${f[2]}</h3><div class="wire" style="margin-block:12px">${f[1]}</div><p>${f[3]}</p>`;
+  $('#seen').textContent = `${seen.size} of ${F.length} fields opened`; seen.size === F.length ? DCC.playSuccess() : DCC.playClick();
+  if (matchMedia('(max-width: 899px)').matches) $('#field-info').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); });
+$('#seen').textContent = `0 of ${F.length} fields opened`;
+
+const lim = R.a.limit, C = { '00': '00 · Approve', '51': '51 · Insufficient funds', '54': '54 · Expired card', '41': '41 · Lost card', '05': '05 · Do not honour', '65': '65 · Step-up required', '91': '91 · Issuer unavailable', '14': '14 · Invalid card number' };
+const acct = (rows) => `<div class="acct">${rows.map(([k, v]) => `<div><small>${k}</small>${v}</div>`).join('')}</div>`;
+const mk = (title, wire, rows, ok, others, why) => ({ title, body: `<div class="wire" style="margin-top:14px">${wire}</div>${acct(rows)}`, opts: [ok, ...others].map(c => ({ t: `<span class="mono">${C[c]}</span>`, ok: c === ok })), explain: `<p>${why}</p>`, yes: 'That is what the issuer sends.', no: `The right code is ${C[ok]}.` });
+const ITEMS = [
+  mk('A coffee, tapped', `<b>0100</b> · DE4 <em>${money(R.a.meal, true)}</em> · DE18 <em>5814</em> · DE22 <em>071</em> contactless`, [['Available credit', money(lim * .6)], ['Card status', 'Active'], ['Cryptogram', 'Valid'], ['Fraud score', '4 / 100']], '00', ['51', '05', '91'], 'Nothing is wrong. The issuer reserves the amount and replies 00 with an approval code. This is what happens about 97 times in 100 at a physical terminal.'),
+  mk('A television', `<b>0100</b> · DE4 <em>${money(R.a.big)}</em> · DE18 <em>5732</em> electronics · DE22 <em>051</em> chip + PIN`, [['Available credit', money(R.a.big * .7)], ['Card status', 'Active'], ['PIN', 'Correct'], ['Fraud score', '9 / 100']], '51', ['00', '05', '54'], 'The amount exceeds what is left of the limit. Code 51 is a <strong>soft decline</strong>: nothing is wrong with the card, so the same purchase could work later, or for a smaller amount. Some issuers approve slightly over the limit; many do not.'),
+  mk('An online order', `<b>0100</b> · DE4 <em>${money(R.a.groceries)}</em> · DE14 <em>2609</em> · DE22 <em>010</em> card on file`, [['Available credit', money(lim * .8)], ['Card on record expires', '09/2026'], ['Today', 'November 2026'], ['Fraud score', '6 / 100']], '54', ['00', '51', '14'], 'The merchant is still charging a stored card that has expired. Code 54. Networks run an “account updater” that pushes new expiry dates to merchants, which is why many subscriptions survive a reissue — this merchant has not subscribed to it.'),
+  mk('A tap at a transit gate', `<b>0100</b> · DE4 <em>${money(pick({ in: 60, us: 2.9, uk: 2.8, au: 4.6 }), true)}</em> · DE18 <em>4111</em> · DE22 <em>071</em> contactless`, [['Available credit', money(lim * .5)], ['Card status', 'Reported lost 09:14 today'], ['Cryptogram', 'Valid'], ['Fraud score', '12 / 100']], '41', ['00', '05', '65'], 'The chip is genuine — which only proves the real card is being used, not who is holding it. The card was reported lost, so the issuer answers 41. This is a <strong>hard decline</strong>: retrying will never work, and the terminal may be told to retain the card.'),
+  mk('The sixth tap in a row', `<b>0100</b> · DE4 <em>${money(R.a.meal * 2, true)}</em> · DE18 <em>5411</em> · DE22 <em>071</em> contactless, no PIN`, [['Available credit', money(lim * .7)], ['Card status', 'Active'], ['Contactless since last PIN', pick({ in: '5 taps', us: '5 taps', uk: '5 taps, £290', au: '5 taps' })], ['Fraud score', '18 / 100']], '65', ['00', '51', '41'], 'Issuers cap how much can be spent by tap before the cardholder proves who they are again. Code 65 tells the terminal to ask for the chip and PIN — you see “please insert card”. It is not a refusal; it is a request for stronger proof.' + pick({ in: '', us: '', uk: ' In the UK and EU this counter is part of the strong-customer-authentication rules.', au: '' })),
+  mk('A late-night electronics order', `<b>0100</b> · DE4 <em>${money(R.a.laptop * 1.4)}</em> · DE18 <em>5732</em> · DE22 <em>012</em> keyed online · DE19 <em>foreign country</em>`, [['Available credit', money(lim)], ['Security code', 'Does not match'], ['Device and address', 'Never seen before'], ['Fraud score', '94 / 100']], '05', ['00', '51', '54'], 'Everything about this is wrong, and the issuer says so as vaguely as possible. <strong>05 “do not honour”</strong> is the catch-all: it deliberately tells a fraudster nothing about which check failed. It is also why a genuine customer who trips a fraud rule gets no useful explanation at the till.')
+];
+DCC.quiz($('#game'), { items: ITEMS, shuffle: true, label: 'Request', nextLabel: 'Next request →', onEnd(s, n, again) {
+  $('#game').innerHTML = `<div style="text-align:center"><h3 class="h2">${s} of ${n} <em>answered correctly</em>.</h3><p class="lede" style="margin-inline:auto">A real authorisation host does this several thousand times a second, with a few hundred rules and a machine-learning score — but the output is still one two-character code.</p><div class="row" style="justify-content:center;margin-top:16px"><button class="btn btn--outline" id="again">↻ Again</button></div></div>`;
+  $('#again').onclick = again; DCC.playSuccess(); if (s >= n - 1) DCC.burstConfetti(); DCC.markDone(); } });
+
+$('#codes').innerHTML = [['00', 'Approved', ''], ['05', 'Do not honour — the issuer will not say why. Usually a fraud rule. Call the number on the card.', 'fee'], ['51', 'Insufficient funds or over the limit. Soft: try a smaller amount or pay the card down.', ''], ['54', 'Expired card. Update the card details.', ''], ['14', 'Invalid card number — almost always a typing error.', ''], ['41 / 43', 'Lost / stolen card. Hard decline: never retry.', 'fee'], ['55', 'Incorrect PIN. Three wrong and the PIN locks.', ''], ['57', 'Transaction not permitted to this card — e.g. international or online use switched off.', ''], ['61 / 65', 'Exceeds an amount or frequency limit; for contactless, insert the card and enter the PIN.', ''], ['91', 'Issuer or switch unavailable. Nothing to do with you; retry shortly.', ''], ['N7', 'Security code mismatch (Visa). Re-enter the three digits.', '']]
+  .map(([c, d, k]) => `<div class="${k ? 'is-fee' : ''}"><span>${d}</span><span>${c}</span></div>`).join('');
+$('#extra').innerHTML = [
+  ['Stand-in processing', 'If the issuer does not answer within a few seconds, the network can decide on its behalf using limits the issuer set in advance. It is why cards mostly keep working during a bank outage — and why a few approvals during an outage look odd afterwards.'],
+  ['Soft and hard declines', 'Soft declines (51, 65, 91) can succeed on retry. Hard declines (14, 41, 43, 54) never will. Networks fine merchants that keep hammering hard-declined cards, which is why good checkout systems stop.'],
+  pick({
+    in: ['Routing in India', 'RuPay transactions run on NPCI’s own switch rather than a foreign network, and since 2018 the RBI has required all payment data for Indian transactions to be stored in India. International cards are routed through the networks’ local data centres.'],
+    us: ['Routing in the US', 'Debit cards must be routable over at least two unaffiliated networks, so the merchant, not the bank, often chooses the cheaper route. Credit cards run on one network only — a long-running legislative fight is about changing that.'],
+    uk: ['Extra flags in Europe', 'European authorisations carry strong-customer-authentication indicators: whether the payer was authenticated, or which exemption is claimed (low value, trusted merchant, low-risk analysis). An issuer that disagrees answers with a “soft decline — authenticate first” code.'],
+    au: ['Routing in Australia', 'Most debit cards carry two networks: eftpos and Visa or Mastercard. “Least-cost routing” lets the merchant’s terminal send a tap down whichever is cheaper, a choice the Reserve Bank has pushed acquirers to offer.'] })
+].map(([h, p], i) => `<div class="panel reveal" style="--i:${i}"><h3 class="h4" style="margin-bottom:6px">${h}</h3><p class="small">${p}</p></div>`).join('');
+DCC.observe();
+}
+</script>
+</body>
+</html>
