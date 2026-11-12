@@ -262,7 +262,7 @@ details.fold .fold-body > * + * { margin-top: 12px; }
 .region-opt b { display: block; font: 700 1.05rem var(--font-display); }
 .region-opt small { color: var(--ink-muted); font-size: .82rem; }
 .region-opt.on { background: var(--electric-soft); } .region-opt.on::after { content: '✓'; margin-left: auto; color: var(--electric); font-weight: 700; }
-.toc a { display: grid; grid-template-columns: 42px 1fr auto; gap: 10px; align-items: center; padding: 12px 20px; color: inherit; text-decoration: none; border-bottom: 1px solid var(--border); transition: background .2s; }
+.toc a { display: grid; grid-template-columns: 58px 1fr auto; gap: 10px; align-items: center; padding: 12px 20px; color: inherit; text-decoration: none; border-bottom: 1px solid var(--border); transition: background .2s; }
 .toc a:hover { background: var(--paper); }
 .toc a.here { background: var(--electric-soft); }
 .toc .n { font: italic 700 1rem var(--font-display); color: var(--ink-ghost); }

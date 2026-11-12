@@ -1,12 +1,12 @@
 # Decoding Credit Cards
 
-A free, interactive 22-chapter guide to credit cards — built for the mobile-native generation, in four regional editions.
+A free, interactive 31-chapter guide to credit cards — built for the mobile-native generation, in four regional editions.
 
 Every chapter is an interaction. No reading-and-scrolling. Tap, drag, simulate, decide.
 
 ## What's inside
 
-22 interactive chapters covering the full life of a credit card — and four regional editions.
+31 interactive chapters in two parts — how to use a card, and how the industry behind it works — in four regional editions.
 Pick **India, USA, UK & Europe, or Australia & NZ** and every amount, example, law, regulator
 and scam on the site switches to that market.
 
@@ -34,6 +34,20 @@ and scam on the site switches to that market.
 | XX | Your Relationship With Money | An anchoring experiment on yourself |
 | XXI | What's Coming Next | Set guardrails for an AI shopping agent |
 | XXII | Graduation | Twelve questions and a printable diploma |
+
+**Part II · Inside the machine** — how the payments industry works
+
+| # | Chapter | What you do |
+|---|---------|-------------|
+| XXIII | Anatomy of an Authorisation | Open an ISO 8583 message; answer six requests as the issuer |
+| XXIV | The Life of a Transaction | Holds, captures, reversals and refunds across three ledgers |
+| XXV | Clearing & Settlement | Net a day of payments between four banks |
+| XXVI | Interchange & the Price of a Payment | Change the card, channel and merchant and watch the fee |
+| XXVII | The Acquiring Stack | Choose a payments setup for three businesses; see PCI scope |
+| XXVIII | Tokens, Wallets & 3-D Secure | Step through provisioning, a phone tap and an online check |
+| XXIX | Build a Fraud Engine | Set thresholds and rules on a live stream of payments |
+| XXX | The Chargeback Machine | Play the merchant through every stage of a dispute |
+| XXXI | Inside the Issuer | Run one account's P&L; watch collections escalate |
 
 ## Stack
 
@@ -69,7 +83,7 @@ For a custom domain, add a `CNAME` file containing your domain at the repo root.
 ├── css/global.css      # Design system and shared components
 ├── js/regions.js       # Everything that differs by region: names, rates, rules, amounts
 ├── js/global.js        # Engine: region lens, progress, navigation, shared interactions
-└── chapters/           # 22 chapters, each a small HTML file with its own inline script
+└── chapters/           # 31 chapters, each a small HTML file with its own inline script
 ```
 
 `CLAUDE.md` documents the architecture, the region API and the content rules in detail.

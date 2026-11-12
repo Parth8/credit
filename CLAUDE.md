@@ -23,7 +23,7 @@ index.html              landing: hero + edition picker, why, chapter list (rende
 css/global.css          design system v3: tokens, layout utilities, shared components, chapter shell, motion
 js/regions.js           window.DCC_REGIONS — every fact, name and amount that differs by geography
 js/global.js            engine, window.DCC — region lens, progress, page chrome, effects, quiz runner
-chapters/NN-slug.html   22 chapters: shared <head>, a small <style> for unique visuals, markup, one inline <script>
+chapters/NN-slug.html   31 chapters in two parts: shared <head>, a small <style> for unique visuals, markup, one inline <script>
 og-image.png / .svg     social card
 ```
 
@@ -41,7 +41,7 @@ og-image.png / .svg     social card
 ```
 
 `global.js` injects everything else from `data-ch`: nav (region chip, sound toggle, chapter drawer), the
-"Chapter V · 5 of 22" line, checkpoint icon and next-chapter button, prev/next footer, the phone thumb bar and
+"Chapter V · 5 of 31" line, checkpoint icon and next-chapter button, prev/next footer, the phone thumb bar and
 the site footer. Never hand-write those. Chapter titles, blurbs and minutes live in the `CH` registry in `global.js`
 — adding or renaming a chapter means editing that list (and `<title>`), nothing else.
 
@@ -70,6 +70,10 @@ Breakpoints are mobile-first: base = phone, `min-width: 700px` tablet, `900px` t
 ### Engine helpers
 
 `DCC.quiz(el, { items, shuffle, onAnswer, onEnd })` drives chapters 4, 9, 10, 15, 17, 18, 22.
+`DCC.flow(el, { nodes, steps })` is the animated message-flow component (nodes on a track, a labelled packet
+that travels between them, narration, play / back / next). `steps[i] = { from, to, tag, kind, title, body, lit }`,
+`kind` = `req | res | money | fail`. Fires a `flowend` event on the element. Used in 1-style flows in 23, 25, 27, 28, 30.
+The `CH` registry carries `part` (1 or 2); the index and drawer print a part heading before chapters 1 and 23.
 `DCC.markDone()` records completion (also fires when the checkpoint scrolls into view).
 `DCC.playClick/playSuccess/playError` (sound + haptics, respect mute), `burstConfetti`, `animateNumber`,
 `observe()` after injecting `.reveal` nodes, `fillAll()` after injecting range inputs.
@@ -111,6 +115,20 @@ Honours `prefers-reduced-motion`; all controls are real buttons with focus rings
 | 21 | 21-future | AI-agent guardrails toy; timeline | 3 local + 4 shared items |
 | 22 | 22-graduation | 12-question exam, named printable diploma | questions tokenised |
 
+**Part II · Inside the machine** (industry track; mechanics are global, names/rates/rules regional)
+
+| # | File | Interaction | Regional data |
+|---|------|-------------|---------------|
+| 23 | 23-the-message | animated auth round trip; tap 15 ISO 8583 fields; play the issuer and choose response codes; decline decoder | currency code, routing notes |
+| 24 | 24-transaction-lifecycle | 4 situations (hotel, pump/EV, split shipment, reversal vs refund) moving 3 ledgers | hold sizes, refund and reversal rules |
+| 25 | 25-clearing-settlement | end-of-day flow; netting machine (gross vs net between 4 banks); float slider | bank names, settlement timing |
+| 26 | 26-interchange | pricing machine (card × channel × merchant type × amount); blended vs interchange++ | whole rate table and caps per region |
+| 27 | 27-acquiring | pick a setup for 3 businesses; PCI scope by integration type; onboarding flow; glossary | provider names, licensing |
+| 28 | 28-tokens-3ds | 3 flows (wallet provisioning, phone tap, 3-D Secure); breach simulator; liability shift | authentication regime |
+| 29 | 29-fraud-engine | threshold + rules + step-up on 400 seeded payments, minimise total cost | decline reasons |
+| 30 | 30-chargeback-machine | dispute flow; play the merchant through alert → chargeback → pre-arb → arbitration | fees, legal overlay |
+| 31 | 31-issuer-economics | per-account P&L with 5 customer presets; days-past-due slider; issuer stack | interchange, cost of funds, collections timeline |
+
 ## History — what the May 2026 original got wrong (do not reintroduce)
 
 - UI: single 768px breakpoint, nav hidden on phones, fixed pixel widths, `overflow-x:hidden` breaking sticky,
@@ -121,6 +139,8 @@ Honours `prefers-reduced-motion`; all controls are real buttons with focus rings
 - Minimum-payment chapter: headline numbers contradicted its own calculator. Numbers now come from one function.
   Indian minimum due is ~5% of balance **plus** that month's interest, fees and GST.
 - Score chapter showed FICO bands and weights as CIBIL.
+- Simulators must be tuned so the lesson is reachable: check best/worst paths by script (the fraud game shipped
+  first with rules that could never beat the plain threshold).
 - Named card products with wrong or stale details. No product names — archetypes only.
 - "Storing CVV is illegal under PCI DSS": it is an industry standard, not law. BINs are 6–8 digits.
 - Apple Pay India launched 30 Sep 2026 (Axis credit cards first), not 2025. Agentic checkout is live, not "10+ years".

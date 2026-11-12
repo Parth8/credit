@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>XXXI. Inside the Issuer — Decoding Credit Cards</title>
+<meta name="description" content="A credit card is a small lending business wrapped around a payment product. Take over one customer’s account, set the dials, and find out which customers make the money and which are paid for by the rest.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/31-issuer-economics.html">
+<meta property="og:title" content="XXXI. Inside the Issuer — Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.wf { display: grid; gap: 6px; margin-top: 10px; }
+.wf div { display: grid; grid-template-columns: minmax(110px, 170px) 1fr 84px; gap: 10px; align-items: center; font-size: .86rem; }
+.wf .bar { height: 18px; border-radius: 5px; background: var(--paper); position: relative; overflow: hidden; }
+.wf .bar i { position: absolute; top: 0; bottom: 0; border-radius: 5px; transition: left .6s var(--ease-out), width .6s var(--ease-out); }
+.wf span:last-child { font-family: var(--font-mono); font-size: .78rem; text-align: right; }
+.wf .tot { font-weight: 700; border-top: 2px solid var(--ink); padding-top: 8px; margin-top: 4px; }
+.profit { font: 900 clamp(2.6rem, 10vw, 4.2rem)/1 var(--font-display); letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.cust .tile { text-align: left; }
+.dpd { display: grid; gap: 8px; margin-top: 14px; }
+.dpd div { display: grid; grid-template-columns: 34px 1fr; gap: 12px; padding: 12px 14px; border-radius: var(--r-md); background: var(--paper); border-left: 4px solid var(--ink-ghost); opacity: .4; transition: opacity .4s, background .4s, border-color .4s; }
+.dpd div.on { opacity: 1; background: var(--white); border-color: var(--c); box-shadow: var(--shadow); }
+.dpd small { display: block; color: var(--ink-muted); }
+</style>
+</head>
+<body data-ch="31">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>Inside the <em>Issuer</em></h1>
+  <p>A credit card is a small lending business wrapped around a payment product. Take over one customer’s account, set the dials, and find out which customers make the money and which are paid for by the rest.</p>
+</header>
+
+<section class="sec">
+  <div class="eyebrow">Scene 1 · One account, one year</div>
+  <h2 class="h2">Pick a customer. <em>Read their P&amp;L.</em></h2>
+  <div class="grid cust" id="cust" style="--min:170px;margin-top:20px"></div>
+  <div class="stage split">
+    <div>
+      <div class="field"><div class="field-top"><label for="spend">Spending on the card per year</label><span class="val" id="spend-v"></span></div><input type="range" id="spend"></div>
+      <div class="field"><div class="field-top"><label for="bal">Average balance they carry and pay interest on</label><span class="val" id="bal-v"></span></div><input type="range" id="bal"></div>
+      <div class="field"><div class="field-top"><label for="apr">Interest rate</label><span class="val" id="apr-v"></span></div><input type="range" id="apr" step=".5"></div>
+      <div class="field"><div class="field-top"><label for="rew">Rewards paid back on spending</label><span class="val" id="rew-v"></span></div><input type="range" id="rew" min="0" max="5" step=".25"></div>
+      <div class="field"><div class="field-top"><label for="loss">Chance the balance is never repaid</label><span class="val c-danger" id="loss-v"></span></div><input type="range" id="loss" min="0" max="30" step=".5" class="is-danger"></div>
+      <div class="field"><div class="field-top"><label for="fee">Annual fee</label><span class="val" id="fee-v"></span></div><input type="range" id="fee" min="0"></div>
+    </div>
+    <div class="sticky" aria-live="polite">
+      <div class="eyebrow">Issuer’s profit on this account, per year</div>
+      <div class="profit" id="profit"></div>
+      <div class="wf" id="wf"></div>
+      <div class="callout" id="pl-note" style="margin-top:16px"></div>
+      <p class="small faint" style="margin-top:10px">A deliberately simple model with typical {name} figures: interchange {ic}%, cost of funds {cof}%, running costs and fraud per account. Real issuer economics add acquisition cost, capital and tax.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">Scene 2 · When a customer stops paying</div>
+  <h2 class="h2">Drag the days. <em>Watch the bank’s response harden.</em></h2>
+  <div class="stage">
+    <div class="field"><div class="field-top"><label for="days">Days past the due date</label><span class="val c-danger" id="days-v"></span></div><input type="range" id="days" min="0" max="210" step="1" value="0" class="is-danger"></div>
+    <div class="dpd" id="dpd"></div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">Scene 3 · Who is really behind your card?</div>
+  <h2 class="h2">The issuer is <em>also a stack</em>.</h2>
+  <div style="margin-top:22px" id="stack"></div>
+</section>
+
+<aside class="checkpoint" data-icon="🏛">
+  <h3>You have run <em>the whole machine</em>.</h3>
+  <p>From a tap at a café to the issuer’s balance sheet: messages, money, prices, risk and profit. You now understand this industry better than most people who work near it.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
+<script src="../js/global.js"></script>
+<script>
+{
+const { $, $$, R, rid, money, t, pick } = DCC;
+const K = pick({ in: { ic: 1.4, cof: 7.5, opex: 1500, fraud: .06, rew: 1, loss: 5 }, us: { ic: 2.1, cof: 5, opex: 45, fraud: .06, rew: 1.5, loss: 4 }, uk: { ic: .3, cof: 4.5, opex: 35, fraud: .05, rew: .25, loss: 3 }, au: { ic: .3, cof: 4.5, opex: 50, fraud: .05, rew: .4, loss: 2.5 } });
+document.querySelectorAll('main p').forEach(p => { if (p.textContent.includes('{ic}')) p.innerHTML = p.innerHTML.replace('{ic}', K.ic).replace('{cof}', K.cof); });
+const A = R.a, yr = A.income * 12 * .3, lim = A.limit, premFee = pick({ in: 10000, us: 550, uk: 450, au: 400 });
+const el = id => $('#' + id);
+el('spend').min = 0; el('spend').max = Math.round(yr * 4); el('spend').step = Math.round(yr / 40);
+el('bal').min = 0; el('bal').max = lim * 2; el('bal').step = Math.round(lim / 50);
+el('apr').min = R.aprLow; el('apr').max = R.aprHigh; el('fee').max = premFee * 1.5; el('fee').step = Math.round(premFee / 40);
+const CUST = [
+  ['🧾', 'The transactor', 'Spends a lot, pays in full every month, never pays interest.', { spend: yr * 1.4, bal: 0, apr: R.apr, rew: K.rew, loss: .3, fee: 0 }],
+  ['🔁', 'The revolver', 'Average spender who carries a balance most of the year.', { spend: yr, bal: lim * .5, apr: R.apr, rew: K.rew, loss: K.loss, fee: 0 }],
+  ['💤', 'The dormant card', 'Opened for a sign-up offer. Sits in a drawer.', { spend: yr * .03, bal: 0, apr: R.apr, rew: K.rew, loss: 0, fee: 0 }],
+  ['💎', 'The premium traveller', 'Very high spend, pays in full, loves the lounge.', { spend: yr * 4, bal: 0, apr: R.apr, rew: Math.min(5, K.rew * 1.5), loss: .2, fee: premFee }],
+  ['⚠️', 'The stretched borrower', 'At the limit, paying minimums, one bad month from default.', { spend: yr * .5, bal: lim * 1.2, apr: Math.min(R.aprHigh, R.apr + 4), rew: K.rew, loss: 18, fee: 0 }]
+];
+$('#cust').innerHTML = CUST.map((c, i) => `<button class="tile" data-i="${i}"><span class="tile-icon">${c[0]}</span><span class="tile-name">${c[1]}</span><span class="tile-sub">${c[2]}</span></button>`).join('');
+function calc() {
+  const v = k => +el(k).value, spend = v('spend'), bal = v('bal'), apr = v('apr'), rew = v('rew'), loss = v('loss'), fee = v('fee');
+  el('spend-v').textContent = money(spend); el('bal-v').textContent = money(bal); el('apr-v').textContent = apr + '%'; el('rew-v').textContent = rew + '%'; el('loss-v').textContent = loss + '%'; el('fee-v').textContent = money(fee);
+  const float = spend / 12;                       // money lent interest-free between purchase and payment
+  const rows = [['Interest income', bal * apr / 100], ['Interchange', spend * K.ic / 100], ['Fees', fee + (bal > 0 ? R.lateFee * 1.2 : 0)],
+    ['Rewards', -spend * rew / 100], ['Cost of money lent', -(bal + float) * K.cof / 100], ['Credit losses', -bal * loss / 100], ['Fraud', -spend * K.fraud / 100], ['Servicing and operations', -K.opex]];
+  const profit = rows.reduce((a, r) => a + r[1], 0), mx = Math.max(...rows.map(r => Math.abs(r[1])), 1);
+  el('profit').textContent = (profit < 0 ? '−' : '+') + money(Math.abs(profit)); el('profit').style.color = profit >= 0 ? 'var(--success)' : 'var(--danger)';
+  $('#wf').innerHTML = rows.map(([l, x]) => `<div><span>${l}</span><div class="bar"><i style="${x >= 0 ? 'left:50%' : `left:${50 - Math.abs(x) / mx * 50}%`};width:${Math.abs(x) / mx * 50}%;background:${x >= 0 ? 'var(--success)' : 'var(--danger)'}"></i></div><span>${x >= 0 ? '+' : '−'}${money(Math.abs(x))}</span></div>`).join('') +
+    `<div class="tot"><span>Profit</span><span></span><span>${profit < 0 ? '−' : '+'}${money(Math.abs(profit))}</span></div>`;
+  const n = $('#pl-note'), int = rows[0][1], ic = rows[1][1];
+  if (profit < 0 && bal * loss / 100 > int * .6) { n.className = 'callout is-danger'; n.innerHTML = '<b>The interest is an illusion</b>High rates on risky borrowers look lucrative until the losses arrive. Pricing for risk only works if enough of the pool repays — this is the account that keeps a chief risk officer awake.'; }
+  else if (Math.abs(profit) < K.opex * .6 && bal === 0) { n.className = 'callout'; n.innerHTML = '<b>Roughly break-even</b>Interchange just about covers the rewards, the interest-free float and the running costs. A customer who pays in full is not where the money is made — the issuer keeps them for the relationship, the data and the chance they borrow one day.'; }
+  else if (profit < 0) { n.className = 'callout is-warm'; n.innerHTML = `<b>This customer costs the bank money</b>${bal === 0 ? 'No interest, and interchange does not cover the rewards, the float and the cost of running the account. Issuers tolerate this hoping the customer will one day revolve, or buy something else from the bank.' : 'Rewards and costs outrun the income. Something has to give: the reward rate, the fee, or the customer.'}`; }
+  else if (bal > 0 && int >= ic) { n.className = 'callout'; n.innerHTML = `<b>Interest pays for everything</b>${Math.round(int / (int + ic + rows[2][1]) * 100)}% of this account’s revenue is interest. This is the customer who funds the transactor’s rewards — the cross-subsidy at the heart of the product.`; }
+  else { n.className = 'callout is-success'; n.innerHTML = `<b>Profitable on spending alone</b>Interchange and fees cover the rewards and costs without any interest. ${K.ic < 1 ? 'With interchange capped this low, that takes a real annual fee.' : 'That only works where interchange is high enough to fund it.'}`; }
+}
+const seen = new Set();
+function load(i) { Object.entries(CUST[i][3]).forEach(([k, v]) => { const e = el(k); e.value = Math.min(+e.max, Math.max(+e.min, v)); }); DCC.fillAll(); $$('#cust .tile').forEach((x, k) => x.classList.toggle('on', k === i)); calc(); seen.add(i); if (seen.size === CUST.length) DCC.markDone(); }
+$('#cust').addEventListener('click', e => { const b = e.target.closest('.tile'); if (b) { load(+b.dataset.i); DCC.playClick(); } });
+document.addEventListener('input', e => { if (e.target.type === 'range' && e.target.id !== 'days') { $$('#cust .tile').forEach(x => x.classList.remove('on')); calc(); } });
+load(1);
+
+const D = pick({
+  in: [[0, '📩', 'Reminders', 'SMS, email, app notifications. Under RBI rules no late fee and no bureau report for the first three days.'], [4, '💸', 'Late fee and interest', 'The late fee is charged on the unpaid amount; interest runs on the whole balance. The account is reported as overdue to the bureaus.'], [30, '📞', 'Collections calls', 'The bank’s own team calls. The limit is usually frozen. This is the cheapest moment to ask for restructuring.'], [60, '🏢', 'Agency', 'A recovery agency may be engaged. RBI’s code bars calls outside 8 am–7 pm, threats, and contacting your family or employer.'], [90, '🚩', 'Non-performing asset', 'At 90 days overdue the account is classified NPA and the bank must provision against it. Your credit report now carries a serious mark.'], [180, '⚖️', 'Write-off, settlement or legal action', 'The bank writes the balance off its books but still pursues it — through settlement offers, arbitration or the courts. “Written off” or “Settled” stays on your CIBIL report for seven years.']],
+  us: [[0, '📩', 'Reminders', 'Emails and app alerts. A late fee is charged; the grace period is lost.'], [30, '📉', 'Reported to the bureaus', 'A 30-day late mark appears on your credit reports and stays for seven years. Collections calls begin.'], [60, '🔺', 'Penalty APR', 'The issuer may reprice your balance to around 30%, and typically cuts or closes the line.'], [90, '🏢', 'Collections intensifies', 'Internal recovery teams or outside agencies, bound by the Fair Debt Collection Practices Act when third parties are involved.'], [120, '🤝', 'Settlement offers', 'Hardship plans and lump-sum settlements are most available here. Forgiven amounts of $600 or more may be taxable.'], [180, '⚖️', 'Charge-off', 'Regulators require the debt to be written off the bank’s books at 180 days. It is not forgiven: it is sold to a debt buyer for a few cents on the dollar, or sued upon.']],
+  uk: [[0, '📩', 'Reminders', 'A £12 fee, interest on the balance, and the loss of any promotional rate.'], [30, '📉', 'Missed-payment marker', 'Recorded on your credit file. The lender must contact you and offer help under FCA forbearance rules.'], [60, '📞', 'Arrears process', 'A notice of sums in arrears. Interest and charges may be frozen if you engage.'], [90, '📜', 'Default notice', 'A formal notice giving at least 14 days to pay the arrears before the account defaults.'], [120, '🚩', 'Default registered', 'The default is recorded on your file for six years and the full balance becomes due. The account is closed.'], [180, '⚖️', 'Debt sale or court', 'The debt may be sold to a purchaser or pursued for a county court judgment. Free debt advice and Breathing Space remain available throughout.']],
+  au: [[0, '📩', 'Reminders', 'A late fee and the loss of interest-free days.'], [14, '📉', 'Repayment history marked', 'A payment more than 14 days late is recorded in your repayment history, visible for two years.'], [30, '📞', 'Collections contact', 'The bank must tell you about hardship assistance. A hardship variation request must be answered within 21 days.'], [60, '🚩', 'Default listing', 'If $150 or more is 60 days overdue and you have been notified, a default can be listed for five years.'], [90, '📜', 'Default notice', 'A formal notice gives 30 days to remedy before enforcement.'], [180, '⚖️', 'Debt sale or court', 'The debt may be sold or pursued in court. AFCA can hear complaints about hardship decisions and collection conduct at any stage.']]
+});
+function dpd() { const d = +el('days').value; el('days-v').textContent = d === 0 ? 'due today' : d + ' days';
+  let cur = 0; D.forEach((x, i) => { if (d >= x[0]) cur = i; });
+  $('#dpd').innerHTML = D.map((x, i) => `<div class="${i <= cur && (d > 0 || i === 0) ? 'on' : ''}" style="--c:${['var(--ink-muted)', 'var(--gold)', 'var(--warm)', 'var(--warm)', 'var(--danger)', 'var(--danger)'][i]}"><span style="font-size:1.4rem">${x[1]}</span><span><b>Day ${x[0]}${i < D.length - 1 ? '–' + (D[i + 1][0] - 1) : '+'} · ${x[2]}</b><small>${x[3]}</small></span></div>`).join(''); }
+el('days').addEventListener('input', dpd); dpd();
+
+$('#stack').innerHTML = [
+  ['The issuer of record', 'The licensed bank or lender whose name is on the agreement. It owns the receivable, carries the credit risk, holds the network membership and answers to the regulator.'],
+  ['The issuer processor', 'The system of record for every card: it answers authorisations in milliseconds, keeps balances, calculates interest and produces statements. A few global firms and a newer generation of API-first processors run most of the world’s cards — including for banks that look entirely in-house.'],
+  ['The programme manager and the sponsor bank', 'Many “fintech” cards are designed and marketed by a company that is not a bank. A licensed sponsor bank issues the card and holds the money; the fintech runs the product on top. ' + pick({ in: 'In India, RBI’s rules keep co-branding partners at arm’s length: they may market the card but not see transaction data or handle the lending.', us: 'US regulators have tightened scrutiny of these partnerships after several failures left customers unable to reach their funds.', uk: 'In the UK the non-bank is typically an e-money or payment institution that must safeguard customer funds.', au: 'In Australia licensing for these arrangements is being rebuilt under the new payments licensing framework.' })],
+  ['The co-brand partner', 'An airline or retailer lends its brand and customers; the bank lends its balance sheet. The bank pays the partner for every account opened and every point issued — for some airlines, selling miles to banks earns more than flying passengers.'],
+  ['Where the money comes from', 'The balances you carry are funded by deposits or by selling bundles of card receivables to investors as securities. The gap between that funding cost and your interest rate is the margin every dial in scene 1 is fighting over.'],
+  ['The dials an issuer really turns', 'Who to approve and at what line. When to raise or cut a limit. How to price risk. How rich to make rewards. When to offer a balance transfer or an instalment plan. How hard to collect. Each one moves the P&amp;L you just played with — and each one is, on the other side, a decision about you.']
+].map(([h, p]) => `<details class="fold"><summary><span class="h4">${h}</span></summary><div class="fold-body"><p>${p}</p></div></details>`).join('');
+}
+</script>
+</body>
+</html>
