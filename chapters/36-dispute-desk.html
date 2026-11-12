@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>XXXVI. The Dispute Desk | Decoding Credit Cards</title>
+<meta name="description" content="Banks receive thousands of disputes a day. Each one runs against a legal clock and a network rulebook, and the decision decides who ends up paying: the customer, the merchant, or the bank. Take the desk for a shift.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/36-dispute-desk.html">
+<meta property="og:title" content="XXXVI. The Dispute Desk | Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.clock { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.clock .stat-v { font-size: var(--step-1); }
+.case { background: var(--paper); border-radius: var(--r-md); padding: 14px 16px; margin-top: 12px; font-size: .94rem; }
+.case div { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; border-bottom: 1px dashed var(--border-strong); }
+.case div:last-child { border: 0; } .case span:first-child { color: var(--ink-muted); } .case span:last-child { font-weight: 600; text-align: right; }
+</style>
+</head>
+<body data-ch="36">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>The <em>Dispute Desk</em></h1>
+  <p>Banks receive thousands of disputes a day. Each one runs against a legal clock and a network rulebook, and the decision decides who ends up paying: the customer, the merchant, or the bank. Take the desk for a shift.</p>
+</header>
+
+<section class="sec">
+  <div class="eyebrow">How a dispute moves through the bank</div>
+  <div class="stage"><div id="pipe"></div></div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">The clocks you work against in {name}</div>
+  <div class="clock" id="clock"></div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">Your shift</div>
+  <h2 class="h2">Six cases. <em>What do you do?</em></h2>
+  <div class="stage" id="game"></div>
+</section>
+
+<aside class="checkpoint" data-icon="🗂">
+  <h3>You have seen disputes <em>from inside the bank</em>.</h3>
+  <p>The analyst is rarely the obstacle. Missing facts, missed deadlines and the wrong payment method are. Next: the same problems from the customer’s side, and how to win.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
+<script src="../js/global.js"></script>
+<script>
+{
+const { $, R, rid, money, t, pick } = DCC;
+DCC.flow($('#pipe'), { nodes: [['🙋', 'Customer', ''], ['📥', 'Intake', 'app, phone'], ['🔎', 'Triage', 'reason, clock'], ['💸', 'Provisional credit', ''], ['🌐', 'Network', 'chargeback'], ['⚖️', 'Decision', 'final']], steps: [
+  [0, 1, 'complaint', 'req', 'The customer raises it', 'In the app, by phone or in writing. The date it is received starts the legal clock, so banks log it carefully.'],
+  [1, 2, 'case', 'req', 'Triage', 'Is it unauthorised (fraud), a billing or processing error, or a dispute about goods and services? Is it in time? Which rule applies: the law, the network’s rules, or both? Is the card blocked if needed?'],
+  [2, 3, 'credit', 'money', 'Provisional credit', pick({ in: 'For unauthorised electronic transactions, RBI rules require the amount to be credited, even provisionally, within 10 working days of the report.', us: 'For debit card errors under Regulation E, if the investigation will take more than 10 business days the bank must provisionally credit the account. For credit cards, the disputed amount need not be paid while it is investigated.', uk: 'For unauthorised payments the bank must refund by the end of the next business day unless it has reasonable grounds to suspect fraud by the customer.', au: 'Banks typically credit unauthorised transactions promptly while investigating under the ePayments Code.' })],
+  [3, 4, 'chargeback', 'req', 'The bank recovers from the merchant', 'Where a network reason code fits, the issuer files a chargeback with evidence. The merchant can respond, and the case can go to pre-arbitration and arbitration (chapter XXX).'],
+  [4, 5, 'outcome', 'res', 'Decision', 'The credit becomes permanent, or is reversed with an explanation. If the bank refunds the customer but loses the chargeback, the bank absorbs the loss. That is the cost of consumer protection, and why first-party fraud worries banks.'] ] });
+
+$('#clock').innerHTML = pick({
+  in: [['Report unauthorised use', 'Within 3 working days: zero liability'], ['Provisional credit', 'Within 10 working days'], ['Resolve the complaint', 'Within 90 days'], ['Escalate if unhappy', 'RBI Ombudsman after 30 days']],
+  us: [['Credit card billing error', 'Customer: 60 days from statement'], ['Bank must resolve', 'Within 2 billing cycles (max 90 days)'], ['Debit card error', 'Investigate in 10 business days, or 45 with provisional credit'], ['Network chargeback', 'Usually 120 days']],
+  uk: [['Unauthorised payment', 'Customer has up to 13 months'], ['Refund unauthorised', 'By end of next business day'], ['Scam (APP) claim', 'Reimburse within 5 business days, up to £85,000'], ['Final response', '8 weeks, then the Ombudsman']],
+  au: [['Unauthorised use', 'Report promptly; not liable unless you contributed'], ['Complaint response', 'Within 30 days'], ['Mistaken payment', 'Report within 10 business days for the best chance'], ['Escalate', 'AFCA, free']]
+}).map(([k, v]) => `<div class="stat"><div class="stat-k">${k}</div><div class="stat-v">${v}</div></div>`).join('');
+
+const card = rows => `<div class="case">${rows.map(r => `<div><span>${r[0]}</span><span>${r[1]}</span></div>`).join('')}</div>`;
+const A = R.a;
+const CASES = [
+  { title: 'An online charge the customer says they never made', body: card([['Amount', money(A.laptop * .4)], ['Merchant', 'Electronics site, overseas'], ['Reported', '2 days after the alert'], ['Authentication', 'Card details only, no 3-D Secure']]),
+    opts: ['Block the card, credit the customer within the time limit, and file a fraud chargeback', 'Tell the customer to contact the merchant first', 'Decline: the security code was correct, so it must be the customer'],
+    why: 'Unauthorised and reported fast: the customer is protected by law, and because there was no 3-D Secure the liability sits with the merchant, so the chargeback should succeed. A correct security code proves only that the fraudster had the full card details.' },
+  { title: 'Goods not received', body: card([['Amount', money(A.phone)], ['Merchant', 'Online furniture shop'], ['Expected delivery', '3 weeks ago'], ['Customer contact with merchant', 'Two emails, no reply']]),
+    opts: ['Open a “goods not received” dispute with the order and delivery details', 'Refund from the bank’s own funds and close the case', 'Decline: the customer authorised the payment'],
+    why: 'Authorised does not mean unprotected. Non-delivery is a standard chargeback reason once the expected delivery date has passed, and the customer has already tried the merchant. The merchant will have to show proof of delivery.' },
+  { title: 'Charged twice', body: card([['Amount', money(A.meal * 4) + ' × 2'], ['Merchant', R.foodApp], ['Clearing records', 'Two separate presentments'], ['Customer', 'Has not contacted the merchant']]),
+    opts: ['Check the clearing records and file a processing-error chargeback for the duplicate', 'Insist the customer asks the merchant first', 'Treat it as fraud and reissue the card'],
+    why: 'Duplicate processing is the bank’s to fix from its own records. There is no need to send the customer to the merchant, and no reason to reissue a card that was not compromised.' },
+  { title: 'A subscription that kept charging', body: card([['Amount', money(A.meal) + ' a month, 3 months'], ['Merchant', 'Streaming service'], ['Evidence', 'Cancellation confirmation email, dated'], ['Charges after cancellation', '3']]),
+    opts: ['File a “cancelled recurring” dispute for the three charges and block future ones from this merchant', 'Refund only the most recent charge', 'Tell the customer to replace the card'],
+    why: 'With a dated cancellation, every charge after it is disputable. Blocking the merchant stops the next one; replacing the card alone may not, because account-updater services can pass new details to subscription merchants.' },
+  { title: 'A bank transfer to a fake investment', body: card([['Amount', money(A.big * .6)], ['Payment', pick({ in: 'UPI, two transfers', us: 'Wire and Zelle', uk: 'Faster Payments', au: 'Bank transfer via PayID' })], ['Who pressed send', 'The customer, after weeks of contact'], ['Reported', 'Same day']]),
+    opts: ['Treat it as a scam, not a chargeback: start recovery at once and apply the scam rules that exist here', 'File a chargeback', 'Close it: an authorised payment is the customer’s responsibility, nothing can be done'],
+    why: pick({ in: 'There is no chargeback on a bank transfer, and India’s zero-liability rules cover only <em>unauthorised</em> transactions. But speed matters: the bank should help the customer report to 1930 so the receiving account can be frozen, contact the beneficiary bank, and check whether RBI’s new compensation framework for small-value digital fraud applies (up to ₹25,000, once).', us: 'No chargeback exists on a wire or Zelle, and authorised payments are generally outside Regulation E. The bank should request a recall from the receiving bank immediately, and check whether Zelle’s voluntary reimbursement for imposter scams applies. Report to the FBI’s IC3 and the FTC.', uk: 'This is authorised push payment fraud. Under the PSR’s rules the bank must reimburse within five business days, up to £85,000, unless the customer was grossly negligent or the claim is fraudulent, and it may share the cost with the receiving bank.', au: 'No chargeback applies. The bank should try to recover funds from the receiving bank immediately. Australia’s new scams code makes banks accountable for prevention and response from 2027; until then outcomes depend on the bank and on AFCA if the customer complains.' }) },
+  { title: 'A faulty laptop, disputed late', body: card([['Amount', money(A.laptop)], ['Bought', '200 days ago, by credit card'], ['Problem', 'Stopped working; seller refuses repair'], ['Customer evidence', 'Receipt, photos, emails']]),
+    opts: ['Out of time for a chargeback; point the customer to the other routes that still apply', 'File a chargeback anyway', 'Refund it: the customer is always right'],
+    why: pick({ in: 'Most network chargeback windows are about 120 days. The customer still has rights against the seller under the Consumer Protection Act, through the National Consumer Helpline (1915) and the consumer commission.', us: 'Network windows are usually about 120 days, and the Fair Credit Billing Act’s 60-day window has passed. The customer still has warranty rights against the seller and manufacturer, and state consumer protection law.', uk: 'Too late for a chargeback, but not for <strong>Section 75</strong>: for a credit card purchase over £100 the card provider is jointly liable with the seller for breach of contract, with no 120-day limit. The bank must handle it as a Section 75 claim.', au: 'Chargeback windows have passed, but consumer guarantees under the Australian Consumer Law last a “reasonable time” for a laptop. The customer can pursue the seller, with help from the state fair-trading agency.' }) }
+];
+DCC.quiz($('#game'), { shuffle: true, label: 'Case', nextLabel: 'Next case →', endLabel: 'End of shift →',
+  items: CASES.map(c => ({ title: c.title, body: c.body, opts: c.opts.map((o, i) => ({ t: o, ok: i === 0 })), explain: `<p>${c.why}</p>`, yes: 'Correct handling.', no: 'Not what the rules require.' })),
+  onEnd(s, n, again) { $('#game').innerHTML = `<div style="text-align:center"><h3 class="h2">${s} of ${n} <em>handled correctly</em>.</h3><p class="lede" style="margin-inline:auto">Notice which cases were easy: the ones where the customer reported fast, kept evidence and paid with a card. Every hard case was hard because one of those was missing.</p><div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn--outline" id="again">↻ Another shift</button></div></div>`; $('#again').onclick = again; DCC.playSuccess(); DCC.markDone(); } });
+}
+</script>
+</body>
+</html>

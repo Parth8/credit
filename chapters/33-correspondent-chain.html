@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>XXXIII. The Correspondent Chain | Decoding Credit Cards</title>
+<meta name="description" content="Money does not fly across borders. It hops between banks that hold accounts with each other, and every hop can take a slice. Send a transfer and watch what arrives.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/33-correspondent-chain.html">
+<meta property="og:title" content="XXXIII. The Correspondent Chain | Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.chain { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-top: 16px; }
+.hop { text-align: center; background: var(--paper); border-radius: var(--r-md); padding: 10px 4px; position: relative; transition: background .4s, transform .4s var(--ease-spring); }
+.hop.on { background: var(--electric-soft); transform: translateY(-4px); }
+.hop.skip { opacity: .3; }
+.hop i { font-style: normal; font-size: 1.4rem; display: block; }
+.hop b { display: block; font-size: clamp(.6rem, 2.2vw, .8rem); line-height: 1.2; }
+.hop small { display: block; font: 700 clamp(.58rem, 2vw, .72rem) var(--font-mono); color: var(--danger); min-height: 1.2em; margin-top: 4px; }
+.rcpt { font-family: var(--font-mono); font-size: .85rem; }
+.rcpt div { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--border-strong); }
+.rcpt .bad span:last-child { color: var(--danger); } .rcpt .tot { border-top: 2px solid var(--ink); border-bottom: 0; font-weight: 700; }
+.big { font: 900 clamp(2.2rem, 8vw, 3.4rem)/1 var(--font-display); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.cmp td, .cmp th { padding: 8px; border-bottom: 1px dashed var(--border-strong); text-align: left; font-size: .88rem; }
+.cmp th { font: 400 .66rem var(--font-mono); text-transform: uppercase; color: var(--ink-faint); }
+.cmp tr.best td { background: var(--success-soft); font-weight: 600; }
+</style>
+</head>
+<body data-ch="33">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>The <em>Correspondent Chain</em></h1>
+  <p>Money does not fly across borders. It hops between banks that hold accounts with each other, and every hop can take a slice. Send a transfer and watch what arrives.</p>
+</header>
+
+<section class="sec">
+  <div class="eyebrow">Your transfer</div>
+  <h2 class="h2" id="title"></h2>
+  <div class="stage split split--r">
+    <div>
+      <div class="field"><div class="field-top"><label for="amt">You send</label><span class="val" id="amt-v"></span></div><input type="range" id="amt"></div>
+      <div class="field"><label>How</label><div class="seg" id="route" style="margin-top:6px"><button data-v="sha" class="on">Bank wire, fees shared (SHA)</button><button data-v="our">Bank wire, I pay all fees (OUR)</button><button data-v="mto">Specialist transfer provider</button></div></div>
+      <div class="field"><div class="field-top"><label for="mg">Exchange-rate margin your bank adds</label><span class="val c-danger" id="mg-v"></span></div><input type="range" id="mg" min="0" max="5" step=".25" value="3" class="is-danger"><div class="field-ends"><span>mid-market</span><span>5% worse</span></div></div>
+      <div class="chain" id="chain"></div>
+      <div class="row" style="margin-top:14px"><button class="btn btn--primary" id="send">▶ Send it</button><span class="mono faint" id="eta"></span></div>
+    </div>
+    <div class="sticky" aria-live="polite">
+      <div class="eyebrow">What arrives</div>
+      <div class="big" id="got"></div><div class="mono faint" id="eff"></div>
+      <div class="rcpt" id="rcpt" style="margin-top:14px"></div>
+      <div class="callout" id="note" style="margin-top:14px"></div>
+    </div>
+  </div>
+  <div class="stage"><div class="eyebrow">All three, side by side</div><table class="cmp" id="cmp" style="width:100%"></table></div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">Why it works like this</div>
+  <div style="margin-top:14px" id="why"></div>
+</section>
+
+<aside class="checkpoint" data-icon="🌍">
+  <h3>You can see the <em>hidden cost</em>.</h3>
+  <p>The fee is the part they show you. The exchange-rate margin is usually bigger, and the intermediaries take theirs on the way. Next: the ledger every one of those banks is keeping.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
+<script src="../js/global.js"></script>
+<script>
+{
+const { $, $$, R, rid, money, t, pick } = DCC;
+const D = pick({ in: ['USD', '$', 1 / 88, 'a US university', 'New York', '🇺🇸'], us: ['INR', '₹', 88, 'family in India', 'Mumbai', '🇮🇳'], uk: ['INR', '₹', 116, 'family in India', 'Mumbai', '🇮🇳'], au: ['PHP', '₱', 38, 'family in the Philippines', 'Manila', '🇵🇭'] });
+const [ccy, sym, rate, who, city, flag] = D;
+$('#title').innerHTML = `${R.flag} ${R.homeCur} → ${flag} ${ccy}, to <em>${who}</em>.`;
+const amt = $('#amt'); amt.min = R.a.big / 4; amt.max = R.a.big * 5; amt.step = R.a.big / 20; amt.value = R.a.big;
+const fx = v => sym + Math.round(v).toLocaleString('en');
+const sendFee = pick({ in: 1000, us: 45, uk: 25, au: 30 }), ourFee = pick({ in: 1500, us: 25, uk: 20, au: 25 }), mtoFee = pick({ in: 250, us: 5, uk: 3, au: 4 });
+const inter = 25, recvFee = 10;   // in destination-dollar terms, converted below
+const toDest = v => v * rate;
+function calc(route, A, mg) {
+  const m = route === 'mto' ? .5 : mg, fxLoss = A * m / 100;
+  const sent = A - (route === 'mto' ? mtoFee : sendFee) - (route === 'our' ? ourFee : 0);
+  let dest = toDest(sent - fxLoss); const cuts = [];
+  const usd = x => ccy === 'USD' ? x : x * (ccy === 'INR' ? 88 : 58); // intermediary fees are charged in dollars, shown in destination currency
+  if (route === 'sha') { cuts.push(['Correspondent 1', usd(inter)], ['Correspondent 2', usd(inter * .6)], ['Receiving bank', usd(recvFee)]); }
+  if (route === 'our') cuts.push(['Receiving bank', usd(recvFee)]);
+  cuts.forEach(c => dest -= c[1]);
+  const ideal = toDest(A), lost = ideal - dest;
+  return { m, fxLoss, sendFee: route === 'mto' ? mtoFee : sendFee, ourFee: route === 'our' ? ourFee : 0, cuts, dest, ideal, pct: lost / ideal * 100, eta: route === 'mto' ? 'minutes to a day' : '1–3 business days' };
+}
+let route = 'sha';
+const HOPS = [['🏦', R.issuer], ['🏛️', 'Correspondent', 'cut'], ['🏛️', 'Correspondent', 'cut'], ['🏪', 'Receiving bank', 'cut'], ['🙂', city]];
+function draw(anim) {
+  const A = +amt.value, mg = +$('#mg').value, r = calc(route, A, mg);
+  $('#amt-v').textContent = money(A); $('#mg-v').textContent = (route === 'mto' ? '0.5% (provider)' : mg + '%');
+  $('#got').textContent = fx(r.dest); $('#eff').textContent = `${r.pct.toFixed(1)}% lost against the mid-market rate · arrives in ${r.eta}`;
+  $('#rcpt').innerHTML = `<div><span>You send</span><span>${money(A)}</span></div><div class="bad"><span>${route === 'mto' ? 'Provider fee' : 'Your bank’s fee'}</span><span>−${money(r.sendFee)}</span></div>${r.ourFee ? `<div class="bad"><span>OUR surcharge (pre-pays intermediaries)</span><span>−${money(r.ourFee)}</span></div>` : ''}<div class="bad"><span>Exchange-rate margin (${r.m}%)</span><span>−${money(r.fxLoss)}</span></div>${r.cuts.map(c => `<div class="bad"><span>${c[0]} deducts</span><span>−${fx(c[1])}</span></div>`).join('')}<div class="tot"><span>Arrives</span><span>${fx(r.dest)}</span></div><div><span>At the real rate it would be</span><span>${fx(r.ideal)}</span></div>`;
+  $('#note').className = 'callout ' + (r.pct < 2 ? 'is-success' : r.pct < 5 ? 'is-warm' : 'is-danger');
+  $('#note').innerHTML = route === 'mto' ? '<b>No chain at all</b>The provider holds accounts in both countries. You pay it locally, it pays out locally from its own balance, and only its books cross the border. Fewer hands, fewer cuts.'
+    : route === 'our' ? '<b>You paid up front</b>OUR asks your bank to cover every intermediary fee so the full amount arrives. Useful for invoices that must be paid exactly. The receiving bank may still charge its own customer.'
+    : '<b>Shared fees, shaved amount</b>With SHA, intermediaries deduct their fees from the payment itself. The recipient gets less than you sent and neither of you knows exactly how much in advance. That is why invoices go part-paid.';
+  $('#chain').innerHTML = HOPS.map((h, i) => { const skip = route === 'mto' && (i === 1 || i === 2), cut = route === 'sha' ? [null, r.cuts[0], r.cuts[1], r.cuts[2]][i] : route === 'our' && i === 3 ? r.cuts[0] : null;
+    return `<div class="hop ${skip ? 'skip' : ''}" data-i="${i}"><i>${h[0]}</i><b>${skip ? 'skipped' : h[1]}</b><small>${cut ? '−' + fx(cut[1]) : ''}</small></div>`; }).join('');
+  $('#cmp').innerHTML = `<tr><th>Route</th><th>Arrives</th><th>Lost</th><th>Time</th></tr>` + [['sha', 'Bank wire, SHA'], ['our', 'Bank wire, OUR'], ['mto', 'Specialist provider']].map(([k, l]) => { const x = calc(k, A, mg); return [k, l, x]; }).sort((a, b) => b[2].dest - a[2].dest).map(([k, l, x], i) => `<tr class="${i ? '' : 'best'}"><td>${l}</td><td>${fx(x.dest)}</td><td>${x.pct.toFixed(1)}%</td><td>${x.eta}</td></tr>`).join('');
+}
+$('#send').onclick = () => { draw(); const hs = $$('.hop'); hs.forEach(h => h.classList.remove('on')); hs.forEach((h, i) => setTimeout(() => { hs.forEach(x => x.classList.remove('on')); if (!h.classList.contains('skip')) { h.classList.add('on'); i === hs.length - 1 ? DCC.playSuccess() : DCC.playClick(); } }, DCC.calm ? 0 : i * 520)); DCC.markDone(); };
+$('#route').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; route = b.dataset.v; $$('#route button').forEach(x => x.classList.toggle('on', x === b)); draw(); DCC.playClick(); });
+document.addEventListener('input', e => e.target.type === 'range' && draw());
+draw();
+$('#why').innerHTML = [
+  ['Nobody owns a pipe between two countries', 'Your bank can only pay a foreign bank it holds an account with. If it has none, it pays one that does, and so on. Each bank in the chain screens the payment for sanctions, may apply its own cut-off times, and may charge.'],
+  ['The margin you do not see', 'Banks quote a rate, not a fee, for the currency conversion. Compare it with the mid-market rate on any market data site: the gap, often 2–4% at a bank, is usually the largest cost of the transfer.'],
+  ['Why specialists are cheaper', 'They pre-fund accounts in each country and match money flowing in opposite directions, so most transfers never cross a border at all. Newer routes go further: linked instant payment systems between countries, and dollar stablecoins for some business payments.'],
+  ['What is improving', 'Swift’s tracking now shows each hop and fee, the new ISO 20022 messages carry richer data, and the G20 has targets for faster and cheaper cross-border payments. The global average cost of sending money home is still above 6%, against a 3% goal.']
+].map(([h, p]) => `<details class="fold"><summary><span class="h4">${h}</span></summary><div class="fold-body"><p>${p}</p></div></details>`).join('');
+}
+</script>
+</body>
+</html>

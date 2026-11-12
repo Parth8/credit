@@ -6,18 +6,21 @@
 // ============================================================
 window.DCC_CATALOG = {
   domains: {
-    cards:     ['💳', 'Cards & credit', 'Using a card well: billing, interest, fees, scores, rewards, and the other kinds of card.'],
+    cards:     ['💳', 'Cards, credit & loans', 'Using a card well: billing, interest, fees, scores, rewards, other kinds of card, and loans.'],
+    disputes:  ['⚖️', 'Disputes, scams & your rights', 'Getting your money back: rights by payment method, scams, refunds law, and how banks and merchants fight disputes.'],
     networks:  ['🌐', 'Networks & schemes', 'Who connects the banks, what rules they set, and how a payment is routed.'],
     issuing:   ['🏛️', 'Issuing', 'The bank side of your card: processors, credit decisions, programmes and collections.'],
     acquiring: ['🏪', 'Acquiring & merchants', 'The shop side: terminals, gateways, pricing, settlement files and disputes.'],
     rails:     ['🛤️', 'Bank payment rails', 'Everything that is not a card: ACH, wires, instant payments, UPI, SEPA, SWIFT.'],
     risk:      ['🛡️', 'Fraud, risk & compliance', 'Fraud engines, authentication, KYC, anti-money-laundering, sanctions, PCI.'],
     banking:   ['🏦', 'Banking architecture', 'How a bank is built: ledgers, core systems, BIAN, open banking, licences.'],
+    industry:  ['🗺️', 'The industry', 'Who the players and regulators are, how we got here, and who is still left out.'],
     future:    ['🔭', 'What comes next', 'Stablecoins, central bank digital currencies and software that pays for you.']
   },
   // chapter number -> domain
-  labDomain: { 1: 'networks', 2: 'cards', 3: 'cards', 4: 'cards', 5: 'cards', 6: 'cards', 7: 'cards', 8: 'cards', 9: 'cards', 10: 'risk', 11: 'risk', 12: 'cards', 13: 'cards', 14: 'cards', 15: 'cards', 16: 'cards', 17: 'rails', 18: 'cards', 19: 'cards', 20: 'cards', 21: 'future', 22: 'cards',
-    23: 'networks', 24: 'networks', 25: 'networks', 26: 'acquiring', 27: 'acquiring', 28: 'risk', 29: 'risk', 30: 'acquiring', 31: 'issuing' },
+  labDomain: { 1: 'networks', 2: 'cards', 3: 'cards', 4: 'cards', 5: 'cards', 6: 'cards', 7: 'cards', 8: 'cards', 9: 'cards', 10: 'risk', 11: 'risk', 12: 'disputes', 13: 'cards', 14: 'cards', 15: 'cards', 16: 'disputes', 17: 'rails', 18: 'cards', 19: 'cards', 20: 'cards', 21: 'future', 22: 'cards',
+    31: 'issuing', 32: 'rails', 33: 'rails', 34: 'banking', 35: 'banking', 36: 'disputes', 37: 'disputes',
+    23: 'networks', 24: 'networks', 25: 'networks', 26: 'acquiring', 27: 'acquiring', 28: 'risk', 29: 'risk', 30: 'disputes', 31: 'issuing' },
   // guides: id -> [title, domain, minutes, one-line summary]
   guides: {
     'debit-cards':      ['Debit cards', 'cards', 5, 'Same plastic, different money: how debit differs from credit in routing, protection and cost.'],
@@ -73,27 +76,66 @@ window.DCC_CATALOG = {
     'central-bank-money':['Central bank money and settlement', 'banking', 6, 'Why every payment system ends at the central bank.'],
     'stablecoins':      ['Stablecoins', 'future', 6, 'Private digital dollars: how they hold their value and where payments firms use them.'],
     'cbdc':             ['Central bank digital currencies', 'future', 5, 'A digital form of cash: who is building one and what problem it solves.'],
-    'agentic-commerce': ['Agentic commerce', 'future', 5, 'When software shops and pays on your behalf: tokens, mandates and liability.']
+    'agentic-commerce': ['Agentic commerce', 'future', 5, 'When software shops and pays on your behalf: tokens, mandates and liability.'],
+    // disputes, scams and your rights
+    'why-consumers-lose': ['Why consumers lose disputes', 'disputes', 7, 'The eight mistakes that cost people their money back, and how the system quietly rewards the informed.'],
+    'rights-by-method':   ['Your rights, by how you paid', 'disputes', 8, 'Credit card, debit, bank transfer, UPI, direct debit, wallet, pay-later, gift card, crypto: what each one protects.'],
+    'scam-recovery':      ['Scammed: the first 24 hours', 'disputes', 6, 'What to do, in what order, by payment method and country. Minutes matter.'],
+    'scam-reimbursement': ['Scam reimbursement rules compared', 'disputes', 7, 'Who must refund a scam victim: the UK, EU, Australia, India and the US, side by side.'],
+    'misdirected-payments':['Wrong account, failed payment, money stuck', 'disputes', 6, 'Payments to the wrong person, debits without delivery, and the deadlines that decide whether you get it back.'],
+    'bank-dispute-ops':   ['How banks handle disputes', 'disputes', 8, 'Inside the dispute team: intake, reason codes, provisional credit, regulatory clocks and who absorbs the loss.'],
+    'merchant-disputes':  ['Disputes from the merchant’s side', 'disputes', 7, 'Alerts, descriptors, compelling evidence, monitoring programmes and why merchants lose winnable cases.'],
+    'consumer-law':       ['Refunds, returns and warranties: the law', 'disputes', 7, 'Your statutory rights when goods or services go wrong, beyond anything a card offers.'],
+    'escalation':         ['Escalation: ombudsmen, regulators, courts', 'disputes', 6, 'When the bank or shop says no: free ombudsmen, consumer courts and how to write a complaint that works.'],
+    // payments and rails, wider
+    'remittances':        ['Remittances', 'rails', 6, 'Sending money home: corridors, costs, money transfer operators and why it still costs over 6%.'],
+    'payouts':            ['Payouts and disbursements', 'rails', 5, 'Paying out to many people at once: gig workers, refunds, insurance claims, push-to-card.'],
+    'marketplaces':       ['Marketplaces and split payments', 'acquiring', 6, 'How platforms take payment for thousands of sellers: merchant of record, escrow, split settlement.'],
+    'atm-networks':       ['ATMs and cash', 'rails', 5, 'How a cash withdrawal works, who pays for the machine, and what happens as cash use falls.'],
+    'qr-payments':        ['QR code payments', 'acquiring', 5, 'Static and dynamic QR codes, the standards behind them, and the scams they attract.'],
+    // risk, regulation, banking
+    'data-privacy':       ['Data privacy in payments', 'risk', 6, 'GDPR, India’s DPDP Act and the rest: who may use your payment data, and for what.'],
+    'op-resilience':      ['Operational resilience', 'risk', 5, 'When the systems go down: outages, third-party risk, and the rules that now demand recovery plans.'],
+    'conduct':            ['Conduct and fair treatment', 'risk', 6, 'Consumer Duty, UDAAP and fair practice codes: the rules about treating customers fairly.'],
+    'basel-capital':      ['Bank capital and Basel', 'banking', 6, 'Why banks must hold capital, how much, and what risk-weighted assets are.'],
+    'alm-treasury':       ['Treasury and asset-liability management', 'banking', 7, 'Interest rate risk, liquidity and what Silicon Valley Bank got wrong.'],
+    'trade-finance':      ['Trade finance', 'banking', 6, 'Letters of credit, collections and supply chain finance: how banks make strangers trust each other across borders.'],
+    'cash-management':    ['Cash management for businesses', 'banking', 6, 'Collections, payables, virtual accounts, sweeping and pooling: banking for a company’s treasurer.'],
+    'hsm-keys':           ['HSMs, keys and PIN security', 'banking', 6, 'The tamper-proof boxes that hold the keys to every card and PIN, and how keys are layered.'],
+    'payments-engineering':['How payment systems are built', 'banking', 8, 'Idempotency, timeouts, state machines, reversals and reconciliation: engineering for money.'],
+    'personal-loans':     ['Personal loans', 'cards', 5, 'Fixed-term borrowing: how it is priced, how it compares with a card, and what to check.'],
+    'mortgages':          ['Mortgages', 'cards', 6, 'The biggest loan most people take: fixed and floating rates, amortisation and what lenders check.'],
+    // the industry
+    'market-map':         ['Who’s who in payments', 'industry', 7, 'Networks, processors, acquirers, wallets, fintechs and infrastructure: a map of the companies.'],
+    'regulators-map':     ['The regulators', 'industry', 6, 'Who supervises what in India, the US, the UK and EU, and Australia.'],
+    'payments-history':   ['A short history of payments', 'industry', 7, 'From the charge plate to UPI: the inventions that built today’s system.'],
+    'financial-inclusion':['Financial inclusion', 'industry', 6, 'The 1.3 billion adults without an account, and how mobile money, Jan Dhan and UPI changed the picture.']
   },
   // tracks: id -> [icon, title, who it is for, [ordered item ids]]   ('chN' = lab N)
   tracks: {
     cardholder: ['🙂', 'Use a card well', 'Anyone with a card, or about to get one. No background needed.',
-      ['ch1', 'ch5', 'card-interest', 'ch6', 'ch7', 'ch8', 'credit-reports', 'ch9', 'ch10', 'ch12', 'ch13', 'ch19', 'ch20', 'ch22']],
+      ['ch1', 'ch5', 'card-interest', 'ch6', 'ch7', 'ch8', 'credit-reports', 'ch9', 'ch10', 'ch37', 'ch12', 'ch13', 'ch19', 'ch20', 'ch22']],
     credit: ['📈', 'Credit and borrowing', 'How lenders judge you, and how debt behaves.',
-      ['ch2', 'ch8', 'credit-reports', 'credit-risk', 'underwriting', 'card-interest', 'ch6', 'bnpl', 'collections', 'ch31']],
+      ['ch2', 'ch8', 'credit-reports', 'credit-risk', 'underwriting', 'card-interest', 'ch6', 'personal-loans', 'mortgages', 'bnpl', 'collections', 'ch31']],
     kinds: ['🗂️', 'Every kind of card', 'Credit, debit, prepaid, charge, commercial and how each one is built.',
       ['ch4', 'debit-cards', 'prepaid-cards', 'charge-cards', 'commercial-cards', 'rewards-economics', 'card-programmes', 'domestic-schemes']],
     cardstack: ['⚙️', 'Card payments, the full stack', 'Product, engineering and operations people who want the whole machine.',
       ['ch1', 'network-models', 'ch23', 'emv', 'ch24', 'ch25', 'ch26', 'scheme-rules', 'ch27', 'gateways', 'ch28', 'ch29', 'ch30', 'issuer-processor', 'ch31']],
     issuing: ['🏛️', 'Issuing and issuer processing', 'Building or running a card programme.',
-      ['network-models', 'bins', 'card-programmes', 'card-lifecycle', 'issuer-processor', 'ch23', 'underwriting', 'credit-risk', 'card-interest', 'ch24', 'collections', 'ch31', 'commercial-cards', 'prepaid-cards']],
+      ['network-models', 'bins', 'card-programmes', 'card-lifecycle', 'issuer-processor', 'hsm-keys', 'ch23', 'underwriting', 'credit-risk', 'card-interest', 'ch24', 'ch36', 'bank-dispute-ops', 'collections', 'ch31', 'commercial-cards', 'prepaid-cards']],
     acquiring: ['🏪', 'Acquiring and merchant payments', 'Accepting payments, online or in a shop.',
-      ['ch1', 'ch27', 'terminals', 'emv', 'gateways', 'mcc', 'ch26', 'stored-credentials', 'ch28', 'payment-methods', 'ch25', 'reconciliation', 'ch30', 'pci-dss']],
+      ['ch1', 'ch27', 'terminals', 'emv', 'gateways', 'mcc', 'ch26', 'stored-credentials', 'ch28', 'payment-methods', 'qr-payments', 'marketplaces', 'ch25', 'reconciliation', 'ch30', 'merchant-disputes', 'pci-dss']],
     rails: ['🛤️', 'Bank payments: ACH to UPI', 'Everything that moves money without a card.',
-      ['rails-map', 'ledgers', 'central-bank-money', 'account-identifiers', 'ach', 'direct-debit', 'wires-rtgs', 'instant-payments', 'upi', 'india-rails', 'sepa', 'uk-rails', 'swift', 'iso20022', 'ch17']],
+      ['ch32', 'rails-map', 'ledgers', 'central-bank-money', 'account-identifiers', 'ach', 'direct-debit', 'wires-rtgs', 'instant-payments', 'upi', 'india-rails', 'sepa', 'uk-rails', 'qr-payments', 'atm-networks', 'swift', 'ch33', 'iso20022', 'remittances', 'payouts', 'ch17']],
     risk: ['🛡️', 'Fraud, risk and compliance', 'Keeping bad payments and bad actors out.',
-      ['fraud-types', 'ch10', 'ch11', 'ch28', 'ch29', 'ch30', 'kyc', 'aml', 'sanctions', 'pci-dss', 'credit-risk']],
+      ['fraud-types', 'ch10', 'ch11', 'ch28', 'ch29', 'ch30', 'kyc', 'aml', 'sanctions', 'pci-dss', 'data-privacy', 'op-resilience', 'conduct', 'credit-risk']],
+    disputes: ['⚖️', 'Disputes, scams and getting your money back', 'Everyone. Most people lose disputes they could have won, simply because nobody told them the rules.',
+      ['why-consumers-lose', 'ch37', 'rights-by-method', 'ch12', 'consumer-law', 'scam-recovery', 'scam-reimbursement', 'misdirected-payments', 'ch16', 'escalation', 'ch36', 'bank-dispute-ops', 'ch30', 'merchant-disputes']],
+    business: ['💼', 'Business payments and banking', 'Founders, finance teams and anyone running money for a company.',
+      ['payment-methods', 'ch27', 'ch26', 'reconciliation', 'marketplaces', 'payouts', 'commercial-cards', 'cash-management', 'trade-finance', 'cross-border', 'merchant-disputes', 'ch30']],
+    industry: ['🗺️', 'The payments industry, end to end', 'New joiners, students, investors and the curious: the whole map before the details.',
+      ['payments-history', 'ch1', 'network-models', 'rails-map', 'ch32', 'market-map', 'regulators-map', 'how-banks-work', 'financial-inclusion', 'upi', 'remittances', 'ch21', 'stablecoins']],
     architect: ['🏗️', 'Banking and fintech architecture', 'How banks and fintechs are put together.',
-      ['how-banks-work', 'ledgers', 'core-banking', 'bian', 'licences', 'baas', 'open-banking', 'central-bank-money', 'iso20022', 'issuer-processor', 'stablecoins', 'cbdc', 'agentic-commerce']]
+      ['how-banks-work', 'ch34', 'ledgers', 'basel-capital', 'alm-treasury', 'core-banking', 'bian', 'ch35', 'payments-engineering', 'hsm-keys', 'licences', 'baas', 'open-banking', 'central-bank-money', 'iso20022', 'issuer-processor', 'stablecoins', 'cbdc', 'agentic-commerce']]
   }
 };

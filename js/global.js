@@ -43,10 +43,17 @@
     ['28-tokens-3ds', 'Tokens, Wallets & 3-D Secure', 'Put a card in a phone, tap it, and pass a 3-D Secure check: one message at a time.', 8],
     ['29-fraud-engine', 'Build a Fraud Engine', 'Set the rules and the score threshold on a live stream of payments. Stop the fraud without declining your customers.', 8],
     ['30-chargeback-machine', 'The Chargeback Machine', 'Play the merchant. Fight or fold through every stage of a dispute and count what it costs.', 7],
-    ['31-issuer-economics', 'Inside the Issuer', 'Run a card business. Set the rates, rewards and risk, and find out which customers pay for everyone else.', 9]
-  ].map(([slug, title, desc, mins], i) => ({ n: i + 1, slug, title, desc, mins, roman: roman(i + 1), part: i < 22 ? 1 : 2 }));
-  const PARTS = { 1: 'Part I · Your card', 2: 'Part II · Inside the machine' };
-  function roman(n) { const m = [[10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']]; let s = ''; for (const [v, r] of m) while (n >= v) { s += r; n -= v; } return s; }
+    ['31-issuer-economics', 'Inside the Issuer', 'Run a card business. Set the rates, rewards and risk, and find out which customers pay for everyone else.', 9],
+    // ---- Part III · Money beyond cards ----
+    ['32-send-money', 'Send Money Five Ways', 'Race the same payment down five rails. See which arrives first, what it costs, and which one you can take back.', 7],
+    ['33-correspondent-chain', 'The Correspondent Chain', 'Send money abroad through a chain of banks and watch fees, exchange margins and delays eat into it.', 7],
+    ['34-build-a-ledger', 'Build a Ledger', 'Post deposits, transfers, fees and loans yourself. Then watch a retry bug break the books.', 8],
+    ['35-assemble-a-bank', 'Assemble a Bank', 'Launch a credit card by choosing the BIAN service domains each step of the journey needs.', 7],
+    ['36-dispute-desk', 'The Dispute Desk', 'Sit in the bank’s dispute team. Six cases, a regulatory clock, and rules that decide who gets the money.', 8],
+    ['37-money-back', 'Get Your Money Back', 'Pick how you paid and what went wrong. See exactly what protection you have, the deadline, and what to do first.', 7]
+  ].map(([slug, title, desc, mins], i) => ({ n: i + 1, slug, title, desc, mins, roman: roman(i + 1), part: i < 22 ? 1 : i < 31 ? 2 : 3 }));
+  const PARTS = { 1: 'Part I · Your card', 2: 'Part II · Inside the machine', 3: 'Part III · Money beyond cards' };
+  function roman(n) { const m = [[40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']]; let s = ''; for (const [v, r] of m) while (n >= v) { s += r; n -= v; } return s; }
 
   const chN = parseInt(document.body.dataset.ch || '0', 10);
   const base = chN ? '../' : '';
@@ -193,7 +200,7 @@
   function openSheet(s) { closeSheets(); lastFocus = document.activeElement; scrim.classList.add('open'); s.classList.add('open'); const f = $('button, a', s); f && f.focus({ preventScroll: true }); }
   function closeSheets() { $$('.sheet.open').forEach(s => s.classList.remove('open')); scrim && scrim.classList.remove('open'); lastFocus && lastFocus.focus && lastFocus.focus({ preventScroll: true }); lastFocus = null; }
   const openRegions = () => openSheet(picker), openChapters = () => openSheet(drawer);
-  const tocHtml = () => `<nav class="toc">${CH.map(c => `${c.n === 1 || c.n === 23 ? `<div class="toc-part">${PARTS[c.part]}</div>` : ''}<a href="${href(c)}" data-n="${c.n}" class="${c.n === chN ? 'here' : ''} ${isDone(c.n) ? 'done' : ''}"><span class="n">${c.roman}</span><span class="t">${c.title}</span><span class="s">✓</span></a>`).join('')}</nav>`;
+  const tocHtml = () => `<nav class="toc">${CH.map(c => `${c.n === 1 || CH[c.n - 2].part !== c.part ? `<div class="toc-part">${PARTS[c.part]}</div>` : ''}<a href="${href(c)}" data-n="${c.n}" class="${c.n === chN ? 'here' : ''} ${isDone(c.n) ? 'done' : ''}"><span class="n">${c.roman}</span><span class="t">${c.title}</span><span class="s">✓</span></a>`).join('')}</nav>`;
 
   function toast(html, ms = 7000) {
     const el = document.createElement('div'); el.className = 'toast'; el.setAttribute('role', 'status'); el.innerHTML = html;

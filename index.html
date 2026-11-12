@@ -174,7 +174,7 @@
   <section class="chapters" id="chapters">
     <div class="wrap">
       <div class="chapters-head">
-        <div><div class="eyebrow">The labs</div><h2 class="h2">Thirty-one labs. <em>Two parts.</em></h2></div>
+        <div><div class="eyebrow">The labs</div><h2 class="h2">Thirty-seven labs. <em>Three parts.</em></h2></div>
         <div class="journey"><div class="mono faint" id="journey-text"></div><div class="meter"><i id="journey-bar"></i></div></div>
       </div>
       <form class="libbox" action="library.html" role="search"><div><b>📚 The library</b><span class="small muted" id="lib-count"></span></div><input class="search" name="q" type="search" placeholder="Search everything: interchange, UPI, BIAN…" aria-label="Search the library"></form>
@@ -202,7 +202,7 @@
   // chapter list + journey
   const done = chapters.filter(c => isDone(c.n)).length;
   const next = chapters.find(c => !isDone(c.n));
-  $('#list').innerHTML = chapters.map(c => `${c.n === 1 || c.n === 23 ? `<div class="part"><b>${DCC.parts[c.part]}</b><span>${c.part === 1 ? 'Everything a cardholder should know' : 'How the payments industry actually works'}</span></div>` : ''}
+  $('#list').innerHTML = chapters.map(c => `${c.n === 1 || chapters[c.n - 2].part !== c.part ? `<div class="part"><b>${DCC.parts[c.part]}</b><span>${['', 'Everything a cardholder should know', 'How the card payments industry actually works', 'Bank rails, the bank itself, and getting your money back'][c.part]}</span></div>` : ''}
     <a class="item ${isDone(c.n) ? 'done' : ''} ${done && next && c.n === next.n ? 'next' : ''}" href="${DCC.href(c)}">
       <div class="n">${c.roman}</div>
       <div><div class="name">${c.title}</div><div class="desc">${c.desc}</div></div>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>XXXV. Assemble a Bank | Decoding Credit Cards</title>
+<meta name="description" content="A bank is a few hundred capabilities wired together. BIAN gives each one a name and a boundary. Your job: launch a credit card by picking the two service domains each step of the customer journey needs.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/35-assemble-a-bank.html">
+<meta property="og:title" content="XXXV. Assemble a Bank | Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.journey { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 18px; }
+.journey div { text-align: center; padding: 8px 4px; border-radius: var(--r-md); background: var(--paper); font-size: clamp(.58rem, 2vw, .8rem); line-height: 1.25; transition: background .4s; }
+.journey div i { display: block; font-style: normal; font-size: 1.3rem; }
+.journey .on { background: var(--electric-soft); font-weight: 700; } .journey .ok { background: var(--success-soft); }
+.chips { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 10px; margin-top: 14px; }
+.chipbtn { text-align: left; padding: 14px; border-radius: var(--r-md); border: 1.5px solid var(--border-strong); background: var(--white); transition: all .25s var(--ease-out); width: 100%; }
+.chipbtn b { display: block; font: 700 1rem var(--font-display); } .chipbtn small { color: var(--ink-muted); font-size: .84rem; }
+.chipbtn.sel { border-color: var(--electric); background: var(--electric-soft); }
+.chipbtn.right { border-color: var(--success); background: var(--success-soft); } .chipbtn.wrong { border-color: var(--danger); background: var(--danger-soft); }
+.chipbtn.locked { pointer-events: none; }
+.map { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 10px; }
+.area { background: var(--white); border: 1px solid var(--border-strong); border-radius: var(--r-md); padding: 14px; }
+.area h4 { font: 400 .66rem var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; }
+.area span { display: inline-block; margin: 3px 4px 3px 0; padding: 4px 9px; border-radius: 999px; background: var(--paper); font-size: .78rem; }
+.area span.lit { background: var(--electric); color: #fff; }
+</style>
+</head>
+<body data-ch="35">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>Assemble a <em>Bank</em></h1>
+  <p>A bank is a few hundred capabilities wired together. BIAN gives each one a name and a boundary. Your job: launch a credit card by picking the two service domains each step of the customer journey needs.</p>
+</header>
+
+<section class="sec">
+  <div class="eyebrow">The journey</div>
+  <h2 class="h2">Six steps. <em>Two domains each.</em></h2>
+  <div class="stage">
+    <div class="journey" id="journey"></div>
+    <div id="step" aria-live="polite"></div>
+  </div>
+</section>
+
+<section class="sec" id="mapsec" hidden>
+  <div class="eyebrow">Your card business, on the BIAN map</div>
+  <h2 class="h2">Twelve domains <em>out of hundreds</em>.</h2>
+  <p class="lede">The ones you used are highlighted among their neighbours. A real bank also runs current accounts, mortgages, payments, treasury, compliance and much more on the same map.</p>
+  <div class="map" id="map" style="margin-top:18px"></div>
+  <div class="callout" style="margin-top:18px"><b>Why architects care</b>When each capability has a clear owner and a standard interface, a bank can replace one, say Card Authorization, without touching the others. That is the promise of a componentised, or “coreless”, bank. The names here follow BIAN’s Service Landscape; check the current version for exact titles and scope.</div>
+</section>
+
+<aside class="checkpoint" data-icon="🧩">
+  <h3>You can read a <em>bank’s blueprint</em>.</h3>
+  <p>Every card payment you studied in Part II touched these domains. Next: when a payment goes wrong, the bank’s dispute team takes over.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
+<script src="../js/global.js"></script>
+<script>
+{
+const { $, $$, R } = DCC;
+const SD = {
+  'Party Reference Data Directory': 'Holds the master record of every person and company the bank deals with.',
+  'Party Lifecycle Management': 'Runs onboarding and status changes for a customer: checks, approvals, KYC refresh.',
+  'Customer Offer': 'Manages an offer to a customer from proposal to acceptance, such as a card application.',
+  'Customer Credit Rating': 'Maintains the bank’s credit assessment of a customer, using internal data and bureau reports.',
+  'Credit Card': 'The card account arrangement itself: limit, balances, rates, statements, repayments.',
+  'Issued Device Administration': 'Issues and manages the physical or digital card: production, activation, replacement, PIN.',
+  'Card Authorization': 'Makes the real-time approve or decline decision on each card payment.',
+  'Fraud Evaluation': 'Runs fraud tests and scores to flag out-of-pattern activity.',
+  'Card Clearing': 'Receives and matches cleared transactions from the network.',
+  'Card Financial Settlement': 'Settles the money owed between the bank and the card network.',
+  'Card Case': 'Handles a customer’s card case, typically a disputed charge, through chargeback and arbitration.',
+  'Card Collections': 'Manages overdue card accounts and recovery.'
+};
+const ST = [
+  ['🙋', 'Apply', 'A customer applies for your new card in the app.', ['Party Reference Data Directory', 'Party Lifecycle Management']],
+  ['🧮', 'Decide', 'The bank decides whether to approve, and with what limit.', ['Customer Credit Rating', 'Customer Offer']],
+  ['💳', 'Issue', 'The account opens and a card is produced and activated.', ['Credit Card', 'Issued Device Administration']],
+  ['⚡', 'Pay', 'The customer taps the card at ' + R.merchant + '.', ['Card Authorization', 'Fraud Evaluation']],
+  ['🏦', 'Settle', 'Overnight, the transaction clears and the money is settled with the network.', ['Card Clearing', 'Card Financial Settlement']],
+  ['⚖️', 'Fix', 'A month later the customer disputes a charge, and another customer stops paying.', ['Card Case', 'Card Collections']]
+];
+let si = 0, score = 0;
+const all = Object.keys(SD);
+const shuffle = a => a.map(v => [Math.random(), v]).sort((x, y) => x[0] - y[0]).map(x => x[1]);
+function journey() { $('#journey').innerHTML = ST.map((s, i) => `<div class="${i < si ? 'ok' : i === si ? 'on' : ''}"><i>${s[0]}</i>${s[1]}</div>`).join(''); }
+function step() {
+  journey();
+  if (si >= ST.length) { $('#step').innerHTML = `<h3 class="h3">${score} of 12 <em>placed correctly</em>.</h3><p class="lede">Your card business runs on twelve BIAN service domains.</p>`; showMap(); DCC.playSuccess(); DCC.burstConfetti(); DCC.markDone(); return; }
+  const s = ST[si], decoys = shuffle(all.filter(x => !s[3].includes(x))).slice(0, 2), opts = shuffle([...s[3], ...decoys]);
+  $('#step').innerHTML = `<div class="eyebrow c-accent">Step ${si + 1} · ${s[1]}</div><h3 class="h3">${s[2]}</h3><p class="small muted" style="margin-top:6px">Pick the <strong>two</strong> service domains that do this work.</p>
+    <div class="chips">${opts.map(o => `<button class="chipbtn" data-o="${o}"><b>${o}</b><small>${SD[o]}</small></button>`).join('')}</div><div id="fb"></div>`;
+}
+$('#step').addEventListener('click', e => {
+  const nx = e.target.closest('[data-next]'); if (nx) { si++; step(); return; }
+  const b = e.target.closest('.chipbtn'); if (!b) return;
+  b.classList.toggle('sel'); DCC.playClick();
+  const sel = $$('.chipbtn.sel'); if (sel.length < 2) return;
+  const s = ST[si]; let n = 0;
+  $$('.chipbtn').forEach(x => { x.classList.add('locked'); const ok = s[3].includes(x.dataset.o); if (ok) x.classList.add('right'); else if (x.classList.contains('sel')) x.classList.add('wrong'); if (ok && x.classList.contains('sel')) n++; });
+  score += n;
+  $('#fb').innerHTML = `<div class="fb ${n === 2 ? 'good' : 'bad'}"><div class="fb-title">${n === 2 ? '✓ Both right' : n === 1 ? 'One of two' : 'Not these'}</div><p>${s[3].map(x => `<strong>${x}</strong>: ${SD[x]}`).join('<br>')}</p><div class="row"><button class="btn btn--primary" data-next>${si < ST.length - 1 ? 'Next step →' : 'See the map →'}</button></div></div>`;
+  n === 2 ? DCC.playSuccess() : DCC.playError();
+});
+function showMap() {
+  $('#mapsec').hidden = false;
+  const AREAS = [
+    ['Customers and parties', ['Party Reference Data Directory', 'Party Lifecycle Management', 'Customer Offer', 'Customer Relationship Management', 'Customer Event History']],
+    ['Products: cards', ['Credit Card', 'Issued Device Administration', 'Card Authorization', 'Card Case', 'Card Collections']],
+    ['Operations and execution', ['Card Clearing', 'Card Financial Settlement', 'Payment Order', 'Payment Execution', 'Current Account']],
+    ['Risk and compliance', ['Customer Credit Rating', 'Fraud Evaluation', 'Fraud Diagnosis', 'Regulatory Reporting', 'Credit Risk Models']],
+    ['Business support', ['Document Services', 'Correspondence', 'Product Design', 'Financial Accounting', 'Systems Operations']]
+  ];
+  const used = new Set(ST.flatMap(s => s[3]));
+  $('#map').innerHTML = AREAS.map(([a, ds]) => `<div class="area reveal"><h4>${a}</h4>${ds.map(d => `<span class="${used.has(d) ? 'lit' : ''}">${d}</span>`).join('')}</div>`).join('');
+  DCC.observe(); $('#mapsec').scrollIntoView({ behavior: DCC.calm ? 'auto' : 'smooth', block: 'start' });
+}
+step();
+}
+</script>
+</body>
+</html>

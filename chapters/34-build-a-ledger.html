@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>XXXIV. Build a Ledger | Decoding Credit Cards</title>
+<meta name="description" content="Under every bank, card and payment app sits a ledger. You keep this one. For each event, choose which account is debited and which is credited. If you get it right, the books balance. Then we break them.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/34-build-a-ledger.html">
+<meta property="og:title" content="XXXIV. Build a Ledger | Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.taccts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.tac { background: var(--white); border: 1.5px solid var(--border-strong); border-radius: var(--r-md); padding: 10px 12px; transition: border-color .3s, box-shadow .3s, transform .3s var(--ease-spring); text-align: left; width: 100%; }
+.tac.pickD { border-color: var(--electric); box-shadow: 0 0 0 4px var(--electric-soft); }
+.tac.pickC { border-color: var(--gold); box-shadow: 0 0 0 4px var(--gold-soft); }
+.tac.bump { transform: scale(1.04); }
+.tac .k { font: 400 .6rem var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); }
+.tac b { display: block; font: 700 .98rem/1.2 var(--font-display); }
+.tac .bal { font: 800 1.25rem var(--font-display); font-variant-numeric: tabular-nums; margin-top: 4px; }
+.tac .lines { font: 400 .68rem var(--font-mono); color: var(--ink-muted); margin-top: 4px; min-height: 1em; }
+.ev { background: var(--ink); color: var(--cream); border-radius: var(--r-md); padding: 16px 18px; }
+.ev .mono { opacity: .7; } .ev h3 { font: 700 var(--step-1)/1.25 var(--font-display); margin-top: 4px; }
+.step-hint { font: 700 .74rem var(--font-mono); margin-top: 10px; } .step-hint .d { color: #93b4ff; } .step-hint .c { color: #F7B87A; }
+.tb { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.tb .stat-v { font-size: var(--step-1); }
+.ok { color: var(--success); } .no { color: var(--danger); }
+.log { font: 400 .78rem var(--font-mono); max-height: 220px; overflow: auto; }
+.log div { padding: 6px 0; border-bottom: 1px dashed var(--border-strong); display: flex; justify-content: space-between; gap: 10px; }
+</style>
+</head>
+<body data-ch="34">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>Build a <em>Ledger</em></h1>
+  <p>Under every bank, card and payment app sits a ledger. You keep this one. For each event, choose which account is debited and which is credited. If you get it right, the books balance. Then we break them.</p>
+</header>
+
+<section class="sec">
+  <div class="eyebrow">The rules, in one line</div>
+  <div class="callout"><b>Debit and credit</b>Every movement is recorded twice. A <strong>debit</strong> increases an asset (what the bank owns) or reduces a liability (what it owes). A <strong>credit</strong> does the opposite. Your deposit is the bank’s <em>liability</em>: it owes you that money. Income, such as fees, is a credit.</div>
+  <div class="stage split split--r">
+    <div>
+      <div class="ev" id="ev" aria-live="polite"></div>
+      <div class="taccts" id="accts" style="margin-top:14px"></div>
+    </div>
+    <div class="sticky">
+      <div class="eyebrow">Trial balance</div>
+      <div class="tb"><div class="stat"><div class="stat-k">Total debits</div><div class="stat-v" id="td"></div></div><div class="stat"><div class="stat-k">Total credits</div><div class="stat-v" id="tc"></div></div></div>
+      <div class="callout" id="bal" style="margin-top:12px"></div>
+      <div class="eyebrow" style="margin-top:16px">Journal</div><div class="log" id="log"></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="break" hidden>
+  <div class="eyebrow">Now break it</div>
+  <h2 class="h2">A timeout, a retry, and <em>money that is not there</em>.</h2>
+  <p class="lede">Asha’s transfer to another bank times out. The app retries. Did the first attempt post? Toggle the safeguard and press retry.</p>
+  <div class="stage">
+    <div class="row"><div class="seg" id="idem"><button data-v="0" class="on">No idempotency key</button><button data-v="1">With idempotency key</button></div><button class="btn btn--primary" id="retry">↻ Retry the transfer</button><button class="btn btn--ghost" id="recon">Run reconciliation</button></div>
+    <div class="callout" id="brk" style="margin-top:16px" aria-live="polite">The first attempt actually succeeded; only the reply was lost.</div>
+  </div>
+</section>
+
+<aside class="checkpoint" data-icon="📒">
+  <h3>You kept a <em>bank’s books</em>.</h3>
+  <p>Two entries for every movement, corrections by reversal not deletion, and every retry made safe. Payment systems are mostly this, done millions of times a second. Next: the map of everything else a bank does.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
+<script src="../js/global.js"></script>
+<script>
+{
+const { $, $$, R, money, pick } = DCC;
+const u = pick({ in: 1000, us: 25, uk: 20, au: 30 });  // one unit, scaled to the region
+const m = v => money(v * u, Math.abs(v * u) % 1 > 1e-9);
+const A = { cash: ['Asset', 'Cash and reserves', 1], loans: ['Asset', 'Loans', 1], asha: ['Liability', 'Asha’s account', -1], ben: ['Liability', 'Ben’s account', -1], clear: ['Liability', 'Outgoing clearing', -1], fees: ['Income', 'Fee income', -1] };
+const EV = [
+  ['Asha deposits cash at the branch', 10, 'cash', 'asha', 'The bank now holds more cash (asset up: debit) and owes Asha more (liability up: credit).'],
+  ['Asha pays Ben, who banks here too', 3, 'asha', 'ben', 'The bank owes Asha less (liability down: debit) and Ben more (liability up: credit). No cash moved at all.'],
+  ['The bank charges Ben a monthly fee', .1, 'ben', 'fees', 'Ben’s balance falls (debit his liability) and the bank earns income (credit). This is how fee income appears.'],
+  ['The bank lends Asha money into her account', 50, 'loans', 'asha', 'A new asset (the loan) and a new liability (her deposit) appear together. This is how lending creates money: no one else’s savings were used.'],
+  ['Asha sends money to someone at another bank', 2, 'asha', 'clear', 'Her balance falls. The money is now owed to the other bank but has not settled, so it sits in a clearing account, a liability in transit.'],
+  ['Settlement with the other bank', 2, 'clear', 'cash', 'The clearing account is emptied (debit) and the bank’s reserves fall (credit) as it pays the other bank through the central bank.']
+];
+let ei = 0, pickD = null; const bal = { cash: 0, loans: 0, asha: 0, ben: 0, clear: 0, fees: 0 }; let TD = 0, TC = 0; const log = [];
+const signed = (k, d, c) => A[k][2] * (d - c);
+function drawAccts() {
+  $('#accts').innerHTML = Object.entries(A).map(([k, a]) => `<button class="tac ${pickD === k ? 'pickD' : ''}" data-k="${k}"><span class="k">${a[0]}</span><b>${a[1]}</b><div class="bal">${m(bal[k])}</div><div class="lines" id="l-${k}"></div></button>`).join('');
+}
+function drawEv() {
+  if (ei >= EV.length) { $('#ev').innerHTML = `<span class="mono">ALL SIX POSTED</span><h3>The books balance.</h3><p class="small" style="margin-top:6px;opacity:.85">Assets ${m(bal.cash + bal.loans)} = liabilities and income ${m(bal.asha + bal.ben + bal.clear + bal.fees)}.</p>`; $('#break').hidden = false; DCC.playSuccess(); DCC.burstConfetti(); return; }
+  const e = EV[ei];
+  $('#ev').innerHTML = `<span class="mono">EVENT ${ei + 1} OF ${EV.length}</span><h3>${e[0]}: ${m(e[1])}</h3><div class="step-hint">${pickD ? `<span class="d">Debit: ${A[pickD][1]}</span> · now tap the account to <span class="c">credit</span>` : 'Tap the account to <span class="d">debit</span>'}</div>`;
+}
+function drawTB() {
+  $('#td').textContent = m(TD); $('#tc').textContent = m(TC);
+  const ok = Math.abs(TD - TC) < 1e-9, a = bal.cash + bal.loans, l = bal.asha + bal.ben + bal.clear + bal.fees;
+  $('#bal').className = 'callout ' + (ok && Math.abs(a - l) < 1e-9 ? 'is-success' : 'is-danger');
+  $('#bal').innerHTML = ok ? `<b>Balanced</b>Assets ${m(a)} = liabilities and income ${m(l)}.` : '<b>Out of balance</b>Debits and credits no longer match.';
+  $('#log').innerHTML = log.map(x => `<div><span>${x[0]}</span><span>${x[1]}</span></div>`).join('') || '<span class="faint">Nothing posted yet.</span>';
+}
+function post(d, c, v, label) {
+  bal[d] += A[d][2] * v; bal[c] -= A[c][2] * v; TD += v; TC += v;
+  log.unshift([label, `Dr ${A[d][1].split(' ')[0]} / Cr ${A[c][1].split(' ')[0]} ${m(v)}`]);
+}
+$('#accts').addEventListener('click', e => {
+  const b = e.target.closest('.tac'); if (!b || ei >= EV.length) return; const k = b.dataset.k, ev = EV[ei];
+  if (!pickD) { pickD = k; drawAccts(); drawEv(); DCC.playClick(); return; }
+  const d = pickD; pickD = null;
+  if (d === ev[2] && k === ev[3]) { post(d, k, ev[1], ev[0]); ei++; drawAccts(); [d, k].forEach(x => { const el = $(`.tac[data-k="${x}"]`); el.classList.add('bump'); setTimeout(() => el.classList.remove('bump'), 300); });
+    DCC.toast(`✓ ${ev[4]}`, 6500); DCC.playSuccess(); }
+  else { drawAccts(); DCC.toast(`✗ Not quite. Hint: ${ev[2] === d ? 'right debit, wrong credit.' : ev[3] === k ? 'right credit, wrong debit.' : 'think about which balance rises and which falls.'} Tap the debit again.`, 5000); DCC.playError(); }
+  drawEv(); drawTB();
+});
+drawAccts(); drawEv(); drawTB();
+
+// break it
+let idem = false, retried = 0; const keys = new Set(['tx-7f3a']);
+$('#idem').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; idem = b.dataset.v === '1'; $$('#idem button').forEach(x => x.classList.toggle('on', x === b)); DCC.playClick(); });
+$('#retry').onclick = () => {
+  if (idem && keys.has('tx-7f3a')) { $('#brk').className = 'callout is-success'; $('#brk').innerHTML = '<b>Duplicate ignored</b>The retry carried the same idempotency key, <code>tx-7f3a</code>. The ledger recognised it, returned the original result and posted nothing. Asha is charged once.'; DCC.playSuccess(); return; }
+  retried++; post('asha', 'clear', 2, 'Retry (duplicate)'); drawAccts(); drawTB();
+  $('#brk').className = 'callout is-danger'; $('#brk').innerHTML = `<b>Posted again</b>Without a key the ledger cannot tell a retry from a new payment. Asha has now been debited ${retried + 1} times for one transfer, and the clearing account says the bank owes the other bank ${m(2 * retried)} more than it will ever settle. The books still balance: <strong>a balanced ledger can still be wrong.</strong>`;
+  DCC.playError();
+};
+$('#recon').onclick = () => {
+  const diff = bal.clear; $('#brk').className = 'callout ' + (diff ? 'is-warm' : 'is-success');
+  $('#brk').innerHTML = diff ? `<b>Reconciliation break: ${m(diff)}</b>The clearing account should be zero after settlement, but ${m(diff)} is stuck there with nothing on the other bank’s side to match it. An operations analyst will find the duplicate, post a <em>reversing entry</em> (never a delete), and refund Asha. The fix for next time is the idempotency key.` : '<b>Reconciled</b>The clearing account is back to zero: everything sent was settled, and nothing was posted twice.';
+  if (diff) DCC.markDone(); DCC.playClick();
+};
+}
+</script>
+</body>
+</html>

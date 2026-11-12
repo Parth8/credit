@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F7F3ED">
+<title>XXXII. Send Money Five Ways | Decoding Credit Cards</title>
+<meta name="description" content="The same payment can travel down five completely different rails. Race them, then look at what you gave up for the speed. The answer to “which is best?” is always “for what?”.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://parth8.github.io/credit/chapters/32-send-money.html">
+<meta property="og:title" content="XXXII. Send Money Five Ways | Decoding Credit Cards">
+<meta property="og:description" content="Learn credit cards by playing with them. Free forever. No card recommendations.">
+<meta property="og:image" content="https://parth8.github.io/credit/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>document.documentElement.className = 'js'</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="../css/global.css">
+<style>
+.lanes { display: grid; gap: 10px; margin-top: 18px; }
+.lane { display: grid; grid-template-columns: minmax(96px, 150px) 1fr minmax(70px, 110px); gap: 10px; align-items: center; }
+.lane .nm b { display: block; font: 700 .95rem/1.2 var(--font-display); } .lane .nm small { font: 400 .66rem var(--font-mono); color: var(--ink-faint); }
+.track { position: relative; height: 34px; background: var(--paper); border-radius: 17px; overflow: hidden; }
+.track i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 17px; background: var(--c); opacity: .22; }
+.track span { position: absolute; top: 5px; left: 4px; width: 24px; height: 24px; border-radius: 50%; background: var(--c); color: #fff; display: grid; place-items: center; font-size: .8rem; box-shadow: 0 2px 8px rgba(0,0,0,.18); }
+.track.na { background: repeating-linear-gradient(45deg, var(--paper) 0 8px, var(--parchment) 8px 16px); }
+.lane .t { font: 700 .78rem var(--font-mono); text-align: right; }
+@media (max-width: 699px) { .lane { grid-template-columns: 1fr auto; row-gap: 6px; } .lane .track { grid-column: 1 / -1; grid-row: 2; } .lane .nm small { display: inline; margin-left: 4px; } .lane .nm b { display: inline; } }
+.res { width: 100%; border-collapse: collapse; font-size: .86rem; min-width: 640px; }
+.res th, .res td { padding: 9px 8px; border-bottom: 1px dashed var(--border-strong); text-align: left; vertical-align: top; }
+.res th { font: 400 .66rem var(--font-mono); text-transform: uppercase; letter-spacing: .05em; color: var(--ink-faint); }
+.res td:first-child { font-weight: 700; }
+.scroll { overflow-x: auto; margin-inline: calc(-1 * clamp(18px, 3.4vw, 40px)); padding-inline: clamp(18px, 3.4vw, 40px); }
+.y { color: var(--success); } .n { color: var(--danger); } .m { color: var(--gold); }
+</style>
+</head>
+<body data-ch="32">
+<main class="ch"><div class="wrap">
+<header class="ch-head">
+  <h1>Send Money <em>Five Ways</em></h1>
+  <p>The same payment can travel down five completely different rails. Race them, then look at what you gave up for the speed. The answer to “which is best?” is always “for what?”.</p>
+</header>
+
+<section class="sec">
+  <div class="eyebrow">Scene 1 · The race</div>
+  <h2 class="h2">Pick a payment. <em>Press go.</em></h2>
+  <div class="seg" id="scen" style="margin-top:18px"></div>
+  <div class="stage">
+    <div class="row row--between"><div class="seg" id="when"><button data-v="wk" class="on">Tuesday, 11 a.m.</button><button data-v="we">Saturday, 11 p.m.</button></div><button class="btn btn--primary" id="go">▶ Send on all five</button></div>
+    <div class="lanes" id="lanes"></div>
+    <p class="small faint" style="margin-top:10px">Bar length is on a logarithmic scale: seconds, minutes, hours, days.</p>
+  </div>
+  <div class="stage" style="margin-top:16px"><div class="eyebrow">What you traded for that speed</div><div class="scroll"><table class="res" id="res"></table></div>
+    <div class="callout" id="lesson" style="margin-top:16px" aria-live="polite"></div></div>
+</section>
+
+<section class="sec">
+  <div class="eyebrow">Scene 2 · Your call</div>
+  <h2 class="h2">Which rail <em>should you use</em>?</h2>
+  <div class="stage" id="game"></div>
+</section>
+
+<aside class="checkpoint" data-icon="🛤">
+  <h3>You can choose a <em>rail</em>.</h3>
+  <p>Fast and final for people you trust. Reversible for strangers. Cheap and slow for the routine. Next: what happens when money has to cross a border.</p>
+</aside>
+</div></main>
+<script src="../js/regions.js"></script>
+<script src="../js/catalog.js"></script>
+<script src="../js/global.js"></script>
+<script>
+{
+const { $, $$, R, rid, money, t, pick } = DCC;
+const N = pick({
+  in: { card: 'Credit card', inst: 'UPI', batch: 'NEFT', wire: 'RTGS', abroad: 'SWIFT wire' },
+  us: { card: 'Credit card', inst: 'Instant (FedNow / RTP)', batch: 'ACH', wire: 'Fedwire', abroad: 'SWIFT wire' },
+  uk: { card: 'Credit card', inst: 'Faster Payments', batch: 'Bacs', wire: 'CHAPS', abroad: 'SWIFT wire' },
+  au: { card: 'Credit card', inst: 'NPP / PayID', batch: 'BECS direct entry', wire: 'RTGS high-value', abroad: 'SWIFT wire' } });
+// seconds to arrive [weekday, weekend]; cost text; reversible; protection
+const RAIL = {
+  card: { c: 'var(--electric)', ic: '💳', t: [3, 3], note: 'Approval in seconds; the shop is paid a day or two later', cost: pick({ in: 'Free to you; shop pays ~1.5–2%', us: 'Free to you; shop pays ~2–3%', uk: 'Free to you; shop pays well under 1%', au: 'Free to you; shop pays under 1%' }), rev: ['y', 'Chargeback'], prot: ['y', 'Strongest'], person: false },
+  inst: { c: 'var(--success)', ic: '⚡', t: [5, 5], note: 'Seconds, every day of the year', cost: pick({ in: 'Free', us: 'Free to a few dollars', uk: 'Free', au: 'Free' }), rev: ['n', 'Final'], prot: [rid === 'uk' ? 'm' : 'n', pick({ in: 'Little; scams not covered', us: 'Little; scams rarely covered', uk: 'Scam reimbursement up to £85,000', au: 'Little today; scam codes from 2027' })], person: true },
+  batch: { c: 'var(--gold)', ic: '📦', t: pick({ in: [1800, 1800], us: [86400, 86400 * 3], uk: [86400 * 2, 86400 * 4], au: [86400, 86400 * 3] }), note: pick({ in: 'Next half-hourly batch, even at weekends', us: 'Next business day (same day if early)', uk: 'Three-day cycle', au: 'Next business day' }), cost: 'Free', rev: ['n', 'Final'], prot: ['n', 'Little'], person: true },
+  wire: { c: 'var(--warm)', ic: '🏛️', t: pick({ in: [60, 60], us: [600, 86400 * 2], uk: [900, 86400 * 2], au: [900, 86400 * 2] }), note: pick({ in: 'Real time, 24×7; minimum ₹2 lakh', us: 'Minutes, business hours only', uk: 'Same day, business hours only', au: 'Same day, business hours only' }), cost: pick({ in: 'Free online', us: '$20–$35', uk: '£20–£35', au: '$20–$35' }), rev: ['n', 'Final'], prot: ['n', 'None'], person: true },
+  abroad: { c: 'var(--danger)', ic: '🌍', t: [86400 * 1.5, 86400 * 3], note: '1–3 days through correspondent banks', cost: pick({ in: '₹500–₹1,500 + FX margin', us: '$35–$50 + FX margin', uk: '£10–£25 + FX margin', au: '$20–$30 + FX margin' }), rev: ['n', 'Recall request only'], prot: ['n', 'None'], person: true }
+};
+const SC = [
+  ['🍕 Pay back a friend', R.a.meal * 3, 'inst', 'Instant payments were built for exactly this: free, immediate, and you know the person. A card cannot pay a person directly, and a wire would cost more than the pizza.'],
+  ['🏠 This month’s rent', R.a.rent, 'inst', pick({ in: 'UPI or NEFT both work; UPI arrives instantly, NEFT within the hour. Rent paid by credit card through an app now costs about 1% extra and earns no rewards.', us: 'ACH is the traditional route and free; an instant payment works too if your landlord’s bank receives them.', uk: 'A standing order over Faster Payments is the norm: free and arrives the same day.', au: 'PayID or a scheduled transfer over the NPP is free and lands in seconds.' })],
+  ['📱 Phone from a stranger online', Math.round(R.a.phone * .6), 'card', 'With a stranger you want a payment you can reverse. Pay through the marketplace by card. Every other rail here is final the moment it lands, which is precisely why scammers ask for them.'],
+  ['🔑 House deposit', R.a.big * 25, 'wire', pick({ in: 'RTGS is designed for large, urgent, final payments and is open around the clock. Call the solicitor or builder on a number you already hold before sending: changed bank details by email are the classic fraud.', us: 'A Fedwire is the standard for closings. Confirm the instructions by phone on a number you already trust: wire fraud around property closings is endemic.', uk: 'CHAPS is the standard for completions. Confirm account details by phone with your conveyancer: email interception scams target exactly this payment.', au: 'Settlement usually runs through the conveyancing platform; for a direct transfer use a high-value payment and confirm details by phone.' })],
+  ['👪 Money to family abroad', R.a.big / 2, 'abroad', 'A bank wire works, but a specialist money transfer provider is usually cheaper and faster. Chapter XXXIII shows where the money goes along the way.']
+];
+let si = 0, when = 'wk';
+$('#scen').innerHTML = SC.map((s, i) => `<button data-i="${i}" class="${i ? '' : 'on'}">${s[0]}</button>`).join('');
+const fmtT = s => s < 60 ? `${s} sec` : s < 3600 ? `${Math.round(s / 60)} min` : s < 86400 ? `${Math.round(s / 3600)} h` : `${(s / 86400).toFixed(s % 86400 ? 1 : 0)} days`;
+const pos = s => Math.min(100, Math.log10(s + 1) / Math.log10(86400 * 4 + 1) * 100);
+function lanes() {
+  const amt = SC[si][1], toPerson = si < 2 || si === 4;
+  $('#lanes').innerHTML = Object.entries(RAIL).map(([k, r]) => { const na = (k === 'card' && toPerson) || (k === 'abroad' && si !== 4) || (k !== 'abroad' && si === 4) || (k === 'wire' && rid === 'in' && amt < 200000);
+    return `<div class="lane" style="--c:${r.c}"><div class="nm"><b>${r.ic} ${N[k]}</b><small>${na ? 'not available here' : r.note}</small></div><div class="track ${na ? 'na' : ''}" data-k="${k}"><i></i>${na ? '' : '<span>' + R.cur + '</span>'}</div><div class="t" data-t="${k}">${na ? 'n/a' : ''}</div></div>`; }).join('');
+  $('#res').innerHTML = `<thead><tr><th>Rail</th><th>Cost to send ${money(amt)}</th><th>Can you take it back?</th><th>If it goes wrong</th></tr></thead><tbody>${Object.entries(RAIL).map(([k, r]) => `<tr><td>${r.ic} ${N[k]}</td><td>${r.cost}</td><td class="${r.rev[0]}">${r.rev[1]}</td><td class="${r.prot[0]}">${r.prot[1]}</td></tr>`).join('')}</tbody>`;
+  $('#lesson').innerHTML = `<b>For this payment</b>${SC[si][3]}`;
+}
+function go() {
+  lanes(); DCC.playClick();
+  Object.entries(RAIL).forEach(([k, r]) => { const tr = $(`.track[data-k="${k}"]`); if (tr.classList.contains('na')) return;
+    const secs = r.t[when === 'wk' ? 0 : 1], p = pos(secs), dur = DCC.calm ? 0 : 400 + p * 22;
+    tr.querySelector('span').animate([{ left: '4px' }, { left: `calc(${p}% - 28px)` }], { duration: dur, fill: 'forwards', easing: 'cubic-bezier(.16,1,.3,1)' });
+    tr.querySelector('i').animate([{ width: 0 }, { width: p + '%' }], { duration: dur, fill: 'forwards', easing: 'cubic-bezier(.16,1,.3,1)' });
+    setTimeout(() => { $(`[data-t="${k}"]`).textContent = fmtT(Math.round(secs)); }, dur); });
+  setTimeout(DCC.playSuccess, 2600);
+}
+$('#scen').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; si = +b.dataset.i; $$('#scen button').forEach(x => x.classList.toggle('on', x === b)); lanes(); });
+$('#when').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; when = b.dataset.v; $$('#when button').forEach(x => x.classList.toggle('on', x === b)); go(); });
+$('#go').onclick = go; lanes();
+
+const opt = ok => Object.keys(RAIL).map(k => ({ t: `${RAIL[k].ic} <strong>${N[k]}</strong>`, ok: [].concat(ok).includes(k) }));
+DCC.quiz($('#game'), { label: 'Payment', items: [
+  { title: `You owe your flatmate ${money(R.a.groceries / 2)} for groceries.`, opts: opt('inst'), explain: '<p>Free, instant and to someone you know.</p>' },
+  { title: `A website you found today sells concert tickets for ${money(R.a.meal * 8)} and asks for a bank transfer.`, opts: opt('card'), explain: '<p>A request for a bank transfer from an unfamiliar seller is a warning sign in itself. Pay by card through a known platform, or not at all.</p>' },
+  { title: `Your employer pays 200 staff every month.`, opts: opt('batch'), explain: `<p>Bulk, predictable, cheap: payroll is what ${N.batch} exists for.</p>` },
+  { title: `A supplier abroad needs paying for an invoice in their currency.`, opts: opt('abroad'), explain: '<p>Cross-border means correspondent banks or a specialist provider. Compare the exchange rate, not just the fee.</p>' },
+  { title: `You are buying a used car from a dealer and must pay ${money(R.a.big * 6)} today.`, opts: opt(['wire', 'card', 'inst']), explain: '<p>Several work. A dealer may accept a card for part of it, which gives you protection; a same-day transfer or wire is normal for the balance once you have confirmed the account details in person.</p>' }
+], onEnd(s, n, again) { $('#game').innerHTML = `<div style="text-align:center"><h3 class="h3">${s} of ${n} <em>well routed</em>.</h3><p class="lede" style="margin-inline:auto">The rule of thumb: the less you trust the other side, the more you want a payment that can be reversed.</p><div class="row" style="justify-content:center;margin-top:14px"><button class="btn btn--outline" id="again">↻ Again</button></div></div>`; $('#again').onclick = again; DCC.playSuccess(); DCC.markDone(); } });
+}
+</script>
+</body>
+</html>
